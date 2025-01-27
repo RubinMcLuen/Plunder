@@ -1,0 +1,66 @@
+[gd_scene load_steps=10 format=3 uid="uid://d35rvy4e57y4a"]
+
+[ext_resource type="Script" path="res://CharacterCreation/character.gd" id="1_82l3s"]
+[ext_resource type="Texture2D" uid="uid://hsxbn4leg3aj" path="res://CharacterCreation/customizations/skin/skin0.png" id="2_e13ea"]
+[ext_resource type="Texture2D" uid="uid://luwn2yakm0fc" path="res://CharacterCreation/customizations/hair/facialhair0.png" id="3_73ovf"]
+[ext_resource type="Texture2D" uid="uid://ce3rfumkiiqpf" path="res://CharacterCreation/customizations/top/LeftArm/larm0.png" id="4_pqqhm"]
+[ext_resource type="Texture2D" uid="uid://bpue8vwq7wb2r" path="res://CharacterCreation/customizations/top/Body/body0.png" id="5_81mte"]
+[ext_resource type="Texture2D" uid="uid://blsdtc3bvdqxf" path="res://CharacterCreation/customizations/top/RightArm/rarm0.png" id="6_rue84"]
+[ext_resource type="Texture2D" uid="uid://0votqft72py2" path="res://CharacterCreation/customizations/bottom/LeftLeg/lleg0.png" id="7_ny7jh"]
+[ext_resource type="Texture2D" uid="uid://cgvc2dwm1w6ha" path="res://CharacterCreation/customizations/bottom/RightLeg/rleg0.png" id="8_l1u8k"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_hisuj"]
+load_path = "res://.godot/imported/hat0.png-b09d7b101100389f478457ce04dcf1cb.ctex"
+
+[node name="Character" type="Node2D"]
+scale = Vector2(4, 4)
+script = ExtResource("1_82l3s")
+parts = {
+"Body": NodePath("Body"),
+"FacialHair": NodePath("Hair"),
+"Hat": NodePath("Hat"),
+"LeftArm": NodePath("LeftArm"),
+"LeftLeg": NodePath("LeftLeg"),
+"RightArm": NodePath("RightArm"),
+"RightLeg": NodePath("RightLeg"),
+"Skin": NodePath("Skin")
+}
+
+[node name="Skin" type="Sprite2D" parent="."]
+texture = ExtResource("2_e13ea")
+hframes = 8
+
+[node name="Hat" type="Sprite2D" parent="."]
+z_index = 1
+texture = SubResource("CompressedTexture2D_hisuj")
+hframes = 8
+
+[node name="Hair" type="Sprite2D" parent="."]
+z_index = 3
+texture = ExtResource("3_73ovf")
+hframes = 8
+
+[node name="LeftArm" type="Sprite2D" parent="."]
+z_index = 2
+texture = ExtResource("4_pqqhm")
+hframes = 8
+
+[node name="Body" type="Sprite2D" parent="."]
+z_index = 2
+texture = ExtResource("5_81mte")
+hframes = 8
+
+[node name="RightArm" type="Sprite2D" parent="."]
+z_index = 2
+texture = ExtResource("6_rue84")
+hframes = 8
+
+[node name="LeftLeg" type="Sprite2D" parent="."]
+z_index = 1
+texture = ExtResource("7_ny7jh")
+hframes = 8
+
+[node name="RightLeg" type="Sprite2D" parent="."]
+z_index = 1
+texture = ExtResource("8_l1u8k")
+hframes = 8

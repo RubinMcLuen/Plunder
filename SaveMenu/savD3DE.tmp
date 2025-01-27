@@ -1,0 +1,39 @@
+[gd_scene load_steps=4 format=3 uid="uid://cbu137n5idbij"]
+
+[ext_resource type="Script" path="res://SaveMenu/save_menu.gd" id="1_5tnio"]
+[ext_resource type="Texture2D" uid="uid://bjstte1i8rnw" path="res://SaveMenu/assets/savemenubackground.png" id="1_w3boj"]
+[ext_resource type="PackedScene" uid="uid://ddnlrb63k22yr" path="res://save_slot.tscn" id="3_n3ei4"]
+
+[node name="SaveMenu" type="Node2D"]
+script = ExtResource("1_5tnio")
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(240, 135)
+texture = ExtResource("1_w3boj")
+
+[node name="SaveSlots" type="Node2D" parent="."]
+position = Vector2(240, 135)
+
+[node name="SaveSlot" parent="SaveSlots" instance=ExtResource("3_n3ei4")]
+position = Vector2(-76, -6)
+
+[node name="SaveSlot2" parent="SaveSlots" instance=ExtResource("3_n3ei4")]
+position = Vector2(-17, -5)
+
+[node name="SaveSlot3" parent="SaveSlots" instance=ExtResource("3_n3ei4")]
+position = Vector2(42, -5)
+
+[node name="SaveSlot4" parent="SaveSlots" instance=ExtResource("3_n3ei4")]
+position = Vector2(95, -6)
+
+[node name="SaveSlot5" parent="SaveSlots" instance=ExtResource("3_n3ei4")]
+position = Vector2(-78, 48)
+
+[node name="SaveSlot6" parent="SaveSlots" instance=ExtResource("3_n3ei4")]
+position = Vector2(-19, 48)
+
+[node name="SaveSlot7" parent="SaveSlots" instance=ExtResource("3_n3ei4")]
+position = Vector2(42, 47)
+
+[node name="SaveSlot8" parent="SaveSlots" instance=ExtResource("3_n3ei4")]
+position = Vector2(96, 47)

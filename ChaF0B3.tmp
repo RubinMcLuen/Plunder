@@ -1,0 +1,73 @@
+[gd_scene load_steps=12 format=3 uid="uid://ceja00dtwkdxb"]
+
+[ext_resource type="Script" path="res://CharacterPlayer.gd" id="1_eq5de"]
+[ext_resource type="Texture2D" uid="uid://mh3vagurc2lb" path="res://sprites/CharacterCustomization/skin0.png" id="2_kek2y"]
+[ext_resource type="Texture2D" uid="uid://c533jnylxeav4" path="res://sprites/CharacterCustomization/hat0.png" id="3_85ctq"]
+[ext_resource type="Texture2D" uid="uid://ca2gk8bbptu7c" path="res://sprites/CharacterCustomization/facialhair0.png" id="4_n2k0e"]
+[ext_resource type="Texture2D" uid="uid://k403lds5x446" path="res://sprites/CharacterCustomization/larm0.png" id="5_anwl4"]
+[ext_resource type="Texture2D" uid="uid://c5ep2i2ov7yec" path="res://sprites/CharacterCustomization/rarm0.png" id="6_fdkrx"]
+[ext_resource type="Texture2D" uid="uid://b8be2psbkk0vx" path="res://sprites/CharacterCustomization/body0.png" id="7_go0rn"]
+[ext_resource type="Texture2D" uid="uid://bhqt4p0d7ofpu" path="res://sprites/CharacterCustomization/hook0.png" id="8_nxfna"]
+[ext_resource type="Texture2D" uid="uid://dvp5ipee7xr0n" path="res://sprites/CharacterCustomization/lleg0.png" id="9_3ce1l"]
+[ext_resource type="Texture2D" uid="uid://ruvtc85k8m2s" path="res://sprites/CharacterCustomization/rleg0.png" id="10_a7g4g"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6v8jh"]
+size = Vector2(13, 8)
+
+[node name="CharacterPlayer" type="CharacterBody2D"]
+z_index = 1
+motion_mode = 1
+script = ExtResource("1_eq5de")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 7)
+shape = SubResource("RectangleShape2D_6v8jh")
+
+[node name="CharacterCamera" type="Camera2D" parent="."]
+
+[node name="Sprite" type="Node2D" parent="."]
+
+[node name="Skin" type="Sprite2D" parent="Sprite"]
+texture = ExtResource("2_kek2y")
+hframes = 8
+
+[node name="Hat" type="Sprite2D" parent="Sprite"]
+texture = ExtResource("3_85ctq")
+hframes = 8
+
+[node name="FacialHair" type="Sprite2D" parent="Sprite"]
+z_index = 2
+texture = ExtResource("4_n2k0e")
+hframes = 8
+
+[node name="Top" type="Node2D" parent="Sprite"]
+
+[node name="LeftArm" type="Sprite2D" parent="Sprite/Top"]
+z_index = 1
+texture = ExtResource("5_anwl4")
+hframes = 8
+
+[node name="RightArm" type="Sprite2D" parent="Sprite/Top"]
+z_index = 2
+texture = ExtResource("6_fdkrx")
+hframes = 8
+
+[node name="Body" type="Sprite2D" parent="Sprite/Top"]
+z_index = 1
+texture = ExtResource("7_go0rn")
+hframes = 8
+
+[node name="Hook" type="Sprite2D" parent="Sprite"]
+z_index = 3
+texture = ExtResource("8_nxfna")
+hframes = 8
+
+[node name="Bottom" type="Node2D" parent="Sprite"]
+
+[node name="LeftLeg" type="Sprite2D" parent="Sprite/Bottom"]
+texture = ExtResource("9_3ce1l")
+hframes = 8
+
+[node name="RightLeg" type="Sprite2D" parent="Sprite/Bottom"]
+texture = ExtResource("10_a7g4g")
+hframes = 8

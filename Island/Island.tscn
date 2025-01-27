@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://ci36078u3htw1"]
+
+[ext_resource type="Script" path="res://Island/Island.gd" id="1_4nw0i"]
+[ext_resource type="PackedScene" uid="uid://cfd3bm3d7gr3t" path="res://Character/character.tscn" id="2_3lo5k"]
+
+[node name="Island" type="Node2D" node_paths=PackedStringArray("character")]
+script = ExtResource("1_4nw0i")
+character = NodePath("Character")
+
+[node name="Character" parent="." instance=ExtResource("2_3lo5k")]
+position = Vector2(238, 127)

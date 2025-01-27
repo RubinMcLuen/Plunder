@@ -1,0 +1,339 @@
+[gd_scene load_steps=38 format=3 uid="uid://cwlpgtbhderfk"]
+
+[ext_resource type="Script" path="res://CharacterCreation/character_creator.gd" id="1_njf4n"]
+[ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://CharacterCreation/assets/window.png" id="1_yjhog"]
+[ext_resource type="Texture2D" uid="uid://r6dv55axd7ph" path="res://CharacterCreation/assets/items_window.png" id="2_ji4oj"]
+[ext_resource type="Texture2D" uid="uid://clsu7rj8rs64b" path="res://CharacterCreation/assets/characterbackground.png" id="3_6gwil"]
+[ext_resource type="Texture2D" uid="uid://dkwdh681gnvlq" path="res://CharacterCreation/assets/header.png" id="4_l5ows"]
+[ext_resource type="Texture2D" uid="uid://bfjbtjvq7mwk2" path="res://CharacterCreation/assets/button_finish.png" id="5_atgnt"]
+[ext_resource type="ButtonGroup" uid="uid://kmq5l3soaof0" path="res://CharacterCreation/categorybuttongroup.tres" id="6_7715e"]
+[ext_resource type="Texture2D" uid="uid://dy31kxq6mu0wm" path="res://CharacterCreation/assets/button_skin.png" id="6_caxor"]
+[ext_resource type="Texture2D" uid="uid://b3mbnko1miky5" path="res://CharacterCreation/assets/button_finish_down.png" id="6_gp2i1"]
+[ext_resource type="Texture2D" uid="uid://dl008d1eld1qw" path="res://CharacterCreation/assets/button_hair.png" id="7_rqkj0"]
+[ext_resource type="Texture2D" uid="uid://dc44oqxw3w8on" path="res://CharacterCreation/assets/button_skin_pressed.png" id="8_smaty"]
+[ext_resource type="Texture2D" uid="uid://caiiy4rt02khc" path="res://CharacterCreation/assets/button_hat.png" id="8_vy3w4"]
+[ext_resource type="Texture2D" uid="uid://c4pacdopm0rsd" path="res://CharacterCreation/assets/button_shirt.png" id="9_niyuk"]
+[ext_resource type="Texture2D" uid="uid://bjgxide412b0y" path="res://CharacterCreation/assets/button_hair_pressed.png" id="10_3caym"]
+[ext_resource type="Texture2D" uid="uid://dghe5jru43mis" path="res://CharacterCreation/assets/button_pants.png" id="10_8cw4m"]
+[ext_resource type="Texture2D" uid="uid://pwnnbcfilgbk" path="res://CharacterCreation/assets/button_misc.png" id="11_nyhkw"]
+[ext_resource type="Texture2D" uid="uid://jhil21pp8sa7" path="res://CharacterCreation/assets/button_hat_pressed.png" id="12_bhtvb"]
+[ext_resource type="Texture2D" uid="uid://f15wrm7l2bud" path="res://CharacterCreation/assets/item_background_off.png" id="12_l14i2"]
+[ext_resource type="Texture2D" uid="uid://bnnl0t67vdaa8" path="res://CharacterCreation/assets/button_slider_up.png" id="13_xhokg"]
+[ext_resource type="Texture2D" uid="uid://csa4dqog6be6c" path="res://CharacterCreation/assets/button_shirt_pressed.png" id="14_41k1a"]
+[ext_resource type="Texture2D" uid="uid://4k4v621b0u7c" path="res://CharacterCreation/assets/button_slider_down.png" id="14_sikee"]
+[ext_resource type="Texture2D" uid="uid://dlho5fqkdp5gf" path="res://CharacterCreation/assets/icon_slider_off.png" id="15_p22su"]
+[ext_resource type="Texture2D" uid="uid://di630ocyn6bkq" path="res://CharacterCreation/assets/button_pants_pressed.png" id="16_6yjjw"]
+[ext_resource type="Texture2D" uid="uid://bltnihbrri67o" path="res://CharacterCreation/assets/icon_slider_on.png" id="16_nk1gp"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://Retro Gaming.ttf" id="17_3vrev"]
+[ext_resource type="Texture2D" uid="uid://boxshyh76swsj" path="res://CharacterCreation/assets/button_misc_pressed.png" id="18_88k6g"]
+[ext_resource type="Script" path="res://CharacterCreation/Slider.gd" id="21_k1rxp"]
+[ext_resource type="ButtonGroup" uid="uid://y0po0cjqj0sm" path="res://CharacterCreation/itembuttongroup.tres" id="21_v4fwp"]
+[ext_resource type="Texture2D" uid="uid://ibwpon5exn6r" path="res://CharacterCreation/assets/item_background_on.png" id="22_3su4t"]
+[ext_resource type="Texture2D" uid="uid://c37idk3p6dwki" path="res://CharacterCreation/customizations/skin0.png" id="28_d63u8"]
+[ext_resource type="Texture2D" uid="uid://danj2fop2ls7u" path="res://CharacterCreation/customizations/hat0.png" id="29_72q65"]
+[ext_resource type="Texture2D" uid="uid://n7yb0dbf64w0" path="res://CharacterCreation/customizations/hair/facialhair0.png" id="30_fbenl"]
+[ext_resource type="Texture2D" uid="uid://c6s6tgao7ovtb" path="res://CharacterCreation/customizations/larm0.png" id="31_pvgeq"]
+[ext_resource type="Texture2D" uid="uid://b03pagc7ymxyo" path="res://CharacterCreation/customizations/top/body/body0.png" id="32_jrl4w"]
+[ext_resource type="Texture2D" uid="uid://ckw81ws03641v" path="res://CharacterCreation/customizations/rarm0.png" id="33_rswa2"]
+[ext_resource type="Texture2D" uid="uid://df5ygxyj5vonn" path="res://CharacterCreation/customizations/lleg0.png" id="34_nk7hh"]
+[ext_resource type="Texture2D" uid="uid://csx30fcn3lnh4" path="res://CharacterCreation/customizations/rleg0.png" id="35_cpaot"]
+
+[node name="CharacterCreator" type="Node2D"]
+script = ExtResource("1_njf4n")
+
+[node name="Window" type="Sprite2D" parent="."]
+position = Vector2(260, 133)
+texture = ExtResource("1_yjhog")
+
+[node name="ItemsWindow" type="Sprite2D" parent="Window"]
+position = Vector2(61, -11)
+texture = ExtResource("2_ji4oj")
+
+[node name="CharacterBackground" type="Sprite2D" parent="Window"]
+position = Vector2(-91.5, -11)
+texture = ExtResource("3_6gwil")
+
+[node name="Header" type="Sprite2D" parent="Window"]
+position = Vector2(0, -97.5)
+texture = ExtResource("4_l5ows")
+
+[node name="FinishButton" type="TextureButton" parent="Window"]
+offset_left = 95.0
+offset_top = 63.0
+offset_right = 142.0
+offset_bottom = 81.0
+action_mode = 0
+texture_normal = ExtResource("5_atgnt")
+texture_pressed = ExtResource("6_gp2i1")
+texture_hover = ExtResource("6_gp2i1")
+
+[node name="CategoryButtons" type="Node2D" parent="Window"]
+
+[node name="SkinButton" type="TextureButton" parent="Window/CategoryButtons"]
+offset_left = -16.0
+offset_top = -76.0
+offset_right = 8.0
+offset_bottom = -52.0
+toggle_mode = true
+button_pressed = true
+action_mode = 0
+button_group = ExtResource("6_7715e")
+texture_normal = ExtResource("6_caxor")
+texture_pressed = ExtResource("8_smaty")
+
+[node name="HairButton" type="TextureButton" parent="Window/CategoryButtons"]
+offset_left = 10.0
+offset_top = -76.0
+offset_right = 34.0
+offset_bottom = -52.0
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("6_7715e")
+texture_normal = ExtResource("7_rqkj0")
+texture_pressed = ExtResource("10_3caym")
+
+[node name="HatButton" type="TextureButton" parent="Window/CategoryButtons"]
+offset_left = 36.0
+offset_top = -76.0
+offset_right = 60.0
+offset_bottom = -52.0
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("6_7715e")
+texture_normal = ExtResource("8_vy3w4")
+texture_pressed = ExtResource("12_bhtvb")
+
+[node name="TopButton" type="TextureButton" parent="Window/CategoryButtons"]
+offset_left = 62.0
+offset_top = -76.0
+offset_right = 86.0
+offset_bottom = -52.0
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("6_7715e")
+texture_normal = ExtResource("9_niyuk")
+texture_pressed = ExtResource("14_41k1a")
+
+[node name="BottomButton" type="TextureButton" parent="Window/CategoryButtons"]
+offset_left = 88.0
+offset_top = -76.0
+offset_right = 112.0
+offset_bottom = -52.0
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("6_7715e")
+texture_normal = ExtResource("10_8cw4m")
+texture_pressed = ExtResource("16_6yjjw")
+
+[node name="MiscButton" type="TextureButton" parent="Window/CategoryButtons"]
+offset_left = 114.0
+offset_top = -76.0
+offset_right = 138.0
+offset_bottom = -52.0
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("6_7715e")
+texture_normal = ExtResource("11_nyhkw")
+texture_pressed = ExtResource("18_88k6g")
+
+[node name="ItemButtons" type="Node2D" parent="Window"]
+
+[node name="Button1" type="TextureButton" parent="Window/ItemButtons"]
+offset_left = -15.0
+offset_top = -47.0
+offset_right = 33.0
+offset_bottom = 1.0
+toggle_mode = true
+button_pressed = true
+action_mode = 0
+button_group = ExtResource("21_v4fwp")
+texture_normal = ExtResource("12_l14i2")
+texture_pressed = ExtResource("22_3su4t")
+
+[node name="Sprite2D" type="Sprite2D" parent="Window/ItemButtons/Button1"]
+position = Vector2(24, 24)
+scale = Vector2(1.5, 1.5)
+hframes = 8
+
+[node name="Button2" type="TextureButton" parent="Window/ItemButtons"]
+offset_left = 37.0
+offset_top = -47.0
+offset_right = 85.0
+offset_bottom = 1.0
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("21_v4fwp")
+texture_normal = ExtResource("12_l14i2")
+texture_pressed = ExtResource("22_3su4t")
+
+[node name="Sprite2D" type="Sprite2D" parent="Window/ItemButtons/Button2"]
+position = Vector2(24, 24)
+scale = Vector2(1.5, 1.5)
+hframes = 8
+
+[node name="Button3" type="TextureButton" parent="Window/ItemButtons"]
+offset_left = 89.0
+offset_top = -47.0
+offset_right = 137.0
+offset_bottom = 1.0
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("21_v4fwp")
+texture_normal = ExtResource("12_l14i2")
+texture_pressed = ExtResource("22_3su4t")
+
+[node name="Sprite2D" type="Sprite2D" parent="Window/ItemButtons/Button3"]
+position = Vector2(24, 24)
+scale = Vector2(1.5, 1.5)
+hframes = 8
+
+[node name="Button4" type="TextureButton" parent="Window/ItemButtons"]
+offset_left = -15.0
+offset_top = 5.0
+offset_right = 33.0
+offset_bottom = 53.0
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("21_v4fwp")
+texture_normal = ExtResource("12_l14i2")
+texture_pressed = ExtResource("22_3su4t")
+
+[node name="Sprite2D" type="Sprite2D" parent="Window/ItemButtons/Button4"]
+position = Vector2(24, 24)
+scale = Vector2(1.5, 1.5)
+hframes = 8
+
+[node name="Button5" type="TextureButton" parent="Window/ItemButtons"]
+offset_left = 37.0
+offset_top = 5.0
+offset_right = 85.0
+offset_bottom = 53.0
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("21_v4fwp")
+texture_normal = ExtResource("12_l14i2")
+texture_pressed = ExtResource("22_3su4t")
+
+[node name="Sprite2D" type="Sprite2D" parent="Window/ItemButtons/Button5"]
+position = Vector2(24, 24)
+scale = Vector2(1.5, 1.5)
+hframes = 8
+
+[node name="Button6" type="TextureButton" parent="Window/ItemButtons"]
+offset_left = 89.0
+offset_top = 5.0
+offset_right = 137.0
+offset_bottom = 53.0
+toggle_mode = true
+action_mode = 0
+button_group = ExtResource("21_v4fwp")
+texture_normal = ExtResource("12_l14i2")
+texture_pressed = ExtResource("22_3su4t")
+
+[node name="Sprite2D" type="Sprite2D" parent="Window/ItemButtons/Button6"]
+position = Vector2(24, 24)
+scale = Vector2(1.5, 1.5)
+hframes = 8
+
+[node name="Slider" type="Node2D" parent="Window" node_paths=PackedStringArray("page1", "page2", "page3", "page4", "page5")]
+script = ExtResource("21_k1rxp")
+page1 = NodePath("Page1")
+page2 = NodePath("Page2")
+page3 = NodePath("Page3")
+page4 = NodePath("Page4")
+page5 = NodePath("Page5")
+
+[node name="UpButton" type="TextureButton" parent="Window/Slider"]
+offset_left = 146.0
+offset_top = -41.0
+offset_right = 157.0
+offset_bottom = -30.0
+action_mode = 0
+texture_normal = ExtResource("13_xhokg")
+
+[node name="DownButton" type="TextureButton" parent="Window/Slider"]
+offset_left = 146.0
+offset_top = 37.0
+offset_right = 157.0
+offset_bottom = 48.0
+action_mode = 0
+texture_normal = ExtResource("14_sikee")
+
+[node name="Page1" type="Sprite2D" parent="Window/Slider"]
+position = Vector2(151.5, -22.5)
+texture = ExtResource("15_p22su")
+
+[node name="Page2" type="Sprite2D" parent="Window/Slider"]
+position = Vector2(151.5, -9.5)
+texture = ExtResource("15_p22su")
+
+[node name="Page3" type="Sprite2D" parent="Window/Slider"]
+position = Vector2(151.5, 3.5)
+texture = ExtResource("16_nk1gp")
+
+[node name="Page4" type="Sprite2D" parent="Window/Slider"]
+position = Vector2(151.5, 16.5)
+texture = ExtResource("15_p22su")
+
+[node name="Page5" type="Sprite2D" parent="Window/Slider"]
+position = Vector2(151.5, 29.5)
+texture = ExtResource("15_p22su")
+
+[node name="Label" type="Label" parent="."]
+offset_left = 103.0
+offset_top = 196.0
+offset_right = 156.0
+offset_bottom = 219.0
+theme_override_colors/font_color = Color(0.45098, 0.4, 0.301961, 1)
+theme_override_fonts/font = ExtResource("17_3vrev")
+theme_override_font_sizes/font_size = 11
+text = "Captain"
+
+[node name="Character" type="Node2D" parent="."]
+position = Vector2(169, 133)
+scale = Vector2(4, 4)
+
+[node name="Skin" type="Sprite2D" parent="Character"]
+texture = ExtResource("28_d63u8")
+hframes = 8
+
+[node name="Hat" type="Sprite2D" parent="Character"]
+texture = ExtResource("29_72q65")
+hframes = 8
+
+[node name="FacialHair" type="Sprite2D" parent="Character"]
+texture = ExtResource("30_fbenl")
+hframes = 8
+
+[node name="Top" type="Node2D" parent="Character"]
+
+[node name="LeftArm" type="Sprite2D" parent="Character/Top"]
+texture = ExtResource("31_pvgeq")
+hframes = 8
+
+[node name="Body" type="Sprite2D" parent="Character/Top"]
+texture = ExtResource("32_jrl4w")
+hframes = 8
+
+[node name="RightArm" type="Sprite2D" parent="Character/Top"]
+texture = ExtResource("33_rswa2")
+hframes = 8
+
+[node name="Bottom" type="Node2D" parent="Character"]
+
+[node name="LeftLeg" type="Sprite2D" parent="Character/Bottom"]
+texture = ExtResource("34_nk7hh")
+hframes = 8
+
+[node name="RightLeg" type="Sprite2D" parent="Character/Bottom"]
+texture = ExtResource("35_cpaot")
+hframes = 8
+
+[connection signal="pressed" from="Window/CategoryButtons/SkinButton" to="." method="_on_category_button_pressed" binds= ["skin"]]
+[connection signal="pressed" from="Window/CategoryButtons/HairButton" to="." method="_on_category_button_pressed" binds= ["hair"]]
+[connection signal="pressed" from="Window/CategoryButtons/HatButton" to="." method="_on_category_button_pressed" binds= ["hat"]]
+[connection signal="pressed" from="Window/CategoryButtons/TopButton" to="." method="_on_category_button_pressed" binds= ["top"]]
+[connection signal="pressed" from="Window/CategoryButtons/BottomButton" to="." method="_on_category_button_pressed" binds= ["bottom"]]
+[connection signal="pressed" from="Window/CategoryButtons/MiscButton" to="." method="_on_category_button_pressed" binds= ["misc"]]
+[connection signal="pressed" from="Window/Slider/UpButton" to="Window/Slider" method="_on_up_button_pressed"]
+[connection signal="pressed" from="Window/Slider/DownButton" to="Window/Slider" method="_on_down_button_pressed"]

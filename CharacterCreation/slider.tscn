@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://c57wj6nmw2lgl"]
+
+[ext_resource type="Script" path="res://CharacterCreation/Slider.gd" id="1_2y8ot"]
+[ext_resource type="Texture2D" uid="uid://bnnl0t67vdaa8" path="res://CharacterCreation/assets/button_slider_up.png" id="2_crxch"]
+[ext_resource type="Texture2D" uid="uid://4k4v621b0u7c" path="res://CharacterCreation/assets/button_slider_down.png" id="3_0u345"]
+[ext_resource type="Texture2D" uid="uid://dlho5fqkdp5gf" path="res://CharacterCreation/assets/icon_slider_off.png" id="4_x6g2d"]
+[ext_resource type="Texture2D" uid="uid://bltnihbrri67o" path="res://CharacterCreation/assets/icon_slider_on.png" id="5_5vvtv"]
+
+[node name="Slider" type="Node2D" node_paths=PackedStringArray("page1", "page2", "page3", "page4", "page5")]
+script = ExtResource("1_2y8ot")
+page1 = NodePath("Page1")
+page2 = NodePath("Page2")
+page3 = NodePath("Page3")
+page4 = NodePath("Page4")
+page5 = NodePath("Page5")
+
+[node name="UpButton" type="TextureButton" parent="."]
+offset_right = 11.0
+offset_bottom = 11.0
+action_mode = 0
+texture_normal = ExtResource("2_crxch")
+
+[node name="DownButton" type="TextureButton" parent="."]
+offset_top = 78.0
+offset_right = 11.0
+offset_bottom = 89.0
+action_mode = 0
+texture_normal = ExtResource("3_0u345")
+
+[node name="Page1" type="Sprite2D" parent="."]
+position = Vector2(5.5, 18.5)
+texture = ExtResource("4_x6g2d")
+
+[node name="Page2" type="Sprite2D" parent="."]
+position = Vector2(5.5, 31.5)
+texture = ExtResource("4_x6g2d")
+
+[node name="Page3" type="Sprite2D" parent="."]
+position = Vector2(5.5, 44.5)
+texture = ExtResource("5_5vvtv")
+
+[node name="Page4" type="Sprite2D" parent="."]
+position = Vector2(5.5, 57.5)
+texture = ExtResource("4_x6g2d")
+
+[node name="Page5" type="Sprite2D" parent="."]
+position = Vector2(5.5, 70.5)
+texture = ExtResource("4_x6g2d")
+
+[connection signal="pressed" from="UpButton" to="." method="_on_up_button_pressed"]
+[connection signal="pressed" from="DownButton" to="." method="_on_down_button_pressed"]
