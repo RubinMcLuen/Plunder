@@ -6,6 +6,7 @@ extends Node2D
 @export var start_button_path: NodePath        # Path to the StartButton node
 @export var save_menu_node_path: NodePath      # Path to the SaveMenu node
 @export var character_creator_scene: Node2D    # Assign via Inspector
+@export var audio: AudioStreamPlayer
 
 func _ready():
 	# Ensure the camera is assigned
@@ -37,6 +38,7 @@ func _on_start_button_pressed():
 		
 		# Create a new tween
 		var tween = create_tween()
+		audio.play()
 		
 		# Configure the tween to move the camera's position smoothly over 1.5 seconds
 		tween.tween_property(camera, "position", target_position, 1.5)

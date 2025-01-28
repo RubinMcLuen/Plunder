@@ -1,2 +1,15 @@
-# Godot 4+ specific ignores
-.godot/
+# Ignore Godot's import cache directory
+.import/
+
+# Ignore export configuration files (specific to your build settings)
+export.cfg
+export_presets.cfg
+
+# Ignore backup and temporary files created by Godot Editor
+*.tmp
+*.bak
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini

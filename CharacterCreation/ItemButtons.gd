@@ -49,7 +49,6 @@ func populate_buttons(category: String, options_dict: Dictionary, page: int = 0,
 				button.disabled = true
 				character_node.visible = false
 
-
 func apply_item_to_character(character: Node2D, item, category: String, is_hook_enabled: bool = false):
 	if typeof(item) == TYPE_DICTIONARY:
 		for part in item.keys():
@@ -68,7 +67,7 @@ func apply_item_to_character(character: Node2D, item, category: String, is_hook_
 		var target_node = character.get_node(category.capitalize())
 		if target_node and target_node is Sprite2D:
 			# For single-part items, apply the texture normally
-			target_node.texture = load("res://CharacterCreation/customizations/" + category + "/" + item)
+			target_node.texture = load(item)
 
 func _on_item_button_pressed(button_index: int):
 	if current_category not in options or typeof(options[current_category]) != TYPE_ARRAY:
@@ -104,4 +103,3 @@ func get_hook_index_for_top(right_arm_texture: Texture) -> int:
 			return i
 
 	return -1
-

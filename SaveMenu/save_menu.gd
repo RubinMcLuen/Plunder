@@ -19,9 +19,10 @@ var active_slot_index: int = -1
 # We keep a timer for each save slot to handle the "BW → CAnim → C" transition
 var animation_timers: Array = []
 
-# Scene assigned for character creation (Not directly manipulated now)
-@export var character_creator_scene: Node2D
 @export var header_node: Node2D
+@export var bw_noise: AudioStreamPlayer
+@export var c_noise: AudioStreamPlayer
+@export var add_noise: AudioStreamPlayer
 
 #
 # ──────────────────────────────────────────────────────────────────────────────
@@ -95,7 +96,7 @@ func _setup_save_slots():
 		assigned_sets.append(used_set)
 
 	# Assign animations or mark as "Add"/"Empty" for each slot
-	for i in range(save_slots.size()):
+	for i in range(save_slots.size() - 1):
 		var slot_node = save_slots[i]
 		var anim_sprite = slot_node.get_node("AnimatedSprite2D")
 
@@ -153,11 +154,15 @@ func _handle_slot_click(slot_index):
 
 	match anim_sprite.animation:
 		"Add":
+			add_noise.play()
 			_handle_add_slot(slot_node, slot_index)
 		_:
 			if anim_sprite.animation.begins_with("BW"):
+				bw_noise.play()
 				_handle_bw_slot(slot_node, slot_index)
 			elif anim_sprite.animation.begins_with("C"):
+				print("here")
+				c_noise.play()
 				_handle_c_slot(slot_node, slot_index)
 			else:
 				print("Unhandled animation state:", anim_sprite.animation)

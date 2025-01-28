@@ -1,7 +1,7 @@
 [gd_scene load_steps=17 format=3 uid="uid://cwlpgtbhderfk"]
 
 [ext_resource type="Script" path="res://CharacterCreation/character_creator.gd" id="1_njf4n"]
-[ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://CharacterCreation/assets/window.png" id="1_yjhog"]
+[ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://SaveMenu/assets/saveslotmenubackground.png" id="1_yjhog"]
 [ext_resource type="Texture2D" uid="uid://r6dv55axd7ph" path="res://CharacterCreation/assets/items_window.png" id="2_ji4oj"]
 [ext_resource type="Texture2D" uid="uid://clsu7rj8rs64b" path="res://CharacterCreation/assets/characterbackground.png" id="3_6gwil"]
 [ext_resource type="Texture2D" uid="uid://dkwdh681gnvlq" path="res://CharacterCreation/assets/header.png" id="4_l5ows"]

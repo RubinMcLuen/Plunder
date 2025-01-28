@@ -1,0 +1,86 @@
+{
+  "skin": [
+	"res://CharacterCreation/customizations/skin/skin0.png",
+	"res://CharacterCreation/customizations/skin/skin1.png",
+	"res://CharacterCreation/customizations/skin/skin2.png"
+  ],
+  "hair": [
+	"res://CharacterCreation/customizations/hair/facialhair0.png",
+	"res://CharacterCreation/customizations/hair/facialhair1.png",
+	"res://CharacterCreation/customizations/hair/facialhair2.png"
+  ],
+  "hat": [
+	"res://CharacterCreation/customizations/hat/hat0.png",
+	"res://CharacterCreation/customizations/hat/hat1.png",
+	"res://CharacterCreation/customizations/hat/hat2.png",
+	"res://CharacterCreation/customizations/hat/hat3.png",
+	"res://CharacterCreation/customizations/hat/hat4.png"
+  ],
+  "top": [
+	{
+	  "LeftArm": "res://CharacterCreation/customizations/top/LeftArm/larm0.png",
+	  "Body": "res://CharacterCreation/customizations/top/Body/body0.png",
+	  "RightArm": "res://CharacterCreation/customizations/top/RightArm/rarm0.png"
+	},
+	{
+	  "LeftArm": "res://CharacterCreation/customizations/top/LeftArm/larm1.png",
+	  "Body": "res://CharacterCreation/customizations/top/Body/body1.png",
+	  "RightArm": "res://CharacterCreation/customizations/top/RightArm/rarm1.png"
+	},
+	{
+	  "LeftArm": "res://CharacterCreation/customizations/top/LeftArm/larm2.png",
+	  "Body": "res://CharacterCreation/customizations/top/Body/body2.png",
+	  "RightArm": "res://CharacterCreation/customizations/top/RightArm/rarm2.png"
+	},
+	{
+	  "LeftArm": "res://CharacterCreation/customizations/top/LeftArm/larm3.png",
+	  "Body": "res://CharacterCreation/customizations/top/Body/body3.png",
+	  "RightArm": "res://CharacterCreation/customizations/top/RightArm/rarm3.png"
+	},
+	{
+	  "LeftArm": "res://CharacterCreation/customizations/top/LeftArm/larm4.png",
+	  "Body": "res://CharacterCreation/customizations/top/Body/body4.png",
+	  "RightArm": "res://CharacterCreation/customizations/top/RightArm/rarm4.png"
+	},
+	{
+	  "LeftArm": "res://CharacterCreation/customizations/top/LeftArm/larm5.png",
+	  "Body": "res://CharacterCreation/customizations/top/Body/body5.png",
+	  "RightArm": "res://CharacterCreation/customizations/top/RightArm/rarm5.png"
+	}
+  ],
+  "bottom": [
+	{
+	  "LeftLeg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg0.png",
+	  "RightLeg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg0.png"
+	},
+	{
+	  "LeftLeg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg1.png",
+	  "RightLeg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg1.png"
+	},
+	{
+	  "LeftLeg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg2.png",
+	  "RightLeg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg2.png"
+	},
+	{
+	  "LeftLeg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg3.png",
+	  "RightLeg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg3.png"
+	},
+	{
+	  "LeftLeg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg4.png",
+	  "RightLeg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg4.png"
+	},
+	{
+	  "LeftLeg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg5.png",
+	  "RightLeg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg5.png"
+	}
+  ],
+  "misc": [
+	"res://CharacterCreation/customizations/misc/hook0.png",
+	"res://CharacterCreation/customizations/misc/hook1.png",
+	"res://CharacterCreation/customizations/misc/hook2.png",
+	"res://CharacterCreation/customizations/misc/hook3.png",
+	"res://CharacterCreation/customizations/misc/hook4.png",
+	"res://CharacterCreation/customizations/misc/hook5.png",
+	"res://CharacterCreation/customizations/misc/hook6.png"
+  ]
+}

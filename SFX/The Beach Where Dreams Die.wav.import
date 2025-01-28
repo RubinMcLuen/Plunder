@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://tbcoiu1gynyo"
+path="res://.godot/imported/The Beach Where Dreams Die.wav-35f05fceb3591de07ffd9b78d43fec2e.sample"
+
+[deps]
+
+source_file="res://SFX/The Beach Where Dreams Die.wav"
+dest_files=["res://.godot/imported/The Beach Where Dreams Die.wav-35f05fceb3591de07ffd9b78d43fec2e.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=2
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,0 +1,345 @@
+[gd_resource type="Resource" script_class="DialogueResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_iwxfc"]
+
+[resource]
+script = ExtResource("1_iwxfc")
+using_states = PackedStringArray()
+titles = {
+"finished_bounty": "2",
+"introduction": "21",
+"normal": "13",
+"repeat_introduction": "28"
+}
+character_names = PackedStringArray("Bartender")
+first_title = "2"
+lines = {
+"1": {
+"id": "1",
+"next_id": "2",
+"text": "finished_bounty",
+"type": &"title"
+},
+"10": {
+"id": "10",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"12": {
+"id": "12",
+"next_id": "13",
+"text": "normal",
+"type": &"title"
+},
+"13": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "13",
+"next_id": "18",
+"notes": "",
+"siblings": [{
+"id": "13",
+"weight": 1.0
+}, {
+"id": "14",
+"weight": 1.0
+}, {
+"id": "15",
+"weight": 1.0
+}, {
+"id": "16",
+"weight": 1.0
+}, {
+"id": "17",
+"weight": 1.0
+}],
+"tags": PackedStringArray(),
+"text": "It's a pleasure to have you captain.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "It's a pleasure to have you captain.",
+"type": &"dialogue"
+},
+"14": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "14",
+"next_id": "18",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Aye, the sea's been kind to ye today?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Aye, the sea's been kind to ye today?",
+"type": &"dialogue"
+},
+"15": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "15",
+"next_id": "18",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "What's a pirate's favorite letter?
+You'd think it's R, but it's the C they love most.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "What's a pirate's favorite letter?
+You'd think it's R, but it's the C they love most.",
+"type": &"dialogue"
+},
+"16": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "16",
+"next_id": "18",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Why don't pirates take a bath before they walk the plank?
+Because they'll just wash up on shore later.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Why don't pirates take a bath before they walk the plank?
+Because they'll just wash up on shore later.",
+"type": &"dialogue"
+},
+"17": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "17",
+"next_id": "18",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "What did the ocean say to the pirate?
+Nothing, it just waved.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "What did the ocean say to the pirate?
+Nothing, it just waved.",
+"type": &"dialogue"
+},
+"18": {
+"id": "18",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"2": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "2",
+"next_id": "3",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Welcome back captain!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Welcome back captain!",
+"type": &"dialogue"
+},
+"20": {
+"id": "20",
+"next_id": "21",
+"text": "introduction",
+"type": &"title"
+},
+"21": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "21",
+"next_id": "22",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Finally got your sea legs back aye?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Finally got your sea legs back aye?",
+"type": &"dialogue"
+},
+"22": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "22",
+"next_id": "23",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "That scurvy is no funny business, you ought to spend less time on the poopdeck.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "That scurvy is no funny business, you ought to spend less time on the poopdeck.",
+"type": &"dialogue"
+},
+"23": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "23",
+"next_id": "24",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "If you're looking for work, check the bounty board outside.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "If you're looking for work, check the bounty board outside.",
+"type": &"dialogue"
+},
+"24": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "24",
+"next_id": "25",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.",
+"type": &"dialogue"
+},
+"25": {
+"id": "25",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"27": {
+"id": "27",
+"next_id": "28",
+"text": "repeat_introduction",
+"type": &"title"
+},
+"28": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "28",
+"next_id": "29",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "If you're looking for work, check the bounty board outside.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "If you're looking for work, check the bounty board outside.",
+"type": &"dialogue"
+},
+"29": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "29",
+"next_id": "30",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.",
+"type": &"dialogue"
+},
+"3": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "3",
+"next_id": "4",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "I heard you turned in that bounty, must have been a [[fierce|legendary]] battle aye?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "I heard you turned in that bounty, must have been a [[fierce|legendary]] battle aye?",
+"type": &"dialogue"
+},
+"30": {
+"id": "30",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"4": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "4",
+"next_id": "6",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Care for a drink?
+This one is on the house.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Care for a drink?
+This one is on the house.",
+"type": &"dialogue"
+},
+"6": {
+"character": "",
+"character_replacements": Array[Dictionary]([]),
+"id": "6",
+"next_id": "7",
+"next_id_after": "10",
+"notes": "",
+"responses": PackedStringArray("6", "8"),
+"tags": PackedStringArray(),
+"text": "Yes",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Yes",
+"type": &"response"
+},
+"7": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "7",
+"next_id": "10",
+"notes": "",
+"parent_id": "6",
+"tags": PackedStringArray(),
+"text": "Here you go lad.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Here you go lad.",
+"type": &"dialogue"
+},
+"8": {
+"character": "",
+"character_replacements": Array[Dictionary]([]),
+"id": "8",
+"next_id": "9",
+"next_id_after": "10",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "No",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "No",
+"type": &"response"
+},
+"9": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "9",
+"next_id": "10",
+"notes": "",
+"parent_id": "8",
+"tags": PackedStringArray(),
+"text": "Suit yourself.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Suit yourself.",
+"type": &"dialogue"
+}
+}
+raw_text = "~ finished_bounty
+Bartender: Welcome back captain!
+Bartender: I heard you turned in that bounty, must have been a [[fierce|legendary]] battle aye?
+Bartender: Care for a drink?
+	This one is on the house.
+- Yes
+	Bartender: Here you go lad.
+- No
+	Bartender: Suit yourself.
+=> END
+
+~ normal
+% Bartender: It's a pleasure to have you captain.
+% Bartender: Aye, the sea's been kind to ye today?
+% Bartender: What's a pirate's favorite letter?\\nYou'd think it's R, but it's the C they love most.
+% Bartender: Why don't pirates take a bath before they walk the plank?\\nBecause they'll just wash up on shore later.
+% Bartender: What did the ocean say to the pirate?\\nNothing, it just waved.
+=> END
+
+~ introduction
+Bartender: Finally got your sea legs back aye?
+Bartender: That scurvy is no funny business, you ought to spend less time on the poopdeck.
+Bartender: If you're looking for work, check the bounty board outside.
+Bartender: I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.
+=> END
+
+~ repeat_introduction
+Bartender: If you're looking for work, check the bounty board outside.
+Bartender: I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.
+=> END
+
+
+
+"
+metadata/dialogue_manager_version = "2.40.0"

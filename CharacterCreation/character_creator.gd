@@ -41,7 +41,6 @@ var character_data: Dictionary = {
 	"misc": ""
 }
 
-
 #
 # ──────────────────────────────────────────────────────────────────────────────
 #  GODOT LIFECYCLE METHODS
@@ -55,7 +54,6 @@ func _ready():
 
 	if finish_button:
 		finish_button.connect("pressed", self._on_finish_button_pressed)
-
 
 #
 # ──────────────────────────────────────────────────────────────────────────────
@@ -73,12 +71,43 @@ func _initialize_character_nodes():
 	left_leg_node = character.get_node("Appearance/Bottom/LeftLeg")
 	right_leg_node = character.get_node("Appearance/Bottom/RightLeg")
 
-
+#
+# ──────────────────────────────────────────────────────────────────────────────
+#  LOAD ASSET INDEX JSON
+# ──────────────────────────────────────────────────────────────────────────────
+#
 func _load_all_options():
-	for category in categories:
-		options[category] = _load_options_for_category(category)
+	# Attempt to open the JSON file in read mode
+	var file = FileAccess.open("res://CharacterCreation/asset_index.json", FileAccess.READ)
+	if file:
+		# Read the entire content of the file as text
+		var text = file.get_as_text()
+
+		# Parse the JSON text using parse_string(), which returns a Variant
+		var data = JSON.parse_string(text)
+
+		# Check if we got a Dictionary back
+		if typeof(data) == TYPE_DICTIONARY:
+			# data should be the parsed JSON if all went well
+			for category in categories:
+				if data.has(category):
+					options[category] = data[category]
+				else:
+					options[category] = []
+		else:
+			# If parse_string() fails or JSON is invalid, it won't be a Dictionary
+			print("JSON parse error or data not a Dictionary. Got type: ", typeof(data))
+	else:
+		# If the file couldn't be opened, print an error
+		print("Failed to open asset_index.json")
 
 
+
+#
+# ──────────────────────────────────────────────────────────────────────────────
+#  CONNECT UI SIGNALS
+# ──────────────────────────────────────────────────────────────────────────────
+#
 func _connect_ui_signals():
 	var category_buttons = get_node("Window/CategoryButtons")
 	category_buttons.connect("category_selected", Callable(self, "_on_category_selected"))
@@ -89,116 +118,6 @@ func _connect_ui_signals():
 	var slider_node = get_node("Window/Slider")
 	slider_node.connect("page_changed", Callable(self, "_on_page_changed"))
 
-
-#
-# ──────────────────────────────────────────────────────────────────────────────
-#  LOAD DIRECTORY OPTIONS
-# ──────────────────────────────────────────────────────────────────────────────
-#
-func _load_options_for_category(category: String) -> Array:
-	var items = []
-
-	if category == "top":
-		items = _load_top_options()
-	elif category == "bottom":
-		items = _load_bottom_options()
-	elif category == "misc":
-		items = _load_misc_options()
-	else:
-		items = _load_simple_options(category)
-
-	return items
-
-
-func _load_top_options() -> Array:
-	var items = []
-	var left_arm_dir  = DirAccess.open("res://CharacterCreation/customizations/top/LeftArm")
-	var body_dir      = DirAccess.open("res://CharacterCreation/customizations/top/Body")
-	var right_arm_dir = DirAccess.open("res://CharacterCreation/customizations/top/RightArm")
-
-	if left_arm_dir and body_dir and right_arm_dir:
-		left_arm_dir.list_dir_begin()
-		body_dir.list_dir_begin()
-		right_arm_dir.list_dir_begin()
-
-		while true:
-			var left_file  = left_arm_dir.get_next()
-			var body_file  = body_dir.get_next()
-			var right_file = right_arm_dir.get_next()
-			if left_file == "" or body_file == "" or right_file == "":
-				break
-			if left_file.ends_with(".png") and body_file.ends_with(".png") and right_file.ends_with(".png"):
-				items.append({
-					"LeftArm":  "res://CharacterCreation/customizations/top/LeftArm/"  + left_file.strip_edges(),
-					"Body":     "res://CharacterCreation/customizations/top/Body/"     + body_file.strip_edges(),
-					"RightArm": "res://CharacterCreation/customizations/top/RightArm/" + right_file.strip_edges(),
-				})
-
-		left_arm_dir.list_dir_end()
-		body_dir.list_dir_end()
-		right_arm_dir.list_dir_end()
-
-	return items
-
-
-func _load_bottom_options() -> Array:
-	var items = []
-	var left_leg_dir  = DirAccess.open("res://CharacterCreation/customizations/bottom/LeftLeg")
-	var right_leg_dir = DirAccess.open("res://CharacterCreation/customizations/bottom/RightLeg")
-
-	if left_leg_dir and right_leg_dir:
-		left_leg_dir.list_dir_begin()
-		right_leg_dir.list_dir_begin()
-
-		while true:
-			var left_file  = left_leg_dir.get_next()
-			var right_file = right_leg_dir.get_next()
-			if left_file == "" or right_file == "":
-				break
-			if left_file.ends_with(".png") and right_file.ends_with(".png"):
-				items.append({
-					"LeftLeg":  "res://CharacterCreation/customizations/bottom/LeftLeg/"  + left_file.strip_edges(),
-					"RightLeg": "res://CharacterCreation/customizations/bottom/RightLeg/" + right_file.strip_edges(),
-				})
-
-		left_leg_dir.list_dir_end()
-		right_leg_dir.list_dir_end()
-
-	return items
-
-
-func _load_misc_options() -> Array:
-	var items = []
-	var dir = DirAccess.open("res://CharacterCreation/customizations/misc")
-	if dir:
-		dir.list_dir_begin()
-		while true:
-			var file_name = dir.get_next()
-			if file_name == "":
-				break
-			if !dir.current_is_dir() and file_name.ends_with(".png"):
-				items.append("res://CharacterCreation/customizations/misc/" + file_name.strip_edges())
-		dir.list_dir_end()
-
-	return items
-
-
-func _load_simple_options(category: String) -> Array:
-	var items = []
-	var dir = DirAccess.open("res://CharacterCreation/customizations/" + category)
-	if dir:
-		dir.list_dir_begin()
-		while true:
-			var file_name = dir.get_next()
-			if file_name == "":
-				break
-			if !dir.current_is_dir() and file_name.ends_with(".png"):
-				items.append(file_name.strip_edges())
-		dir.list_dir_end()
-
-	return items
-
-
 #
 # ──────────────────────────────────────────────────────────────────────────────
 #  UI & BUTTON POPULATION
@@ -208,7 +127,6 @@ func populate_item_buttons(category: String, page: int):
 	var item_buttons = get_node("Window/ItemButtons")
 	var main_character_right_arm_texture = right_arm_node.texture if category == "misc" else null
 	item_buttons.populate_buttons(category, options, page, main_character_right_arm_texture, is_hook_enabled)
-
 
 func reset_item_buttons_to_main_character():
 	var item_buttons = get_node("Window/ItemButtons")
@@ -225,7 +143,6 @@ func reset_item_buttons_to_main_character():
 		button_character.get_node("LeftLeg").texture  = left_leg_node.texture
 		button_character.get_node("RightLeg").texture = right_leg_node.texture
 
-
 #
 # ──────────────────────────────────────────────────────────────────────────────
 #  SIGNAL HANDLERS
@@ -237,17 +154,10 @@ func _on_category_selected(category: String):
 	reset_item_buttons_to_main_character()
 	populate_item_buttons(current_category, current_page)
 
-
 func _on_page_changed(new_page: int):
 	current_page = new_page
 	populate_item_buttons(current_category, current_page)
 
-
-#
-# ──────────────────────────────────────────────────────────────────────────────
-#  ITEM SELECTED LOGIC (SKIN/HAIR/HAT/TOP/BOTTOM/MISC)
-# ──────────────────────────────────────────────────────────────────────────────
-#
 func _on_item_selected(category: String, item):
 	match category:
 		"skin":
@@ -263,7 +173,6 @@ func _on_item_selected(category: String, item):
 		"misc":
 			_toggle_hook()
 
-
 #
 # ──────────────────────────────────────────────────────────────────────────────
 #  APPLYING INDIVIDUAL CATEGORIES
@@ -271,18 +180,15 @@ func _on_item_selected(category: String, item):
 #
 func _apply_skin(item):
 	if skin_node and item is String:
-		skin_node.texture = load("res://CharacterCreation/customizations/skin/" + item)
-
+		skin_node.texture = load(item)
 
 func _apply_hat(item):
 	if hat_node and item is String:
-		hat_node.texture = load("res://CharacterCreation/customizations/hat/" + item)
-
+		hat_node.texture = load(item)
 
 func _apply_hair(item):
 	if hair_node and item is String:
-		hair_node.texture = load("res://CharacterCreation/customizations/hair/" + item)
-
+		hair_node.texture = load(item)
 
 func _apply_top(item):
 	# Expecting a dictionary like:
@@ -309,7 +215,6 @@ func _apply_top(item):
 						node.texture = load(hook_path)
 						active_hook_sprite = hook_path
 
-
 func _apply_bottom(item):
 	# Expecting a dictionary like:
 	# { "LeftLeg": "res://.../lleg0.png", "RightLeg": "res://.../rleg1.png" }
@@ -319,7 +224,6 @@ func _apply_bottom(item):
 			var node = character.get_node(node_path)
 			if node and node is Sprite2D and item[part] is String:
 				node.texture = load(item[part])
-
 
 #
 # ──────────────────────────────────────────────────────────────────────────────
@@ -349,7 +253,6 @@ func _toggle_hook():
 			active_hook_sprite = ""
 			is_hook_enabled = false
 
-
 #
 # ──────────────────────────────────────────────────────────────────────────────
 #  FINISH / SAVE / LOAD
@@ -361,7 +264,6 @@ func _on_finish_button_pressed():
 
 	print("Finished customization and data saved.")
 	get_tree().change_scene_to_file("res://Island/Island.tscn")
-
 
 func update_character_data():
 	ensure_character_data_integrity()
@@ -422,7 +324,6 @@ func update_character_data():
 	else:
 		character_data["misc"] = ""
 
-
 func save_character_data():
 	var slot = Global.active_save_slot
 	var save_file_path = "user://saveslot" + str(slot) + ".json"
@@ -437,7 +338,6 @@ func save_character_data():
 		print("Character data saved successfully to slot", slot)
 	else:
 		print("Failed to save character data.")
-
 
 func apply_character_data(data: Dictionary):
 	if "name" in data and name_input:
@@ -464,7 +364,6 @@ func apply_character_data(data: Dictionary):
 	if "misc" in data:
 		right_arm_node.texture = load(data["misc"])
 
-
 func ensure_character_data_integrity():
 	if "top" not in character_data:
 		character_data["top"] = {"body": "", "left_arm": "", "right_arm": ""}
@@ -472,7 +371,6 @@ func ensure_character_data_integrity():
 		character_data["bottom"] = {"left_leg": "", "right_leg": ""}
 	if "misc" not in character_data:
 		character_data["misc"] = ""
-
 
 #
 # ──────────────────────────────────────────────────────────────────────────────
@@ -484,3 +382,7 @@ func turn_on_visibility():
 
 func turn_off_visibility():
 	visible = false
+
+
+
+

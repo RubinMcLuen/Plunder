@@ -1,12 +1,14 @@
-[gd_scene load_steps=16 format=3 uid="uid://cm8ppnapjo5rr"]
+[gd_scene load_steps=18 format=3 uid="uid://cm8ppnapjo5rr"]
 
 [ext_resource type="Script" path="res://TitleScreen/title_screen.gd" id="1_d6u5a"]
 [ext_resource type="Texture2D" uid="uid://biquxyot7o7hr" path="res://TitleScreen/assets/titlescreenbackground.png" id="1_l328g"]
 [ext_resource type="Texture2D" uid="uid://d2rvww4tpxvpb" path="res://TitleScreen/assets/titlescreentitle.png" id="2_rbwqf"]
 [ext_resource type="Texture2D" uid="uid://cxsvekkv3xust" path="res://TitleScreen/assets/titlescreenboat.png" id="3_7ul8s"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://Retro Gaming.ttf" id="4_rii8i"]
+[ext_resource type="AudioStream" uid="uid://b5capdarsmt17" path="res://SFX/appear-online.mp3" id="5_hxgrm"]
 [ext_resource type="PackedScene" uid="uid://cwlpgtbhderfk" path="res://CharacterCreation/character_creator.tscn" id="6_ppw85"]
 [ext_resource type="PackedScene" uid="uid://cbu137n5idbij" path="res://SaveMenu/save_menu.tscn" id="7_vnvxv"]
+[ext_resource type="AudioStream" uid="uid://tbcoiu1gynyo" path="res://SFX/The Beach Where Dreams Die.wav" id="9_dnut3"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k6s53"]
 
@@ -56,12 +58,13 @@ _data = {
 "pulse": SubResource("Animation_e6p7q")
 }
 
-[node name="TitleScreen" type="Node2D" node_paths=PackedStringArray("camera", "character_creator_scene")]
+[node name="TitleScreen" type="Node2D" node_paths=PackedStringArray("camera", "character_creator_scene", "audio")]
 script = ExtResource("1_d6u5a")
 camera = NodePath("Camera2D")
 start_button_path = NodePath("StartButton")
 save_menu_node_path = NodePath("SaveMenu")
 character_creator_scene = NodePath("CharacterCreator")
+audio = NodePath("StartButton/StartSound")
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(240, 0)
@@ -85,6 +88,9 @@ theme_override_styles/pressed = SubResource("StyleBoxEmpty_o3tit")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_kn7y1")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_swrxr")
 flat = true
+
+[node name="StartSound" type="AudioStreamPlayer" parent="StartButton"]
+stream = ExtResource("5_hxgrm")
 
 [node name="StartText" type="Label" parent="."]
 anchors_preset = 15
@@ -113,9 +119,12 @@ position = Vector2(240, 135)
 visible = false
 position = Vector2(240, -135)
 
-[node name="SaveMenu" parent="." node_paths=PackedStringArray("character_creator_scene") instance=ExtResource("7_vnvxv")]
+[node name="SaveMenu" parent="." instance=ExtResource("7_vnvxv")]
 z_index = 2
 position = Vector2(0, -270)
-character_creator_scene = NodePath("../CharacterCreator")
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_dnut3")
+autoplay = true
 
 [connection signal="pressed" from="StartButton" to="StartButton" method="_on_pressed"]
