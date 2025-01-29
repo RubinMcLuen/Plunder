@@ -263,7 +263,7 @@ func _on_finish_button_pressed():
 	save_character_data()
 
 	print("Finished customization and data saved.")
-	get_tree().change_scene_to_file("res://Island/Island.tscn")
+	get_tree().change_scene_to_file("res://Tavern/Tavern.tscn")
 
 func update_character_data():
 	ensure_character_data_integrity()

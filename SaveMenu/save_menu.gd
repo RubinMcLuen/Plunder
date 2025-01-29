@@ -96,7 +96,7 @@ func _setup_save_slots():
 		assigned_sets.append(used_set)
 
 	# Assign animations or mark as "Add"/"Empty" for each slot
-	for i in range(save_slots.size() - 1):
+	for i in range(save_slots.size()):
 		var slot_node = save_slots[i]
 		var anim_sprite = slot_node.get_node("AnimatedSprite2D")
 
@@ -116,6 +116,7 @@ func _setup_save_slots():
 					slot_node.set_meta("BW",    unique_set["BW"])
 					slot_node.set_meta("C",     unique_set["C"])
 					slot_node.set_meta("CAnim", unique_set["CAnim"])
+					assigned_sets.append(unique_set)  # Ensure the set is marked as assigned
 					break
 		else:
 			# Empty slot
@@ -123,6 +124,7 @@ func _setup_save_slots():
 
 		# Connect the click event for each slot
 		slot_node.connect("input_event", Callable(self, "_on_save_slot_clicked").bind(i))
+
 
 
 func _initialize_slot_timers():

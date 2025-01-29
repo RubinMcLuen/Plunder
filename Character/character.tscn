@@ -1,29 +1,13 @@
-[gd_scene load_steps=10 format=3 uid="uid://cfd3bm3d7gr3t"]
+[gd_scene load_steps=5 format=3 uid="uid://cfd3bm3d7gr3t"]
 
-[ext_resource type="Script" path="res://Character/character.gd" id="1_qjstq"]
 [ext_resource type="Texture2D" uid="uid://hsxbn4leg3aj" path="res://CharacterCreation/customizations/skin/skin0.png" id="1_wvg6q"]
 [ext_resource type="Texture2D" uid="uid://0votqft72py2" path="res://CharacterCreation/customizations/bottom/LeftLeg/lleg0.png" id="2_12tev"]
 [ext_resource type="Texture2D" uid="uid://cgvc2dwm1w6ha" path="res://CharacterCreation/customizations/bottom/RightLeg/rleg0.png" id="3_1tf3x"]
-[ext_resource type="Texture2D" uid="uid://box35pckmnego" path="res://CharacterCreation/customizations/hat/hat0.png" id="3_dr73u"]
-[ext_resource type="Texture2D" uid="uid://luwn2yakm0fc" path="res://CharacterCreation/customizations/hair/facialhair0.png" id="4_0ma4o"]
-[ext_resource type="Texture2D" uid="uid://ce3rfumkiiqpf" path="res://CharacterCreation/customizations/top/LeftArm/larm0.png" id="5_k2exk"]
-[ext_resource type="Texture2D" uid="uid://bpue8vwq7wb2r" path="res://CharacterCreation/customizations/top/Body/body0.png" id="6_m136i"]
-[ext_resource type="Texture2D" uid="uid://blsdtc3bvdqxf" path="res://CharacterCreation/customizations/top/RightArm/rarm0.png" id="7_m8rfs"]
 
-[node name="Character" type="Node2D"]
-position = Vector2(-91, 0)
-scale = Vector2(4, 4)
-script = ExtResource("1_qjstq")
-parts = {
-"Body": NodePath("Appearance/Top/Body"),
-"Hair": NodePath("Appearance/FacialHair"),
-"Hat": NodePath("Appearance/Hat"),
-"LeftArm": NodePath("Appearance/Top/LeftArm"),
-"LeftLeg": NodePath("Appearance/Bottom/LeftLeg"),
-"RightArm": NodePath("Appearance/Top/RightArm"),
-"RightLeg": NodePath("Appearance/Bottom/RightLeg"),
-"Skin": NodePath("Appearance/Skin")
-}
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ddcck"]
+size = Vector2(14, 1)
+
+[node name="Character" type="CharacterBody2D"]
 
 [node name="Appearance" type="Node2D" parent="."]
 
@@ -32,27 +16,22 @@ texture = ExtResource("1_wvg6q")
 hframes = 8
 
 [node name="Hat" type="Sprite2D" parent="Appearance"]
-texture = ExtResource("3_dr73u")
 hframes = 8
 
 [node name="FacialHair" type="Sprite2D" parent="Appearance"]
 z_index = 5
-texture = ExtResource("4_0ma4o")
 hframes = 8
 
 [node name="Top" type="Node2D" parent="Appearance"]
 z_index = 1
 
 [node name="LeftArm" type="Sprite2D" parent="Appearance/Top"]
-texture = ExtResource("5_k2exk")
 hframes = 8
 
 [node name="Body" type="Sprite2D" parent="Appearance/Top"]
-texture = ExtResource("6_m136i")
 hframes = 8
 
 [node name="RightArm" type="Sprite2D" parent="Appearance/Top"]
-texture = ExtResource("7_m8rfs")
 hframes = 8
 
 [node name="Bottom" type="Node2D" parent="Appearance"]
@@ -64,3 +43,7 @@ hframes = 8
 [node name="RightLeg" type="Sprite2D" parent="Appearance/Bottom"]
 texture = ExtResource("3_1tf3x")
 hframes = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 1.5)
+shape = SubResource("RectangleShape2D_ddcck")

@@ -65,6 +65,7 @@ position = Vector2(-15, -47)
 position = Vector2(146, -41)
 
 [node name="Character" parent="." instance=ExtResource("11_4qdb2")]
+position = Vector2(-91, 0)
 
 [node name="CharacterNameArea" type="Node2D" parent="."]
 script = ExtResource("12_7i56c")

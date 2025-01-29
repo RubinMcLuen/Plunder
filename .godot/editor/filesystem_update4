@@ -1,10 +1,4 @@
-res://TitleScreen/title_screen.tscn
+res://Tavern/Tavern.tscn
 res://SaveMenu/save_menu.gd
-res://SaveMenu/save_menu.tscn
-res://CharacterCreation/character_creator.tscn
-res://Island/Island.tscn
+res://Character/Player/player.tscn
 res://Character/character.tscn
-res://TitleScreen/title_screen.gd
-res://CharacterCreation/character_creator.gd
-res://CharacterCreation/ItemButtons.gd
-res://CharacterCreation/asset_index.json
