@@ -9,7 +9,7 @@ extends Node2D
 @export var name_input: LineEdit
 @export var finish_button: TextureButton
 
-var categories = ["skin", "hair", "hat", "top", "bottom", "misc"]
+var categories = ["skin", "facialhair", "hat", "top", "bottom", "misc"]
 var page_size  = 6
 
 var current_category: String = "skin"
@@ -19,7 +19,7 @@ var options: Dictionary = {}
 var character: Node
 var skin_node: Sprite2D
 var hat_node: Sprite2D
-var hair_node: Sprite2D
+var facial_hair_node: Sprite2D
 var left_arm_node: Sprite2D
 var right_arm_node: Sprite2D
 var body_node: Sprite2D
@@ -34,10 +34,10 @@ var original_right_arm_texture_path: String = ""
 var character_data: Dictionary = {
 	"name": "",
 	"skin": "",
-	"hair": "",
+	"facialhair": "",
 	"hat": "",
-	"top": {"body": "", "left_arm": "", "right_arm": ""},
-	"bottom": {"left_leg": "", "right_leg": ""},
+	"top": {"body": "", "leftarm": "", "rightarm": ""},
+	"bottom": {"leftleg": "", "rightleg": ""},
 	"misc": ""
 }
 
@@ -62,14 +62,14 @@ func _ready():
 #
 func _initialize_character_nodes():
 	character = get_node("Character")
-	skin_node = character.get_node("Appearance/Skin")
-	hat_node = character.get_node("Appearance/Hat")
-	hair_node = character.get_node("Appearance/FacialHair")
-	left_arm_node = character.get_node("Appearance/Top/LeftArm")
-	right_arm_node = character.get_node("Appearance/Top/RightArm")
-	body_node = character.get_node("Appearance/Top/Body")
-	left_leg_node = character.get_node("Appearance/Bottom/LeftLeg")
-	right_leg_node = character.get_node("Appearance/Bottom/RightLeg")
+	skin_node = character.get_node("Appearance/skin")
+	hat_node = character.get_node("Appearance/hat")
+	facial_hair_node = character.get_node("Appearance/facialhair")
+	left_arm_node = character.get_node("Appearance/Top/leftarm")
+	right_arm_node = character.get_node("Appearance/Top/rightarm")
+	body_node = character.get_node("Appearance/Top/body")
+	left_leg_node = character.get_node("Appearance/Bottom/leftleg")
+	right_leg_node = character.get_node("Appearance/Bottom/rightleg")
 
 #
 # ──────────────────────────────────────────────────────────────────────────────
@@ -133,15 +133,16 @@ func reset_item_buttons_to_main_character():
 	for i in range(page_size):
 		var button = item_buttons.get_node("Button" + str(i + 1))
 		var button_character = button.get_node("Character")
+		var button_appearance = button_character.get_node("Appearance")
 
-		button_character.get_node("Skin").texture     = skin_node.texture
-		button_character.get_node("Hat").texture      = hat_node.texture
-		button_character.get_node("Hair").texture     = hair_node.texture
-		button_character.get_node("LeftArm").texture  = left_arm_node.texture
-		button_character.get_node("RightArm").texture = right_arm_node.texture
-		button_character.get_node("Body").texture     = body_node.texture
-		button_character.get_node("LeftLeg").texture  = left_leg_node.texture
-		button_character.get_node("RightLeg").texture = right_leg_node.texture
+		button_appearance.get_node("skin").texture     = skin_node.texture
+		button_appearance.get_node("hat").texture      = hat_node.texture
+		button_appearance.get_node("facialhair").texture     = facial_hair_node.texture
+		button_appearance.get_node("Top/leftarm").texture  = left_arm_node.texture
+		button_appearance.get_node("Top/rightarm").texture = right_arm_node.texture
+		button_appearance.get_node("Top/body").texture     = body_node.texture
+		button_appearance.get_node("Bottom/leftleg").texture  = left_leg_node.texture
+		button_appearance.get_node("Bottom/rightleg").texture = right_leg_node.texture
 
 #
 # ──────────────────────────────────────────────────────────────────────────────
@@ -164,7 +165,7 @@ func _on_item_selected(category: String, item):
 			_apply_skin(item)
 		"hat":
 			_apply_hat(item)
-		"hair":
+		"facialhair":
 			_apply_hair(item)
 		"top":
 			_apply_top(item)
@@ -187,8 +188,8 @@ func _apply_hat(item):
 		hat_node.texture = load(item)
 
 func _apply_hair(item):
-	if hair_node and item is String:
-		hair_node.texture = load(item)
+	if facial_hair_node and item is String:
+		facial_hair_node.texture = load(item)
 
 func _apply_top(item):
 	# Expecting a dictionary like:
@@ -204,7 +205,7 @@ func _apply_top(item):
 				node.texture = load(new_tex_path)
 
 				# If it's the RightArm, store its path for hooking
-				if part == "RightArm":
+				if part == "rightarm":
 					original_right_arm_texture_path = new_tex_path
 
 					# If we are already in "hook mode," re-apply the matching hook
@@ -279,10 +280,10 @@ func update_character_data():
 		character_data["skin"] = ""
 
 	# Hair
-	if hair_node and hair_node.texture and hair_node.texture.resource_path != "":
-		character_data["hair"] = hair_node.texture.resource_path
+	if facial_hair_node and facial_hair_node.texture and facial_hair_node.texture.resource_path != "":
+		character_data["facialhair"] = facial_hair_node.texture.resource_path
 	else:
-		character_data["hair"] = ""
+		character_data["facialhair"] = ""
 
 	# Hat
 	if hat_node and hat_node.texture and hat_node.texture.resource_path != "":
@@ -297,25 +298,25 @@ func update_character_data():
 		character_data["top"]["body"] = ""
 
 	if left_arm_node and left_arm_node.texture and left_arm_node.texture.resource_path != "":
-		character_data["top"]["left_arm"] = left_arm_node.texture.resource_path
+		character_data["top"]["leftarm"] = left_arm_node.texture.resource_path
 	else:
-		character_data["top"]["left_arm"] = ""
+		character_data["top"]["leftarm"] = ""
 
 	if right_arm_node and right_arm_node.texture and right_arm_node.texture.resource_path != "":
-		character_data["top"]["right_arm"] = right_arm_node.texture.resource_path
+		character_data["top"]["rightarm"] = right_arm_node.texture.resource_path
 	else:
-		character_data["top"]["right_arm"] = ""
+		character_data["top"]["rightarm"] = ""
 
 	# Bottom (LeftLeg, RightLeg)
 	if left_leg_node and left_leg_node.texture and left_leg_node.texture.resource_path != "":
-		character_data["bottom"]["left_leg"] = left_leg_node.texture.resource_path
+		character_data["bottom"]["leftleg"] = left_leg_node.texture.resource_path
 	else:
-		character_data["bottom"]["left_leg"] = ""
+		character_data["bottom"]["leftleg"] = ""
 
 	if right_leg_node and right_leg_node.texture and right_leg_node.texture.resource_path != "":
-		character_data["bottom"]["right_leg"] = right_leg_node.texture.resource_path
+		character_data["bottom"]["rightleg"] = right_leg_node.texture.resource_path
 	else:
-		character_data["bottom"]["right_leg"] = ""
+		character_data["bottom"]["rightleg"] = ""
 
 	# Hook / misc
 	if is_hook_enabled:
@@ -346,29 +347,29 @@ func apply_character_data(data: Dictionary):
 	if "skin" in data and skin_node:
 		skin_node.texture = load(data["skin"])
 
-	if "hair" in data and hair_node:
-		hair_node.texture = load(data["hair"])
+	if "facialhair" in data and facial_hair_node:
+		facial_hair_node.texture = load(data["facialhair"])
 
 	if "hat" in data and hat_node:
 		hat_node.texture = load(data["hat"])
 
 	if "top" in data:
 		body_node.texture      = load(data["top"]["body"])
-		left_arm_node.texture  = load(data["top"]["left_arm"])
-		right_arm_node.texture = load(data["top"]["right_arm"])
+		left_arm_node.texture  = load(data["top"]["leftarm"])
+		right_arm_node.texture = load(data["top"]["rightarm"])
 
 	if "bottom" in data:
-		left_leg_node.texture  = load(data["bottom"]["left_leg"])
-		right_leg_node.texture = load(data["bottom"]["right_leg"])
+		left_leg_node.texture  = load(data["bottom"]["leftleg"])
+		right_leg_node.texture = load(data["bottom"]["rightleg"])
 
 	if "misc" in data:
 		right_arm_node.texture = load(data["misc"])
 
 func ensure_character_data_integrity():
 	if "top" not in character_data:
-		character_data["top"] = {"body": "", "left_arm": "", "right_arm": ""}
+		character_data["top"] = {"body": "", "leftarm": "", "rightarm": ""}
 	if "bottom" not in character_data:
-		character_data["bottom"] = {"left_leg": "", "right_leg": ""}
+		character_data["bottom"] = {"leftleg": "", "rightleg": ""}
 	if "misc" not in character_data:
 		character_data["misc"] = ""
 

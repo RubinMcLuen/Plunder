@@ -1,65 +1,25 @@
-[gd_scene load_steps=11 format=3 uid="uid://dlh32l6ht3jiy"]
+[gd_scene load_steps=3 format=3 uid="uid://dlh32l6ht3jiy"]
 
 [ext_resource type="PackedScene" uid="uid://cfd3bm3d7gr3t" path="res://Character/character.tscn" id="1_rkp52"]
 [ext_resource type="Script" path="res://Character/Player/Player.gd" id="2_1cbst"]
-[ext_resource type="Texture2D" uid="uid://b7blh4vvfsyjh" path="res://Character/Player/skin0.png" id="2_02501"]
-[ext_resource type="Texture2D" uid="uid://bm1pd3cp423on" path="res://Character/Player/hat0.png" id="3_wbjyy"]
-[ext_resource type="Texture2D" uid="uid://bkrm5mjfl4j5a" path="res://Character/Player/facialhair0.png" id="4_mkucx"]
-[ext_resource type="Texture2D" uid="uid://cw0uiupflbhdn" path="res://Character/Player/larm0.png" id="5_5onuv"]
-[ext_resource type="Texture2D" uid="uid://4lr2vt12b2hn" path="res://Character/Player/body0.png" id="6_egnjn"]
-[ext_resource type="Texture2D" uid="uid://b6ou6f0evq4c6" path="res://Character/Player/rarm0.png" id="7_5jf6p"]
-[ext_resource type="Texture2D" uid="uid://drewepwswiqhf" path="res://Character/Player/lleg0.png" id="8_omtld"]
-[ext_resource type="Texture2D" uid="uid://c0jsxik8l3j32" path="res://Character/Player/rleg0.png" id="9_j0sum"]
 
 [node name="Player" node_paths=PackedStringArray("skin", "hat", "facialhair", "body", "larm", "rarm", "lleg", "rleg") instance=ExtResource("1_rkp52")]
 position = Vector2(0, 9)
 script = ExtResource("2_1cbst")
-skin = NodePath("Appearance/Skin")
-hat = NodePath("Appearance/Hat")
-facialhair = NodePath("Appearance/FacialHair")
-body = NodePath("Appearance/Top/Body")
-larm = NodePath("Appearance/Top/LeftArm")
-rarm = NodePath("Appearance/Top/RightArm")
-lleg = NodePath("Appearance/Bottom/LeftLeg")
-rleg = NodePath("Appearance/Bottom/RightLeg")
+skin = NodePath("Appearance/skin")
+hat = NodePath("Appearance/hat")
+facialhair = NodePath("Appearance/facialhair")
+body = NodePath("Appearance/Top/body")
+larm = NodePath("Appearance/Top/leftarm")
+rarm = NodePath("Appearance/Top/rightarm")
+lleg = NodePath("Appearance/Bottom/leftleg")
+rleg = NodePath("Appearance/Bottom/rightleg")
 
 [node name="Appearance" parent="." index="0"]
 position = Vector2(0, -9)
 
-[node name="Skin" parent="Appearance" index="0"]
-texture = ExtResource("2_02501")
-vframes = 7
-
-[node name="Hat" parent="Appearance" index="1"]
-texture = ExtResource("3_wbjyy")
-vframes = 7
-
-[node name="FacialHair" parent="Appearance" index="2"]
-texture = ExtResource("4_mkucx")
-vframes = 7
-
 [node name="Top" parent="Appearance" index="3"]
 z_index = 0
-
-[node name="LeftArm" parent="Appearance/Top" index="0"]
-texture = ExtResource("5_5onuv")
-vframes = 7
-
-[node name="Body" parent="Appearance/Top" index="1"]
-texture = ExtResource("6_egnjn")
-vframes = 7
-
-[node name="RightArm" parent="Appearance/Top" index="2"]
-texture = ExtResource("7_5jf6p")
-vframes = 7
-
-[node name="LeftLeg" parent="Appearance/Bottom" index="0"]
-texture = ExtResource("8_omtld")
-vframes = 7
-
-[node name="RightLeg" parent="Appearance/Bottom" index="1"]
-texture = ExtResource("9_j0sum")
-vframes = 7
 
 [node name="CollisionShape2D" parent="." index="1"]
 position = Vector2(0, 0.5)

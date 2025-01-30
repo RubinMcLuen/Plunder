@@ -5,7 +5,7 @@ const SAVE_FILE_BASE_PATH = "user://saveslot"
 @export var character: Node2D  # Character node to load data into
 var skin_node
 var hat_node
-var hair_node
+var facial_hair_node
 var left_arm_node
 var right_arm_node
 var body_node
@@ -22,14 +22,14 @@ func _ready():
 		return
 
 	# Get all relevant nodes for character customization
-	skin_node = character.get_node("Appearance/Skin")
-	hat_node = character.get_node("Appearance/Hat")
-	hair_node = character.get_node("Appearance/FacialHair")
-	left_arm_node = character.get_node("Appearance/Top/LeftArm")
-	right_arm_node = character.get_node("Appearance/Top/RightArm")
-	body_node = character.get_node("Appearance/Top/Body")
-	left_leg_node = character.get_node("Appearance/Bottom/LeftLeg")
-	right_leg_node = character.get_node("Appearance/Bottom/RightLeg")
+	skin_node = character.get_node("Appearance/skin")
+	hat_node = character.get_node("Appearance/hat")
+	facial_hair_node = character.get_node("Appearance/facialhair")
+	left_arm_node = character.get_node("Appearance/Top/leftarm")
+	right_arm_node = character.get_node("Appearance/Top/rightarm")
+	body_node = character.get_node("Appearance/Top/body")
+	left_leg_node = character.get_node("Appearance/Bottom/leftleg")
+	right_leg_node = character.get_node("Appearance/Bottom/rightleg")
 
 	# Fetch the save slot number from Global.gd
 	save_slot = Global.active_save_slot
@@ -78,12 +78,12 @@ func apply_character_data(data: Dictionary):
 			skin_node.texture = load(skin_path)
 
 	# Hair
-	if data.has("hair") and hair_node:
-		var hair_path = data["hair"]
-		if hair_path == "":
-			hair_node.texture = null
+	if data.has("facialhair") and facial_hair_node:
+		var facial_hair_path = data["facialhair"]
+		if facial_hair_path == "":
+			facial_hair_node.texture = null
 		else:
-			hair_node.texture = load(hair_path)
+			facial_hair_node.texture = load(facial_hair_path)
 
 	# Hat
 	if data.has("hat") and hat_node:
@@ -103,15 +103,15 @@ func apply_character_data(data: Dictionary):
 			else:
 				body_node.texture = load(body_path)
 		# Left Arm
-		if "left_arm" in data["top"] and left_arm_node:
-			var left_arm_path = data["top"]["left_arm"]
+		if "leftarm" in data["top"] and left_arm_node:
+			var left_arm_path = data["top"]["leftarm"]
 			if left_arm_path == "":
 				left_arm_node.texture = null
 			else:
 				left_arm_node.texture = load(left_arm_path)
 		# Right Arm
-		if "right_arm" in data["top"] and right_arm_node:
-			var right_arm_path = data["top"]["right_arm"]
+		if "rightarm" in data["top"] and right_arm_node:
+			var right_arm_path = data["top"]["rightarm"]
 			if right_arm_path == "":
 				right_arm_node.texture = null
 			else:
@@ -120,15 +120,15 @@ func apply_character_data(data: Dictionary):
 	# Bottom (left leg, right leg)
 	if data.has("bottom"):
 		# Left Leg
-		if "left_leg" in data["bottom"] and left_leg_node:
-			var left_leg_path = data["bottom"]["left_leg"]
+		if "leftleg" in data["bottom"] and left_leg_node:
+			var left_leg_path = data["bottom"]["leftleg"]
 			if left_leg_path == "":
 				left_leg_node.texture = null
 			else:
 				left_leg_node.texture = load(left_leg_path)
 		# Right Leg
-		if "right_leg" in data["bottom"] and right_leg_node:
-			var right_leg_path = data["bottom"]["right_leg"]
+		if "rightleg" in data["bottom"] and right_leg_node:
+			var right_leg_path = data["bottom"]["rightleg"]
 			if right_leg_path == "":
 				right_leg_node.texture = null
 			else:

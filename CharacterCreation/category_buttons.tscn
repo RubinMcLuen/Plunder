@@ -18,7 +18,7 @@
 [node name="CategoryButtons" type="Node2D"]
 script = ExtResource("1_rxhne")
 
-[node name="SkinButton" type="TextureButton" parent="."]
+[node name="skinButton" type="TextureButton" parent="."]
 offset_right = 24.0
 offset_bottom = 24.0
 toggle_mode = true
@@ -28,7 +28,7 @@ button_group = ExtResource("1_nivrs")
 texture_normal = ExtResource("2_w8dmy")
 texture_pressed = ExtResource("3_oafvo")
 
-[node name="HairButton" type="TextureButton" parent="."]
+[node name="facialhairButton" type="TextureButton" parent="."]
 offset_left = 26.0
 offset_right = 50.0
 offset_bottom = 24.0
@@ -38,7 +38,7 @@ button_group = ExtResource("1_nivrs")
 texture_normal = ExtResource("4_3mkdr")
 texture_pressed = ExtResource("5_fpm31")
 
-[node name="HatButton" type="TextureButton" parent="."]
+[node name="hatButton" type="TextureButton" parent="."]
 offset_left = 52.0
 offset_right = 76.0
 offset_bottom = 24.0
@@ -48,7 +48,7 @@ button_group = ExtResource("1_nivrs")
 texture_normal = ExtResource("6_qsbdk")
 texture_pressed = ExtResource("7_lhw2n")
 
-[node name="TopButton" type="TextureButton" parent="."]
+[node name="topButton" type="TextureButton" parent="."]
 offset_left = 78.0
 offset_right = 102.0
 offset_bottom = 24.0
@@ -58,7 +58,7 @@ button_group = ExtResource("1_nivrs")
 texture_normal = ExtResource("8_qfneo")
 texture_pressed = ExtResource("9_i68od")
 
-[node name="BottomButton" type="TextureButton" parent="."]
+[node name="bottomButton" type="TextureButton" parent="."]
 offset_left = 104.0
 offset_right = 128.0
 offset_bottom = 24.0
@@ -68,7 +68,7 @@ button_group = ExtResource("1_nivrs")
 texture_normal = ExtResource("10_rpnc6")
 texture_pressed = ExtResource("11_dg7mc")
 
-[node name="MiscButton" type="TextureButton" parent="."]
+[node name="miscButton" type="TextureButton" parent="."]
 offset_left = 130.0
 offset_right = 154.0
 offset_bottom = 24.0

@@ -17,22 +17,26 @@ func populate_buttons(category: String, options_dict: Dictionary, page: int = 0,
 
 	current_category = category
 	options = options_dict
-
 	for i in range(page_size):
 		var button = get_node("Button" + str(i + 1))
-		var character_node = button.get_node("Character")
+		var character_node = button.get_node("Character/Appearance")
 
 		if category == "misc":
 			if i == 0:
 				button.disabled = false
 				character_node.visible = true
+
+				# Determine the node name to access
+				var arm_node_name = "rightarm"  # Change as needed based on your logic
+				var arm_node = get_adjusted_node(character_node, arm_node_name)
+
 				if main_right_arm_texture == null:
-					character_node.get_node("RightArm").texture = null
+					arm_node.texture = null
 				else:
 					var hook_index = get_hook_index_for_top(main_right_arm_texture)
 					if hook_index >= 0 and hook_index < options[category].size():
 						var hook_sprite = options[category][hook_index]
-						character_node.get_node("RightArm").texture = load(hook_sprite)
+						arm_node.texture = load(hook_sprite)
 			else:
 				button.disabled = true
 				character_node.visible = false
@@ -49,25 +53,53 @@ func populate_buttons(category: String, options_dict: Dictionary, page: int = 0,
 				button.disabled = true
 				character_node.visible = false
 
+# Helper function to get the correctly adjusted node
+func get_adjusted_node(character_node: Node, node_name: String) -> Node:
+	if node_name == "rightarm" or node_name == "leftarm" or node_name == "body":
+		return character_node.get_node("Top/" + node_name)
+	elif node_name == "rightleg" or node_name == "leftleg":
+		return character_node.get_node("Bottom/" + node_name)
+	else:
+		return character_node.get_node(node_name)
+
+# Updated apply_item_to_character function
 func apply_item_to_character(character: Node2D, item, category: String, is_hook_enabled: bool = false):
 	if typeof(item) == TYPE_DICTIONARY:
 		for part in item.keys():
-			var part_node = character.get_node(part)
+			# Use the helper function to get the correct node
+			var part_node = get_adjusted_node(character, part)
 			if part_node and part_node is Sprite2D:
 				# Replace RightArm with the corresponding hook sprite if the hook is enabled
-				if is_hook_enabled and part == "RightArm":
+				if is_hook_enabled and part == "rightarm":
 					var right_arm_sprite = item[part]
-					# Construct the hook sprite path directly in the "misc" folder
-					var file_name = right_arm_sprite.get_file().replace("rarm", "hook")
-					var hook_sprite = "res://CharacterCreation/customizations/misc/" + file_name
-					part_node.texture = load(hook_sprite)
+					# Ensure that 'right_arm_sprite' has a valid 'get_file' method
+					if right_arm_sprite.has_method("get_file"):
+						var file_name = right_arm_sprite.get_file().replace("rarm", "hook")
+						var hook_sprite = "res://CharacterCreation/customizations/misc/" + file_name
+						var loaded_texture = load(hook_sprite)
+						if loaded_texture:
+							part_node.texture = loaded_texture
+						else:
+							push_error("Failed to load hook sprite: " + hook_sprite)
+					else:
+						push_error("right_arm_sprite does not have a 'get_file' method.")
 				else:
-					part_node.texture = load(item[part])
+					var texture_path = item[part]
+					var loaded_texture = load(texture_path)
+					if loaded_texture:
+						part_node.texture = loaded_texture
+					else:
+						push_error("Failed to load texture: " + texture_path)
 	else:
-		var target_node = character.get_node(category.capitalize())
+		# For single-part items, adjust the node path accordingly
+		var target_node = get_adjusted_node(character, category)
 		if target_node and target_node is Sprite2D:
-			# For single-part items, apply the texture normally
-			target_node.texture = load(item)
+			var loaded_texture = load(item)
+			if loaded_texture:
+				target_node.texture = loaded_texture
+			else:
+				push_error("Failed to load texture: " + item)
+
 
 func _on_item_button_pressed(button_index: int):
 	if current_category not in options or typeof(options[current_category]) != TYPE_ARRAY:
