@@ -94,11 +94,13 @@ player = NodePath("Player")
 
 [node name="Bartender" parent="." instance=ExtResource("2_g4ejn")]
 position = Vector2(270, 58)
+collision_layer = 2
 
 [node name="Player" parent="." instance=ExtResource("1_abucr")]
 position = Vector2(381, 41)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.5, 1.5)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1

@@ -39,6 +39,10 @@ const SAVE_FILE_BASE_PATH = "user://saveslot"
 # Save slot number
 var save_slot: int = -1
 
+var mouse_move_active: bool = false
+var mouse_target_position: Vector2 = Vector2.ZERO
+
+
 func _ready():
 	# Initialize sprite_parts list for easy iteration
 	sprite_parts = [skin, hat, facialhair, body, larm, rarm, lleg, rleg]
@@ -59,26 +63,47 @@ func _physics_process(_delta: float) -> void:
 # ---------------------------
 
 func handle_player_input() -> void:
-	# Reset velocity each frame to capture new input
+	# Ensure that if the left mouse button is no longer pressed, stop mouse-driven movement.
+	if mouse_move_active and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		mouse_move_active = false
+
+	# Reset velocity each frame
 	custom_velocity = Vector2.ZERO
 
-	if Input.is_action_pressed("ui_up"):
-		custom_velocity.y -= 1
-	if Input.is_action_pressed("ui_down"):
-		custom_velocity.y += 1
-	if Input.is_action_pressed("ui_left"):
-		custom_velocity.x -= 1
-		direction = Vector2.LEFT
-	if Input.is_action_pressed("ui_right"):
-		custom_velocity.x += 1
-		direction = Vector2.RIGHT
+	if mouse_move_active:
+		var diff = mouse_target_position - global_position
+		if diff.length() != 0:
+			custom_velocity = diff.normalized() * speed
+			direction = Vector2.LEFT if diff.x < 0 else Vector2.RIGHT
+	else:
+		# Process keyboard input
+		if Input.is_action_pressed("ui_up"):
+			custom_velocity.y -= 1
+		if Input.is_action_pressed("ui_down"):
+			custom_velocity.y += 1
+		if Input.is_action_pressed("ui_left"):
+			custom_velocity.x -= 1
+			direction = Vector2.LEFT
+		if Input.is_action_pressed("ui_right"):
+			custom_velocity.x += 1
+			direction = Vector2.RIGHT
 
-	# Normalize velocity to prevent faster diagonal movement, then multiply by speed
-	if custom_velocity != Vector2.ZERO:
-		custom_velocity = custom_velocity.normalized() * speed
+		if custom_velocity != Vector2.ZERO:
+			custom_velocity = custom_velocity.normalized() * speed
 
-	# Assign to the built-in velocity used by CharacterBody2D
 	velocity = custom_velocity
+
+
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		mouse_move_active = event.pressed
+		if mouse_move_active:
+			mouse_target_position = get_global_mouse_position()
+	elif event is InputEventMouseMotion and mouse_move_active:
+		mouse_target_position = get_global_mouse_position()
+
 
 func move_character() -> void:
 	# Move the character using Godot's physics
