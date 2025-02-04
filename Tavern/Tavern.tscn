@@ -1,6 +1,8 @@
-[gd_scene load_steps=49 format=3 uid="uid://ci36078u3htw1"]
+[gd_scene load_steps=51 format=3 uid="uid://ci36078u3htw1"]
 
 [ext_resource type="PackedScene" uid="uid://dlh32l6ht3jiy" path="res://Character/Player/player.tscn" id="1_abucr"]
+[ext_resource type="Script" path="res://Tavern/Tavern.gd" id="1_jbd0v"]
+[ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="2_g4ejn"]
 [ext_resource type="Texture2D" uid="uid://dtl865k56rp5b" path="res://Tavern/taverninterior2.png" id="2_vtehr"]
 [ext_resource type="Texture2D" uid="uid://cxriu4ggtgh5a" path="res://Tavern/3.png" id="3_y1432"]
 [ext_resource type="Texture2D" uid="uid://cnrkygmkm1vnj" path="res://Tavern/6.png" id="4_fv70y"]
@@ -85,11 +87,16 @@ size = Vector2(32, 18)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ru76x"]
 size = Vector2(48, 20)
 
-[node name="Tavern" type="Node2D"]
+[node name="Tavern" type="Node2D" node_paths=PackedStringArray("player")]
 y_sort_enabled = true
+script = ExtResource("1_jbd0v")
+player = NodePath("Player")
+
+[node name="Bartender" parent="." instance=ExtResource("2_g4ejn")]
+position = Vector2(270, 58)
 
 [node name="Player" parent="." instance=ExtResource("1_abucr")]
-position = Vector2(266, 136)
+position = Vector2(381, 41)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 

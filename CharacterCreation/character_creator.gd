@@ -263,8 +263,34 @@ func _on_finish_button_pressed():
 	update_character_data()
 	save_character_data()
 
-	print("Finished customization and data saved.")
+	var slot = Global.active_save_slot
+	var save_file_path = "user://saveslot" + str(slot) + ".json"
+
+	# Load existing save file
+	var save_data = {}
+	if FileAccess.file_exists(save_file_path):
+		var file = FileAccess.open(save_file_path, FileAccess.READ)
+		var json = JSON.new()
+		var parse_result = json.parse(file.get_as_text())  # Parse returns an int (error code)
+		file.close()
+
+		if parse_result == OK:  # Check if parsing was successful
+			save_data = json.data  # Extract parsed data
+
+	# Update scene data (default starting position)
+	save_data["scene"] = {
+		"name": "res://Tavern/Tavern.tscn",
+		"position": { "x": 381, "y": 41 }
+	}
+
+	# Save back to file
+	var file_write = FileAccess.open(save_file_path, FileAccess.WRITE)
+	file_write.store_string(JSON.stringify(save_data))
+	file_write.close()
+
+	print("Finished customization, data saved, and loading Tavern.")
 	get_tree().change_scene_to_file("res://Tavern/Tavern.tscn")
+
 
 func update_character_data():
 	ensure_character_data_integrity()

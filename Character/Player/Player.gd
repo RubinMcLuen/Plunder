@@ -92,7 +92,7 @@ func update_animation() -> void:
 
 func animate_walk() -> void:
 	# Determine the current frame based on time
-	var frame = int((Time.get_ticks_msec() / 100) % FRAMES_PER_ANIMATION)
+	var frame = (Time.get_ticks_msec() / 100) % FRAMES_PER_ANIMATION
 	var base_frame = WALK_ROW * FRAMES_PER_ANIMATION
 	var current_frame = base_frame + frame
 	
@@ -105,7 +105,7 @@ func animate_walk() -> void:
 
 func play_idle() -> void:
 	# Idle animation: cycle through the idle row frames
-	var frame = int((Time.get_ticks_msec() / 100) % FRAMES_PER_ANIMATION)
+	var frame = (Time.get_ticks_msec() / 100) % FRAMES_PER_ANIMATION
 	var base_frame = IDLE_ROW * FRAMES_PER_ANIMATION
 	var current_frame = base_frame + frame
 

@@ -1,0 +1,242 @@
+[gd_scene load_steps=11 format=3 uid="uid://tt5acos0n34b"]
+
+[ext_resource type="Script" path="res://Dialogue/balloon.gd" id="1_i6w4i"]
+[ext_resource type="Texture2D" uid="uid://c8ixypn3iikla" path="res://Dialogue/assets/dialogue_frame.png" id="2_a8s57"]
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_label.gd" id="2_itne3"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://Retro Gaming.ttf" id="3_op0at"]
+[ext_resource type="Texture2D" uid="uid://b5jekmswl6p1g" path="res://Dialogue/assets/dialogue_text_box.png" id="5_tvq0j"]
+[ext_resource type="Texture2D" uid="uid://6cuew7522vte" path="res://Dialogue/assets/dialogue_next_button.png" id="6_4ecox"]
+[ext_resource type="Texture2D" uid="uid://c0v3jgq5xt625" path="res://Dialogue/assets/dialogue_next_button_down.png" id="7_yiuh7"]
+[ext_resource type="Texture2D" uid="uid://b0f640v1pvyg0" path="res://Dialogue/assets/dialogue_option_button.png" id="8_ckuti"]
+[ext_resource type="Texture2D" uid="uid://c5kccr5n6tcb1" path="res://Dialogue/assets/dialogue_option_button_down.png" id="9_ydi6i"]
+[ext_resource type="Texture2D" uid="uid://d1njd1bw0ryjq" path="res://Dialogue/assets/dialogue_portrait_background.png" id="10_jw8tt"]
+
+[node name="ExampleBalloon" type="CanvasLayer"]
+script = ExtResource("1_i6w4i")
+
+[node name="Balloon" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = 96.0
+offset_top = 206.0
+offset_right = 384.0
+offset_bottom = 270.0
+
+[node name="Frame" type="Sprite2D" parent="Balloon"]
+position = Vector2(144, 32)
+texture = ExtResource("2_a8s57")
+
+[node name="MarginContainer" type="MarginContainer" parent="Balloon"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 64.0
+offset_top = 4.0
+offset_right = -44.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Balloon/MarginContainer"]
+clip_contents = true
+layout_mode = 2
+
+[node name="CharacterLabel" type="RichTextLabel" parent="Balloon/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+z_index = 1
+custom_minimum_size = Vector2(0, 11)
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/default_color = Color(1, 0.996078, 0.941176, 1)
+theme_override_fonts/normal_font = ExtResource("3_op0at")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "[center]character"
+scroll_active = false
+
+[node name="DialogueLabel" type="RichTextLabel" parent="Balloon/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+z_index = 1
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 1
+theme_override_colors/default_color = Color(1, 0.998, 0.94, 1)
+theme_override_fonts/normal_font = ExtResource("3_op0at")
+theme_override_font_sizes/normal_font_size = 6
+bbcode_enabled = true
+text = "Dialogue..."
+shortcut_keys_enabled = false
+script = ExtResource("2_itne3")
+skip_pause_at_abbreviations = PackedStringArray("Mr", "Mrs", "Ms", "Dr", "etc", "eg", "ex")
+
+[node name="TextBox" type="Sprite2D" parent="Balloon"]
+position = Vector2(154, 32)
+texture = ExtResource("5_tvq0j")
+
+[node name="NextButton" type="TextureButton" parent="Balloon"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 247.0
+offset_top = 3.0
+offset_right = 285.0
+offset_bottom = 61.0
+texture_normal = ExtResource("6_4ecox")
+texture_pressed = ExtResource("7_yiuh7")
+texture_hover = ExtResource("7_yiuh7")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Balloon/NextButton"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 23.0
+offset_right = 37.0
+offset_bottom = 34.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 0.996078, 0.941176, 1)
+theme_override_fonts/normal_font = ExtResource("3_op0at")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "[center]Next"
+
+[node name="Responses" type="MarginContainer" parent="Balloon"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -80.0
+offset_top = -60.0
+offset_right = 100.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_right = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Balloon/Responses"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Balloon/Responses/VBoxContainer"]
+custom_minimum_size = Vector2(0, 11)
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 0.996078, 0.941176, 1)
+theme_override_fonts/normal_font = ExtResource("3_op0at")
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "[center]Choose an option:"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Balloon/Responses/VBoxContainer"]
+layout_mode = 2
+
+[node name="Option1Button" type="TextureButton" parent="Balloon/Responses/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("8_ckuti")
+texture_pressed = ExtResource("9_ydi6i")
+
+[node name="Option1Label" type="RichTextLabel" parent="Balloon/Responses/VBoxContainer/HBoxContainer/Option1Button"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 85.0
+offset_bottom = 17.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 0.996078, 0.941176, 1)
+theme_override_fonts/normal_font = ExtResource("3_op0at")
+theme_override_font_sizes/normal_font_size = 6
+bbcode_enabled = true
+fit_content = true
+
+[node name="Option2Button" type="TextureButton" parent="Balloon/Responses/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("8_ckuti")
+texture_pressed = ExtResource("9_ydi6i")
+
+[node name="Option2Label" type="RichTextLabel" parent="Balloon/Responses/VBoxContainer/HBoxContainer/Option2Button"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 85.0
+offset_bottom = 17.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 0.996078, 0.941176, 1)
+theme_override_fonts/normal_font = ExtResource("3_op0at")
+theme_override_font_sizes/normal_font_size = 6
+bbcode_enabled = true
+fit_content = true
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Balloon/Responses/VBoxContainer"]
+layout_mode = 2
+
+[node name="Option3Button" type="TextureButton" parent="Balloon/Responses/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("8_ckuti")
+texture_pressed = ExtResource("9_ydi6i")
+
+[node name="Option3Label" type="RichTextLabel" parent="Balloon/Responses/VBoxContainer/HBoxContainer2/Option3Button"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 85.0
+offset_bottom = 17.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 0.996078, 0.941176, 1)
+theme_override_fonts/normal_font = ExtResource("3_op0at")
+theme_override_font_sizes/normal_font_size = 6
+bbcode_enabled = true
+fit_content = true
+
+[node name="Option4Button" type="TextureButton" parent="Balloon/Responses/VBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+texture_normal = ExtResource("8_ckuti")
+texture_pressed = ExtResource("9_ydi6i")
+
+[node name="Option4Label" type="RichTextLabel" parent="Balloon/Responses/VBoxContainer/HBoxContainer2/Option4Button"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 85.0
+offset_bottom = 17.0
+mouse_filter = 2
+theme_override_colors/default_color = Color(1, 0.996078, 0.941176, 1)
+theme_override_fonts/normal_font = ExtResource("3_op0at")
+theme_override_font_sizes/normal_font_size = 6
+bbcode_enabled = true
+fit_content = true
+
+[node name="Container" type="Container" parent="Balloon"]
+clip_contents = true
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 60.0
+offset_bottom = 60.0
+
+[node name="PortraitBackground" type="Sprite2D" parent="Balloon/Container"]
+position = Vector2(28, 28)
+texture = ExtResource("10_jw8tt")
+
+[node name="Portrait" type="Sprite2D" parent="Balloon/Container/PortraitBackground"]
+unique_name_in_owner = true
+position = Vector2(0, 2)
+
+[connection signal="gui_input" from="Balloon" to="." method="_on_balloon_gui_input"]
+[connection signal="pressed" from="Balloon/NextButton" to="." method="_on_next_button_pressed"]

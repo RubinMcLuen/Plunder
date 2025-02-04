@@ -209,29 +209,33 @@ func _handle_bw_slot(slot_node, slot_index):
 	active_slot_index = slot_index
 
 func _handle_c_slot(_slot_node, slot_index):
-	# For "C*" animations, we might have a corresponding save file
 	var save_file_path = "user://saveslot%s.json" % slot_index
 
 	if FileAccess.file_exists(save_file_path):
 		var file = FileAccess.open(save_file_path, FileAccess.READ)
 		var json = JSON.new()
-		var parse_result = json.parse(file.get_as_text())
-		if parse_result == OK:
-			var save_file_data = json.data
-			if save_file_data.has("character") and save_file_data["character"] != {}:
-				# Valid character data: jump to Island scene
-				Global.active_save_slot = slot_index
-				active_slot_index = slot_index
-				get_tree().change_scene_to_file("res://Island/Island.tscn")
-			else:
-				_create_new_save_file(slot_index, save_file_data)
-		else:
-			print("Failed to parse save file for slot %s" % slot_index)
+		var parse_result = json.parse(file.get_as_text())  # Returns an int error code
 		file.close()
+
+		var save_file_data = {}  # Default empty save data
+
+		if parse_result == OK:  # Check if parsing was successful
+			save_file_data = json.data  # Extract parsed JSON data
+
+		if save_file_data.has("scene"):  # Ensure scene data exists
+			var scene_name = save_file_data["scene"].get("name", "res://Tavern/Tavern.tscn")
+			Global.active_save_slot = slot_index
+			active_slot_index = slot_index
+			print("Loading saved scene:", scene_name)
+			get_tree().change_scene_to_file(scene_name)
+		else:
+			print("No saved scene found. Defaulting to Tavern.")
+			get_tree().change_scene_to_file("res://Tavern/Tavern.tscn")
 	else:
-		# If no file, create one
-		var new_save_data = {"character": {}}
-		_create_new_save_file(slot_index, new_save_data)
+		# If no file exists, start fresh at the Tavern.
+		print("No save file found, starting at Tavern.")
+		get_tree().change_scene_to_file("res://Tavern/Tavern.tscn")
+
 
 func _create_new_save_file(slot_index, save_file_data):
 	# Store initial data to the save file

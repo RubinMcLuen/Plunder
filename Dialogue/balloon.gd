@@ -1,0 +1,228 @@
+extends CanvasLayer
+
+@export var next_action: StringName = "ui_accept"
+@export var skip_action: StringName = "ui_cancel"
+
+@onready var balloon: Control = %Balloon
+@onready var character_label: RichTextLabel = %CharacterLabel
+@onready var dialogue_label: DialogueLabel = %DialogueLabel
+@onready var responses_menu: MarginContainer = %Responses
+@onready var next_button: TextureButton = %NextButton
+@onready var margin_container: MarginContainer = %MarginContainer
+
+@onready var option_button_1: TextureButton = %Option1Button
+@onready var option_button_2: TextureButton = %Option2Button
+@onready var option_button_3: TextureButton = %Option3Button
+@onready var option_button_4: TextureButton = %Option4Button
+@onready var option_label_1: RichTextLabel = %Option1Label
+@onready var option_label_2: RichTextLabel = %Option2Label
+@onready var option_label_3: RichTextLabel = %Option3Label
+@onready var option_label_4: RichTextLabel = %Option4Label
+
+@onready var portrait: Sprite2D = %Portrait
+
+var resource: DialogueResource
+var temporary_game_states: Array = []
+var is_waiting_for_input: bool = false
+var will_hide_balloon: bool = false
+var selected_response_index: int = -1
+
+var dialogue_line: DialogueLine:
+	set(next_dialogue_line):
+		is_waiting_for_input = false
+		
+		if not is_node_ready():
+			await ready
+
+		balloon.focus_mode = Control.FOCUS_ALL
+		balloon.grab_focus()
+
+
+		if not next_dialogue_line:
+			queue_free()
+			return
+
+		if not is_node_ready():
+			await ready
+
+		dialogue_line = next_dialogue_line
+
+		character_label.visible = not dialogue_line.character.is_empty()
+		character_label.text = tr("[center]" + dialogue_line.character, "dialogue")
+
+		dialogue_label.hide()
+		dialogue_label.dialogue_line = dialogue_line
+
+		responses_menu.hide()
+		_update_responses_menu(dialogue_line.responses)
+
+		balloon.show()
+		will_hide_balloon = false
+
+		dialogue_label.show()
+		if not dialogue_line.text.is_empty():
+			dialogue_label.type_out()
+			await dialogue_label.finished_typing
+
+		if dialogue_line.responses.size() > 0:
+			is_waiting_for_input = true
+			return
+
+		if dialogue_line.time != "":
+			var time = dialogue_line.text.length() * 0.02 if dialogue_line.time == "auto" else float(dialogue_line.time)
+			await get_tree().create_timer(time).timeout
+			next(dialogue_line.next_id)
+		else:
+			is_waiting_for_input = true
+			balloon.focus_mode = Control.FOCUS_ALL
+			balloon.grab_focus()
+	get:
+		return dialogue_line
+
+@onready var option_buttons: Array = [
+	option_button_1,
+	option_button_2,
+	option_button_3,
+	option_button_4
+]
+
+func _ready() -> void:
+
+	balloon.hide()
+	for i in range(option_buttons.size()):
+		option_buttons[i].connect("pressed", Callable(self, "_on_response_button_pressed").bind(i))
+
+func _on_next_button_pressed() -> void:
+	if dialogue_label.is_typing:
+		dialogue_label.skip_typing()
+		return
+
+	if not is_waiting_for_input:
+		return
+
+	if dialogue_line.responses.size() > 0 and selected_response_index == -1:
+		is_waiting_for_input = false
+		balloon.focus_mode = Control.FOCUS_NONE
+		responses_menu.show()
+		margin_container.hide()
+		return
+
+	if selected_response_index != -1:
+		is_waiting_for_input = false
+		var response = dialogue_line.responses[selected_response_index]
+		margin_container.show()
+		responses_menu.hide()
+		next(response.next_id)
+	else:
+		next(dialogue_line.next_id)
+
+func _unhandled_input(_event: InputEvent) -> void:
+	get_viewport().set_input_as_handled()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED and is_instance_valid(dialogue_label):
+		var visible_ratio = dialogue_label.visible_ratio
+		self.dialogue_line = await resource.get_next_dialogue_line(dialogue_line.id)
+		if visible_ratio < 1:
+			dialogue_label.skip_typing()
+
+func start(dialogue_resource: DialogueResource, title: String, extra_game_states: Array = []) -> void:
+	temporary_game_states = [self] + extra_game_states
+	is_waiting_for_input = false
+	resource = dialogue_resource
+	self.dialogue_line = await resource.get_next_dialogue_line(title, temporary_game_states)
+	# Check if extra_game_states contains a texture
+	if extra_game_states.size() > 0 and extra_game_states[0] is Texture:
+		update_portrait(extra_game_states[0])
+
+func next(next_id: String) -> void:
+	self.dialogue_line = await resource.get_next_dialogue_line(next_id, temporary_game_states)
+
+func _on_mutated(_mutation: Dictionary) -> void:
+	is_waiting_for_input = false
+	will_hide_balloon = true
+	get_tree().create_timer(0.1).timeout.connect(func():
+		if will_hide_balloon:
+			will_hide_balloon = false
+			balloon.hide()
+	)
+
+func _on_balloon_gui_input(event: InputEvent) -> void:
+	if dialogue_label.is_typing:
+		var skip_button_was_pressed: bool = event.is_action_pressed(skip_action)
+		if skip_button_was_pressed:
+			get_viewport().set_input_as_handled()
+			dialogue_label.skip_typing()
+			return
+
+	if not is_waiting_for_input:
+		return
+	if dialogue_line.responses.size() > 0:
+		return
+
+	if event.is_action_pressed(next_action) and get_viewport().gui_get_focus_owner() == balloon:
+		next(dialogue_line.next_id)
+
+func _on_responses_menu_response_selected(response: DialogueResponse) -> void:
+	next(response.next_id)
+
+func _on_responses_menu_visibility_changed() -> void:
+	if responses_menu.visible:
+		margin_container.hide()
+	else:
+		margin_container.show()
+
+func _update_responses_menu(responses: Array) -> void:
+	var buttons = [
+		option_button_1,
+		option_button_2,
+		option_button_3,
+		option_button_4
+	]
+	var labels = [
+		option_label_1,
+		option_label_2,
+		option_label_3,
+		option_label_4
+	]
+	
+	for i in range(4):
+		var button = buttons[i]
+		var label = labels[i]
+		if i < responses.size():
+			label.text = responses[i].text
+			label.show()
+			button.disabled = false
+		else:
+			label.text = ""
+			label.hide()
+			button.disabled = true
+
+	selected_response_index = -1
+
+func _on_response_button_pressed(index: int) -> void:
+	selected_response_index = index
+	print("Option button ", index, " pressed.")
+
+	if selected_response_index != -1:
+		var response = dialogue_line.responses[selected_response_index]
+		is_waiting_for_input = true
+	else:
+		print("No response selected.")
+
+func update_portrait(character_texture: Texture):
+	await ready  # Ensure _ready() runs first
+
+	if portrait == null:
+		print("Error: Portrait node is still null after ready!")
+		return
+
+	if character_texture == null:
+		print("Error: Given texture is null!")
+		return
+
+	print("Updating portrait with texture:", character_texture)
+	portrait.texture = character_texture
+	portrait.scale = Vector2(1, 1)  # Adjust scale as needed
+
+

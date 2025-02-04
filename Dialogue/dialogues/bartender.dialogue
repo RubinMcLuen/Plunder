@@ -1,0 +1,33 @@
+~ finished_bounty
+Bartender: Welcome back captain!
+Bartender: I heard you turned in that bounty, must have been a [[fierce|legendary]] battle aye?
+Bartender: Care for a drink?
+	This one is on the house.
+- Yes
+	Bartender: Here you go lad.
+- No
+	Bartender: Suit yourself.
+=> END
+
+~ normal
+% Bartender: It's a pleasure to have you captain.
+% Bartender: Aye, the sea's been kind to ye today?
+% Bartender: What's a pirate's favorite letter?\nYou'd think it's R, but it's the C they love most.
+% Bartender: Why don't pirates take a bath before they walk the plank?\nBecause they'll just wash up on shore later.
+% Bartender: What did the ocean say to the pirate?\nNothing, it just waved.
+=> END
+
+~ introduction
+Bartender: Finally got your sea legs back aye?
+Bartender: That scurvy is no funny business, you ought to spend less time on the poopdeck.
+Bartender: If you're looking for work, check the bounty board outside.
+Bartender: I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.
+=> END
+
+~ repeat_introduction
+Bartender: If you're looking for work, check the bounty board outside.
+Bartender: I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.
+=> END
+
+
+

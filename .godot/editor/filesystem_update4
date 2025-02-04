@@ -1,12 +1,7 @@
-res://CharacterCreation/character_creator.tscn
+res://Dialogue/balloon.tscn
 res://SaveMenu/save_menu.gd
-res://Character/character.tscn
-res://CharacterCreation/item_buttons.tscn
-res://CharacterCreation/asset_index.json
-res://CharacterCreation/character_creator.gd
-res://CharacterCreation/ItemButtons.gd
-res://CharacterCreation/category_buttons.tscn
-res://Character/Player/player.tscn
-res://Character/Player/Player.gd
 res://Tavern/Tavern.tscn
-res://Tavern/Tavern.gd
+res://Character/NPC/npc.tscn
+res://Dialogue/balloon.gd
+res://Character/NPC/bartender.gd
+res://Character/Player/Player.gd
