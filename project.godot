@@ -14,6 +14,7 @@ config/name="Game"
 run/main_scene="res://Tavern/Tavern.tscn"
 config/features=PackedStringArray("4.2", "Mobile")
 run/max_fps=60
+config/icon="res://clienticon.png"
 
 [audio]
 
