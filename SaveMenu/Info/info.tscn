@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://dadq4qd7elc50"]
+
+[ext_resource type="Script" path="res://SaveMenu/Info/info.gd" id="1_5mxbx"]
+[ext_resource type="Texture2D" uid="uid://deslq2y8f8myq" path="res://SaveMenu/Info/background.png" id="1_bxchc"]
+[ext_resource type="Texture2D" uid="uid://drt1ekkil3pj7" path="res://SaveMenu/Info/portraitframe.png" id="2_ofus4"]
+[ext_resource type="Texture2D" uid="uid://dgrw1tmcrnmxw" path="res://SaveMenu/Info/portraitbackground.png" id="3_hnh0h"]
+[ext_resource type="Texture2D" uid="uid://dt4jpqh3j16wp" path="res://SaveMenu/Info/playicon.png" id="4_buhal"]
+[ext_resource type="Texture2D" uid="uid://ci84x50648pgy" path="res://SaveMenu/Info/deleteicon.png" id="5_ketnp"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://Retro Gaming.ttf" id="6_ibef5"]
+[ext_resource type="PackedScene" uid="uid://dlh32l6ht3jiy" path="res://Character/Player/player.tscn" id="7_orbcw"]
+
+[node name="Info" type="Node2D"]
+script = ExtResource("1_5mxbx")
+
+[node name="background" type="Sprite2D" parent="."]
+texture = ExtResource("1_bxchc")
+
+[node name="portraitbackground" type="Sprite2D" parent="."]
+position = Vector2(-65, 0)
+texture = ExtResource("3_hnh0h")
+
+[node name="portraitframe" type="Sprite2D" parent="."]
+position = Vector2(-65, 0)
+texture = ExtResource("2_ofus4")
+
+[node name="playbutton" type="TextureButton" parent="."]
+offset_left = -44.0
+offset_top = -2.0
+offset_bottom = 38.0
+texture_normal = ExtResource("4_buhal")
+
+[node name="deletebutton" type="TextureButton" parent="."]
+offset_left = 5.0
+offset_top = -2.0
+offset_right = 45.0
+offset_bottom = 38.0
+texture_normal = ExtResource("5_ketnp")
+
+[node name="name" type="RichTextLabel" parent="."]
+offset_left = -45.0
+offset_top = -18.0
+offset_right = 86.0
+offset_bottom = -1.0
+theme_override_colors/default_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_fonts/normal_font = ExtResource("6_ibef5")
+theme_override_font_sizes/normal_font_size = 11
+text = "Captain"
+
+[node name="Control" type="Control" parent="."]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -79.0
+offset_top = -14.0
+offset_right = -51.0
+offset_bottom = 14.0
+
+[node name="Player" parent="Control" instance=ExtResource("7_orbcw")]
+position = Vector2(14, 40)
+scale = Vector2(2, 2)
+customization_only = true

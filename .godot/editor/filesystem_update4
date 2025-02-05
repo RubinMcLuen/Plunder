@@ -5,3 +5,9 @@ res://Character/NPC/npc.tscn
 res://Dialogue/balloon.gd
 res://Character/NPC/bartender.gd
 res://Character/Player/Player.gd
+res://SaveMenu/Info/info.tscn
+res://SaveMenu/save_menu.tscn
+res://Character/Player/player.tscn
+res://TitleScreen/title_screen.tscn
+res://SaveMenu/Info/info.gd
+res://Global.gd

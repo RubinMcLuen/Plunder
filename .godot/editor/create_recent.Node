@@ -1,3 +1,8 @@
+ColorRect
+Panel
+Control
+RichTextLabel
+TextureButton
 Sprite2D
 Area2D
 CollisionShape2D
@@ -8,7 +13,3 @@ Polygon2D
 CharacterBody2D
 AudioStreamPlayer
 AnimatedSprite2D
-LineEdit
-Label
-TextureButton
-AnimationPlayer

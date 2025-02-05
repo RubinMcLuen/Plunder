@@ -17,7 +17,9 @@ var direction := Vector2.RIGHT          # Default facing direction is right
 @export var rleg: Sprite2D
 
 # Exported Variable for Player Name Input
-@export var name_input: LineEdit  # Assign this in the Godot Editor
+var name_input = "name"
+
+@export var customization_only: bool = false
 
 # We'll store the raw input direction here
 var custom_velocity := Vector2.ZERO
@@ -44,19 +46,23 @@ var mouse_target_position: Vector2 = Vector2.ZERO
 
 
 func _ready():
-	# Initialize sprite_parts list for easy iteration
 	sprite_parts = [skin, hat, facialhair, body, larm, rarm, lleg, rleg]
-	
-	# Start with idle animation
-	play_idle()
-	
-	# Load player customization
 	load_customization()
+	
+	if customization_only:
+		set_physics_process(false)
+	else:
+		play_idle()
+		set_physics_process(true)
+
 
 func _physics_process(_delta: float) -> void:
+	if customization_only:
+		return
 	handle_player_input()
 	update_animation()
 	move_character()
+
 
 # ---------------------------
 # Movement and Animation Functions
@@ -182,7 +188,7 @@ func load_character_from_slot(slot_num: int = 0):
 func apply_character_data(data: Dictionary):
 	# Set the player's name if available
 	if "name" in data and name_input:
-		name_input.text = data["name"]
+		name_input = data["name"]
 
 	# Apply skin customization
 	if "skin" in data and skin:

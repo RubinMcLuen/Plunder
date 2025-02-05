@@ -1,5 +1,5 @@
 e22c9c70a03ae172662e56cbc433647f
-::res://::1738636712
+::res://::1738704721
 clienticon.png::CompressedTexture2D::7882032090579473772::1738636712::1738636713::1::::<><>::
 Global.gd::GDScript::-1::1738210697::0::1::::<>Node<>::
 Retro Gaming.ttf::FontFile::2501256111689734373::1727316216::1727316221::1::::<><>::
@@ -78,8 +78,8 @@ character.tscn::PackedScene::5131681254143960095::1738222427::0::1::::<><>::uid:
 bartender.gd::GDScript::-1::1738636397::0::1::::<>Area2D<>::
 npc.tscn::PackedScene::1130333279975514458::1738636187::0::1::::<><>::uid://cfd3bm3d7gr3t::::res://Character/character.tscn<>res://Character/NPC/bartender.gd
 ::res://Character/NPC/npcs/::1738222256
-::res://Character/Player/::1738636157
-Player.gd::GDScript::-1::1738636157::0::1::::<>CharacterBody2D<>::
+::res://Character/Player/::1738704720
+Player.gd::GDScript::-1::1738704720::0::1::::<>CharacterBody2D<>::
 player.tscn::PackedScene::7947538893599309052::1738222427::0::1::::<><>::uid://cfd3bm3d7gr3t::::res://Character/character.tscn<>res://Character/Player/Player.gd
 ::res://CharacterCreation/::1738222427
 asset_index.json::JSON::-1::1738205300::0::1::::<><>::
@@ -232,9 +232,9 @@ rarm2.png::CompressedTexture2D::7859241206835475896::1738192167::1738192167::1::
 rarm3.png::CompressedTexture2D::5537690530666535882::1738192167::1738192167::1::::<><>::
 rarm4.png::CompressedTexture2D::3311895547066137294::1738192167::1738192167::1::::<><>::
 rarm5.png::CompressedTexture2D::1692475156646124361::1738192167::1738192167::1::::<><>::
-::res://Dialogue/::1738636397
+::res://Dialogue/::1738704721
 balloon.gd::GDScript::-1::1738635833::0::1::::<>CanvasLayer<>::
-balloon.tscn::PackedScene::1374632843758497411::1738636397::0::1::::<><>::res://Dialogue/balloon.gd<>uid://c8ixypn3iikla::::res://Dialogue/assets/dialogue_frame.png<>res://addons/dialogue_manager/dialogue_label.gd<>uid://bbvvk8cijnn3b::::res://Retro Gaming.ttf<>uid://b5jekmswl6p1g::::res://Dialogue/assets/dialogue_text_box.png<>uid://6cuew7522vte::::res://Dialogue/assets/dialogue_next_button.png<>uid://c0v3jgq5xt625::::res://Dialogue/assets/dialogue_next_button_down.png<>uid://b0f640v1pvyg0::::res://Dialogue/assets/dialogue_option_button.png<>uid://c5kccr5n6tcb1::::res://Dialogue/assets/dialogue_option_button_down.png<>uid://d1njd1bw0ryjq::::res://Dialogue/assets/dialogue_portrait_background.png
+balloon.tscn::PackedScene::1374632843758497411::1738704721::0::1::::<><>::res://Dialogue/balloon.gd<>uid://c8ixypn3iikla::::res://Dialogue/assets/dialogue_frame.png<>res://addons/dialogue_manager/dialogue_label.gd<>uid://bbvvk8cijnn3b::::res://Retro Gaming.ttf<>uid://b5jekmswl6p1g::::res://Dialogue/assets/dialogue_text_box.png<>uid://6cuew7522vte::::res://Dialogue/assets/dialogue_next_button.png<>uid://c0v3jgq5xt625::::res://Dialogue/assets/dialogue_next_button_down.png<>uid://b0f640v1pvyg0::::res://Dialogue/assets/dialogue_option_button.png<>uid://c5kccr5n6tcb1::::res://Dialogue/assets/dialogue_option_button_down.png<>uid://d1njd1bw0ryjq::::res://Dialogue/assets/dialogue_portrait_background.png
 ::res://Dialogue/assets/::1738221422
 bartender.png::CompressedTexture2D::9213679356439944354::1738216679::1738221422::1::::<><>::
 dialogue_frame.png::CompressedTexture2D::7107028388577013662::1738216679::1738221418::1::::<><>::
@@ -249,7 +249,7 @@ textbox.png::CompressedTexture2D::8689980746912966066::1738217304::1738221418::1
 textboxnoportrait.png::CompressedTexture2D::5656004391750771496::1738217307::1738221418::1::::<><>::
 ::res://Dialogue/dialogues/::1738226049
 bartender.dialogue::Resource::7961472973291121971::1738216679::1738226049::1::::<><>::res://addons/dialogue_manager/dialogue_resource.gd
-::res://SaveMenu/::1738635182
+::res://SaveMenu/::1738707388
 save_menu.gd::GDScript::-1::1738635182::0::1::::<>Node2D<>::
 save_menu.tscn::PackedScene::4885948112350229941::1738222427::0::1::::<><>::res://SaveMenu/save_menu.gd<>uid://pebqa3f2by7w::::res://SaveMenu/assets/saveslotmenubackground.png<>uid://dpxw6omkpxdjq::::res://SaveMenu/assets/header.png<>uid://ddnlrb63k22yr::::res://SaveMenu/save_slot.tscn<>uid://d0m8grhuo6nq1::::res://SFX/click3.mp3<>uid://b701nxeo82055::::res://SFX/click4.mp3<>uid://cc70302gibsel::::res://SFX/click2.mp3
 save_slot.tscn::PackedScene::7397363839911927269::1737968522::0::1::::<><>::uid://b6ld5qunqr64g::::res://SaveMenu/assets/addsavesloticon.png<>uid://208u7acyfmtc::::res://SaveMenu/assets/BW1.png<>uid://ddddy6dj7r58::::res://SaveMenu/assets/BW2.png<>uid://c607ujpug0w2e::::res://SaveMenu/assets/BW3.png<>uid://0c6pe6paf80::::res://SaveMenu/assets/BW4.png<>uid://bn3pr1xie5gcv::::res://SaveMenu/assets/BW5.png<>uid://c3ty8nw25yafd::::res://SaveMenu/assets/BW6.png<>uid://51jl6sf72ghg::::res://SaveMenu/assets/BW7.png<>uid://dyt4o6h5jo3yl::::res://SaveMenu/assets/BW8.png<>uid://dejn1hoq5q6j0::::res://SaveMenu/assets/C1.png<>uid://dhugx5of8d0cq::::res://SaveMenu/assets/C2.png<>uid://j46bkd57jpjw::::res://SaveMenu/assets/C3.png<>uid://d4hgr1ejwg6b4::::res://SaveMenu/assets/C4.png<>uid://dc5fjb0re4jln::::res://SaveMenu/assets/C5.png<>uid://b1j06452go3te::::res://SaveMenu/assets/C6.png<>uid://komlu5qfiidi::::res://SaveMenu/assets/C7.png<>uid://c1yf2mvwak7pl::::res://SaveMenu/assets/C8.png<>uid://c8dnaxo026ciw::::res://SaveMenu/assets/emptysavesloticon.png<>uid://chk3jh7rnngni::::res://SaveMenu/assets/savesloticonborder.png<>uid://61jf0k5yf5rs::::res://SaveMenu/assets/saveslotshadow.png
@@ -277,6 +277,13 @@ savesloticonborder.png::CompressedTexture2D::5286523616223116850::1737427349::17
 saveslotinfobackground.png::CompressedTexture2D::4586865369307686335::1736993697::1736994450::1::::<><>::
 saveslotmenubackground.png::CompressedTexture2D::1061179498799819662::1727327297::1737968924::1::::<><>::
 saveslotshadow.png::CompressedTexture2D::2230084686216145076::1736993697::1736994459::1::::<><>::
+::res://SaveMenu/Info/::1738707633
+background.png::CompressedTexture2D::7477874141540540392::1738707423::1738707423::1::::<><>::
+deleteicon.png::CompressedTexture2D::5404280064193655064::1738707406::1738707407::1::::<><>::
+playicon.png::CompressedTexture2D::8553291127385634199::1738707406::1738707407::1::::<><>::
+portraitbackground.png::CompressedTexture2D::7616872755804323084::1738707631::1738707407::1::::<><>::
+portraitframe.png::CompressedTexture2D::8393281896301383966::1738707633::1738707633::1::::<><>::
+info.tscn::PackedScene::7166479290716718069::1738707436::0::1::::<><>::
 ::res://SFX/::1738048103
 appear-online.mp3::AudioStreamMP3::4496241693617766784::1738043876::1738043876::1::::<><>::
 click2.mp3::AudioStreamMP3::4980848424917514723::1738043876::1738043876::1::::<><>::
@@ -284,7 +291,7 @@ click3.mp3::AudioStreamMP3::8940770955242787334::1738048103::1738048103::1::::<>
 click4.mp3::AudioStreamMP3::4685676195991880614::1738045314::1738045314::1::::<><>::
 click.mp3::AudioStreamMP3::4845414735322001433::1738043876::1738043876::1::::<><>::
 The Beach Where Dreams Die.wav::AudioStreamWAV::1335799294250064210::1738044588::1738044648::1::::<><>::
-::res://Tavern/::1738636187
+::res://Tavern/::1738704721
 1.png::CompressedTexture2D::4141990592795840385::1738139252::1738139252::1::::<><>::
 2.png::CompressedTexture2D::3795600674362379498::1738139252::1738139252::1::::<><>::
 3.png::CompressedTexture2D::6422802177444421304::1738139252::1738139252::1::::<><>::
@@ -314,7 +321,7 @@ The Beach Where Dreams Die.wav::AudioStreamWAV::1335799294250064210::1738044588:
 27.png::CompressedTexture2D::6068706990525254203::1738144785::1738144785::1::::<><>::
 28.png::CompressedTexture2D::1402131136100008774::1738144785::1738144785::1::::<><>::
 Tavern.gd::GDScript::-1::1738210529::0::1::::<>Node2D<>::
-Tavern.tscn::PackedScene::5394083297899691786::1738636187::0::1::::<><>::uid://dlh32l6ht3jiy::::res://Character/Player/player.tscn<>res://Tavern/Tavern.gd<>uid://qdsooeakwd1k::::res://Character/NPC/npc.tscn<>uid://dtl865k56rp5b::::res://Tavern/taverninterior2.png<>uid://cxriu4ggtgh5a::::res://Tavern/3.png<>uid://cnrkygmkm1vnj::::res://Tavern/6.png<>uid://b0an8k1ojomxd::::res://Tavern/1.png<>uid://bbtinyu68crr8::::res://Tavern/12.png<>uid://bucu8u1pyulne::::res://Tavern/2.png<>uid://ci57eoplr72nk::::res://Tavern/19.png<>uid://cl37dxegmmo2c::::res://Tavern/22.png<>uid://c6hb81oobd11l::::res://Tavern/4.png<>uid://brodly2dirtk8::::res://Tavern/5.png<>uid://b7wnwukubyevy::::res://Tavern/7.png<>uid://6lk7bdbims4s::::res://Tavern/8.png<>uid://bb7tbgttc706k::::res://Tavern/9.png<>uid://c2lnemmy7rsgo::::res://Tavern/10.png<>uid://pxejptwub70b::::res://Tavern/11.png<>uid://chlsccmqsk2fd::::res://Tavern/13.png<>uid://bept4ck0yqplj::::res://Tavern/14.png<>uid://bhe32vnjtfp8t::::res://Tavern/15.png<>uid://b517x1nd2drms::::res://Tavern/16.png<>uid://btvc5dmcyecpv::::res://Tavern/17.png<>uid://34u2c70fx2xi::::res://Tavern/18.png<>uid://bbyylfcs0cy8m::::res://Tavern/20.png<>uid://ckujdqy7k2xhl::::res://Tavern/21.png<>uid://crigct5tc3mx0::::res://Tavern/23.png<>uid://boaswpskyfsht::::res://Tavern/24.png<>uid://ugjd5ls5sf8k::::res://Tavern/25.png<>uid://u2o1ep1ov5d5::::res://Tavern/26.png<>uid://cspyynoayouwp::::res://Tavern/27.png<>uid://t8g5otoebhr7::::res://Tavern/28.png
+Tavern.tscn::PackedScene::5394083297899691786::1738704721::0::1::::<><>::uid://dlh32l6ht3jiy::::res://Character/Player/player.tscn<>res://Tavern/Tavern.gd<>uid://qdsooeakwd1k::::res://Character/NPC/npc.tscn<>uid://dtl865k56rp5b::::res://Tavern/taverninterior2.png<>uid://cxriu4ggtgh5a::::res://Tavern/3.png<>uid://cnrkygmkm1vnj::::res://Tavern/6.png<>uid://b0an8k1ojomxd::::res://Tavern/1.png<>uid://bbtinyu68crr8::::res://Tavern/12.png<>uid://bucu8u1pyulne::::res://Tavern/2.png<>uid://ci57eoplr72nk::::res://Tavern/19.png<>uid://cl37dxegmmo2c::::res://Tavern/22.png<>uid://c6hb81oobd11l::::res://Tavern/4.png<>uid://brodly2dirtk8::::res://Tavern/5.png<>uid://b7wnwukubyevy::::res://Tavern/7.png<>uid://6lk7bdbims4s::::res://Tavern/8.png<>uid://bb7tbgttc706k::::res://Tavern/9.png<>uid://c2lnemmy7rsgo::::res://Tavern/10.png<>uid://pxejptwub70b::::res://Tavern/11.png<>uid://chlsccmqsk2fd::::res://Tavern/13.png<>uid://bept4ck0yqplj::::res://Tavern/14.png<>uid://bhe32vnjtfp8t::::res://Tavern/15.png<>uid://b517x1nd2drms::::res://Tavern/16.png<>uid://btvc5dmcyecpv::::res://Tavern/17.png<>uid://34u2c70fx2xi::::res://Tavern/18.png<>uid://bbyylfcs0cy8m::::res://Tavern/20.png<>uid://ckujdqy7k2xhl::::res://Tavern/21.png<>uid://crigct5tc3mx0::::res://Tavern/23.png<>uid://boaswpskyfsht::::res://Tavern/24.png<>uid://ugjd5ls5sf8k::::res://Tavern/25.png<>uid://u2o1ep1ov5d5::::res://Tavern/26.png<>uid://cspyynoayouwp::::res://Tavern/27.png<>uid://t8g5otoebhr7::::res://Tavern/28.png
 taverninterior2.png::CompressedTexture2D::8517618848422645233::1738117599::1738121179::1::::<><>::
 ::res://TitleScreen/::1738121049
 title_screen.gd::GDScript::-1::1738044079::0::1::::<>Node2D<>::
