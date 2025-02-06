@@ -11,3 +11,4 @@ res://Tavern/tavern.tscn
 res://Tavern/tavern.gd
 res://Island/island.gd
 res://Global.gd
+res://Character/NPC/bartender.gd

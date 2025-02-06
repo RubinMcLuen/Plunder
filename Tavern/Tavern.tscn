@@ -98,23 +98,33 @@ y_sort_enabled = true
 script = ExtResource("1_8g3rb")
 player = NodePath("Player")
 
-[node name="Bartender" parent="." instance=ExtResource("2_iwfcd")]
-position = Vector2(270, 58)
-collision_layer = 2
-
 [node name="Player" parent="." instance=ExtResource("3_v7aqn")]
 position = Vector2(381, 41)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(1.5, 1.5)
 
-[node name="ColorRect" type="ColorRect" parent="Player/Camera2D"]
+[node name="exit" type="ColorRect" parent="Player/Camera2D"]
 z_index = 5
 offset_left = -160.0
 offset_top = -90.0
 offset_right = 160.0
 offset_bottom = 90.0
+mouse_filter = 2
 color = Color(0, 0, 0, 0)
+
+[node name="enter" type="ColorRect" parent="Player/Camera2D"]
+z_index = 5
+offset_left = -160.0
+offset_top = -90.0
+offset_right = 160.0
+offset_bottom = 90.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="Bartender" parent="." instance=ExtResource("2_iwfcd")]
+position = Vector2(270, 58)
+collision_layer = 2
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1

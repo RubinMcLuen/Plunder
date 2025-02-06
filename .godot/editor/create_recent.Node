@@ -1,8 +1,8 @@
-CollisionShape2D
 ColorRect
+CollisionShape2D
+Area2D
 TileMap
 Camera2D
-Area2D
 Panel
 Control
 RichTextLabel

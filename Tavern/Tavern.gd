@@ -5,19 +5,29 @@ extends Node2D
 func _ready():
 	load_player_position()
 	$Exit.body_entered.connect(_on_exit_body_entered)
-
+	var color_rect = $Player/Camera2D/enter
+	
+	# Tween the alpha from 1 to 0 over 1 second.
+	var tween = create_tween()
+	tween.tween_property(color_rect, "color:a", 0.0, 1.0)
 
 func _on_exit_body_entered(body):
 	if body == player:
 		Global.spawn_position = Vector2(-88, -59)  # Save spawn coordinate
 		var tween = create_tween()
-		tween.tween_property($Player/Camera2D/ColorRect, "color:a", 1.0, 1.0)
+		tween.tween_property($Player/Camera2D/exit, "color:a", 1.0, 1.0)
 		await tween.finished  # Wait until the tween is done
 		get_tree().change_scene_to_file("res://Island/island.tscn")
 
 
 
 func load_player_position():
+	if Global.spawn_position != null:
+		player.position = Global.spawn_position
+		print("Loaded player position from Global:", player.position)
+		Global.spawn_position = null  # Reset after using it
+		return
+		
 	var slot = Global.active_save_slot
 	var save_file_path = "user://saveslot" + str(slot) + ".json"
 
