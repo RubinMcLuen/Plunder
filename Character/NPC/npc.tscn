@@ -1,12 +1,41 @@
-[gd_scene load_steps=4 format=3 uid="uid://qdsooeakwd1k"]
+[gd_scene load_steps=10 format=3 uid="uid://qdsooeakwd1k"]
 
 [ext_resource type="PackedScene" uid="uid://cfd3bm3d7gr3t" path="res://Character/character.tscn" id="1_fukj7"]
 [ext_resource type="Script" path="res://Character/NPC/bartender.gd" id="2_606il"]
+[ext_resource type="Texture2D" uid="uid://7wp20lj6lote" path="res://CharacterCreation/customizations/facialhair/facialhair3.png" id="2_vkwoq"]
+[ext_resource type="Texture2D" uid="uid://ci0hmv8glsyct" path="res://CharacterCreation/customizations/top/LeftArm/larm5.png" id="3_uxfa2"]
+[ext_resource type="Texture2D" uid="uid://dimp6ou8n2y0r" path="res://CharacterCreation/customizations/top/RightArm/rarm5.png" id="4_6ukne"]
+[ext_resource type="Texture2D" uid="uid://8dgauio3ylg0" path="res://CharacterCreation/customizations/top/Body/body5.png" id="5_6xrnh"]
+[ext_resource type="Texture2D" uid="uid://db2kygu1um7qn" path="res://CharacterCreation/customizations/bottom/LeftLeg/lleg5.png" id="6_uw5we"]
+[ext_resource type="Texture2D" uid="uid://b1vcj5rh4wq34" path="res://CharacterCreation/customizations/bottom/RightLeg/rleg5.png" id="7_l1q8s"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_htl2h"]
 size = Vector2(14, 20)
 
 [node name="NPC" instance=ExtResource("1_fukj7")]
+
+[node name="facialhair" parent="Appearance" index="2"]
+z_index = 0
+texture = ExtResource("2_vkwoq")
+
+[node name="Top" parent="Appearance" index="3"]
+z_index = 0
+
+[node name="leftarm" parent="Appearance/Top" index="0"]
+texture = ExtResource("3_uxfa2")
+
+[node name="rightarm" parent="Appearance/Top" index="1"]
+z_index = 0
+texture = ExtResource("4_6ukne")
+
+[node name="body" parent="Appearance/Top" index="2"]
+texture = ExtResource("5_6xrnh")
+
+[node name="leftleg" parent="Appearance/Bottom" index="0"]
+texture = ExtResource("6_uw5we")
+
+[node name="rightleg" parent="Appearance/Bottom" index="1"]
+texture = ExtResource("7_l1q8s")
 
 [node name="Area2D" type="Area2D" parent="." index="2"]
 script = ExtResource("2_606il")

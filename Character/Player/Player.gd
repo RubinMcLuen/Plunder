@@ -211,9 +211,10 @@ func apply_character_data(data: Dictionary):
 		
 		if "leftarm" in top_data and larm:
 			load_or_clear(larm, top_data["leftarm"])
-		
+			print(top_data["leftarm"])
 		if "rightarm" in top_data and rarm:
 			load_or_clear(rarm, top_data["rightarm"])
+			print(top_data["rightarm"])
 
 	# Apply bottom (legs) customization
 	if "bottom" in data:

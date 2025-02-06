@@ -32,11 +32,12 @@ z_index = 1
 hframes = 8
 vframes = 7
 
-[node name="body" type="Sprite2D" parent="Appearance/Top"]
+[node name="rightarm" type="Sprite2D" parent="Appearance/Top"]
+z_index = 1
 hframes = 8
 vframes = 7
 
-[node name="rightarm" type="Sprite2D" parent="Appearance/Top"]
+[node name="body" type="Sprite2D" parent="Appearance/Top"]
 hframes = 8
 vframes = 7
 

@@ -7,7 +7,8 @@
   "facialhair": [
 	"res://CharacterCreation/customizations/facialhair/facialhair0.png",
 	"res://CharacterCreation/customizations/facialhair/facialhair1.png",
-	"res://CharacterCreation/customizations/facialhair/facialhair2.png"
+	"res://CharacterCreation/customizations/facialhair/facialhair2.png",
+	"res://CharacterCreation/customizations/facialhair/facialhair3.png"
   ],
   "hat": [
 	"res://CharacterCreation/customizations/hat/hat0.png",
@@ -41,6 +42,21 @@
 	  "leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm4.png",
 	  "body": "res://CharacterCreation/customizations/top/Body/body4.png",
 	  "rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm4.png"
+	},
+	{
+	  "leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm5.png",
+	  "body": "res://CharacterCreation/customizations/top/Body/body5.png",
+	  "rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm5.png"
+	},
+	{
+	  "leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm6.png",
+	  "body": "res://CharacterCreation/customizations/top/Body/body6.png",
+	  "rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm6.png"
+	},
+	{
+	  "leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm7.png",
+	  "body": "res://CharacterCreation/customizations/top/Body/body7.png",
+	  "rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm7.png"
 	}
   ],
   "bottom": [
@@ -63,6 +79,18 @@
 	{
 	  "leftleg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg4.png",
 	  "rightleg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg4.png"
+	},
+	{
+	  "leftleg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg5.png",
+	  "rightleg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg5.png"
+	},
+	{
+	  "leftleg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg6.png",
+	  "rightleg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg6.png"
+	},
+	{
+	  "leftleg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg7.png",
+	  "rightleg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg7.png"
 	}
   ],
   "misc": [

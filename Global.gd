@@ -1,6 +1,7 @@
 extends Node
 
 var active_save_slot: int = -1
+var spawn_position = null
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
@@ -8,6 +9,7 @@ func _notification(what):
 		save_game_state()
 		# Accept the quit request to close the application
 		get_tree().quit()
+
 
 
 func save_game_state():
@@ -18,11 +20,11 @@ func save_game_state():
 	var current_scene = get_tree().current_scene.scene_file_path
 
 	# If the current scene is the title screen, don't overwrite the save data
-	if current_scene.ends_with("titlescreen.tscn"):
+	if current_scene.ends_with("title_screen.tscn"):
 		print("Not saving game state on title screen.")
 		return
 	if current_scene.ends_with("save_menu.tscn"):
-		print("Not saving game state on title screen.")
+		print("Not saving game state on save menu screen.")
 		return
 
 	# Get player position
