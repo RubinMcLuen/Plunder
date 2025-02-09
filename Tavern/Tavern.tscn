@@ -105,6 +105,7 @@ position = Vector2(381, 41)
 zoom = Vector2(1.5, 1.5)
 
 [node name="exit" type="ColorRect" parent="Player/Camera2D"]
+visible = false
 z_index = 5
 offset_left = -160.0
 offset_top = -90.0
@@ -114,6 +115,7 @@ mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
 [node name="enter" type="ColorRect" parent="Player/Camera2D"]
+visible = false
 z_index = 5
 offset_left = -160.0
 offset_top = -90.0
@@ -125,6 +127,7 @@ color = Color(0, 0, 0, 1)
 [node name="Bartender" parent="." instance=ExtResource("2_iwfcd")]
 position = Vector2(270, 58)
 collision_layer = 2
+npc_name = "bartender"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1

@@ -4,7 +4,6 @@
 [ext_resource type="Script" path="res://Character/Player/Player.gd" id="2_1cbst"]
 
 [node name="Player" node_paths=PackedStringArray("skin", "hat", "facialhair", "body", "larm", "rarm", "lleg", "rleg") instance=ExtResource("1_rkp52")]
-position = Vector2(0, 9)
 script = ExtResource("2_1cbst")
 skin = NodePath("Appearance/skin")
 hat = NodePath("Appearance/hat")
@@ -14,9 +13,6 @@ larm = NodePath("Appearance/Top/leftarm")
 rarm = NodePath("Appearance/Top/rightarm")
 lleg = NodePath("Appearance/Bottom/leftleg")
 rleg = NodePath("Appearance/Bottom/rightleg")
-
-[node name="Appearance" parent="." index="0"]
-position = Vector2(0, -9)
 
 [node name="Top" parent="Appearance" index="3"]
 z_index = 0

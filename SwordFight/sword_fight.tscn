@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://cadok2distotv"]
+
+[ext_resource type="Script" path="res://SwordFight/swordfight.gd" id="1_ftuw3"]
+[ext_resource type="Script" path="res://SwordFight/sword_trail.gd" id="4_0ph4i"]
+[ext_resource type="PackedScene" uid="uid://dqnox1fpo26y" path="res://SwordFight/Projectile.tscn" id="6_u8dfi"]
+[ext_resource type="JSON" path="res://SwordFight/hard.json" id="7_1nlqe"]
+[ext_resource type="PackedScene" uid="uid://dyhw0haqd1jup" path="res://SwordFight/feint_projectile.tscn" id="8_q4u7y"]
+
+[node name="SwordFight" type="Node2D"]
+script = ExtResource("1_ftuw3")
+projectile_scene = ExtResource("6_u8dfi")
+feint_projectile_scene = ExtResource("8_q4u7y")
+config_file = ExtResource("7_1nlqe")
+feint_chance = 0.0
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(240, 135)
+
+[node name="SwordTrail" type="Line2D" parent="."]
+z_index = 10
+width = 1.0
+script = ExtResource("4_0ph4i")

@@ -19,13 +19,12 @@ extends CanvasLayer
 @onready var option_label_3: RichTextLabel = %Option3Label
 @onready var option_label_4: RichTextLabel = %Option4Label
 
-@onready var portrait: Sprite2D = %Portrait
-
 var resource: DialogueResource
 var temporary_game_states: Array = []
 var is_waiting_for_input: bool = false
 var will_hide_balloon: bool = false
 var selected_response_index: int = -1
+signal dialogue_finished
 
 var dialogue_line: DialogueLine:
 	set(next_dialogue_line):
@@ -39,8 +38,10 @@ var dialogue_line: DialogueLine:
 
 
 		if not next_dialogue_line:
+			emit_signal("dialogue_finished")
 			queue_free()
 			return
+
 
 		if not is_node_ready():
 			await ready
@@ -131,9 +132,10 @@ func start(dialogue_resource: DialogueResource, title: String, extra_game_states
 	is_waiting_for_input = false
 	resource = dialogue_resource
 	self.dialogue_line = await resource.get_next_dialogue_line(title, temporary_game_states)
-	# Check if extra_game_states contains a texture
-	if extra_game_states.size() > 0 and extra_game_states[0] is Texture:
+	# Check if extra_game_states contains a node instead of a texture.
+	if extra_game_states.size() > 0 and extra_game_states[0] is Node:
 		update_portrait(extra_game_states[0])
+
 
 func next(next_id: String) -> void:
 	self.dialogue_line = await resource.get_next_dialogue_line(next_id, temporary_game_states)
@@ -210,19 +212,28 @@ func _on_response_button_pressed(index: int) -> void:
 	else:
 		print("No response selected.")
 
-func update_portrait(character_texture: Texture):
-	await ready  # Ensure _ready() runs first
+func update_portrait(character_node: Node) -> void:
+	await ready  # Ensure _ready() has run
 
-	if portrait == null:
-		print("Error: Portrait node is still null after ready!")
+	if not character_node:
+		print("Error: Given character node is null!")
 		return
 
-	if character_texture == null:
-		print("Error: Given texture is null!")
-		return
+	# Duplicate the node (using a deep duplicate if needed)
+	var new_portrait = character_node.duplicate()
+	
+		# Set the scale to exactly 2 (Vector2(2, 2))
+	new_portrait.scale = Vector2(4, 4)
+	
+	# Set the position to (16, 16)
+	if new_portrait is Node2D:
+		new_portrait.position = Vector2(28, 44)
 
-	print("Updating portrait with texture:", character_texture)
-	portrait.texture = character_texture
-	portrait.scale = Vector2(1, 1)  # Adjust scale as needed
+	
+	# Add the new portrait instance to a container or to self.
+	$Balloon/Container.add_child(new_portrait)
+
+
+
 
 

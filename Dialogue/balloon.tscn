@@ -234,9 +234,5 @@ offset_bottom = 60.0
 position = Vector2(28, 28)
 texture = ExtResource("10_jw8tt")
 
-[node name="Portrait" type="Sprite2D" parent="Balloon/Container/PortraitBackground"]
-unique_name_in_owner = true
-position = Vector2(0, 2)
-
 [connection signal="gui_input" from="Balloon" to="." method="_on_balloon_gui_input"]
 [connection signal="pressed" from="Balloon/NextButton" to="." method="_on_next_button_pressed"]

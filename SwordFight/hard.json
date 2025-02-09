@@ -1,0 +1,79 @@
+{
+	"CharacterName1": {
+		"positions": 12,
+		"phases": [
+			[
+				{
+					"time": 0,
+					"position": 2,
+					"speed": 50.0
+				},
+				{
+					"time": 0.5,
+					"position": 8,
+					"speed": 50.0
+				}
+			],
+			[
+				{
+					"time": 2,
+					"position": 5,
+					"speed": 50.0
+				},
+				{
+					"time": 2.5,
+					"position": 11,
+					"speed": 50.0
+				}
+			],
+			[
+				{
+					"time": 4,
+					"position": 3,
+					"speed": 50.0
+				},
+				{
+					"time": 4.5,
+					"position": 7,
+					"speed": 50.0
+				}
+			],
+			[
+				{
+					"time": 6,
+					"position": 1,
+					"speed": 50.0
+				},
+				{
+					"time": 6.5,
+					"position": 9,
+					"speed": 50.0
+				}
+			],
+			[
+				{
+					"time": 8,
+					"position": 4,
+					"speed": 50.0
+				},
+				{
+					"time": 8.5,
+					"position": 12,
+					"speed": 50.0
+				}
+			],
+			[
+				{
+					"time": 10,
+					"position": 6,
+					"speed": 50.0
+				},
+				{
+					"time": 10.5,
+					"position": 10,
+					"speed": 50.0
+				}
+			]
+		]
+	}
+}

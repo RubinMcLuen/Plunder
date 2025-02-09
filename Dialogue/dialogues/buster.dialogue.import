@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_13"
+type="Resource"
+uid="uid://b47ewk86gg2ho"
+path="res://.godot/imported/buster.dialogue-8bf32f5d499708e8d7a2d269961a0ccd.tres"
+
+[deps]
+
+source_file="res://Dialogue/dialogues/buster.dialogue"
+dest_files=["res://.godot/imported/buster.dialogue-8bf32f5d499708e8d7a2d269961a0ccd.tres"]
+
+[params]
+
+defaults=true

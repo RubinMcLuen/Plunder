@@ -10,6 +10,7 @@ size = Vector2(14, 1)
 [node name="Character" type="CharacterBody2D"]
 
 [node name="Appearance" type="Node2D" parent="."]
+position = Vector2(0, -10)
 
 [node name="skin" type="Sprite2D" parent="Appearance"]
 texture = ExtResource("1_wvg6q")

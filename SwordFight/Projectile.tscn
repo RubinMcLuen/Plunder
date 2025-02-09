@@ -1,0 +1,17 @@
+[gd_scene load_steps=4 format=3 uid="uid://dqnox1fpo26y"]
+
+[ext_resource type="Script" path="res://SwordFight/Projectile.gd" id="1_rmpqj"]
+[ext_resource type="Texture2D" uid="uid://7a4bsx2ha1tu" path="res://SwordFight/projectile.png" id="2_pxmvm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jkdur"]
+size = Vector2(9, 38)
+
+[node name="Projectile" type="Area2D"]
+scale = Vector2(0.5, 0.5)
+script = ExtResource("1_rmpqj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_pxmvm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_jkdur")

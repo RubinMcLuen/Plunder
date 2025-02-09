@@ -1,0 +1,25 @@
+{
+  "bartender": {
+	"dialogue_file": "res://Dialogue/dialogues/bartender.dialogue",
+	"skin": "res://CharacterCreation/customizations/skin/skin0.png",
+	"hat": "",
+	"facialhair": "res://CharacterCreation/customizations/facialhair/facialhair3.png",
+	"leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm5.png",
+	"rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm5.png",
+	"body": "res://CharacterCreation/customizations/top/Body/body5.png",
+	"leftleg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg5.png",
+	"rightleg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg5.png"
+  },
+"buster": {
+	"dialogue_file": "res://Dialogue/dialogues/buster.dialogue",
+	"skin": "res://CharacterCreation/customizations/skin/skin0.png",
+	"hat": "",
+	"facialhair": "res://CharacterCreation/customizations/facialhair/facialhair0.png",
+	"leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm6.png",
+	"rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm6.png",
+	"body": "res://CharacterCreation/customizations/top/Body/body6.png",
+	"leftleg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg3.png",
+	"rightleg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg3.png"
+  }
+
+}
