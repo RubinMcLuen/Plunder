@@ -224,10 +224,10 @@ func update_portrait(character_node: Node) -> void:
 	
 		# Set the scale to exactly 2 (Vector2(2, 2))
 	new_portrait.scale = Vector2(4, 4)
-	
+	new_portrait.customization_only = true
 	# Set the position to (16, 16)
 	if new_portrait is Node2D:
-		new_portrait.position = Vector2(28, 44)
+		new_portrait.position = Vector2(28, 84)
 
 	
 	# Add the new portrait instance to a container or to self.

@@ -4,6 +4,7 @@ extends Node2D
 
 func _ready():
 	load_player_position()
+	$Player/Camera2D/enter.visible = true
 	$Exit.body_entered.connect(_on_exit_body_entered)
 	# Ensure the ColorRect starts fully opaque.
 	var color_rect = $Player/Camera2D/enter

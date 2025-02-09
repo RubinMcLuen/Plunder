@@ -284,10 +284,8 @@ func apply_character_data(data: Dictionary):
 			load_or_clear(body, top_data["body"])
 		if "leftarm" in top_data and larm:
 			load_or_clear(larm, top_data["leftarm"])
-			print(top_data["leftarm"])
 		if "rightarm" in top_data and rarm:
 			load_or_clear(rarm, top_data["rightarm"])
-			print(top_data["rightarm"])
 	if "bottom" in data:
 		var bottom_data = data["bottom"]
 		if "leftleg" in bottom_data and lleg:
@@ -296,7 +294,8 @@ func apply_character_data(data: Dictionary):
 			load_or_clear(rleg, bottom_data["rightleg"])
 	if "misc" in data:
 		# Assuming misc customization is applied to the right arm.
-		load_or_clear(rarm, data["misc"])
+		if data["misc"] != "":
+			load_or_clear(rarm, data["misc"])
 
 func load_or_clear(node: Sprite2D, path: String):
 	if path == "":

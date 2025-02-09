@@ -16,12 +16,14 @@ func _input(event):
 				trail_opacity = 1.0  # Reset opacity when starting a new trail
 				modulate = Color(1, 1, 1, trail_opacity)  # Apply full opacity
 				clear_points()  # Start with a fresh trail
-				add_trail_point(get_global_mouse_position())
+				add_trail_point(to_local(get_global_mouse_position()))
+
 
 			else:
 				is_drawing = false
 	elif event is InputEventMouseMotion and is_drawing:
-		add_trail_point(get_global_mouse_position())
+		add_trail_point(to_local(get_global_mouse_position()))
+
 
 
 func add_trail_point(position: Vector2):

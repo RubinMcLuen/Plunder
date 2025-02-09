@@ -18,7 +18,7 @@ button_group = ExtResource("2_rtkjt")
 texture_normal = ExtResource("3_eocvb")
 
 [node name="Character" parent="Button1" instance=ExtResource("4_8ms4q")]
-position = Vector2(24, 24)
+position = Vector2(24, 39)
 scale = Vector2(1.5, 1.5)
 
 [node name="Button2" type="TextureButton" parent="."]
@@ -31,7 +31,7 @@ button_group = ExtResource("2_rtkjt")
 texture_normal = ExtResource("3_eocvb")
 
 [node name="Character" parent="Button2" instance=ExtResource("4_8ms4q")]
-position = Vector2(24, 24)
+position = Vector2(24, 39)
 scale = Vector2(1.5, 1.5)
 
 [node name="Button3" type="TextureButton" parent="."]
@@ -44,7 +44,7 @@ button_group = ExtResource("2_rtkjt")
 texture_normal = ExtResource("3_eocvb")
 
 [node name="Character" parent="Button3" instance=ExtResource("4_8ms4q")]
-position = Vector2(24, 24)
+position = Vector2(24, 39)
 scale = Vector2(1.5, 1.5)
 
 [node name="Button4" type="TextureButton" parent="."]
@@ -57,7 +57,7 @@ button_group = ExtResource("2_rtkjt")
 texture_normal = ExtResource("3_eocvb")
 
 [node name="Character" parent="Button4" instance=ExtResource("4_8ms4q")]
-position = Vector2(24, 24)
+position = Vector2(24, 39)
 scale = Vector2(1.5, 1.5)
 
 [node name="Button5" type="TextureButton" parent="."]
@@ -71,7 +71,7 @@ button_group = ExtResource("2_rtkjt")
 texture_normal = ExtResource("3_eocvb")
 
 [node name="Character" parent="Button5" instance=ExtResource("4_8ms4q")]
-position = Vector2(24, 24)
+position = Vector2(24, 39)
 scale = Vector2(1.5, 1.5)
 
 [node name="Button6" type="TextureButton" parent="."]
@@ -85,5 +85,5 @@ button_group = ExtResource("2_rtkjt")
 texture_normal = ExtResource("3_eocvb")
 
 [node name="Character" parent="Button6" instance=ExtResource("4_8ms4q")]
-position = Vector2(24, 24)
+position = Vector2(24, 39)
 scale = Vector2(1.5, 1.5)

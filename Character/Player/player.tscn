@@ -14,7 +14,7 @@ rarm = NodePath("Appearance/Top/rightarm")
 lleg = NodePath("Appearance/Bottom/leftleg")
 rleg = NodePath("Appearance/Bottom/rightleg")
 
-[node name="Top" parent="Appearance" index="3"]
+[node name="Top" parent="Appearance" index="4"]
 z_index = 0
 
 [node name="CollisionShape2D" parent="." index="1"]

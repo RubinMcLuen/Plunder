@@ -26,22 +26,6 @@ z_index = 5
 hframes = 8
 vframes = 7
 
-[node name="Top" type="Node2D" parent="Appearance"]
-z_index = 1
-
-[node name="leftarm" type="Sprite2D" parent="Appearance/Top"]
-hframes = 8
-vframes = 7
-
-[node name="rightarm" type="Sprite2D" parent="Appearance/Top"]
-z_index = 1
-hframes = 8
-vframes = 7
-
-[node name="body" type="Sprite2D" parent="Appearance/Top"]
-hframes = 8
-vframes = 7
-
 [node name="Bottom" type="Node2D" parent="Appearance"]
 
 [node name="leftleg" type="Sprite2D" parent="Appearance/Bottom"]
@@ -51,6 +35,21 @@ vframes = 7
 
 [node name="rightleg" type="Sprite2D" parent="Appearance/Bottom"]
 texture = ExtResource("3_1tf3x")
+hframes = 8
+vframes = 7
+
+[node name="Top" type="Node2D" parent="Appearance"]
+z_index = 1
+
+[node name="leftarm" type="Sprite2D" parent="Appearance/Top"]
+hframes = 8
+vframes = 7
+
+[node name="rightarm" type="Sprite2D" parent="Appearance/Top"]
+hframes = 8
+vframes = 7
+
+[node name="body" type="Sprite2D" parent="Appearance/Top"]
 hframes = 8
 vframes = 7
 

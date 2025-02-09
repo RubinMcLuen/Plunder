@@ -4,6 +4,11 @@ extends CharacterBody2D
 const NPC_DATA_PATH := "res://npcs.json"  # Adjust as needed
 @export var player_direction: bool = true
 
+# When customization_only is true, no animations will be updated.
+@export var customization_only: bool = false
+# When fightable is true, the fight scene will be initiated after dialogue.
+@export var fightable: bool = false
+
 var dialogue_resource
 
 # Animation and Fighting Variables
@@ -99,6 +104,10 @@ func play_slash_animation() -> void:
 	current_anim = "slash"
 
 func update_animation() -> void:
+	# Skip animation updates if in customization mode.
+	if customization_only:
+		return
+
 	if anim_override:
 		var elapsed = Time.get_ticks_msec() - anim_override_start_time
 		if current_anim == "slash":
@@ -137,7 +146,6 @@ func _ready() -> void:
 	load_appearance()
 	$Area2D.connect("input_event", Callable(self, "_on_area_input_event"))
 	
-	
 	sprite_parts = [
 		$Appearance/skin,
 		$Appearance/hat,
@@ -149,7 +157,6 @@ func _ready() -> void:
 		$Appearance/Bottom/rightleg
 	]
 
-
 func _on_area_input_event(_viewport, event, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		# Only allow dialogue if not fighting.
@@ -157,19 +164,18 @@ func _on_area_input_event(_viewport, event, _shape_idx) -> void:
 			var balloon = DialogueManager.show_dialogue_balloon(dialogue_resource, "introduction", [self])
 			balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
 
-
-
 func _on_dialogue_finished():
+	# Only initiate the fight scene if fightable is true.
+	if not fightable:
+		return
+
 	var sword_fight_scene = load("res://SwordFight/sword_fight.tscn")
 	if sword_fight_scene:
 		var sword_fight_instance = sword_fight_scene.instantiate()
 		# Base offset for the sword fight instance.
-		var offset = Vector2(-257, -152)
+		var offset = Vector2(-258.5, -146.5)
 		# If player_direction is false, subtract an extra 64 on the x-axis.
 		if player_direction:
-			offset.x += 32
+			offset.x += 36
 		sword_fight_instance.position += offset
 		self.add_child(sword_fight_instance)
-
-
-

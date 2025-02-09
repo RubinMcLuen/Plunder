@@ -6,6 +6,7 @@ func _ready():
 	load_player_position()
 	$Exit.body_entered.connect(_on_exit_body_entered)
 	var color_rect = $Player/Camera2D/enter
+	color_rect.visible = true
 	
 	# Tween the alpha from 1 to 0 over 1 second.
 	var tween = create_tween()

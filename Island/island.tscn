@@ -425,27 +425,26 @@ format = 2
 layer_0/tile_data = PackedInt32Array(-131075, 458753, 7, -65539, 458753, 8, -3, 458753, 9, -131074, 524289, 7, -65538, 524289, 8, -2, 524289, 9, -131073, 589825, 7, -65537, 589825, 8, -1, 589825, 9, -196608, 655361, 7, -131072, 655361, 8, -65536, 655361, 9, -196607, 720897, 7, -131071, 720897, 8, -65535, 720897, 9)
 
 [node name="Player" parent="." instance=ExtResource("1_a51lx")]
-position = Vector2(-88, -59)
+position = Vector2(-24, -50)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 
 [node name="enter" type="ColorRect" parent="Player/Camera2D"]
 visible = false
 z_index = 5
-offset_left = -240.0
-offset_top = -135.0
-offset_right = 240.0
-offset_bottom = 135.0
+offset_left = -452.0
+offset_top = -241.0
+offset_right = 473.0
+offset_bottom = 223.0
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="exit" type="ColorRect" parent="Player/Camera2D"]
-visible = false
 z_index = 5
-offset_left = -240.0
-offset_top = -135.0
-offset_right = 240.0
-offset_bottom = 135.0
+offset_left = -450.0
+offset_top = -294.0
+offset_right = 622.0
+offset_bottom = 272.0
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
 
@@ -458,3 +457,4 @@ shape = SubResource("RectangleShape2D_jxd76")
 [node name="Buster" parent="." instance=ExtResource("4_4kbpn")]
 position = Vector2(60, -91)
 npc_name = "buster"
+fightable = true

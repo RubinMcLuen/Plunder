@@ -28,6 +28,7 @@ var num_positions: int = 4
 var projectiles: Array = []
 
 func _ready() -> void:
+	# Set up the camera and main process
 	camera.make_current()
 	set_process(true)
 	print("DEBUG: _ready() called in Fight Script")
@@ -53,9 +54,10 @@ func _ready() -> void:
 	spawn_timer = Timer.new()
 	add_child(spawn_timer)
 	spawn_timer.connect("timeout", Callable(self, "_on_spawn_timer_timeout"))
-
-
-
+	
+	# --- Vignette effect setup ---
+	# Create the vignette after all initial setup, then fade it in.
+	_create_vignette()
 
 func _process(delta: float) -> void:
 	if not game_started and Input.is_action_just_pressed("ui_accept"):
@@ -83,7 +85,7 @@ func _load_spawn_data():
 			print("DEBUG: Failed to open config file")
 	if all_phases.size() > 0:
 		spawn_data = all_phases[0]
-		print("DEBUG: Using spawn_data for phase 0: ", spawn_data)
+		print("DEBUG: Using spawn data for phase 0: ", spawn_data)
 	else:
 		print("DEBUG: No phases found for character:", character_name)
 
@@ -122,7 +124,7 @@ func _spawn_projectile(spawn_info: Dictionary):
 		var angle = (position_index + 1) * TAU / num_positions - TAU / 4
 		var center = get_viewport().get_visible_rect().size / 2
 		var pos = center + Vector2(cos(angle), sin(angle)) * circle_radius
-		
+		projectile.z_index = 11
 		projectile.position = pos
 		projectile.rotation = angle
 		projectile.speed = spawn_info["speed"] * difficulty_multiplier
@@ -139,6 +141,14 @@ func _spawn_projectile(spawn_info: Dictionary):
 	else:
 		print("DEBUG: Failed to instantiate projectile.")
 
+	# Spawn a 1×1 ColorRect at the center without modifying its color.
+	var center = get_viewport().get_visible_rect().size / 2
+	var color_rect = ColorRect.new()
+	color_rect.size = Vector2(1, 1)
+	# Center the ColorRect (subtract half its size so that its center is at `center`)
+	color_rect.position = center - color_rect.size * 0.5
+	add_child(color_rect)
+
 func _on_projectile_reached_target(projectile: Area2D):
 	print("DEBUG: Projectile reached target:", projectile, "| Is Feint:", projectile is FeintProjectile)
 	# Only mark failure for a normal projectile.
@@ -152,7 +162,6 @@ func _on_projectile_reached_target(projectile: Area2D):
 	if is_instance_valid(projectile):
 		projectile.queue_free()
 		
-
 func _on_feint_projectile_sliced(projectile: FeintProjectile):
 	print("DEBUG: Feint projectile sliced:", projectile)
 	phase_failed = true
@@ -228,3 +237,62 @@ func despawn_all_projectiles():
 		if is_instance_valid(projectile):
 			projectile.queue_free()
 	projectiles.clear()
+
+
+func _create_vignette() -> void:
+	# Create a full-screen ColorRect for the vignette effect.
+	var vignette = ColorRect.new()
+	vignette.name = "Vignette"
+	
+	# Cover the entire viewport.
+	var viewport_rect = get_viewport().get_visible_rect()
+	vignette.position = viewport_rect.position
+	vignette.size = viewport_rect.size
+	
+	# Ensure it draws on top.
+	vignette.z_index = 10
+	# Set modulate to white so it doesn’t interfere with our shader output.
+	vignette.modulate = Color(1, 1, 1, 1)
+	
+	# Create and assign a shader material that darkens the edges with an adjustable clear oval.
+	var shader = Shader.new()
+	shader.code = """
+		shader_type canvas_item;
+		
+		// Uniforms for adjusting the clear center.
+		uniform vec2 vignette_scale = vec2(1.0, 1.0);
+		uniform float inner_radius : hint_range(0.0, 1.0) = 0.1; // No darkening inside this radius.
+		uniform float outer_radius : hint_range(0.0, 1.0) = 0.4; // Full darkening outside this radius.
+		uniform vec2 center = vec2(0.5, 0.5); // Center of the effect in UV coordinates.
+		// Tween this parameter from 0.0 to 0.5 to fade in the overlay.
+		uniform float overlay_strength : hint_range(0.0, 1.0) = 0.0;
+		
+		void fragment() {
+			vec2 uv = SCREEN_UV;
+			// Create an oval effect by scaling the distance from the center.
+			float dist = length((uv - center) * vignette_scale);
+			// Interpolate the darkening factor.
+			float factor = smoothstep(inner_radius, outer_radius, dist);
+			// Multiply by overlay_strength to control the overall opacity.
+			float final_alpha = factor * overlay_strength;
+			COLOR = vec4(0.0, 0.0, 0.0, final_alpha);
+		}
+	"""
+	
+	var shader_material = ShaderMaterial.new()
+	shader_material.shader = shader
+	# Explicitly set the parameter so it exists on the material.
+	shader_material.set_shader_parameter("overlay_strength", 0.0)
+	
+	vignette.material = shader_material
+	vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	# Add the vignette node to the scene.
+	add_child(vignette)
+	
+	# Tween the shader uniform "overlay_strength" from 0.0 to 0.5 over 1 second.
+	var tween = create_tween()
+	tween.tween_property(vignette.material, "shader_parameter/overlay_strength", 0.7, 2.0)
+
+
+

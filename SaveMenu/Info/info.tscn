@@ -56,6 +56,6 @@ offset_right = -51.0
 offset_bottom = 14.0
 
 [node name="Player" parent="Control" instance=ExtResource("7_orbcw")]
-position = Vector2(14, 40)
+position = Vector2(14, 42)
 scale = Vector2(2, 2)
 customization_only = true

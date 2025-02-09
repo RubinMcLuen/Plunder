@@ -11,6 +11,7 @@ script = ExtResource("1_ftuw3")
 projectile_scene = ExtResource("6_u8dfi")
 feint_projectile_scene = ExtResource("8_q4u7y")
 config_file = ExtResource("7_1nlqe")
+circle_radius = 128.0
 feint_chance = 0.0
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -20,3 +21,10 @@ position = Vector2(240, 135)
 z_index = 10
 width = 1.0
 script = ExtResource("4_0ph4i")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+offset_right = 486.0
+offset_bottom = 280.0
+mouse_filter = 2
+color = Color(0.107576, 0.392569, 0.248209, 1)
