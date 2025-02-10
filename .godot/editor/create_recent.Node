@@ -1,3 +1,6 @@
+TextureRect
+CanvasLayer
+Sprite2D
 ColorRect
 Node2D
 Line2D
@@ -9,6 +12,3 @@ Panel
 Control
 RichTextLabel
 TextureButton
-Sprite2D
-StaticBody2D
-Polygon2D

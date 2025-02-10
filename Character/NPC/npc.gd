@@ -18,6 +18,12 @@ const FRAMES_PER_ANIMATION = 8
 var sprite_parts: Array[Sprite2D] = []
 
 # ---------------------------
+# NEW: Health Mechanics
+# ---------------------------
+signal end_fight   # Signal emitted when enemy health reaches 0
+var health: int = 3  # Enemy starts with 3 health points
+
+# ---------------------------
 # OVERRIDE ANIMATION VARIABLES
 # ---------------------------
 var anim_override: bool = false
@@ -138,6 +144,21 @@ func update_animation() -> void:
 
 func _physics_process(_delta: float) -> void:
 	update_animation()
+
+# ---------------------------
+# NEW: Health and Damage Functions
+# ---------------------------
+func take_damage() -> void:
+	print("Enemy was hit by a projectile!")
+	play_hurt_animation()
+	health -= 1
+	print("Enemy health is now: ", health)
+	
+	if health <= 0:
+		print("Enemy health reached 0! Emitting end_fight signal.")
+		emit_signal("end_fight")
+		# Optionally, play a death animation or execute additional logic:
+		play_hurt_animation()
 
 # ---------------------------
 # Node Setup and Input

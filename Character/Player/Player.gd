@@ -5,7 +5,14 @@ extends CharacterBody2D
 # ---------------------------
 @export var speed := 100                # Movement speed in pixels per second
 var direction := Vector2.RIGHT          # Default facing direction is right
+
+# Signals
 signal auto_move_completed
+signal end_fight    # Signal emitted when player's health reaches 0
+
+# Health variable (starts at 3)
+var health: int = 3
+
 var fighting: bool = false
 
 # Exported Sprite References for Customization
@@ -197,9 +204,17 @@ func play_hurt_animation() -> void:
 	anim_override_duration = 300
 	current_anim = "hurt"
 
-func handle_projectile_hit() -> void:
-	print("Player was hit by a projectile!")
-	# Additional damage logic here
+# ---------------------------
+# Health and Damage Functions
+# ---------------------------
+func take_damage() -> void:
+	play_hurt_animation()
+	health -= 1
+	print("Player health is now: ", health)
+	
+	if health <= 0:
+		print("Player health reached 0! Emitting end_fight signal.")
+		emit_signal("end_fight")
 
 # ---------------------------
 # update_animation

@@ -1,10 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://cadok2distotv"]
+[gd_scene load_steps=10 format=3 uid="uid://cadok2distotv"]
 
 [ext_resource type="Script" path="res://SwordFight/swordfight.gd" id="1_ftuw3"]
 [ext_resource type="Script" path="res://SwordFight/sword_trail.gd" id="4_0ph4i"]
+[ext_resource type="Texture2D" uid="uid://buqpxsdew0uhc" path="res://SwordFight/playerhealthbar.png" id="6_5x6yg"]
 [ext_resource type="PackedScene" uid="uid://dqnox1fpo26y" path="res://SwordFight/Projectile.tscn" id="6_u8dfi"]
 [ext_resource type="JSON" path="res://SwordFight/hard.json" id="7_1nlqe"]
+[ext_resource type="Texture2D" uid="uid://djnwe1i5fvmge" path="res://SwordFight/enemyhealthbar.png" id="7_7axcv"]
 [ext_resource type="PackedScene" uid="uid://dyhw0haqd1jup" path="res://SwordFight/feint_projectile.tscn" id="8_q4u7y"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2eamg"]
+atlas = ExtResource("6_5x6yg")
+region = Rect2(99, 0, 33, 114)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sekvc"]
+atlas = ExtResource("7_7axcv")
+region = Rect2(99, 0, 33, 114)
 
 [node name="SwordFight" type="Node2D"]
 script = ExtResource("1_ftuw3")
@@ -28,3 +38,34 @@ offset_right = 486.0
 offset_bottom = 280.0
 mouse_filter = 2
 color = Color(0.107576, 0.392569, 0.248209, 1)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+follow_viewport_scale = 3.0
+
+[node name="playerhealth" type="TextureRect" parent="CanvasLayer"]
+z_index = 12
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -19.0
+offset_right = 11.0
+offset_bottom = 19.0
+grow_vertical = 2
+texture = SubResource("AtlasTexture_2eamg")
+stretch_mode = 2
+
+[node name="enemyhealth" type="TextureRect" parent="CanvasLayer"]
+z_index = 12
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -11.0
+offset_top = -19.0
+offset_bottom = 19.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = SubResource("AtlasTexture_sekvc")
+stretch_mode = 2
