@@ -1,6 +1,6 @@
 extends Node2D
 
-# Reference the Camera2D and the health bar TextureRect nodes.
+# Reference the Camera2D and health bar TextureRect nodes.
 @onready var camera: Camera2D = $Camera2D
 @onready var left_health: TextureRect = $CanvasLayer/playerhealth
 @onready var right_health: TextureRect = $CanvasLayer/enemyhealth
@@ -22,7 +22,7 @@ var current_phase_index: int = 0
 var phase_failed: bool = false
 var game_completed: bool = false
 var game_started: bool = false
-var fight_ended: bool = false         # <-- New flag to mark that the fight is over.
+var fight_ended: bool = false         # Flag marking that the fight is over.
 var difficulty_multiplier: float = 1.0
 var current_time: float = 0.0
 var num_positions: int = 4
@@ -30,37 +30,41 @@ var num_positions: int = 4
 var projectiles: Array = []
 
 # --- Constants for Health Bar Animation ---
-const SIDE_OFFSET: float = 10.0        # (Used for horizontal offset only)
-const SLIDE_DURATION: float = 0.5        # Duration for sliding animation
+const SIDE_OFFSET: float = 10.0        # Horizontal offset.
+const SLIDE_DURATION: float = 0.5        # Duration for sliding animation.
 
-# Constants for health atlas
+# Constants for health atlas.
 const HEALTH_FRAME_SIZE: Vector2 = Vector2(33, 114)
-const MAX_HEALTH_FRAME: int = 3  # Frames 0 through 3
+const MAX_HEALTH_FRAME: int = 3  # Frames 0 through 3.
 
 # Variables to store current health bar frames.
 var player_health_frame: int = MAX_HEALTH_FRAME
 var enemy_health_frame: int = MAX_HEALTH_FRAME
 
-# We'll store the desired final positions (from the editor) so we preserve the vertical placement.
+# Final positions for the health bars (vertical position is preserved from the editor).
 var left_final_pos: Vector2
 var right_final_pos: Vector2
 
-# --- New variable: Prevent processing ui_accept until after auto move and health bar slide-in ---
+# Prevent processing input until after auto-move and health bar slide-in.
 var input_allowed: bool = false
 
-# Helper function: Update the atlas region for a health bar.
+# Store the clipped safe area for mobile devices.
+var clipped_safe_area: Rect2
+
+
+# --- Helper function: Update the atlas region for a health bar.
 func set_health_frame(health_bar: TextureRect, frame: int) -> void:
 	frame = clamp(frame, 0, MAX_HEALTH_FRAME)
 	if health_bar.texture is AtlasTexture:
-		# Duplicate the texture so we don't modify the shared resource.
 		var atlas_tex = health_bar.texture.duplicate() as AtlasTexture
 		atlas_tex.region = Rect2(frame * HEALTH_FRAME_SIZE.x, 0, HEALTH_FRAME_SIZE.x, HEALTH_FRAME_SIZE.y)
 		health_bar.texture = atlas_tex
 	else:
 		push_error("Health bar texture is not an AtlasTexture!")
 
+
 func _ready() -> void:
-	# Set up the camera and main process.
+	# Make the camera current and enable processing.
 	camera.make_current()
 	set_process(true)
 
@@ -70,9 +74,7 @@ func _ready() -> void:
 
 	if player and enemy:
 		player.connect("auto_move_completed", Callable(self, "_on_player_auto_move_completed"))
-		# Connect player's end_fight signal to the original end-fight function.
 		player.connect("end_fight", Callable(self, "_on_end_fight"))
-		# Connect enemy's end_fight signal to a new enemy-specific function.
 		enemy.connect("end_fight", Callable(self, "_on_enemy_end_fight"))
 		
 		player.fighting = true
@@ -83,37 +85,58 @@ func _ready() -> void:
 		player.auto_move_to_position(target_pos)
 		player.set_facing_direction(enemy.player_direction)
 	
-	# Create a Timer node for spawning projectiles.
+	# Create and add a Timer node for spawning projectiles.
 	spawn_timer = Timer.new()
 	add_child(spawn_timer)
 	spawn_timer.connect("timeout", Callable(self, "_on_spawn_timer_timeout"))
 	
 	_create_vignette()
 	
-	# Store the desired final positions as set in the editor.
-	# (This preserves the vertical positions you configured.)
-	left_final_pos = left_health.position
-	right_final_pos = right_health.position
+	# --- Compute a "clipped" safe area ---
+	# Get the safe area as a Rect2i and convert it to a Rect2.
+	var safe_area_i: Rect2i = DisplayServer.get_display_safe_area()
+	var safe_area: Rect2 = Rect2(safe_area_i.position, safe_area_i.size)
+	# Get the visible rectangle.
+	var visible_rect: Rect2 = get_viewport().get_visible_rect()
+	# Compute the intersection so the safe area is not larger than the visible area.
+	clipped_safe_area = safe_area.intersection(visible_rect)
+	print("Visible Rect: ", visible_rect)
+	print("Clipped Safe Area: ", clipped_safe_area)
+	
+	# Compute final positions using the clipped safe area.
+	left_final_pos = Vector2(clipped_safe_area.position.x + SIDE_OFFSET, left_health.position.y)
+	right_final_pos = Vector2(clipped_safe_area.position.x + clipped_safe_area.size.x - right_health.size.x - SIDE_OFFSET, right_health.position.y)
+	print("Left Final Pos: ", left_final_pos)
+	print("Right Final Pos: ", right_final_pos)
+	
+	# Ensure the health bars render above other elements.
+	left_health.z_index = 100
+	right_health.z_index = 100
 	
 	# Start the camera zoom tween.
 	var tween = create_tween()
 	tween.tween_property(camera, "zoom", Vector2(3, 3), 1.0) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	# When the camera tween finishes, slide in the health bars.
 	tween.tween_callback(Callable(self, "_on_camera_zoom_finished"))
 	
-	# Move the health bars off-screen horizontally while preserving their y coordinate.
-	var viewport_size = get_viewport().get_visible_rect().size
+	# Set initial (off-screen) positions for the health bars.
+	# For the left bar, we now set it to be completely off-screen at the left:
 	left_health.position = Vector2(-left_health.size.x, left_final_pos.y)
-	right_health.position = Vector2(viewport_size.x, right_final_pos.y)
+	# For the right bar, we keep it off-screen to the right.
+	right_health.position = Vector2(clipped_safe_area.position.x + clipped_safe_area.size.x, right_final_pos.y)
+	
+	# For debugging, you can force the enemy bar onscreen:
+	# right_health.position = right_final_pos
+
 
 func _process(delta: float) -> void:
-	# Only allow ui_accept input if input_allowed is true.
+	# Allow input once health bars have slid in.
 	if input_allowed and not game_started and Input.is_action_just_pressed("ui_accept"):
 		game_started = true
 		_load_spawn_data()
 		if spawn_data.size() > 0:
-			_on_spawn_timer_timeout()  # Start spawning immediately
+			_on_spawn_timer_timeout()
+
 
 func _load_spawn_data():
 	if config_file and character_name != "":
@@ -128,8 +151,9 @@ func _load_spawn_data():
 	if all_phases.size() > 0:
 		spawn_data = all_phases[0]
 
+
 func _on_spawn_timer_timeout():
-	# Prevent spawning new projectiles if the fight has ended.
+	# Prevent spawning if the fight has ended.
 	if fight_ended:
 		return
 
@@ -148,6 +172,7 @@ func _on_spawn_timer_timeout():
 	else:
 		_check_remaining_projectiles()
 
+
 func _spawn_projectile(spawn_info: Dictionary):
 	var is_feint = randf() < feint_chance
 	var projectile
@@ -160,7 +185,8 @@ func _spawn_projectile(spawn_info: Dictionary):
 		# Calculate spawn position and rotation.
 		var position_index = int(spawn_info["position"]) - 1
 		var angle = (position_index + 1) * TAU / num_positions - TAU / 4
-		var center = get_viewport().get_visible_rect().size / 2
+		# Use the center of the clipped safe area as the spawning center.
+		var center = clipped_safe_area.position + clipped_safe_area.size * 0.5
 		var pos = center + Vector2(cos(angle), sin(angle)) * circle_radius
 		projectile.z_index = 11
 		projectile.position = pos
@@ -175,37 +201,38 @@ func _spawn_projectile(spawn_info: Dictionary):
 		if is_feint:
 			projectile.connect("sliced", Callable(self, "_on_feint_projectile_sliced"))
 	
-	# Spawn a 1×1 ColorRect at the center.
-	var center = get_viewport().get_visible_rect().size / 2
+	# Also spawn a tiny ColorRect at the center for debugging.
+	var center_debug = clipped_safe_area.position + clipped_safe_area.size * 0.5
 	var color_rect = ColorRect.new()
 	color_rect.size = Vector2(1, 1)
-	color_rect.position = center - color_rect.size * 0.5
+	color_rect.position = center_debug - color_rect.size * 0.5
 	add_child(color_rect)
+
 
 func _on_projectile_reached_target(projectile: Area2D):
 	if not (projectile is FeintProjectile):
 		phase_failed = true
 		if player:
 			player.take_damage()
-			# Update player's health frame.
 			player_health_frame -= 1
 			set_health_frame(left_health, player_health_frame)
 		if enemy:
 			enemy.play_slash_animation()
 	if is_instance_valid(projectile):
 		projectile.queue_free()
-		
+
+
 func _on_feint_projectile_sliced(projectile: FeintProjectile):
 	phase_failed = true
 	if player:
 		player.take_damage()
-		# Update player's health frame.
 		player_health_frame -= 1
 		set_health_frame(left_health, player_health_frame)
 	if enemy:
 		enemy.play_slash_animation()
 	if is_instance_valid(projectile):
 		projectile.queue_free()
+
 
 func _check_remaining_projectiles():
 	if game_completed:
@@ -214,6 +241,7 @@ func _check_remaining_projectiles():
 		if is_instance_valid(child) and child is Area2D:
 			return
 	_transition_to_next_phase()
+
 
 func _transition_to_next_phase():
 	if game_completed:
@@ -224,7 +252,6 @@ func _transition_to_next_phase():
 			player.play_slash_animation()
 		if enemy:
 			enemy.take_damage()
-			# Update enemy's health frame.
 			enemy_health_frame -= 1
 			set_health_frame(right_health, enemy_health_frame)
 		
@@ -241,37 +268,41 @@ func _transition_to_next_phase():
 		game_completed = true
 		spawn_data.clear()
 
+
 func _on_player_auto_move_completed() -> void:
 	player.set_facing_direction(enemy.player_direction)
 	var tween = create_tween()
 	tween.tween_property(camera, "zoom", Vector2(3, 3), 1.0) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	# After zooming in, slide the health bars in.
 	tween.tween_callback(Callable(self, "_on_camera_zoom_finished"))
 
+
 func _on_camera_zoom_finished() -> void:
-	# Tween the health bars from their off-screen positions back to their stored final positions.
+	# Tween the health bars from their off-screen positions back to their final positions.
 	var tween_left = create_tween()
 	tween_left.tween_property(left_health, "position", left_final_pos, SLIDE_DURATION) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	# When the left health bar tween is done, allow input.
 	tween_left.tween_callback(Callable(self, "_on_health_bars_slid_in"))
 		 
 	var tween_right = create_tween()
 	tween_right.tween_property(right_health, "position", right_final_pos, SLIDE_DURATION) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 
+
 func _on_health_bars_slid_in() -> void:
-	# Now that the health bars have finished sliding in, allow input.
 	input_allowed = true
 
+
 func slide_out_health_bars(callback: Callable) -> void:
-	# Compute off-screen positions based on the viewport size.
-	var viewport_size = get_viewport().get_visible_rect().size
-	var left_offscreen = Vector2(-left_health.size.x, left_health.position.y)
-	var right_offscreen = Vector2(viewport_size.x, right_health.position.y)
+	# Compute off-screen positions based on the safe area.
+	var safe_area_i: Rect2i = DisplayServer.get_display_safe_area()
+	var safe_area: Rect2 = Rect2(safe_area_i.position, safe_area_i.size)
+	var visible_rect: Rect2 = get_viewport().get_visible_rect()
+	var clipped_safe = safe_area.intersection(visible_rect)
 	
-	# Create separate tweens so they run concurrently.
+	var left_offscreen = Vector2(clipped_safe.position.x - left_health.size.x, left_health.position.y)
+	var right_offscreen = Vector2(clipped_safe.position.x + clipped_safe.size.x, right_health.position.y)
+	
 	var tween_left = create_tween()
 	tween_left.tween_property(left_health, "position", left_offscreen, SLIDE_DURATION) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
@@ -280,7 +311,6 @@ func slide_out_health_bars(callback: Callable) -> void:
 	tween_right.tween_property(right_health, "position", right_offscreen, SLIDE_DURATION) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 	
-	# Since both tweens have the same duration, use a Timer to trigger the callback after SLIDE_DURATION.
 	var timer = Timer.new()
 	timer.one_shot = true
 	timer.wait_time = SLIDE_DURATION
@@ -288,7 +318,6 @@ func slide_out_health_bars(callback: Callable) -> void:
 	timer.connect("timeout", callback)
 	timer.start()
 
-# --- Swapped End-Fight Behaviors ---
 
 func _on_end_fight() -> void:
 	fight_ended = true
@@ -296,11 +325,9 @@ func _on_end_fight() -> void:
 		spawn_timer.stop()
 	
 	despawn_all_projectiles()
-	
-	# Instead of fading immediately, first slide out the health bars.
 	slide_out_health_bars(Callable(self, "_fade_and_change_scene"))
 
-# New helper function to fade the vignette and change the scene.
+
 func _fade_and_change_scene() -> void:
 	var vignette = get_node("Vignette")
 	if not vignette:
@@ -311,12 +338,11 @@ func _fade_and_change_scene() -> void:
 	tween.tween_interval(1)
 	tween.tween_callback(Callable(self, "_on_fade_complete"))
 
-# This function remains unchanged—it changes the scene when the fade is complete.
+
 func _on_fade_complete() -> void:
 	get_tree().change_scene_to_file("res://Respawn/respawn.tscn")
 
-# When the enemy ends the fight, we also set fight_ended to true so no new projectiles spawn.
-# (We do not free the enemy since you want it to remain.)
+
 func _on_enemy_end_fight() -> void:
 	fight_ended = true
 	if spawn_timer:
@@ -327,14 +353,13 @@ func _on_enemy_end_fight() -> void:
 	var vignette = get_node("Vignette")
 	if not vignette:
 		return
-
-	# Tween the vignette's shader parameter for overlay_strength.
+	
 	var tween = create_tween()
 	tween.tween_property(vignette.material, "shader_parameter/overlay_strength", 0.0, 1.0) \
 		 .set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 	
-	# Slide out health bars, then zoom the camera out.
 	slide_out_health_bars(Callable(self, "_start_camera_zoom_out"))
+
 
 func _start_camera_zoom_out() -> void:
 	var tween = create_tween()
@@ -344,10 +369,12 @@ func _start_camera_zoom_out() -> void:
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_callback(Callable(self, "_on_end_fight_complete"))
 
+
 func _on_end_fight_complete() -> void:
 	player.fighting = false
 	enemy.fighting = false
 	queue_free()
+
 
 func _start_camera_zoom_out_enemy() -> void:
 	var tween = create_tween()
@@ -357,25 +384,29 @@ func _start_camera_zoom_out_enemy() -> void:
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_callback(Callable(self, "_on_enemy_end_fight_complete"))
 
+
 func _on_enemy_end_fight_complete() -> void:
 	player.fighting = false
 	enemy.fighting = false
-	# Do not call queue_free(), so the enemy (and scene) remain visible.
-	# Optionally, you can add additional logic here if needed.
+	# Additional logic can be added here if needed.
+
 
 func register_projectile(projectile: Node):
 	if projectile not in projectiles:
 		projectiles.append(projectile)
 
+
 func deregister_projectile(projectile: Node):
 	if projectile in projectiles:
 		projectiles.erase(projectile)
+
 
 func despawn_all_projectiles():
 	for projectile in projectiles:
 		if is_instance_valid(projectile):
 			projectile.queue_free()
 	projectiles.clear()
+
 
 func _create_vignette() -> void:
 	var vignette = ColorRect.new()
@@ -384,7 +415,6 @@ func _create_vignette() -> void:
 	var viewport_rect = get_viewport().get_visible_rect()
 	vignette.position = viewport_rect.position
 	vignette.size = viewport_rect.size
-	
 	vignette.z_index = 10
 	vignette.modulate = Color(1, 1, 1, 1)
 	
@@ -403,7 +433,6 @@ func _create_vignette() -> void:
 			float dist = length((uv - center) * vignette_scale);
 			float factor = smoothstep(inner_radius, outer_radius, dist);
 			float vignette_alpha = factor * overlay_strength;
-			// When fade is 0, use the vignette; when fade is 1, force full black.
 			float final_alpha = mix(vignette_alpha, 1.0, fade);
 			COLOR = vec4(0.0, 0.0, 0.0, final_alpha);
 		}

@@ -23,3 +23,5 @@ res://SwordFight/swordfight.gd
 res://SwordFight/hard.json
 res://Respawn/respawn.tscn
 res://Respawn/respawn.gd
+res://CharacterCreation/character_creator.gd
+res://SaveMenu/Info/info.gd

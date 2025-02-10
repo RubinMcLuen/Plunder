@@ -279,7 +279,7 @@ func _on_finish_button_pressed():
 
 	# Update scene data (default starting position)
 	save_data["scene"] = {
-		"name": "res://Tavern/Tavern.tscn",
+		"name": "res://Tavern/tavern.tscn",
 		"position": { "x": 381, "y": 41 }
 	}
 
@@ -289,7 +289,7 @@ func _on_finish_button_pressed():
 	file_write.close()
 
 	print("Finished customization, data saved, and loading Tavern.")
-	get_tree().change_scene_to_file("res://Tavern/Tavern.tscn")
+	get_tree().change_scene_to_file("res://Tavern/tavern.tscn")
 
 
 func update_character_data():
