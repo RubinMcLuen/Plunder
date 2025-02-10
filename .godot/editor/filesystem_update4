@@ -21,3 +21,5 @@ res://Character/NPC/npc.gd
 res://SwordFight/sword_trail.gd
 res://SwordFight/swordfight.gd
 res://SwordFight/hard.json
+res://Respawn/respawn.tscn
+res://Respawn/respawn.gd

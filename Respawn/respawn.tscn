@@ -1,0 +1,56 @@
+[gd_scene load_steps=9 format=3 uid="uid://dn31sa4egq1u7"]
+
+[ext_resource type="Texture2D" uid="uid://cndwugipto5xl" path="res://Respawn/deathskull.png" id="1_5yj1l"]
+[ext_resource type="Script" path="res://Respawn/respawn.gd" id="1_ob8iv"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8orux"]
+atlas = ExtResource("1_5yj1l")
+region = Rect2(0, 0, 17, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qf45d"]
+atlas = ExtResource("1_5yj1l")
+region = Rect2(17, 0, 17, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ahls"]
+atlas = ExtResource("1_5yj1l")
+region = Rect2(34, 0, 17, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3gplq"]
+atlas = ExtResource("1_5yj1l")
+region = Rect2(51, 0, 17, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_32mjd"]
+atlas = ExtResource("1_5yj1l")
+region = Rect2(68, 0, 17, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yd4x5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8orux")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qf45d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ahls")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3gplq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_32mjd")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="Respawn" type="Node2D"]
+script = ExtResource("1_ob8iv")
+
+[node name="skull" type="AnimatedSprite2D" parent="."]
+position = Vector2(240, 135)
+scale = Vector2(4, 4)
+sprite_frames = SubResource("SpriteFrames_yd4x5")
+autoplay = "default"

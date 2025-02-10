@@ -22,6 +22,7 @@ var current_phase_index: int = 0
 var phase_failed: bool = false
 var game_completed: bool = false
 var game_started: bool = false
+var fight_ended: bool = false         # <-- New flag to mark that the fight is over.
 var difficulty_multiplier: float = 1.0
 var current_time: float = 0.0
 var num_positions: int = 4
@@ -43,6 +44,9 @@ var enemy_health_frame: int = MAX_HEALTH_FRAME
 # We'll store the desired final positions (from the editor) so we preserve the vertical placement.
 var left_final_pos: Vector2
 var right_final_pos: Vector2
+
+# --- New variable: Prevent processing ui_accept until after auto move and health bar slide-in ---
+var input_allowed: bool = false
 
 # Helper function: Update the atlas region for a health bar.
 func set_health_frame(health_bar: TextureRect, frame: int) -> void:
@@ -104,7 +108,8 @@ func _ready() -> void:
 	right_health.position = Vector2(viewport_size.x, right_final_pos.y)
 
 func _process(delta: float) -> void:
-	if not game_started and Input.is_action_just_pressed("ui_accept"):
+	# Only allow ui_accept input if input_allowed is true.
+	if input_allowed and not game_started and Input.is_action_just_pressed("ui_accept"):
 		game_started = true
 		_load_spawn_data()
 		if spawn_data.size() > 0:
@@ -124,6 +129,10 @@ func _load_spawn_data():
 		spawn_data = all_phases[0]
 
 func _on_spawn_timer_timeout():
+	# Prevent spawning new projectiles if the fight has ended.
+	if fight_ended:
+		return
+
 	if spawn_data.size() > 0:
 		var spawn_info = spawn_data.pop_front()
 		current_time = spawn_info["time"]
@@ -244,11 +253,17 @@ func _on_camera_zoom_finished() -> void:
 	# Tween the health bars from their off-screen positions back to their stored final positions.
 	var tween_left = create_tween()
 	tween_left.tween_property(left_health, "position", left_final_pos, SLIDE_DURATION) \
-		 .set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	# When the left health bar tween is done, allow input.
+	tween_left.tween_callback(Callable(self, "_on_health_bars_slid_in"))
 		 
 	var tween_right = create_tween()
 	tween_right.tween_property(right_health, "position", right_final_pos, SLIDE_DURATION) \
-		 .set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+
+func _on_health_bars_slid_in() -> void:
+	# Now that the health bars have finished sliding in, allow input.
+	input_allowed = true
 
 func slide_out_health_bars(callback: Callable) -> void:
 	# Compute off-screen positions based on the viewport size.
@@ -256,14 +271,54 @@ func slide_out_health_bars(callback: Callable) -> void:
 	var left_offscreen = Vector2(-left_health.size.x, left_health.position.y)
 	var right_offscreen = Vector2(viewport_size.x, right_health.position.y)
 	
-	var tween = create_tween()
-	tween.tween_property(left_health, "position", left_offscreen, SLIDE_DURATION) \
+	# Create separate tweens so they run concurrently.
+	var tween_left = create_tween()
+	tween_left.tween_property(left_health, "position", left_offscreen, SLIDE_DURATION) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(right_health, "position", right_offscreen, SLIDE_DURATION) \
+		
+	var tween_right = create_tween()
+	tween_right.tween_property(right_health, "position", right_offscreen, SLIDE_DURATION) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_callback(callback)
+	
+	# Since both tweens have the same duration, use a Timer to trigger the callback after SLIDE_DURATION.
+	var timer = Timer.new()
+	timer.one_shot = true
+	timer.wait_time = SLIDE_DURATION
+	add_child(timer)
+	timer.connect("timeout", callback)
+	timer.start()
+
+# --- Swapped End-Fight Behaviors ---
 
 func _on_end_fight() -> void:
+	fight_ended = true
+	if spawn_timer:
+		spawn_timer.stop()
+	
+	despawn_all_projectiles()
+	
+	# Instead of fading immediately, first slide out the health bars.
+	slide_out_health_bars(Callable(self, "_fade_and_change_scene"))
+
+# New helper function to fade the vignette and change the scene.
+func _fade_and_change_scene() -> void:
+	var vignette = get_node("Vignette")
+	if not vignette:
+		return
+	var tween = create_tween()
+	tween.tween_property(vignette.material, "shader_parameter/fade", 1.0, 1.0) \
+		 .set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_interval(1)
+	tween.tween_callback(Callable(self, "_on_fade_complete"))
+
+# This function remains unchanged—it changes the scene when the fade is complete.
+func _on_fade_complete() -> void:
+	get_tree().change_scene_to_file("res://Respawn/respawn.tscn")
+
+# When the enemy ends the fight, we also set fight_ended to true so no new projectiles spawn.
+# (We do not free the enemy since you want it to remain.)
+func _on_enemy_end_fight() -> void:
+	fight_ended = true
 	if spawn_timer:
 		spawn_timer.stop()
 	
@@ -273,9 +328,11 @@ func _on_end_fight() -> void:
 	if not vignette:
 		return
 
+	# Tween the vignette's shader parameter for overlay_strength.
 	var tween = create_tween()
 	tween.tween_property(vignette.material, "shader_parameter/overlay_strength", 0.0, 1.0) \
-			.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+		 .set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	
 	# Slide out health bars, then zoom the camera out.
 	slide_out_health_bars(Callable(self, "_start_camera_zoom_out"))
 
@@ -292,22 +349,6 @@ func _on_end_fight_complete() -> void:
 	enemy.fighting = false
 	queue_free()
 
-func _on_enemy_end_fight() -> void:
-	if spawn_timer:
-		spawn_timer.stop()
-	
-	despawn_all_projectiles()
-	
-	var vignette = get_node("Vignette")
-	if not vignette:
-		return
-
-	var tween = create_tween()
-	tween.tween_property(vignette.material, "shader_parameter/overlay_strength", 0.0, 1.0) \
-			.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	# Slide out health bars, then zoom the camera out for enemy end-fight.
-	slide_out_health_bars(Callable(self, "_start_camera_zoom_out_enemy"))
-
 func _start_camera_zoom_out_enemy() -> void:
 	var tween = create_tween()
 	tween.tween_property(camera, "global_position", enemy.global_position, 1.0) \
@@ -319,7 +360,8 @@ func _start_camera_zoom_out_enemy() -> void:
 func _on_enemy_end_fight_complete() -> void:
 	player.fighting = false
 	enemy.fighting = false
-	queue_free()
+	# Do not call queue_free(), so the enemy (and scene) remain visible.
+	# Optionally, you can add additional logic here if needed.
 
 func register_projectile(projectile: Node):
 	if projectile not in projectiles:
@@ -349,19 +391,20 @@ func _create_vignette() -> void:
 	var shader = Shader.new()
 	shader.code = """
 		shader_type canvas_item;
-		
-		// Uniforms for adjusting the clear center.
 		uniform vec2 vignette_scale = vec2(1.0, 1.0);
 		uniform float inner_radius : hint_range(0.0, 1.0) = 0.1;
 		uniform float outer_radius : hint_range(0.0, 1.0) = 0.4;
 		uniform vec2 center = vec2(0.5, 0.5);
 		uniform float overlay_strength : hint_range(0.0, 1.0) = 0.0;
+		uniform float fade : hint_range(0.0, 1.0) = 0.0;
 		
 		void fragment() {
 			vec2 uv = SCREEN_UV;
 			float dist = length((uv - center) * vignette_scale);
 			float factor = smoothstep(inner_radius, outer_radius, dist);
-			float final_alpha = factor * overlay_strength;
+			float vignette_alpha = factor * overlay_strength;
+			// When fade is 0, use the vignette; when fade is 1, force full black.
+			float final_alpha = mix(vignette_alpha, 1.0, fade);
 			COLOR = vec4(0.0, 0.0, 0.0, final_alpha);
 		}
 	"""
@@ -369,6 +412,7 @@ func _create_vignette() -> void:
 	var shader_material = ShaderMaterial.new()
 	shader_material.shader = shader
 	shader_material.set_shader_parameter("overlay_strength", 0.0)
+	shader_material.set_shader_parameter("fade", 0.0)
 	
 	vignette.material = shader_material
 	vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
