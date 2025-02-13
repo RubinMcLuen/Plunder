@@ -1,42 +1,54 @@
 extends Line2D
 
-# Maximum number of points in the trail
-const MAX_POINTS = 6
-# How quickly the trail fades (adjust as needed)
-const FADE_SPEED = 1.5
+#
+# ---------------------- CONSTANTS ----------------------
+#
+const MAX_POINTS: int = 6
+const FADE_SPEED: float = 1.5
 
-var is_drawing = false
-var trail_opacity = 1.0
+#
+# ---------------------- VARIABLES ----------------------
+#
+var is_drawing: bool = false
+var trail_opacity: float = 1.0
 
-func _input(event):
+#
+# ---------------------- LIFECYCLE ----------------------
+#
+
+func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			if event.pressed:
+				# Begin drawing
 				is_drawing = true
-				trail_opacity = 1.0  # Reset opacity when starting a new trail
-				modulate = Color(1, 1, 1, trail_opacity)  # Apply full opacity
-				clear_points()  # Start with a fresh trail
+				trail_opacity = 1.0
+				modulate = Color(1, 1, 1, trail_opacity)
+				clear_points()
 				add_trail_point(to_local(get_global_mouse_position()))
-
-
 			else:
+				# Mouse button released
 				is_drawing = false
-	elif event is InputEventMouseMotion and is_drawing:
-		add_trail_point(to_local(get_global_mouse_position()))
+
+	elif event is InputEventMouseMotion:
+		if is_drawing:
+			add_trail_point(to_local(get_global_mouse_position()))
 
 
-
-func add_trail_point(position: Vector2):
-	# Add a new point to the trail
-	add_point(position)
-	if points.size() > MAX_POINTS:
-		remove_point(0)
-
-func _process(delta):
+func _process(delta: float) -> void:
+	# If not drawing, fade out the current trail until fully transparent.
 	if not is_drawing and points.size() > 0:
-		# Gradually fade out the trail
 		trail_opacity -= FADE_SPEED * delta
-		if trail_opacity <= 0:
+		if trail_opacity <= 0.0:
 			clear_points()
 		else:
 			modulate = Color(1, 1, 1, trail_opacity)
+
+#
+# ---------------------- METHODS ------------------------
+#
+
+func add_trail_point(position: Vector2) -> void:
+	add_point(position)
+	if points.size() > MAX_POINTS:
+		remove_point(0)

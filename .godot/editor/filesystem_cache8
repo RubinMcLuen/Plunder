@@ -1,8 +1,9 @@
 e22c9c70a03ae172662e56cbc433647f
-::res://::1739166739
+::res://::1739420163
 clienticon.png::CompressedTexture2D::7882032090579473772::1738636712::1738636713::1::::<><>::
+EnemyCrew.gd::GDScript::-1::1739319562::0::1::::<>Node2D<>::
 Global.gd::GDScript::-1::1738881072::0::1::::<>Node<>::
-npcs.json::JSON::-1::1739057770::0::1::::<><>::
+npcs.json::JSON::-1::1739320156::0::1::::<><>::
 Retro Gaming.ttf::FontFile::2501256111689734373::1727316216::1727316221::1::::<><>::
 ::res://addons/::1738221230
 ::res://addons/dialogue_manager/::1738221233
@@ -76,14 +77,14 @@ settings_view.tscn::PackedScene::5839841081119266502::1738221233::0::1::::<><>::
 ::res://Character/::1739162341
 character.gd::GDScript::-1::1739049456::0::1::::<>CharacterBody2D<>::
 character.tscn::PackedScene::5131681254143960095::1739162341::0::1::::<><>::uid://b5sgtobycgkyy::::res://CharacterCreation/customizations/skin/skin0.png<>uid://ynh5513h0bee::::res://CharacterCreation/customizations/bottom/LeftLeg/lleg0.png<>uid://fwn2eoahwu5w::::res://CharacterCreation/customizations/bottom/RightLeg/rleg0.png
-::res://Character/NPC/::1739162341
+::res://Character/NPC/::1739420163
 npc.gd::GDScript::-1::1739150442::0::1::::<>CharacterBody2D<>::
-npc.tscn::PackedScene::1130333279975514458::1739162341::0::1::::<><>::uid://cfd3bm3d7gr3t::::res://Character/character.tscn<>res://Character/NPC/npc.gd
+npc.tscn::PackedScene::1130333279975514458::1739420163::0::1::::<><>::uid://cfd3bm3d7gr3t::::res://Character/character.tscn<>res://Character/NPC/npc.gd
 ::res://Character/NPC/npcs/::1738222256
-::res://Character/Player/::1739166354
+::res://Character/Player/::1739420163
 Player.gd::GDScript::-1::1739160542::0::1::::<>CharacterBody2D<>::
-player.tscn::PackedScene::7947538893599309052::1739166354::0::1::::<><>::uid://cfd3bm3d7gr3t::::res://Character/character.tscn<>res://Character/Player/Player.gd
-::res://CharacterCreation/::1739162341
+player.tscn::PackedScene::7947538893599309052::1739420163::0::1::::<><>::uid://cfd3bm3d7gr3t::::res://Character/character.tscn<>res://Character/Player/Player.gd
+::res://CharacterCreation/::1739210288
 asset_index.json::JSON::-1::1738812145::0::1::::<><>::
 categorybuttongroup.tres::ButtonGroup::727686636978389403::1727516089::0::1::::<><>::
 category_buttons.gd::GDScript::-1::1736834482::0::1::::<>Node2D<>::
@@ -91,7 +92,7 @@ category_buttons.tscn::PackedScene::2913816974716691176::1738222427::0::1::::<><
 character.gd::GDScript::-1::1736837572::0::1::::<>Node2D<>::
 character.tscn::PackedScene::9187552001697885658::1736993739::0::1::::<><>::res://CharacterCreation/character.gd<>uid://hsxbn4leg3aj::::res://CharacterCreation/customizations/skin/skin0.png<>uid://luwn2yakm0fc::::res://CharacterCreation/customizations/hair/facialhair0.png<>uid://ce3rfumkiiqpf::::res://CharacterCreation/customizations/top/LeftArm/larm0.png<>uid://bpue8vwq7wb2r::::res://CharacterCreation/customizations/top/Body/body0.png<>uid://blsdtc3bvdqxf::::res://CharacterCreation/customizations/top/RightArm/rarm0.png<>uid://0votqft72py2::::res://CharacterCreation/customizations/bottom/LeftLeg/lleg0.png<>uid://cgvc2dwm1w6ha::::res://CharacterCreation/customizations/bottom/RightLeg/rleg0.png
 CharacterNameArea.gd::GDScript::-1::1736993609::0::1::::<>Node2D<>::
-character_creator.gd::GDScript::-1::1738211041::0::1::::<>Node2D<>::
+character_creator.gd::GDScript::-1::1739210288::0::1::::<>Node2D<>::
 character_creator.tscn::PackedScene::6340626552183189608::1739162341::0::1::::<><>::res://CharacterCreation/character_creator.gd<>uid://pebqa3f2by7w::::res://SaveMenu/assets/saveslotmenubackground.png<>uid://r6dv55axd7ph::::res://CharacterCreation/assets/items_window.png<>uid://clsu7rj8rs64b::::res://CharacterCreation/assets/characterbackground.png<>uid://dkwdh681gnvlq::::res://CharacterCreation/assets/header.png<>uid://bfjbtjvq7mwk2::::res://CharacterCreation/assets/button_finish.png<>uid://b3mbnko1miky5::::res://CharacterCreation/assets/button_finish_down.png<>uid://bhrqe0xbobwf5::::res://CharacterCreation/category_buttons.tscn<>uid://c57wj6nmw2lgl::::res://CharacterCreation/slider.tscn<>uid://cfd3bm3d7gr3t::::res://Character/character.tscn<>res://CharacterCreation/CharacterNameArea.gd<>uid://s5jx1ajy7ojo::::res://CharacterCreation/assets/entername.png<>uid://bbvvk8cijnn3b::::res://Retro Gaming.ttf<>uid://dsbcfpv14xee0::::res://CharacterCreation/item_buttons.tscn
 itembuttongroup.tres::ButtonGroup::1737078763774483004::1733955287::0::1::::<><>::
 ItemButtons.gd::GDScript::-1::1738205553::0::1::::<>Node2D<>::
@@ -149,12 +150,14 @@ facialhair0.png::CompressedTexture2D::8525683649768443601::1738206059::173820605
 facialhair1.png::CompressedTexture2D::3034645186839672673::1738206059::1738206059::1::::<><>::
 facialhair2.png::CompressedTexture2D::4711745882363985119::1738206059::1738206059::1::::<><>::
 facialhair3.png::CompressedTexture2D::2292419608860677098::1738811950::1738811950::1::::<><>::
-::res://CharacterCreation/customizations/hat/::1738206072
+::res://CharacterCreation/customizations/hat/::1739318838
 hat0.png::CompressedTexture2D::5134750955687145405::1738206071::1738206072::1::::<><>::
 hat1.png::CompressedTexture2D::5867708536268516627::1738206071::1738206072::1::::<><>::
 hat2.png::CompressedTexture2D::3652065150343240244::1738206071::1738206072::1::::<><>::
 hat3.png::CompressedTexture2D::1118996284032987592::1738206071::1738206072::1::::<><>::
 hat4.png::CompressedTexture2D::5391093638858493797::1738206071::1738206072::1::::<><>::
+hat5.png::CompressedTexture2D::3590306129861552564::1739318838::1739318838::1::::<><>::
+hat6.png::CompressedTexture2D::798145075124407596::1739318838::1739318838::1::::<><>::
 ::res://CharacterCreation/customizations/misc/::1738193571
 hook0.png::CompressedTexture2D::6576967193751654994::1738192311::1738193562::1::::<><>::
 hook1.png::CompressedTexture2D::3207289603504307016::1738192314::1738193556::1::::<><>::
@@ -163,7 +166,7 @@ skin0.png::CompressedTexture2D::4529643762413017856::1738192266::1738192267::1::
 skin1.png::CompressedTexture2D::4823909796102317957::1738196254::1738196254::1::::<><>::
 skin2.png::CompressedTexture2D::2402857067901634965::1738196254::1738196254::1::::<><>::
 ::res://CharacterCreation/customizations/top/::1733951151
-::res://CharacterCreation/customizations/top/Body/::1738811993
+::res://CharacterCreation/customizations/top/Body/::1739318776
 body0.png::CompressedTexture2D::6920742114622937080::1738192289::1738192290::1::::<><>::
 body1.png::CompressedTexture2D::1598239087503513045::1738192294::1738192294::1::::<><>::
 body2.png::CompressedTexture2D::131501246829137109::1738197274::1738197274::1::::<><>::
@@ -172,7 +175,9 @@ body4.png::CompressedTexture2D::5367335353528960518::1738197274::1738197274::1::
 body5.png::CompressedTexture2D::2322790338773754577::1738811993::1738811993::1::::<><>::
 body6.png::CompressedTexture2D::5431319104809098030::1738811993::1738811993::1::::<><>::
 body7.png::CompressedTexture2D::4123911157336521244::1738811993::1738811993::1::::<><>::
-::res://CharacterCreation/customizations/top/LeftArm/::1738812000
+body8.png::CompressedTexture2D::1675233525816481689::1739318776::1739318776::1::::<><>::
+body9.png::CompressedTexture2D::4300790176355675977::1739318776::1739318776::1::::<><>::
+::res://CharacterCreation/customizations/top/LeftArm/::1739318788
 larm0.png::CompressedTexture2D::7931326651863229845::1738192299::1738192300::1::::<><>::
 larm1.png::CompressedTexture2D::4513773532927328975::1738192302::1738192302::1::::<><>::
 larm2.png::CompressedTexture2D::3705685974415479241::1738197281::1738197281::1::::<><>::
@@ -181,7 +186,9 @@ larm4.png::CompressedTexture2D::4579968255220337513::1738197281::1738197281::1::
 larm5.png::CompressedTexture2D::5386409163075125879::1738811999::1738812000::1::::<><>::
 larm6.png::CompressedTexture2D::7022393582740448891::1738811999::1738812000::1::::<><>::
 larm7.png::CompressedTexture2D::3801104685681608397::1738811999::1738812000::1::::<><>::
-::res://CharacterCreation/customizations/top/RightArm/::1738812007
+larm8.png::CompressedTexture2D::7315539772445632470::1739318788::1739318788::1::::<><>::
+larm9.png::CompressedTexture2D::2106321085386451916::1739318788::1739318788::1::::<><>::
+::res://CharacterCreation/customizations/top/RightArm/::1739318798
 rarm0.png::CompressedTexture2D::5305881487669667415::1738193568::1738193572::1::::<><>::
 rarm1.png::CompressedTexture2D::388264265823197635::1738193533::1738193550::1::::<><>::
 rarm2.png::CompressedTexture2D::1366218261318269134::1738197287::1738197287::1::::<><>::
@@ -190,6 +197,8 @@ rarm4.png::CompressedTexture2D::733621228194663303::1738197287::1738197287::1:::
 rarm5.png::CompressedTexture2D::7746512215475649803::1738812007::1738812007::1::::<><>::
 rarm6.png::CompressedTexture2D::3982707317840627969::1738812007::1738812007::1::::<><>::
 rarm7.png::CompressedTexture2D::4544241208311255463::1738812007::1738812007::1::::<><>::
+rarm8.png::CompressedTexture2D::3942617785306920097::1739318798::1739318798::1::::<><>::
+rarm9.png::CompressedTexture2D::3613888044754421301::1739318798::1739318798::1::::<><>::
 ::res://Dialogue/::1739162341
 balloon.gd::GDScript::-1::1739134163::0::1::::<>CanvasLayer<>::
 balloon.tscn::PackedScene::1374632843758497411::1739162341::0::1::::<><>::res://Dialogue/balloon.gd<>uid://c8ixypn3iikla::::res://Dialogue/assets/dialogue_frame.png<>res://addons/dialogue_manager/dialogue_label.gd<>uid://bbvvk8cijnn3b::::res://Retro Gaming.ttf<>uid://b5jekmswl6p1g::::res://Dialogue/assets/dialogue_text_box.png<>uid://6cuew7522vte::::res://Dialogue/assets/dialogue_next_button.png<>uid://c0v3jgq5xt625::::res://Dialogue/assets/dialogue_next_button_down.png<>uid://b0f640v1pvyg0::::res://Dialogue/assets/dialogue_option_button.png<>uid://c5kccr5n6tcb1::::res://Dialogue/assets/dialogue_option_button_down.png<>uid://d1njd1bw0ryjq::::res://Dialogue/assets/dialogue_portrait_background.png
@@ -205,18 +214,25 @@ dialogue_portrait_bartender.png::CompressedTexture2D::1583529362296033542::17382
 dialogue_text_box.png::CompressedTexture2D::4510926777632922270::1738216679::1738221418::1::::<><>::
 textbox.png::CompressedTexture2D::8689980746912966066::1738217304::1738221418::1::::<><>::
 textboxnoportrait.png::CompressedTexture2D::5656004391750771496::1738217307::1738221418::1::::<><>::
-::res://Dialogue/dialogues/::1739089918
+::res://Dialogue/dialogues/::1739320582
 bartender.dialogue::Resource::7961472973291121971::1738216679::1738226049::1::::<><>::res://addons/dialogue_manager/dialogue_resource.gd
 buster.dialogue::Resource::4488239970391757208::1739057620::1739089918::1::::<><>::res://addons/dialogue_manager/dialogue_resource.gd
-::res://Island/::1739166354
-island.gd::GDScript::-1::1739132229::0::1::::<>Node2D<>::
-island.tscn::PackedScene::5140388616864515183::1739166354::0::1::::<><>::uid://dlh32l6ht3jiy::::res://Character/Player/player.tscn<>uid://gt7i83bhox4y::::res://Island/newisland.png<>res://Island/island.gd<>uid://qdsooeakwd1k::::res://Character/NPC/npc.tscn
-newisland.png::CompressedTexture2D::462315245855542094::1738879026::1738879026::1::::<><>::
-::res://Respawn/::1739166739
+captain.dialogue::Resource::1512043126554315343::1739320422::1739320582::1::::<><>::res://addons/dialogue_manager/dialogue_resource.gd
+crew.dialogue::Resource::8815988314503619322::1739320422::1739320582::1::::<><>::res://addons/dialogue_manager/dialogue_resource.gd
+::res://EnemyCrew/::1739420163
+enemy_crew.tscn::PackedScene::7162255967593470378::1739420163::0::1::::<><>::res://EnemyCrew.gd
+::res://Island/::1739420163
+island.gd::GDScript::-1::1739172455::0::1::::<>Node2D<>::
+island.tscn::PackedScene::5140388616864515183::1739420163::0::1::::<><>::uid://dlh32l6ht3jiy::::res://Character/Player/player.tscn<>uid://gt7i83bhox4y::::res://Island/newisland.png<>res://Island/island.gd<>uid://qdsooeakwd1k::::res://Character/NPC/npc.tscn<>uid://dabpkrvna14lq::::res://EnemyCrew/enemy_crew.tscn<>uid://bbvvk8cijnn3b::::res://Retro Gaming.ttf<>res://Island/ShipControlArea.gd<>uid://dn31sa4egq1u7::::res://Respawn/respawn.tscn
+newisland.png::CompressedTexture2D::462315245855542094::1739413867::1739413868::1::::<><>::
+ShipControlArea.gd::GDScript::-1::1739419589::0::1::::<>Area2D<>::
+::res://Respawn/::1739420163
 deathskull.png::CompressedTexture2D::5692861285867806225::1739161030::1739166739::1::::<><>::
-::res://SaveMenu/::1739166354
-save_menu.gd::GDScript::-1::1739132180::0::1::::<>Node2D<>::
-save_menu.tscn::PackedScene::4885948112350229941::1739166354::0::1::::<><>::res://SaveMenu/save_menu.gd<>uid://pebqa3f2by7w::::res://SaveMenu/assets/saveslotmenubackground.png<>uid://dpxw6omkpxdjq::::res://SaveMenu/assets/header.png<>uid://ddnlrb63k22yr::::res://SaveMenu/save_slot.tscn<>uid://d0m8grhuo6nq1::::res://SFX/click3.mp3<>uid://b701nxeo82055::::res://SFX/click4.mp3<>uid://cc70302gibsel::::res://SFX/click2.mp3
+respawn.gd::GDScript::-1::1739171699::0::1::::<>Node2D<>::
+respawn.tscn::PackedScene::8131130426579361488::1739420163::0::1::::<><>::uid://cndwugipto5xl::::res://Respawn/deathskull.png<>res://Respawn/respawn.gd
+::res://SaveMenu/::1739420163
+save_menu.gd::GDScript::-1::1739413253::0::1::::<>Node2D<>::
+save_menu.tscn::PackedScene::4885948112350229941::1739420163::0::1::::<><>::res://SaveMenu/save_menu.gd<>uid://pebqa3f2by7w::::res://SaveMenu/assets/saveslotmenubackground.png<>uid://dpxw6omkpxdjq::::res://SaveMenu/assets/header.png<>uid://ddnlrb63k22yr::::res://SaveMenu/save_slot.tscn<>uid://d0m8grhuo6nq1::::res://SFX/click3.mp3<>uid://b701nxeo82055::::res://SFX/click4.mp3<>uid://cc70302gibsel::::res://SFX/click2.mp3
 save_slot.tscn::PackedScene::7397363839911927269::1737968522::0::1::::<><>::uid://b6ld5qunqr64g::::res://SaveMenu/assets/addsavesloticon.png<>uid://208u7acyfmtc::::res://SaveMenu/assets/BW1.png<>uid://ddddy6dj7r58::::res://SaveMenu/assets/BW2.png<>uid://c607ujpug0w2e::::res://SaveMenu/assets/BW3.png<>uid://0c6pe6paf80::::res://SaveMenu/assets/BW4.png<>uid://bn3pr1xie5gcv::::res://SaveMenu/assets/BW5.png<>uid://c3ty8nw25yafd::::res://SaveMenu/assets/BW6.png<>uid://51jl6sf72ghg::::res://SaveMenu/assets/BW7.png<>uid://dyt4o6h5jo3yl::::res://SaveMenu/assets/BW8.png<>uid://dejn1hoq5q6j0::::res://SaveMenu/assets/C1.png<>uid://dhugx5of8d0cq::::res://SaveMenu/assets/C2.png<>uid://j46bkd57jpjw::::res://SaveMenu/assets/C3.png<>uid://d4hgr1ejwg6b4::::res://SaveMenu/assets/C4.png<>uid://dc5fjb0re4jln::::res://SaveMenu/assets/C5.png<>uid://b1j06452go3te::::res://SaveMenu/assets/C6.png<>uid://komlu5qfiidi::::res://SaveMenu/assets/C7.png<>uid://c1yf2mvwak7pl::::res://SaveMenu/assets/C8.png<>uid://c8dnaxo026ciw::::res://SaveMenu/assets/emptysavesloticon.png<>uid://chk3jh7rnngni::::res://SaveMenu/assets/savesloticonborder.png<>uid://61jf0k5yf5rs::::res://SaveMenu/assets/saveslotshadow.png
 ::res://SaveMenu/assets/::1737968924
 addsavesloticon.png::CompressedTexture2D::4585219588444646276::1736993697::1736994395::1::::<><>::
@@ -242,11 +258,11 @@ savesloticonborder.png::CompressedTexture2D::5286523616223116850::1737427349::17
 saveslotinfobackground.png::CompressedTexture2D::4586865369307686335::1736993697::1736994450::1::::<><>::
 saveslotmenubackground.png::CompressedTexture2D::1061179498799819662::1727327297::1737968924::1::::<><>::
 saveslotshadow.png::CompressedTexture2D::2230084686216145076::1736993697::1736994459::1::::<><>::
-::res://SaveMenu/Info/::1739166354
+::res://SaveMenu/Info/::1739420163
 background.png::CompressedTexture2D::7477874141540540392::1738707423::1738707423::1::::<><>::
 deleteicon.png::CompressedTexture2D::5404280064193655064::1738707406::1738707407::1::::<><>::
-info.gd::GDScript::-1::1738785746::0::1::::<>Node2D<>::
-info.tscn::PackedScene::7166479290716718069::1739166354::0::1::::<><>::res://SaveMenu/Info/info.gd<>uid://deslq2y8f8myq::::res://SaveMenu/Info/background.png<>uid://drt1ekkil3pj7::::res://SaveMenu/Info/portraitframe.png<>uid://dgrw1tmcrnmxw::::res://SaveMenu/Info/portraitbackground.png<>uid://dt4jpqh3j16wp::::res://SaveMenu/Info/playicon.png<>uid://ci84x50648pgy::::res://SaveMenu/Info/deleteicon.png<>uid://bbvvk8cijnn3b::::res://Retro Gaming.ttf<>uid://dlh32l6ht3jiy::::res://Character/Player/player.tscn
+info.gd::GDScript::-1::1739210288::0::1::::<>Node2D<>::
+info.tscn::PackedScene::7166479290716718069::1739420163::0::1::::<><>::res://SaveMenu/Info/info.gd<>uid://deslq2y8f8myq::::res://SaveMenu/Info/background.png<>uid://drt1ekkil3pj7::::res://SaveMenu/Info/portraitframe.png<>uid://dgrw1tmcrnmxw::::res://SaveMenu/Info/portraitbackground.png<>uid://dt4jpqh3j16wp::::res://SaveMenu/Info/playicon.png<>uid://ci84x50648pgy::::res://SaveMenu/Info/deleteicon.png<>uid://bbvvk8cijnn3b::::res://Retro Gaming.ttf<>uid://dlh32l6ht3jiy::::res://Character/Player/player.tscn
 playicon.png::CompressedTexture2D::8553291127385634199::1738707406::1738707407::1::::<><>::
 portraitbackground.png::CompressedTexture2D::7616872755804323084::1738707631::1738707407::1::::<><>::
 portraitframe.png::CompressedTexture2D::8393281896301383966::1738707633::1738707633::1::::<><>::
@@ -257,7 +273,8 @@ click3.mp3::AudioStreamMP3::8940770955242787334::1738048103::1738048103::1::::<>
 click4.mp3::AudioStreamMP3::4685676195991880614::1738045314::1738045314::1::::<><>::
 click.mp3::AudioStreamMP3::4845414735322001433::1738043876::1738043876::1::::<><>::
 The Beach Where Dreams Die.wav::AudioStreamWAV::1335799294250064210::1738044588::1738044648::1::::<><>::
-::res://SwordFight/::1739166739
+::res://SwordFight/::1739420163
+easy.json::JSON::-1::1739311348::0::1::::<><>::
 enemyhealthbar.png::CompressedTexture2D::7819142850976976440::1739165025::1739165025::1::::<><>::
 FeintProjectile.gd::GDScript::-1::1739082251::0::1::::FeintProjectile<>Projectile<>::
 feint_projectile.tscn::PackedScene::8859625729754443227::1739162341::0::1::::<><>::res://SwordFight/FeintProjectile.gd<>uid://7a4bsx2ha1tu::::res://SwordFight/projectile.png
@@ -266,10 +283,10 @@ playerhealthbar.png::CompressedTexture2D::3824180378936877608::1739165025::17391
 Projectile.gd::GDScript::-1::1739083351::0::1::::Projectile<>Area2D<>::
 projectile.png::CompressedTexture2D::2247806557188114322::1739071645::1739071645::1::::<><>::
 Projectile.tscn::PackedScene::244412145449458978::1739162341::0::1::::<><>::res://SwordFight/Projectile.gd<>uid://7a4bsx2ha1tu::::res://SwordFight/projectile.png
-swordfight.gd::GDScript::-1::1739166071::0::1::::<>Node2D<>::
-sword_fight.tscn::PackedScene::4779903819639329099::1739166354::0::1::::<><>::res://SwordFight/swordfight.gd<>res://SwordFight/sword_trail.gd<>uid://buqpxsdew0uhc::::res://SwordFight/playerhealthbar.png<>uid://dqnox1fpo26y::::res://SwordFight/Projectile.tscn<>res://SwordFight/hard.json<>uid://djnwe1i5fvmge::::res://SwordFight/enemyhealthbar.png<>uid://dyhw0haqd1jup::::res://SwordFight/feint_projectile.tscn
-sword_trail.gd::GDScript::-1::1739134956::0::1::::<>Line2D<>::
-::res://Tavern/::1739166354
+swordfight.gd::GDScript::-1::1739413254::0::1::::<>Node2D<>::
+sword_fight.tscn::PackedScene::4779903819639329099::1739420163::0::1::::<><>::res://SwordFight/swordfight.gd<>res://SwordFight/sword_trail.gd<>res://SwordFight/easy.json<>uid://buqpxsdew0uhc::::res://SwordFight/playerhealthbar.png<>uid://dqnox1fpo26y::::res://SwordFight/Projectile.tscn<>uid://djnwe1i5fvmge::::res://SwordFight/enemyhealthbar.png<>uid://dyhw0haqd1jup::::res://SwordFight/feint_projectile.tscn
+sword_trail.gd::GDScript::-1::1739312019::0::1::::<>Line2D<>::
+::res://Tavern/::1739420163
 1.png::CompressedTexture2D::4141990592795840385::1738139252::1738139252::1::::<><>::
 2.png::CompressedTexture2D::3795600674362379498::1738139252::1738139252::1::::<><>::
 3.png::CompressedTexture2D::6422802177444421304::1738139252::1738139252::1::::<><>::
@@ -299,12 +316,12 @@ sword_trail.gd::GDScript::-1::1739134956::0::1::::<>Line2D<>::
 27.png::CompressedTexture2D::6068706990525254203::1738144785::1738144785::1::::<><>::
 28.png::CompressedTexture2D::1402131136100008774::1738144785::1738144785::1::::<><>::
 tavern.gd::GDScript::-1::1739133192::0::1::::<>Node2D<>::
-tavern.tscn::PackedScene::5394083297899691786::1739166354::0::1::::<><>::res://Tavern/tavern.gd<>uid://qdsooeakwd1k::::res://Character/NPC/npc.tscn<>uid://dlh32l6ht3jiy::::res://Character/Player/player.tscn<>uid://dtl865k56rp5b::::res://Tavern/taverninterior2.png<>uid://b0an8k1ojomxd::::res://Tavern/1.png<>uid://cxriu4ggtgh5a::::res://Tavern/3.png<>uid://cnrkygmkm1vnj::::res://Tavern/6.png<>uid://bbtinyu68crr8::::res://Tavern/12.png<>uid://ci57eoplr72nk::::res://Tavern/19.png<>uid://cl37dxegmmo2c::::res://Tavern/22.png<>uid://c6hb81oobd11l::::res://Tavern/4.png<>uid://bucu8u1pyulne::::res://Tavern/2.png<>uid://brodly2dirtk8::::res://Tavern/5.png<>uid://b7wnwukubyevy::::res://Tavern/7.png<>uid://6lk7bdbims4s::::res://Tavern/8.png<>uid://bb7tbgttc706k::::res://Tavern/9.png<>uid://c2lnemmy7rsgo::::res://Tavern/10.png<>uid://pxejptwub70b::::res://Tavern/11.png<>uid://chlsccmqsk2fd::::res://Tavern/13.png<>uid://bept4ck0yqplj::::res://Tavern/14.png<>uid://bhe32vnjtfp8t::::res://Tavern/15.png<>uid://b517x1nd2drms::::res://Tavern/16.png<>uid://btvc5dmcyecpv::::res://Tavern/17.png<>uid://34u2c70fx2xi::::res://Tavern/18.png<>uid://bbyylfcs0cy8m::::res://Tavern/20.png<>uid://ckujdqy7k2xhl::::res://Tavern/21.png<>uid://crigct5tc3mx0::::res://Tavern/23.png<>uid://boaswpskyfsht::::res://Tavern/24.png<>uid://ugjd5ls5sf8k::::res://Tavern/25.png<>uid://u2o1ep1ov5d5::::res://Tavern/26.png<>uid://cspyynoayouwp::::res://Tavern/27.png<>uid://t8g5otoebhr7::::res://Tavern/28.png
+tavern.tscn::PackedScene::5394083297899691786::1739420163::0::1::::<><>::res://Tavern/tavern.gd<>uid://qdsooeakwd1k::::res://Character/NPC/npc.tscn<>uid://dlh32l6ht3jiy::::res://Character/Player/player.tscn<>uid://dtl865k56rp5b::::res://Tavern/taverninterior2.png<>uid://b0an8k1ojomxd::::res://Tavern/1.png<>uid://cxriu4ggtgh5a::::res://Tavern/3.png<>uid://cnrkygmkm1vnj::::res://Tavern/6.png<>uid://bbtinyu68crr8::::res://Tavern/12.png<>uid://ci57eoplr72nk::::res://Tavern/19.png<>uid://cl37dxegmmo2c::::res://Tavern/22.png<>uid://c6hb81oobd11l::::res://Tavern/4.png<>uid://bucu8u1pyulne::::res://Tavern/2.png<>uid://brodly2dirtk8::::res://Tavern/5.png<>uid://b7wnwukubyevy::::res://Tavern/7.png<>uid://6lk7bdbims4s::::res://Tavern/8.png<>uid://bb7tbgttc706k::::res://Tavern/9.png<>uid://c2lnemmy7rsgo::::res://Tavern/10.png<>uid://pxejptwub70b::::res://Tavern/11.png<>uid://chlsccmqsk2fd::::res://Tavern/13.png<>uid://bept4ck0yqplj::::res://Tavern/14.png<>uid://bhe32vnjtfp8t::::res://Tavern/15.png<>uid://b517x1nd2drms::::res://Tavern/16.png<>uid://btvc5dmcyecpv::::res://Tavern/17.png<>uid://34u2c70fx2xi::::res://Tavern/18.png<>uid://bbyylfcs0cy8m::::res://Tavern/20.png<>uid://ckujdqy7k2xhl::::res://Tavern/21.png<>uid://crigct5tc3mx0::::res://Tavern/23.png<>uid://boaswpskyfsht::::res://Tavern/24.png<>uid://ugjd5ls5sf8k::::res://Tavern/25.png<>uid://u2o1ep1ov5d5::::res://Tavern/26.png<>uid://cspyynoayouwp::::res://Tavern/27.png<>uid://t8g5otoebhr7::::res://Tavern/28.png
 taverninterior2.png::CompressedTexture2D::8517618848422645233::1738117599::1738121179::1::::<><>::
-::res://TitleScreen/::1739166354
+::res://TitleScreen/::1739420163
 title_screen.gd::GDScript::-1::1738044079::0::1::::<>Node2D<>::
-title_screen.tscn::PackedScene::5684170182224329515::1739166354::0::1::::<><>::res://TitleScreen/title_screen.gd<>uid://biquxyot7o7hr::::res://TitleScreen/assets/titlescreenbackground.png<>uid://d2rvww4tpxvpb::::res://TitleScreen/assets/titlescreentitle.png<>uid://cxsvekkv3xust::::res://TitleScreen/assets/titlescreenboat.png<>uid://bbvvk8cijnn3b::::res://Retro Gaming.ttf<>uid://b5capdarsmt17::::res://SFX/appear-online.mp3<>uid://cwlpgtbhderfk::::res://CharacterCreation/character_creator.tscn<>uid://cbu137n5idbij::::res://SaveMenu/save_menu.tscn<>uid://tbcoiu1gynyo::::res://SFX/The Beach Where Dreams Die.wav
-::res://TitleScreen/assets/::1733971081
-titlescreenbackground.png::CompressedTexture2D::2982218173071747023::1733971080::1733971081::1::::<><>::
+title_screen.tscn::PackedScene::5684170182224329515::1739420163::0::1::::<><>::res://TitleScreen/title_screen.gd<>uid://biquxyot7o7hr::::res://TitleScreen/assets/titlescreenbackground.png<>uid://d2rvww4tpxvpb::::res://TitleScreen/assets/titlescreentitle.png<>uid://cxsvekkv3xust::::res://TitleScreen/assets/titlescreenboat.png<>uid://bbvvk8cijnn3b::::res://Retro Gaming.ttf<>uid://b5capdarsmt17::::res://SFX/appear-online.mp3<>uid://cwlpgtbhderfk::::res://CharacterCreation/character_creator.tscn<>uid://cbu137n5idbij::::res://SaveMenu/save_menu.tscn<>uid://tbcoiu1gynyo::::res://SFX/The Beach Where Dreams Die.wav
+::res://TitleScreen/assets/::1739412546
+titlescreenbackground.png::CompressedTexture2D::2982218173071747023::1739412546::1739412546::1::::<><>::
 titlescreenboat.png::CompressedTexture2D::6425626312331772895::1727315797::1727327277::1::::<><>::
 titlescreentitle.png::CompressedTexture2D::9090770796636475291::1727315797::1727327277::1::::<><>::

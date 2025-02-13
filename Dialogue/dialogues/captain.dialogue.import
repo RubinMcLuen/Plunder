@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_13"
+type="Resource"
+uid="uid://vspenth63208"
+path="res://.godot/imported/captain.dialogue-01fefdec0ec2f0092d3b77ab7be34bd3.tres"
+
+[deps]
+
+source_file="res://Dialogue/dialogues/captain.dialogue"
+dest_files=["res://.godot/imported/captain.dialogue-01fefdec0ec2f0092d3b77ab7be34bd3.tres"]
+
+[params]
+
+defaults=true

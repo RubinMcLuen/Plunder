@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dabpkrvna14lq"]
+
+[ext_resource type="Script" path="res://EnemyCrew.gd" id="1_wy2tt"]
+
+[node name="EnemyCrew" type="Node2D"]
+script = ExtResource("1_wy2tt")

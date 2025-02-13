@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_13"
+type="Resource"
+uid="uid://dxusblw21p5lu"
+path="res://.godot/imported/crew.dialogue-601b39915ab902d213b84448a3a0c78e.tres"
+
+[deps]
+
+source_file="res://Dialogue/dialogues/crew.dialogue"
+dest_files=["res://.godot/imported/crew.dialogue-601b39915ab902d213b84448a3a0c78e.tres"]
+
+[params]
+
+defaults=true

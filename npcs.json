@@ -20,6 +20,60 @@
 	"body": "res://CharacterCreation/customizations/top/Body/body6.png",
 	"leftleg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg3.png",
 	"rightleg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg3.png"
+  },
+"crew1": {
+	"dialogue_file": "res://Dialogue/dialogues/crew.dialogue",
+	"skin": "res://CharacterCreation/customizations/skin/skin1.png",
+	"hat": "res://CharacterCreation/customizations/hat/hat5.png",
+	"facialhair": "",
+	"leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm8.png",
+	"rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm8.png",
+	"body": "res://CharacterCreation/customizations/top/Body/body8.png",
+	"leftleg": "",
+	"rightleg": ""
+  },
+"crew2": {
+	"dialogue_file": "res://Dialogue/dialogues/crew.dialogue",
+	"skin": "res://CharacterCreation/customizations/skin/skin1.png",
+	"hat": "res://CharacterCreation/customizations/hat/hat5.png",
+	"facialhair": "",
+	"leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm8.png",
+	"rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm8.png",
+	"body": "res://CharacterCreation/customizations/top/Body/body8.png",
+	"leftleg": "",
+	"rightleg": ""
+  },
+"crew3": {
+	"dialogue_file": "res://Dialogue/dialogues/crew.dialogue",
+	"skin": "res://CharacterCreation/customizations/skin/skin1.png",
+	"hat": "res://CharacterCreation/customizations/hat/hat5.png",
+	"facialhair": "",
+	"leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm8.png",
+	"rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm8.png",
+	"body": "res://CharacterCreation/customizations/top/Body/body8.png",
+	"leftleg": "",
+	"rightleg": ""
+  },
+"crew4": {
+	"dialogue_file": "res://Dialogue/dialogues/crew.dialogue",
+	"skin": "res://CharacterCreation/customizations/skin/skin1.png",
+	"hat": "res://CharacterCreation/customizations/hat/hat5.png",
+	"facialhair": "",
+	"leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm8.png",
+	"rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm8.png",
+	"body": "res://CharacterCreation/customizations/top/Body/body8.png",
+	"leftleg": "",
+	"rightleg": ""
+  },
+"captain": {
+	"dialogue_file": "res://Dialogue/dialogues/captain.dialogue",
+	"skin": "res://CharacterCreation/customizations/skin/skin1.png",
+	"hat": "res://CharacterCreation/customizations/hat/hat6.png",
+	"facialhair": "",
+	"leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm9.png",
+	"rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm9.png",
+	"body": "res://CharacterCreation/customizations/top/Body/body9.png",
+	"leftleg": "",
+	"rightleg": ""
   }
-
 }

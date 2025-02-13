@@ -1,0 +1,49 @@
+{
+  "CharacterName1": {
+	"positions": 25,
+	"phases": [
+	  [
+		{ "time": 0.0,  "position": 3,  "speed": 40.0 },
+		{ "time": 0.5,  "position": 7,  "speed": 42.0 },
+		{ "time": 1.0,  "position": 12, "speed": 44.0 },
+		{ "time": 1.5,  "position": 18, "speed": 46.0 },
+		{ "time": 2.0,  "position": 22, "speed": 48.0 }
+	  ],
+	  [
+		{ "time": 2.5,  "position": 5,  "speed": 41.0 },
+		{ "time": 3.0,  "position": 10, "speed": 43.0 },
+		{ "time": 3.5,  "position": 15, "speed": 45.0 },
+		{ "time": 4.0,  "position": 20, "speed": 47.0 },
+		{ "time": 4.5,  "position": 25, "speed": 49.0 }
+	  ],
+	  [
+		{ "time": 5.0,  "position": 2,  "speed": 42.0 },
+		{ "time": 5.5,  "position": 8,  "speed": 44.0 },
+		{ "time": 6.0,  "position": 14, "speed": 46.0 },
+		{ "time": 6.5,  "position": 19, "speed": 48.0 },
+		{ "time": 7.0,  "position": 24, "speed": 50.0 }
+	  ],
+	  [
+		{ "time": 7.5,  "position": 1,  "speed": 43.0 },
+		{ "time": 8.0,  "position": 6,  "speed": 45.0 },
+		{ "time": 8.5,  "position": 11, "speed": 47.0 },
+		{ "time": 9.0,  "position": 16, "speed": 49.0 },
+		{ "time": 9.5,  "position": 21, "speed": 51.0 }
+	  ],
+	  [
+		{ "time": 10.0, "position": 4,  "speed": 44.0 },
+		{ "time": 10.5, "position": 9,  "speed": 46.0 },
+		{ "time": 11.0, "position": 13, "speed": 48.0 },
+		{ "time": 11.5, "position": 17, "speed": 50.0 },
+		{ "time": 12.0, "position": 23, "speed": 52.0 }
+	  ],
+	  [
+		{ "time": 12.5, "position": 3,  "speed": 45.0 },
+		{ "time": 13.0, "position": 8,  "speed": 47.0 },
+		{ "time": 13.5, "position": 12, "speed": 49.0 },
+		{ "time": 14.0, "position": 17, "speed": 51.0 },
+		{ "time": 14.5, "position": 22, "speed": 53.0 }
+	  ]
+	]
+  }
+}
