@@ -26,6 +26,7 @@ driver/driver="CoreAudio"
 
 Global="*res://Global.gd"
 DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
+SceneSwitcher="*res://SceneSwitcher.gd"
 
 [debug]
 

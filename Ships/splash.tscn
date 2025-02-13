@@ -1,0 +1,44 @@
+[gd_scene load_steps=9 format=3 uid="uid://c67ausqpgncj3"]
+
+[ext_resource type="Texture2D" uid="uid://cdkcpkhv4jbwe" path="res://Ships/splash1.png" id="1_vp4qo"]
+[ext_resource type="Texture2D" uid="uid://bytciitcbuf6p" path="res://Ships/splash2.png" id="2_1lhcj"]
+[ext_resource type="Texture2D" uid="uid://dm2its1fp5dcy" path="res://Ships/splash3.png" id="3_h43kn"]
+[ext_resource type="Script" path="res://Ships/splash.gd" id="4_ch65d"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_upxro"]
+atlas = ExtResource("1_vp4qo")
+region = Rect2(0, 0, 3, 3)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bqh40"]
+atlas = ExtResource("2_1lhcj")
+region = Rect2(0, 0, 3, 3)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8wc51"]
+atlas = ExtResource("3_h43kn")
+region = Rect2(0, 0, 3, 3)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_om6t6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_upxro")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bqh40")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8wc51")
+}],
+"loop": false,
+"name": &"splash",
+"speed": 6.0
+}]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D"]
+z_index = 6
+sprite_frames = SubResource("SpriteFrames_om6t6")
+animation = &"splash"
+frame_progress = 1.0
+script = ExtResource("4_ch65d")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

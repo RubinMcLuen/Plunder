@@ -1,0 +1,143 @@
+[gd_scene load_steps=20 format=3 uid="uid://bw8b2mbvoo5rw"]
+
+[ext_resource type="Script" path="res://KelptownIsland/KelptownIsland.gd" id="1_l2ldo"]
+[ext_resource type="Texture2D" uid="uid://dqgren0rgall7" path="res://KelptownIsland/Sprite-0001-Recovered-0x0-1000x1000.png" id="2_68p8q"]
+[ext_resource type="Texture2D" uid="uid://b4p2jpqa48a20" path="res://KelptownIsland/kelptown.png" id="3_0a737"]
+[ext_resource type="Texture2D" uid="uid://cjx15p1itpu0y" path="res://KelptownIsland/foam.png" id="4_7rd1c"]
+[ext_resource type="Texture2D" uid="uid://bnup0l37nm3jl" path="res://KelptownIsland/Sprite-0001-Recovered.png" id="5_brlml"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r8klm"]
+radius = 114.003
+height = 311.999
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xwj5j"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(0, 0, 400, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0tq1n"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(400, 0, 400, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nvkd7"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(800, 0, 400, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i8jxi"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(1200, 0, 400, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tlqd0"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(1600, 0, 400, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fq1dd"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(2000, 0, 400, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6r6nu"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(2400, 0, 400, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q2bjr"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(2800, 0, 400, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p4gm7"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(3200, 0, 400, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l01t7"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(3600, 0, 400, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3dqag"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(4000, 0, 400, 400)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6tn5t"]
+atlas = ExtResource("4_7rd1c")
+region = Rect2(4400, 0, 400, 400)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4hd4y"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xwj5j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0tq1n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nvkd7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i8jxi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tlqd0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fq1dd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6r6nu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q2bjr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p4gm7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l01t7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3dqag")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6tn5t")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[node name="KelptownIsland" type="Node2D"]
+script = ExtResource("1_l2ldo")
+sprite_node_path = NodePath("Island/Island/info")
+collision_shape_node_path = NodePath("Island/Island/CollisionShape2D")
+button_node_path = NodePath("Island/Island/info/Button")
+target_position = Vector2(-32, 109)
+
+[node name="Island" type="Sprite2D" parent="."]
+z_index = 6
+texture = ExtResource("2_68p8q")
+
+[node name="Island" type="StaticBody2D" parent="Island"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Island/Island"]
+position = Vector2(-11, -38)
+rotation = -1.57379
+shape = SubResource("CapsuleShape2D_r8klm")
+
+[node name="info" type="Sprite2D" parent="Island/Island"]
+z_index = 14
+position = Vector2(93, 106)
+texture = ExtResource("3_0a737")
+
+[node name="Button" type="Button" parent="Island/Island/info"]
+z_index = 15
+offset_left = -31.0
+offset_top = 13.0
+offset_right = 19.0
+offset_bottom = 44.0
+text = "Dock"
+
+[node name="Foam" type="AnimatedSprite2D" parent="."]
+z_index = 1
+sprite_frames = SubResource("SpriteFrames_4hd4y")
+autoplay = "default"
+frame_progress = 0.282934
+
+[node name="Sand" type="Sprite2D" parent="."]
+texture = ExtResource("5_brlml")

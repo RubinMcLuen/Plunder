@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnxn3imjbuqru"]
+
+[ext_resource type="Script" path="res://Ships/EnemyShip.gd" id="1_j5nyo"]
+[ext_resource type="Texture2D" uid="uid://bqbc76dxaqw1y" path="res://Ships/boat_sprite.png" id="2_io26m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4rmrt"]
+size = Vector2(30, 16)
+
+[node name="EnemyShip" type="Area2D"]
+collision_mask = 2
+script = ExtResource("1_j5nyo")
+
+[node name="Boat" type="Sprite2D" parent="."]
+texture = ExtResource("2_io26m")
+hframes = 360
+frame = 180
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("RectangleShape2D_4rmrt")
+
+[node name="GunCooldown" type="Timer" parent="."]
+one_shot = true
+
+[node name="BoatCamera" type="Camera2D" parent="."]
+enabled = false
+
+[node name="DecideTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[connection signal="timeout" from="GunCooldown" to="." method="_on_gun_cooldown_timeout"]
+[connection signal="timeout" from="DecideTimer" to="." method="_on_decide_timer_timeout"]

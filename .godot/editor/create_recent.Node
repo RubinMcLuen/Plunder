@@ -1,3 +1,4 @@
+TileMap
 Button
 CollisionShape2D
 Area2D
@@ -9,7 +10,5 @@ ColorRect
 Node2D
 Line2D
 Camera2D
-TileMap
 Panel
 Control
-RichTextLabel

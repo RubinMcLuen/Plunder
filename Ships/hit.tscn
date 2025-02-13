@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://cn0j5qsgevekp"]
+
+[ext_resource type="Script" path="res://Ships/hit.gd" id="1_rvae5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_prxlo"]
+region = Rect2(0, 0, 3, 3)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smjwu"]
+region = Rect2(3, 0, 3, 3)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nhuln"]
+region = Rect2(6, 0, 3, 3)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vrcof"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_prxlo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smjwu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nhuln")
+}],
+"loop": false,
+"name": &"hit",
+"speed": 24.0
+}]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D"]
+z_index = 6
+sprite_frames = SubResource("SpriteFrames_vrcof")
+animation = &"hit"
+script = ExtResource("1_rvae5")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

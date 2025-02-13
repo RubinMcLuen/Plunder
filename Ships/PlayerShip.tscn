@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://0ab5frbt0cuk"]
+
+[ext_resource type="Script" path="res://Ships/PlayerShip.gd" id="1_uaqh5"]
+[ext_resource type="PackedScene" uid="uid://cepi4n24b2mso" path="res://Ships/cannonball.tscn" id="2_fwr3b"]
+[ext_resource type="PackedScene" uid="uid://cn0j5qsgevekp" path="res://Ships/hit.tscn" id="3_swdta"]
+[ext_resource type="Texture2D" uid="uid://bqbc76dxaqw1y" path="res://Ships/boat_sprite.png" id="4_vd4iv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pwcr0"]
+size = Vector2(30, 16)
+
+[node name="PlayerShip" type="Area2D"]
+z_index = 1
+collision_mask = 2
+script = ExtResource("1_uaqh5")
+cannonball_scene = ExtResource("2_fwr3b")
+splash_scene = ExtResource("3_swdta")
+hit_scene = ExtResource("3_swdta")
+
+[node name="ShipSprite" type="Sprite2D" parent="."]
+position = Vector2(0, -0.5)
+texture = ExtResource("4_vd4iv")
+hframes = 360
+frame = 180
+
+[node name="ShipHitbox" type="CollisionShape2D" parent="."]
+position = Vector2(-4.37114e-08, 1)
+shape = SubResource("RectangleShape2D_pwcr0")
+
+[node name="GunCooldown" type="Timer" parent="."]
+one_shot = true
+
+[node name="ShipCamera" type="Camera2D" parent="."]
+
+[connection signal="timeout" from="GunCooldown" to="." method="_on_gun_cooldown_timeout"]

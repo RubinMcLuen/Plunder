@@ -1,13 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://cfibpjveqehsp"]
+[gd_scene load_steps=10 format=3 uid="uid://cfibpjveqehsp"]
 
-[ext_resource type="PackedScene" uid="uid://dlh32l6ht3jiy" path="res://Character/Player/player.tscn" id="1_a51lx"]
-[ext_resource type="Texture2D" uid="uid://gt7i83bhox4y" path="res://Island/newisland.png" id="1_j6pk4"]
-[ext_resource type="Script" path="res://Island/island.gd" id="1_tap3y"]
-[ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="4_4kbpn"]
-[ext_resource type="PackedScene" uid="uid://dabpkrvna14lq" path="res://EnemyCrew/enemy_crew.tscn" id="5_xijti"]
-[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://Retro Gaming.ttf" id="6_3ugu6"]
-[ext_resource type="Script" path="res://Island/ShipControlArea.gd" id="6_sd10o"]
-[ext_resource type="PackedScene" uid="uid://dn31sa4egq1u7" path="res://Respawn/respawn.tscn" id="7_riwou"]
+[ext_resource type="Script" path="res://Island/island.gd" id="1_eaqko"]
+[ext_resource type="Texture2D" uid="uid://gt7i83bhox4y" path="res://Island/newisland.png" id="2_b8wm4"]
+[ext_resource type="PackedScene" uid="uid://dlh32l6ht3jiy" path="res://Character/Player/player.tscn" id="3_xihff"]
+[ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="4_w8pbf"]
+[ext_resource type="PackedScene" uid="uid://dabpkrvna14lq" path="res://EnemyCrew/enemy_crew.tscn" id="5_j7hqq"]
+[ext_resource type="Script" path="res://Island/ShipControlArea.gd" id="6_182vu"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://Retro Gaming.ttf" id="8_q310d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxd76"]
 size = Vector2(26, 5)
@@ -16,14 +15,14 @@ size = Vector2(26, 5)
 size = Vector2(96, 128)
 
 [node name="Island" type="Node2D"]
-script = ExtResource("1_tap3y")
+script = ExtResource("1_eaqko")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(-128, 476)
-texture = ExtResource("1_j6pk4")
+texture = ExtResource("2_b8wm4")
 
-[node name="Player" parent="." instance=ExtResource("1_a51lx")]
-position = Vector2(-24, -50)
+[node name="Player" parent="." instance=ExtResource("3_xihff")]
+position = Vector2(-184, 644)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 
@@ -52,18 +51,17 @@ color = Color(0, 0, 0, 0)
 position = Vector2(-88, -78.5)
 shape = SubResource("RectangleShape2D_jxd76")
 
-[node name="Buster" parent="." instance=ExtResource("4_4kbpn")]
+[node name="Buster" parent="." instance=ExtResource("4_w8pbf")]
 position = Vector2(60, -91)
 npc_name = "buster"
 fightable = true
 
-[node name="EnemyCrew" parent="." instance=ExtResource("5_xijti")]
+[node name="EnemyCrew" parent="." instance=ExtResource("5_j7hqq")]
 position = Vector2(-10, -154)
 
 [node name="ShipControlArea" type="Area2D" parent="."]
 position = Vector2(-322, 623)
-script = ExtResource("6_sd10o")
-target_scene = ExtResource("7_riwou")
+script = ExtResource("6_182vu")
 button_path = NodePath("Button")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ShipControlArea"]
@@ -75,7 +73,7 @@ offset_left = 17.0
 offset_top = -5.0
 offset_right = 78.0
 offset_bottom = 17.0
-theme_override_fonts/font = ExtResource("6_3ugu6")
+theme_override_fonts/font = ExtResource("8_q310d")
 theme_override_font_sizes/font_size = 11
 text = "Set Sail"
 
