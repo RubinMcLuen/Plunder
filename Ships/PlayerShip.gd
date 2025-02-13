@@ -6,6 +6,9 @@ const MAX_CHARGE_TIME = 2.0
 const BASE_CANNONBALL_SPEED = 30
 const BASE_CANNONBALL_DISTANCE = 80
 
+# Define MOUSE_BUTTON_LEFT if not already defined.
+const MOUSE_BUTTON_LEFT = 1
+
 @export var rotation_speed = 75.0
 @export var damping_factor = 0.99
 @export var acceleration_factor = 0.5
@@ -21,6 +24,9 @@ const BASE_CANNONBALL_DISTANCE = 80
 @export var deceleration_factor = 100
 @export var charge_time_left = 1.0
 @export var charge_time_right = 1.0
+
+# NEW: Swipe sensitivity – higher values mean a small swipe rotates the ship more.
+@export var swipe_sensitivity: float = 0.2
 
 var current_frame = 0
 var sprite: Sprite2D = null
@@ -47,7 +53,6 @@ const ANGLE_TOLERANCE = 1.0  # Degrees
 const DISTANCE_TOLERANCE = 1.0  # Distance units
 
 # Preload the Pixel scene
-
 
 # Store references to pixel instances
 var pixel_trail = []
@@ -119,18 +124,11 @@ func get_collision_shape_corner():
 		return corner_global_pos
 	return global_position
 
-
-
-
-
-
-
 func update_frame():
 	if sprite:
 		sprite.frame = (int(current_frame) + int(float(NUM_FRAMES) / 2)) % NUM_FRAMES
 	if collision_shape:
 		collision_shape.rotation_degrees = current_frame * ANGLE_PER_FRAME
-
 
 func rotate_right(delta):
 	current_rotation_speed = min(current_rotation_speed + rotation_acceleration * delta, max_rotation_speed)
@@ -198,7 +196,7 @@ func shoot_left():
 		get_tree().current_scene.add_child(c)
 		var offset = ship_direction.normalized() * (i * 3 - 6)
 		var start_position = position + offset + left_direction * 8
-		c.start(start_position, left_direction, cannonball_distance)
+		c.start(start_position, left_direction, cannonball_distance, self)
 
 func shoot_right():
 	if not can_shoot:
@@ -218,7 +216,7 @@ func shoot_right():
 		get_tree().current_scene.add_child(c)
 		var offset = ship_direction.normalized() * (i * 3 - 6)
 		var start_position = position + offset + right_direction * 8
-		c.start(start_position, right_direction, cannonball_distance)
+		c.start(start_position, right_direction, cannonball_distance, self)
 
 func start():
 	if cooldown <= 0:
@@ -400,7 +398,6 @@ func move_to_target(delta):
 	# Update last_distance for next frame
 	last_distance = distance_to_target
 
-
 func _force_snap_to_target():
 	global_position = target_position
 	moving_forward = false
@@ -477,6 +474,17 @@ func rotate_to_target_angle(delta):
 	print("DEBUG: rotate_to_target_angle -> updated current_frame:", current_frame, 
 		  "=> new current_angle_deg:", normalize_angle(current_frame * ANGLE_PER_FRAME))
 
-
-
-
+# --- NEW: Mouse swipe input handling ---
+func _input(event):
+	# Check for mouse motion while the left mouse button is held down.
+	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		# Use the horizontal motion (event.relative.x) to adjust the rotation.
+		var dx = event.relative.x
+		if dx != 0:
+			# Multiply by swipe_sensitivity so that even small swipes rotate the ship noticeably.
+			var rotation_change = dx * swipe_sensitivity
+			current_frame += rotation_change / ANGLE_PER_FRAME
+			current_frame = fmod(current_frame, NUM_FRAMES)
+			if current_frame < 0:
+				current_frame += NUM_FRAMES
+			update_frame()
