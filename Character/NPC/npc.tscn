@@ -7,6 +7,8 @@
 size = Vector2(14, 20)
 
 [node name="NPC" instance=ExtResource("1_fukj7")]
+collision_layer = 4
+collision_mask = 4
 script = ExtResource("2_danvb")
 
 [node name="facialhair" parent="Appearance" index="2"]

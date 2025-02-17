@@ -1,0 +1,124 @@
+[gd_scene load_steps=13 format=3 uid="uid://b3xx1r1h6gki5"]
+
+[ext_resource type="PackedScene" uid="uid://ci36078u3htw1" path="res://KelptownInn/KelptownInn.tscn" id="1_b3fmw"]
+[ext_resource type="Script" path="res://KelptownInn/KelptownInnIntroCutscene.gd" id="2_uqa76"]
+[ext_resource type="PackedScene" uid="uid://4klyn0h8t7vm" path="res://Cutscene/CutsceneManager.tscn" id="2_xaxja"]
+[ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="4_updwp"]
+[ext_resource type="PackedScene" uid="uid://cjn8sut1cl3vw" path="res://SwordFight/SwordFightTutorial.tscn" id="4_vnlhx"]
+[ext_resource type="Script" path="res://Character/NPC/npcs/BartenderTutorial.gd" id="5_wvvsv"]
+[ext_resource type="Script" path="res://Character/NPC/npcs/TutorialPirate.gd" id="5_y6wri"]
+[ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="6_34htp"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="7_11mh4"]
+
+[sub_resource type="Animation" id="Animation_unt7p"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(254, 94)]
+}
+
+[sub_resource type="Animation" id="Animation_j1k64"]
+resource_name = "new_animation"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(254, 93), Vector2(254, 95), Vector2(254, 93)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bmm82"]
+_data = {
+"RESET": SubResource("Animation_unt7p"),
+"new_animation": SubResource("Animation_j1k64")
+}
+
+[node name="KelptownInn" instance=ExtResource("1_b3fmw")]
+script = ExtResource("2_uqa76")
+
+[node name="CutsceneManager" parent="." index="0" node_paths=PackedStringArray("player", "camera", "npcs") instance=ExtResource("2_xaxja")]
+player = NodePath("../Player")
+camera = NodePath("../Player/Camera2D")
+npcs = [NodePath("../Pirate"), NodePath("../Patron"), NodePath("../Bartender")]
+
+[node name="Player" parent="." index="1"]
+position = Vector2(381, 23)
+
+[node name="SwordFightTutorial" parent="Player" index="3" instance=ExtResource("4_vnlhx")]
+visible = false
+
+[node name="Bartender" parent="." index="2"]
+script = ExtResource("5_wvvsv")
+
+[node name="Pirate" parent="." index="3" instance=ExtResource("4_updwp")]
+position = Vector2(259, 132)
+script = ExtResource("5_y6wri")
+npc_name = "TutorialPirate"
+fightable = true
+
+[node name="Patron" parent="." index="4" instance=ExtResource("4_updwp")]
+position = Vector2(295, 132)
+npc_name = "patron"
+
+[node name="Arrow" type="Sprite2D" parent="." index="41"]
+visible = false
+position = Vector2(254, 94)
+texture = ExtResource("6_34htp")
+centered = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Arrow" index="0"]
+libraries = {
+"": SubResource("AnimationLibrary_bmm82")
+}
+autoplay = "new_animation"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." index="42"]
+
+[node name="TutorialHint1" type="RichTextLabel" parent="CanvasLayer" index="0"]
+visible = false
+offset_top = 1.0
+offset_right = 480.0
+offset_bottom = 271.0
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("7_11mh4")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "\"[center]
+
+
+Press anywhere to move
+Tap the enemy to fight[/center]"
+
+[node name="TutorialHint2" type="RichTextLabel" parent="CanvasLayer" index="1"]
+visible = false
+offset_top = 1.0
+offset_right = 480.0
+offset_bottom = 271.0
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("7_11mh4")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "\"[center]
+
+
+
+Tap the bartender to talk[/center]"
+
+[connection signal="cutscene_finished" from="CutsceneManager" to="." method="_on_cutscene_manager_cutscene_finished"]
+[connection signal="talked_to_bartender" from="Bartender" to="." method="_on_talked_to_bartender"]
+[connection signal="pirate_dead" from="Pirate" to="." method="_on_pirate_dead"]

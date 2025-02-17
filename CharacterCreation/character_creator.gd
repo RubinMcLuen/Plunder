@@ -8,6 +8,7 @@ extends Node2D
 
 @export var name_input: LineEdit
 @export var finish_button: TextureButton
+@export var header_node: Node2D
 
 var categories = ["skin", "facialhair", "hat", "top", "bottom", "misc"]
 var page_size  = 6
@@ -25,6 +26,7 @@ var right_arm_node: Sprite2D
 var body_node: Sprite2D
 var left_leg_node: Sprite2D
 var right_leg_node: Sprite2D
+var is_flashing: bool = false
 
 var is_hook_enabled: bool = false
 var active_hook_sprite: String = ""
@@ -50,10 +52,15 @@ func _ready():
 	_initialize_character_nodes()
 	_load_all_options()
 	_connect_ui_signals()
+	
+	# Initialize slider for the default (first) category.
+	update_slider_for_category(current_category)
+	
 	populate_item_buttons(current_category, current_page)
 
 	if finish_button:
 		finish_button.connect("pressed", self._on_finish_button_pressed)
+
 
 #
 # ──────────────────────────────────────────────────────────────────────────────
@@ -154,6 +161,17 @@ func _on_category_selected(category: String):
 	current_page = 0
 	reset_item_buttons_to_main_character()
 	populate_item_buttons(current_category, current_page)
+	update_slider_for_category(current_category)
+
+
+func update_slider_for_category(category: String) -> void:
+	var total_items = options[category].size()
+	var required_pages = int(ceil(total_items / float(page_size)))
+	required_pages = min(required_pages, 5)
+	var slider_node = get_node("Window/Slider")
+	slider_node.set_page_count(required_pages)
+	slider_node.reset_to_first_page()
+
 
 func _on_page_changed(new_page: int):
 	current_page = new_page
@@ -173,6 +191,15 @@ func _on_item_selected(category: String, item):
 			_apply_bottom(item)
 		"misc":
 			_toggle_hook()
+
+func animate_header(reverse: bool = false) -> Tween:
+	# If reverse is false, move down by 29 pixels; if true, move up by 29 pixels.
+	var offset: int = -17 if not reverse else 17
+	var tween = create_tween()
+	tween.tween_property(header_node, "global_position:y", header_node.global_position.y + offset, 0.3) \
+		.set_trans(Tween.TRANS_LINEAR) \
+		.set_ease(Tween.EASE_IN_OUT)
+	return tween
 
 #
 # ──────────────────────────────────────────────────────────────────────────────
@@ -259,7 +286,27 @@ func _toggle_hook():
 #  FINISH / SAVE / LOAD
 # ──────────────────────────────────────────────────────────────────────────────
 #
-func _on_finish_button_pressed():
+# At the top of your script, you could declare this flag if you want:
+# var is_flashing: bool = false  # Flag to prevent multiple simultaneous flashes
+
+func _on_finish_button_pressed() -> void:
+	# Check if the name input still contains the default text.
+	# if name_input.text.strip_edges() == "Enter Name...":
+		# If you want to prevent multiple flashes, uncomment the following lines:
+		# if not is_flashing:
+		#     is_flashing = true
+
+		# var original_color = name_input.modulate
+		# name_input.modulate = Color(1, 0, 0)  # Flash red.
+		
+		# Uncomment these lines to wait for a brief moment before resetting the color:
+		# await get_tree().create_timer(0.2).timeout
+		# name_input.modulate = original_color
+		# is_flashing = false
+
+		# return  # Exit early if the default text is present.
+	
+	# Proceed as normal if the name is valid.
 	update_character_data()
 	save_character_data()
 
@@ -274,8 +321,8 @@ func _on_finish_button_pressed():
 		var parse_result = json.parse(file.get_as_text())  # Parse returns an int (error code)
 		file.close()
 
-		if parse_result == OK:  # Check if parsing was successful
-			save_data = json.data  # Extract parsed data
+		if parse_result == OK:
+			save_data = json.data
 
 	# Update scene data (default starting position)
 	save_data["scene"] = {
@@ -290,6 +337,7 @@ func _on_finish_button_pressed():
 
 	print("Finished customization, data saved, and loading Tavern.")
 	get_tree().change_scene_to_file("res://Tavern/tavern.tscn")
+
 
 
 func update_character_data():

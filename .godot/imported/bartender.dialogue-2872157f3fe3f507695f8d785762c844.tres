@@ -1,11 +1,12 @@
 [gd_resource type="Resource" script_class="DialogueResource" load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_pc7g5"]
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_7i50f"]
 
 [resource]
-script = ExtResource("1_pc7g5")
+script = ExtResource("1_7i50f")
 using_states = PackedStringArray()
 titles = {
+"Intro7": "33",
 "finished_bounty": "2",
 "introduction": "21",
 "normal": "13",
@@ -245,6 +246,36 @@ Nothing, it just waved.",
 "next_id": "end",
 "type": &"goto"
 },
+"32": {
+"id": "32",
+"next_id": "33",
+"text": "Intro7",
+"type": &"title"
+},
+"33": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "33",
+"next_id": "34",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Oi! No slicin’ up the customers ‘til they’ve paid their tab!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Oi! No slicin’ up the customers ‘til they’ve paid their tab!",
+"type": &"dialogue"
+},
+"34": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "34",
+"next_id": &"end",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "You there—sort this scoundrel out ‘fore he wrecks me place!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "You there—sort this scoundrel out ‘fore he wrecks me place!",
+"type": &"dialogue"
+},
 "4": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
@@ -344,6 +375,9 @@ Bartender: If you're looking for work, check the bounty board outside.
 Bartender: I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.
 => END
 
+~ Intro7
+Bartender: Oi! No slicin’ up the customers ‘til they’ve paid their tab!
+Bartender: You there—sort this scoundrel out ‘fore he wrecks me place!
 
 
 "

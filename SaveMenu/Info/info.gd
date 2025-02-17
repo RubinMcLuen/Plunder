@@ -4,12 +4,12 @@ extends Node2D
 var slot_index = -1
 
 func _ready():
-	$playbutton.pressed.connect(self._on_playbutton_pressed)
-	$deletebutton.pressed.connect(self._on_deletebutton_pressed)  # <-- Add this line
+	$PlayButton.pressed.connect(self._on_playbutton_pressed)
+	$DeleteButton.pressed.connect(self._on_deletebutton_pressed)  # <-- Add this line
 	await $Control/Player  # Wait for the player node to be ready
 	var player = $Control/Player
 	var player_name = player.name_input
-	$name.text = "captain " + player_name
+	$Name.text = "Captain " + player_name
 
 
 func _on_playbutton_pressed():

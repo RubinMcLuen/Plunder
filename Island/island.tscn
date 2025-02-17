@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="4_w8pbf"]
 [ext_resource type="PackedScene" uid="uid://dabpkrvna14lq" path="res://EnemyCrew/enemy_crew.tscn" id="5_j7hqq"]
 [ext_resource type="Script" path="res://Island/ShipControlArea.gd" id="6_182vu"]
-[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://Retro Gaming.ttf" id="8_q310d"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="8_q310d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxd76"]
 size = Vector2(26, 5)

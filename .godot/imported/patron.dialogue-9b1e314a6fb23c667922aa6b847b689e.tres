@@ -1,0 +1,191 @@
+[gd_resource type="Resource" script_class="DialogueResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_vg8rl"]
+
+[resource]
+script = ExtResource("1_vg8rl")
+using_states = PackedStringArray()
+titles = {
+"Intro1": "2",
+"Intro2": "6",
+"Intro3": "10",
+"Intro4": "14",
+"Intro5": "18",
+"Intro6": "22"
+}
+character_names = PackedStringArray("Patron", "Pirate")
+first_title = "2"
+lines = {
+"1": {
+"id": "1",
+"next_id": "2",
+"text": "Intro1",
+"type": &"title"
+},
+"10": {
+"character": "Patron",
+"character_replacements": Array[Dictionary]([]),
+"id": "10",
+"next_id": "11",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "It keeps the wind out me socket! Now hand it over!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "It keeps the wind out me socket! Now hand it over!",
+"type": &"dialogue"
+},
+"11": {
+"id": "11",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"13": {
+"id": "13",
+"next_id": "14",
+"text": "Intro4",
+"type": &"title"
+},
+"14": {
+"character": "Pirate",
+"character_replacements": Array[Dictionary]([]),
+"id": "14",
+"next_id": "15",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Pfft! Wind? What, yer skull whistlin’ sea shanties now?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Pfft! Wind? What, yer skull whistlin’ sea shanties now?",
+"type": &"dialogue"
+},
+"15": {
+"id": "15",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"17": {
+"id": "17",
+"next_id": "18",
+"text": "Intro5",
+"type": &"title"
+},
+"18": {
+"character": "Patron",
+"character_replacements": Array[Dictionary]([]),
+"id": "18",
+"next_id": "19",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Aye, and it’s outta tune without me patch!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Aye, and it’s outta tune without me patch!",
+"type": &"dialogue"
+},
+"19": {
+"id": "19",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"2": {
+"character": "Patron",
+"character_replacements": Array[Dictionary]([]),
+"id": "2",
+"next_id": "3",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Give me back me eye patch, ye thievin’ bilge rat!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Give me back me eye patch, ye thievin’ bilge rat!",
+"type": &"dialogue"
+},
+"21": {
+"id": "21",
+"next_id": "22",
+"text": "Intro6",
+"type": &"title"
+},
+"22": {
+"character": "Pirate",
+"character_replacements": Array[Dictionary]([]),
+"id": "22",
+"next_id": "23",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Then I’ll be takin’ the other one for good measure!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Then I’ll be takin’ the other one for good measure!",
+"type": &"dialogue"
+},
+"23": {
+"id": "23",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"3": {
+"id": "3",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"5": {
+"id": "5",
+"next_id": "6",
+"text": "Intro2",
+"type": &"title"
+},
+"6": {
+"character": "Pirate",
+"character_replacements": Array[Dictionary]([]),
+"id": "6",
+"next_id": "7",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Ye don’t even got an eye! What’s it to ye?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Ye don’t even got an eye! What’s it to ye?",
+"type": &"dialogue"
+},
+"7": {
+"id": "7",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"9": {
+"id": "9",
+"next_id": "10",
+"text": "Intro3",
+"type": &"title"
+}
+}
+raw_text = "~ Intro1
+Patron: Give me back me eye patch, ye thievin’ bilge rat!
+=> END
+
+~ Intro2
+Pirate: Ye don’t even got an eye! What’s it to ye?
+=> END
+
+~ Intro3
+Patron: It keeps the wind out me socket! Now hand it over!
+=> END
+
+~ Intro4
+Pirate: Pfft! Wind? What, yer skull whistlin’ sea shanties now?
+=> END
+
+~ Intro5
+Patron: Aye, and it’s outta tune without me patch!
+=> END
+
+~ Intro6
+Pirate: Then I’ll be takin’ the other one for good measure!
+=> END
+
+
+
+"
+metadata/dialogue_manager_version = "2.45.0"

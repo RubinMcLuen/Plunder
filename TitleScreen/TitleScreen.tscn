@@ -1,0 +1,213 @@
+[gd_scene load_steps=23 format=3 uid="uid://cm8ppnapjo5rr"]
+
+[ext_resource type="Script" path="res://TitleScreen/TitleScreen.gd" id="1_d6u5a"]
+[ext_resource type="Texture2D" uid="uid://biquxyot7o7hr" path="res://TitleScreen/assets/titlescreenbackground.png" id="1_l328g"]
+[ext_resource type="Texture2D" uid="uid://d2rvww4tpxvpb" path="res://TitleScreen/assets/titlescreentitle.png" id="2_rbwqf"]
+[ext_resource type="Texture2D" uid="uid://cxsvekkv3xust" path="res://TitleScreen/assets/titlescreenboat.png" id="3_7ul8s"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="4_rii8i"]
+[ext_resource type="AudioStream" uid="uid://b5capdarsmt17" path="res://SFX/appear-online.mp3" id="5_hxgrm"]
+[ext_resource type="PackedScene" uid="uid://cwlpgtbhderfk" path="res://CharacterCreation/character_creator.tscn" id="6_ppw85"]
+[ext_resource type="AudioStream" uid="uid://tbcoiu1gynyo" path="res://SFX/titlescreensong.wav" id="7_j5h6x"]
+[ext_resource type="PackedScene" uid="uid://cbu137n5idbij" path="res://SaveMenu/save_menu.tscn" id="7_vnvxv"]
+[ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://SaveMenu/assets/saveslotmenubackground.png" id="10_3nref"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_k6s53"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bm7qj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o3tit"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kn7y1"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_swrxr"]
+
+[sub_resource type="Animation" id="Animation_tfat6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_e6p7q"]
+resource_name = "pulse"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.568627), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3t4nj"]
+_data = {
+"RESET": SubResource("Animation_tfat6"),
+"pulse": SubResource("Animation_e6p7q")
+}
+
+[sub_resource type="Animation" id="Animation_ew1te"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../StartButton:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_blcr8"]
+resource_name = "blockclick"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../StartButton:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_v77qd"]
+resource_name = "fade"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tvo7v"]
+_data = {
+"RESET": SubResource("Animation_ew1te"),
+"blockclick": SubResource("Animation_blcr8"),
+"fade": SubResource("Animation_v77qd")
+}
+
+[node name="TitleScreen" type="Node2D"]
+script = ExtResource("1_d6u5a")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(240, 135)
+
+[node name="Background" type="Sprite2D" parent="."]
+position = Vector2(240, 0)
+texture = ExtResource("1_l328g")
+
+[node name="Title" type="Sprite2D" parent="."]
+position = Vector2(240, 135)
+texture = ExtResource("2_rbwqf")
+
+[node name="Boat" type="Sprite2D" parent="."]
+position = Vector2(205, 213)
+texture = ExtResource("3_7ul8s")
+
+[node name="StartButton" type="Button" parent="."]
+z_index = -5
+offset_left = -75.0
+offset_right = 555.0
+offset_bottom = 270.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_k6s53")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_bm7qj")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_o3tit")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_kn7y1")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_swrxr")
+action_mode = 0
+flat = true
+
+[node name="StartSound" type="AudioStreamPlayer" parent="StartButton"]
+stream = ExtResource("5_hxgrm")
+
+[node name="StartText" type="Label" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 148.0
+offset_top = 160.0
+offset_right = 338.0
+offset_bottom = 183.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_rii8i")
+theme_override_font_sizes/font_size = 11
+text = "Press anywhere to begin"
+
+[node name="PulseAnimation" type="AnimationPlayer" parent="StartText"]
+libraries = {
+"": SubResource("AnimationLibrary_3t4nj")
+}
+autoplay = "pulse"
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_j5h6x")
+autoplay = true
+
+[node name="DelayTimer" type="Timer" parent="."]
+wait_time = 0.001
+one_shot = true
+
+[node name="CharacterCreator" parent="." instance=ExtResource("6_ppw85")]
+visible = false
+z_index = 1
+position = Vector2(240, -135)
+
+[node name="SaveMenu" parent="." instance=ExtResource("7_vnvxv")]
+z_index = 2
+position = Vector2(0, -270)
+
+[node name="MenuFade" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+z_index = 10
+position = Vector2(240, -135)
+texture = ExtResource("10_3nref")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MenuFade"]
+libraries = {
+"": SubResource("AnimationLibrary_tvo7v")
+}
+autoplay = "blockclick"
+
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="timeout" from="DelayTimer" to="." method="_on_timer_timeout"]
+[connection signal="hide_character_creator" from="SaveMenu" to="." method="_on_hide_character_creator"]
+[connection signal="show_character_creator" from="SaveMenu" to="." method="_on_show_character_creator"]

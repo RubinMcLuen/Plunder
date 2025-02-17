@@ -12,7 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cfd3bm3d7gr3t" path="res://Character/character.tscn" id="11_4qdb2"]
 [ext_resource type="Script" path="res://CharacterCreation/CharacterNameArea.gd" id="12_7i56c"]
 [ext_resource type="Texture2D" uid="uid://s5jx1ajy7ojo" path="res://CharacterCreation/assets/entername.png" id="12_giet6"]
-[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://Retro Gaming.ttf" id="17_3vrev"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="17_3vrev"]
 [ext_resource type="PackedScene" uid="uid://dsbcfpv14xee0" path="res://CharacterCreation/item_buttons.tscn" id="21_swnrr"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mmy72"]
@@ -23,11 +23,12 @@ LineEdit/colors/font_selected_color = Color(0.988235, 0.878431, 0.658824, 1)
 LineEdit/colors/selection_color = Color(0.521569, 0.521569, 0.521569, 1)
 LineEdit/styles/focus = SubResource("StyleBoxEmpty_mmy72")
 
-[node name="CharacterCreator" type="Node2D" node_paths=PackedStringArray("name_input", "finish_button")]
+[node name="CharacterCreator" type="Node2D" node_paths=PackedStringArray("name_input", "finish_button", "header_node")]
 position = Vector2(240, 135)
 script = ExtResource("1_njf4n")
 name_input = NodePath("CharacterNameArea/NameInput")
 finish_button = NodePath("Window/FinishButton")
+header_node = NodePath("Window/Header")
 
 [node name="Window" type="Sprite2D" parent="."]
 texture = ExtResource("1_yjhog")
@@ -37,11 +38,13 @@ position = Vector2(61, -11)
 texture = ExtResource("2_ji4oj")
 
 [node name="CharacterBackground" type="Sprite2D" parent="Window"]
-position = Vector2(-91.5, -11)
+position = Vector2(-157, -80)
 texture = ExtResource("3_6gwil")
+centered = false
 
 [node name="Header" type="Sprite2D" parent="Window"]
-position = Vector2(-77, -106)
+z_index = -1
+position = Vector2(-77, -89)
 texture = ExtResource("4_l5ows")
 centered = false
 
@@ -65,7 +68,7 @@ position = Vector2(-15, -47)
 position = Vector2(146, -41)
 
 [node name="Character" parent="." instance=ExtResource("11_4qdb2")]
-position = Vector2(-91, 40)
+position = Vector2(-93, 42)
 scale = Vector2(4, 4)
 
 [node name="CharacterNameArea" type="Node2D" parent="."]

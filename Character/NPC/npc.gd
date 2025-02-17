@@ -1,4 +1,5 @@
 extends CharacterBody2D
+class_name NPC
 
 @export var npc_name: String  # Used to look up the NPC's data in the JSON file
 const NPC_DATA_PATH := "res://npcs.json"  # Adjust as needed
@@ -17,19 +18,43 @@ var direction: Vector2 = Vector2.RIGHT
 const FRAMES_PER_ANIMATION = 8
 var sprite_parts: Array[Sprite2D] = []
 
-# ---------------------------
-# NEW: Health Mechanics
-# ---------------------------
-signal end_fight   # Signal emitted when enemy health reaches 0
-var health: int = 3  # Enemy starts with 3 health points
+# Idle animation randomization variables
+var idle_offset: int = 0
+var idle_start_time: int = 0
 
 # ---------------------------
-# OVERRIDE ANIMATION VARIABLES
+# Health Mechanics
+# ---------------------------
+signal end_fight   # Signal emitted when enemy health reaches 0
+var health: int = 3
+
+# ---------------------------
+# Override Animation Variables
 # ---------------------------
 var anim_override: bool = false
 var anim_override_start_time: int = 0
 var anim_override_duration: int = 0
 var current_anim: String = "idle"   # "idle", "slash", or "hurt"
+
+# Flag to continuously play sword idle animation
+var idle_with_sword: bool = false
+
+func set_idle_with_sword_mode(enabled: bool) -> void:
+	idle_with_sword = enabled
+
+# ---------------------------
+# NEW: Auto-Move Variables (similar to player)
+# ---------------------------
+@export var speed: float = 100
+var auto_move: bool = false
+var auto_target_position: Vector2 = Vector2.ZERO
+
+# We now define a unique signal for NPC auto-move completion.
+signal npc_move_completed
+
+# We also match the "disable_user_input" & "custom_velocity" from the player script
+var disable_user_input: bool = false
+var custom_velocity: Vector2 = Vector2.ZERO
 
 # ---------------------------
 # Helper Functions
@@ -40,9 +65,9 @@ func safe_load(path: String) -> Resource:
 	return load(path)
 
 func load_appearance() -> void:
-	var file := FileAccess.open(NPC_DATA_PATH, FileAccess.READ)
+	var file = FileAccess.open(NPC_DATA_PATH, FileAccess.READ)
 	if file:
-		var json_text := file.get_as_text()
+		var json_text = file.get_as_text()
 		file.close()
 		var json := JSON.new()
 		var err := json.parse(json_text)
@@ -60,22 +85,23 @@ func load_appearance() -> void:
 			$Appearance/Top/body.texture       = safe_load(data.get("body", ""))
 			$Appearance/Bottom/leftleg.texture    = safe_load(data.get("leftleg", ""))
 			$Appearance/Bottom/rightleg.texture   = safe_load(data.get("rightleg", ""))
-			
+
 			var dialogue_path = data.get("dialogue_file", "")
 			if dialogue_path.strip_edges() != "":
 				dialogue_resource = load(dialogue_path)
 			else:
 				dialogue_resource = null
 		else:
-			push_error("NPC name '" + npc_name + "' not found in " + NPC_DATA_PATH)
+			push_error("NPC name '%s' not found in %s" % [npc_name, NPC_DATA_PATH])
 	else:
-		push_error("NPC data file not found: " + NPC_DATA_PATH)
+		push_error("NPC data file not found: %s" % NPC_DATA_PATH)
 
 # ---------------------------
 # Animation Functions
 # ---------------------------
 func play_idle() -> void:
-	var frame = (Time.get_ticks_msec() / 100) % FRAMES_PER_ANIMATION
+	var elapsed = Time.get_ticks_msec() - idle_start_time
+	var frame = int((elapsed / 100) + idle_offset) % FRAMES_PER_ANIMATION
 	var base_frame = 0 * FRAMES_PER_ANIMATION
 	var current_frame = base_frame + frame
 	var flip_h = (direction == Vector2.LEFT)
@@ -92,26 +118,25 @@ func play_idle_with_sword() -> void:
 		part.flip_h = flip_h
 		part.frame = current_frame
 
-# ---------------------------
-# OVERRIDE ANIMATION FUNCTIONS
-# ---------------------------
 func play_hurt_animation() -> void:
-	# Hurt animation: row 6, 3 frames (300ms total)
 	anim_override = true
 	anim_override_start_time = Time.get_ticks_msec()
-	anim_override_duration = 300
+	anim_override_duration = 300  # row 6, 3 frames
 	current_anim = "hurt"
 
 func play_slash_animation() -> void:
-	# Slash animation: row 4, 8 frames (800ms total)
 	anim_override = true
 	anim_override_start_time = Time.get_ticks_msec()
-	anim_override_duration = 800
+	anim_override_duration = 800  # row 4, 8 frames
 	current_anim = "slash"
 
 func update_animation() -> void:
-	# Skip animation updates if in customization mode.
 	if customization_only:
+		# Show the first idle frame if just customizing
+		var base_frame = 0
+		for part in sprite_parts:
+			part.flip_h = (direction == Vector2.LEFT)
+			part.frame = base_frame
 		return
 
 	if anim_override:
@@ -136,17 +161,60 @@ func update_animation() -> void:
 		if elapsed >= anim_override_duration:
 			anim_override = false
 			current_anim = "idle"
+			idle_offset = randi() % FRAMES_PER_ANIMATION
+			idle_start_time = Time.get_ticks_msec()
 	else:
-		if fighting:
+		# Match player's logic: if fighting, show sword idle, else normal idle
+		if idle_with_sword:
 			play_idle_with_sword()
 		else:
 			play_idle()
 
+# ---------------------------
+# Movement and Input
+# ---------------------------
 func _physics_process(_delta: float) -> void:
+	handle_npc_input()
 	update_animation()
+	move_and_slide()
+
+func handle_npc_input() -> void:
+	# If user input is disabled AND not auto-move, zero out velocity
+	if disable_user_input and not auto_move:
+		custom_velocity = Vector2.ZERO
+		velocity = custom_velocity
+		return
+
+	# Auto-movement takes priority
+	if auto_move:
+		var diff = auto_target_position - global_position
+		# Increase tolerance from 1.0 to 5.0 pixels
+		if diff.length() < 5.0:
+			global_position = auto_target_position
+			auto_move = false
+			custom_velocity = Vector2.ZERO
+			velocity = custom_velocity
+			print("NPC finished moving. Emitting npc_move_completed")
+			emit_signal("npc_move_completed")
+		else:
+			custom_velocity = diff.normalized() * speed
+			# Optionally update direction if needed
+			velocity = custom_velocity
+		return
+
+	# If fighting is active, no normal user movement
+	if fighting:
+		custom_velocity = Vector2.ZERO
+		velocity = custom_velocity
+		return
+
+	# Otherwise, no keyboard input for NPC, so default to zero velocity if not auto-moving
+	custom_velocity = Vector2.ZERO
+	velocity = custom_velocity
+
 
 # ---------------------------
-# NEW: Health and Damage Functions
+# Health and Damage
 # ---------------------------
 func take_damage() -> void:
 	print("Enemy was hit by a projectile!")
@@ -157,11 +225,10 @@ func take_damage() -> void:
 	if health <= 0:
 		print("Enemy health reached 0! Emitting end_fight signal.")
 		emit_signal("end_fight")
-		# Optionally, play a death animation or execute additional logic:
 		play_hurt_animation()
 
 # ---------------------------
-# Node Setup and Input
+# Node Setup & Dialogue
 # ---------------------------
 func _ready() -> void:
 	load_appearance()
@@ -177,26 +244,30 @@ func _ready() -> void:
 		$Appearance/Bottom/leftleg,
 		$Appearance/Bottom/rightleg
 	]
+	idle_offset = randi() % FRAMES_PER_ANIMATION
+	idle_start_time = Time.get_ticks_msec()
 
+func show_dialogue(dialogue_key: String) -> Node:
+	if dialogue_resource == null:
+		push_error("Dialogue resource not loaded for NPC " + npc_name)
+		return null
+	var balloon = DialogueManager.show_dialogue_balloon(dialogue_resource, dialogue_key, [self])
+	return balloon
+
+func set_facing_direction(is_left: bool) -> void:
+	direction = Vector2.LEFT if is_left else Vector2.RIGHT
+	for part in sprite_parts:
+		part.flip_h = is_left
+		
 func _on_area_input_event(_viewport, event, _shape_idx) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		# Only allow dialogue if not fighting.
-		if not fighting:
-			var balloon = DialogueManager.show_dialogue_balloon(dialogue_resource, "introduction", [self])
-			balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
+	pass
 
-func _on_dialogue_finished():
-	# Only initiate the fight scene if fightable is true.
-	if not fightable:
-		return
+func _on_dialogue_finished() -> void:
+	pass
 
-	var sword_fight_scene = load("res://SwordFight/sword_fight.tscn")
-	if sword_fight_scene:
-		var sword_fight_instance = sword_fight_scene.instantiate()
-		# Base offset for the sword fight instance.
-		var offset = Vector2(-258.5, -146.5)
-		# If player_direction is false, subtract an extra 64 on the x-axis.
-		if player_direction:
-			offset.x += 36
-		sword_fight_instance.position += offset
-		self.add_child(sword_fight_instance)
+# ---------------------------
+# Auto-move initiation
+# ---------------------------
+func auto_move_to_position(target: Vector2) -> void:
+	auto_move = true
+	auto_target_position = target

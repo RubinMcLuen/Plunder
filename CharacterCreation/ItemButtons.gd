@@ -16,6 +16,7 @@ func populate_buttons(category: String, options_dict: Dictionary, page: int = 0,
 		return
 
 	current_category = category
+	current_page = page  # <--- This line ensures the correct page offset is used.
 	options = options_dict
 	for i in range(page_size):
 		var button = get_node("Button" + str(i + 1))
@@ -99,7 +100,6 @@ func apply_item_to_character(character: Node2D, item, category: String, is_hook_
 				target_node.texture = loaded_texture
 			else:
 				push_error("Failed to load texture: " + item)
-
 
 func _on_item_button_pressed(button_index: int):
 	if current_category not in options or typeof(options[current_category]) != TYPE_ARRAY:

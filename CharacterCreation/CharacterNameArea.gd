@@ -25,6 +25,6 @@ func _on_name_focus_entered():
 func _on_name_focus_exited():
 	# Restore the placeholder text if the field is empty
 	if name_input.text.strip_edges() == "":
-		name_input.text = "Enter Name"
+		name_input.text = "Enter Name..."
 		is_default_text = true
 	name_input.release_focus()

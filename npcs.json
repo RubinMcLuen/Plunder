@@ -10,8 +10,8 @@
 	"leftleg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg5.png",
 	"rightleg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg5.png"
   },
-"buster": {
-	"dialogue_file": "res://Dialogue/dialogues/buster.dialogue",
+"patron": {
+	"dialogue_file": "res://Dialogue/dialogues/patron.dialogue",
 	"skin": "res://CharacterCreation/customizations/skin/skin0.png",
 	"hat": "",
 	"facialhair": "res://CharacterCreation/customizations/facialhair/facialhair0.png",
@@ -65,8 +65,8 @@
 	"leftleg": "",
 	"rightleg": ""
   },
-"captain": {
-	"dialogue_file": "res://Dialogue/dialogues/captain.dialogue",
+"TutorialPirate": {
+	"dialogue_file": "res://Dialogue/dialogues/patron.dialogue",
 	"skin": "res://CharacterCreation/customizations/skin/skin1.png",
 	"hat": "res://CharacterCreation/customizations/hat/hat6.png",
 	"facialhair": "",

@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Dialogue/balloon.gd" id="1_i6w4i"]
 [ext_resource type="Texture2D" uid="uid://c8ixypn3iikla" path="res://Dialogue/assets/dialogue_frame.png" id="2_a8s57"]
 [ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_label.gd" id="2_itne3"]
-[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://Retro Gaming.ttf" id="3_op0at"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="3_op0at"]
 [ext_resource type="Texture2D" uid="uid://b5jekmswl6p1g" path="res://Dialogue/assets/dialogue_text_box.png" id="5_tvq0j"]
 [ext_resource type="Texture2D" uid="uid://6cuew7522vte" path="res://Dialogue/assets/dialogue_next_button.png" id="6_4ecox"]
 [ext_resource type="Texture2D" uid="uid://c0v3jgq5xt625" path="res://Dialogue/assets/dialogue_next_button_down.png" id="7_yiuh7"]

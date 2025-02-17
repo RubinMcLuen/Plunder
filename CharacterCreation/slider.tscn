@@ -6,13 +6,8 @@
 [ext_resource type="Texture2D" uid="uid://dlho5fqkdp5gf" path="res://CharacterCreation/assets/icon_slider_off.png" id="4_x6g2d"]
 [ext_resource type="Texture2D" uid="uid://bltnihbrri67o" path="res://CharacterCreation/assets/icon_slider_on.png" id="5_5vvtv"]
 
-[node name="Slider" type="Node2D" node_paths=PackedStringArray("page1", "page2", "page3", "page4", "page5")]
+[node name="Slider" type="Node2D"]
 script = ExtResource("1_2y8ot")
-page1 = NodePath("Page1")
-page2 = NodePath("Page2")
-page3 = NodePath("Page3")
-page4 = NodePath("Page4")
-page5 = NodePath("Page5")
 
 [node name="UpButton" type="TextureButton" parent="."]
 offset_right = 11.0

@@ -1,4 +1,6 @@
+res://Character/NPC/npcs
 res://
+C:/Users/Rubin/Desktop/Game/Cutscene
 res://Ocean
 res://KelptownIsland
 res://EnemyCrew
@@ -10,7 +12,6 @@ res://Island
 res://SaveMenu/Info
 res://TitleScreen
 res://Dialogue/assets
-res://Tavern
 res://Dialogue
 res://Dialogue/dialogues
 res://Character/NPC

@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://4klyn0h8t7vm"]
+
+[ext_resource type="Script" path="res://Cutscene/CutsceneManager.gd" id="1_62nh8"]
+
+[node name="CutsceneManager" type="Node"]
+script = ExtResource("1_62nh8")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -502.0
+offset_top = -224.0
+offset_right = 1218.0
+offset_bottom = 478.0
+focus_mode = 2
+color = Color(1, 1, 1, 0)

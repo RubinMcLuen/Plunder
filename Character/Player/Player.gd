@@ -3,17 +3,16 @@ extends CharacterBody2D
 # ---------------------------
 # Movement and Animation Variables
 # ---------------------------
-@export var speed := 100                # Movement speed in pixels per second
-var direction := Vector2.RIGHT          # Default facing direction is right
+@export var speed := 100    # Movement speed in pixels per second
+var direction := Vector2.RIGHT  # Default facing direction is right
 
 # Signals
 signal auto_move_completed
-signal end_fight    # Signal emitted when player's health reaches 0
+signal end_fight            # Emitted when player's health reaches 0
 
-# Health variable (starts at 3)
 var health: int = 3
-
 var fighting: bool = false
+var disable_user_input: bool = false
 
 # Exported Sprite References for Customization
 @export var skin: Sprite2D
@@ -25,71 +24,79 @@ var fighting: bool = false
 @export var lleg: Sprite2D
 @export var rleg: Sprite2D
 
-# Exported Variable for Player Name Input
+# Player Name / Customization
 var name_input = "name"
 @export var customization_only: bool = false
 
-# Raw input velocity
+# Movement + Animation
 var custom_velocity := Vector2.ZERO
-
-# Animation constants
 const IDLE_ROW = 0
 const WALK_ROW = 2
 const FRAMES_PER_ANIMATION = 8
 
-# All sprite parts in a list
+var idle_offset: int = 0
+var idle_start_time: int = 0
 var sprite_parts: Array[Sprite2D] = []
 
-# Automatic movement variables
+# Automatic movement
 var auto_move: bool = false
 var auto_target_position: Vector2 = Vector2.ZERO
 
-# ---------------------------
-# Customization Loading Variables
-# ---------------------------
-const SAVE_FILE_BASE_PATH = "user://saveslot"
-var save_slot: int = -1
-
+# Drag-to-move Variables
 var mouse_move_active: bool = false
-var mouse_target_position: Vector2 = Vector2.ZERO
+const MOUSE_STOP_THRESHOLD := 1.0  # Distance below which velocity = 0
 
-# ---------------------------
-# ANIMATION OVERRIDE VARIABLES
-# ---------------------------
+# Animation Override
 var anim_override: bool = false
 var anim_override_start_time: int = 0
 var anim_override_duration: int = 0
-var current_anim: String = "idle"   # "idle", "slash", or "hurt"
+var current_anim: String = "idle"  # "idle", "slash", or "hurt"
+
+# Save/Load
+const SAVE_FILE_BASE_PATH = "user://saveslot"
+var save_slot: int = -1
+
 
 # ---------------------------
-# _ready and _physics_process
+# _ready & _physics_process
 # ---------------------------
 func _ready():
 	sprite_parts = [ skin, hat, facialhair, body, larm, rarm, lleg, rleg ]
 	load_customization()
-	
+
 	if customization_only:
 		set_physics_process(false)
 	else:
+		# Initialize idle animation with a random start.
+		idle_offset = randi() % FRAMES_PER_ANIMATION
+		idle_start_time = Time.get_ticks_msec()
 		play_idle()
 		set_physics_process(true)
 
 func _physics_process(_delta: float) -> void:
 	if customization_only:
 		return
+
 	handle_player_input()
 	update_animation()
 	move_character()
 
+
 # ---------------------------
-# Input and Movement Functions
+# Input and Movement
 # ---------------------------
 func handle_player_input() -> void:
-	# Auto-movement takes priority.
+	# 1) If input is disabled (and not auto-moving), do nothing.
+	if disable_user_input and not auto_move:
+		custom_velocity = Vector2.ZERO
+		velocity = custom_velocity
+		return
+
+	# 2) Auto-movement overrides everything else.
 	if auto_move:
 		var diff = auto_target_position - global_position
 		if diff.length() < 1:
-			# Snap to the target position and signal completion.
+			# Close to target => stop & emit signal.
 			global_position = auto_target_position
 			auto_move = false
 			custom_velocity = Vector2.ZERO
@@ -97,30 +104,35 @@ func handle_player_input() -> void:
 			emit_signal("auto_move_completed")
 		else:
 			custom_velocity = diff.normalized() * speed
-			direction = Vector2.LEFT if diff.x < 0 else Vector2.RIGHT
 			velocity = custom_velocity
 		return
 
-	# If fighting is active, disable normal user movement.
+	# 3) If in a fight, no normal movement.
 	if fighting:
 		custom_velocity = Vector2.ZERO
 		velocity = custom_velocity
 		return
 
-	# Mouse input deactivation.
-	if mouse_move_active and not Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+	# 4) Check if left mouse is pressed to do "drag-to-move".
+	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		mouse_move_active = true
+	else:
 		mouse_move_active = false
 
-	# Reset velocity each frame.
+	# 5) Reset velocity each frame.
 	custom_velocity = Vector2.ZERO
 
 	if mouse_move_active:
-		var diff_mouse = mouse_target_position - global_position
-		if diff_mouse.length() != 0:
+		# Continuously chase the mouse position.
+		var diff_mouse = get_global_mouse_position() - global_position
+		if diff_mouse.length() > MOUSE_STOP_THRESHOLD:
 			custom_velocity = diff_mouse.normalized() * speed
-			direction = Vector2.LEFT if diff_mouse.x < 0 else Vector2.RIGHT
+			direction = (Vector2.LEFT if diff_mouse.x < 0 else Vector2.RIGHT)
+		else:
+			# If extremely close, keep velocity 0 to avoid jitter
+			custom_velocity = Vector2.ZERO
 	else:
-		# Process keyboard input.
+		# Keyboard input if mouse isn't down.
 		if Input.is_action_pressed("ui_up"):
 			custom_velocity.y -= 1
 		if Input.is_action_pressed("ui_down"):
@@ -137,28 +149,34 @@ func handle_player_input() -> void:
 
 	velocity = custom_velocity
 
+func move_character() -> void:
+	move_and_slide()
+
 func auto_move_to_position(target: Vector2) -> void:
 	auto_move = true
 	auto_target_position = target
 
 func set_facing_direction(is_left: bool) -> void:
-	direction = Vector2.LEFT if is_left else Vector2.RIGHT
+	direction = (Vector2.LEFT if is_left else Vector2.RIGHT)
 	for part in sprite_parts:
 		part.flip_h = is_left
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		mouse_move_active = event.pressed
-		if mouse_move_active:
-			mouse_target_position = get_global_mouse_position()
-	elif event is InputEventMouseMotion and mouse_move_active:
-		mouse_target_position = get_global_mouse_position()
-
-func move_character() -> void:
-	move_and_slide()
 
 # ---------------------------
-# Animation Functions
+# _unhandled_input
+# ---------------------------
+func _unhandled_input(event: InputEvent) -> void:
+	# If auto-moving or fighting, ignore.
+	if fighting or auto_move:
+		return
+
+	# You could do additional checks here if you only want to start
+	# drag movement when pressed over the character, etc.
+	# But by default, we rely on handle_player_input() above.
+
+
+# ---------------------------
+# Animations
 # ---------------------------
 func animate_walk() -> void:
 	var frame = (Time.get_ticks_msec() / 100) % FRAMES_PER_ANIMATION
@@ -170,7 +188,8 @@ func animate_walk() -> void:
 		part.frame = current_frame
 
 func play_idle() -> void:
-	var frame = (Time.get_ticks_msec() / 100) % FRAMES_PER_ANIMATION
+	var elapsed = Time.get_ticks_msec() - idle_start_time
+	var frame = int((elapsed / 100) + idle_offset) % FRAMES_PER_ANIMATION
 	var base_frame = IDLE_ROW * FRAMES_PER_ANIMATION
 	var current_frame = base_frame + frame
 	var flip_h = (direction == Vector2.LEFT)
@@ -187,34 +206,32 @@ func play_idle_with_sword() -> void:
 		part.flip_h = flip_h
 		part.frame = current_frame
 
-# ---------------------------
-# OVERRIDE ANIMATION FUNCTIONS
-# ---------------------------
+# Override animations (slash, hurt)
 func play_slash_animation() -> void:
-	# Slash animation: row 4, 8 frames (800ms total)
 	anim_override = true
 	anim_override_start_time = Time.get_ticks_msec()
-	anim_override_duration = 800
+	anim_override_duration = 800  # 8 frames * 100ms each
 	current_anim = "slash"
 
 func play_hurt_animation() -> void:
-	# Hurt animation: row 6, 3 frames (300ms total)
 	anim_override = true
 	anim_override_start_time = Time.get_ticks_msec()
-	anim_override_duration = 300
+	anim_override_duration = 300  # 3 frames * 100ms each
 	current_anim = "hurt"
 
+
 # ---------------------------
-# Health and Damage Functions
+# Health and Damage
 # ---------------------------
 func take_damage() -> void:
 	play_hurt_animation()
 	health -= 1
 	print("Player health is now: ", health)
-	
+
 	if health <= 0:
 		print("Player health reached 0! Emitting end_fight signal.")
 		emit_signal("end_fight")
+
 
 # ---------------------------
 # update_animation
@@ -223,15 +240,16 @@ func update_animation() -> void:
 	if anim_override:
 		var elapsed = Time.get_ticks_msec() - anim_override_start_time
 		if current_anim == "slash":
-			var frame_index = min(int(elapsed / 100), 7)  # 8 frames: indices 0-7
+			var frame_index = min(int(elapsed / 100), 7)  # indices 0-7
 			var base_frame = 4 * FRAMES_PER_ANIMATION
 			var current_frame = base_frame + frame_index
 			var flip_h = (direction == Vector2.LEFT)
 			for part in sprite_parts:
 				part.flip_h = flip_h
 				part.frame = current_frame
+
 		elif current_anim == "hurt":
-			var frame_index = min(int(elapsed / 100), 2)  # 3 frames: indices 0-2
+			var frame_index = min(int(elapsed / 100), 2)  # indices 0-2
 			var base_frame = 6 * FRAMES_PER_ANIMATION
 			var current_frame = base_frame + frame_index
 			var flip_h = (direction == Vector2.LEFT)
@@ -240,10 +258,13 @@ func update_animation() -> void:
 				part.frame = current_frame
 
 		if elapsed >= anim_override_duration:
+			# Return to idle with a new random start
 			anim_override = false
 			current_anim = "idle"
+			idle_offset = randi() % FRAMES_PER_ANIMATION
+			idle_start_time = Time.get_ticks_msec()
 	else:
-		# When auto-moving, always show the walking animation even if fighting is enabled.
+		# If auto_move is happening, always walk
 		if auto_move:
 			animate_walk()
 		elif fighting:
@@ -253,8 +274,9 @@ func update_animation() -> void:
 		else:
 			play_idle()
 
+
 # ---------------------------
-# Customization Loading Functions
+# Customization Loading
 # ---------------------------
 func load_customization():
 	save_slot = Global.active_save_slot
@@ -308,7 +330,7 @@ func apply_character_data(data: Dictionary):
 		if "rightleg" in bottom_data and rleg:
 			load_or_clear(rleg, bottom_data["rightleg"])
 	if "misc" in data:
-		# Assuming misc customization is applied to the right arm.
+		# If there's a "misc" slot, apply to the right arm
 		if data["misc"] != "":
 			load_or_clear(rarm, data["misc"])
 

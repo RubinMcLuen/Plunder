@@ -1,13 +1,9 @@
 extends Node2D
 
-#
 # ---------------------- SIGNALS ----------------------
 # (Add custom signals here if needed)
-#
 
-#
 # ---------------------- EXPORTS ----------------------
-#
 @export var projectile_scene: PackedScene
 @export var feint_projectile_scene: PackedScene
 @export var config_file: Resource
@@ -15,24 +11,18 @@ extends Node2D
 @export var circle_radius: float = 64.0
 @export var feint_chance: float = 0.5
 
-#
 # ---------------------- CONSTANTS ---------------------
-#
 const SIDE_OFFSET: float = 10.0             # Horizontal offset for health bars.
 const SLIDE_DURATION: float = 0.5           # Health bars slide-in/out duration.
-const HEALTH_FRAME_SIZE: Vector2 = Vector2(33, 114) 
+const HEALTH_FRAME_SIZE: Vector2 = Vector2(33, 114)
 const MAX_HEALTH_FRAME: int = 3  # Frames 0 to 3 in your AtlasTexture.
 
-#
 # ---------------------- ONREADY NODES -----------------
-#
 @onready var camera: Camera2D = $Camera2D
 @onready var left_health: TextureRect = $CanvasLayer/PlayerHealthBar
 @onready var right_health: TextureRect = $CanvasLayer/EnemyHealthBar
 
-#
 # ---------------------- VARIABLES ----------------------
-#
 var player: CharacterBody2D
 var enemy: CharacterBody2D
 
@@ -64,12 +54,17 @@ var input_allowed: bool = false
 # Stored clipped safe area for this device’s screen.
 var clipped_safe_area: Rect2
 
-#
-# ---------------------- LIFECYCLE ----------------------
-#
+# Flags to delay battle start.
+var player_moved: bool = false
+var camera_moved: bool = false
 
+# Variables to store the player's camera settings.
+var original_cam_position: Vector2
+var original_cam_zoom: Vector2
+
+# ---------------------- LIFECYCLE ----------------------
 func _ready() -> void:
-	# Assign camera as current.
+	# Make our scene camera current.
 	camera.make_current()
 	set_process(true)
 
@@ -77,13 +72,13 @@ func _ready() -> void:
 	enemy = get_parent() as CharacterBody2D
 	player = get_tree().current_scene.get_node("Player") as CharacterBody2D
 
-	# Connect signals from player/enemy if they exist and follow the same pattern.
+	# Connect signals from player/enemy if they exist.
 	if player and enemy:
 		player.connect("auto_move_completed", Callable(self, "_on_player_auto_move_completed"))
 		player.connect("end_fight", Callable(self, "_on_end_fight"))
 		enemy.connect("end_fight", Callable(self, "_on_enemy_end_fight"))
 		player.fighting = true
-		enemy.fighting = true
+		enemy.set_idle_with_sword_mode(true)
 
 		# Automatically move the player toward the enemy before the fight starts.
 		_move_player_to_enemy()
@@ -92,9 +87,6 @@ func _ready() -> void:
 	spawn_timer = Timer.new()
 	add_child(spawn_timer)
 	spawn_timer.connect("timeout", Callable(self, "_on_spawn_timer_timeout"))
-
-	# Create a dark vignette overlay.
-	_create_vignette()
 
 	# Compute the clipped safe area for positioning health bars.
 	clipped_safe_area = _compute_clipped_safe_area()
@@ -110,32 +102,24 @@ func _ready() -> void:
 	left_health.z_index = 100
 	right_health.z_index = 100
 
-	# Move bars off-screen initially.
+	# Move health bars off-screen initially.
 	left_health.position = Vector2(-left_health.size.x, left_health.position.y)
 	right_health.position = Vector2(
 		clipped_safe_area.position.x + clipped_safe_area.size.x,
 		right_health.position.y
 	)
 
-	# Zoom in the camera. Once zoom is done, we’ll slide in health bars.
-	_zoom_in_camera()
+	# Start the camera transition at startup.
+	_animate_camera_transition()
 
 
 func _process(delta: float) -> void:
-	# Start the game after pressing "ui_accept" (e.g., Enter or space),
-	# but only when input is allowed (health bars are on screen).
-	if input_allowed and not game_started and Input.is_action_just_pressed("ui_accept"):
-		game_started = true
-		_load_spawn_data()
-		if spawn_data.size() > 0:
-			_on_spawn_timer_timeout()  # Start first projectile immediately.
+	# We no longer wait for a key press; the game will start automatically after a 3-second delay.
+	pass
 
-#
-# ---------------------- SIGNAL CALLBACKS (top) ---------
-#
+# ---------------------- SIGNAL CALLBACKS ----------------------
 
 func _on_spawn_timer_timeout() -> void:
-	# Do not spawn if fight ended.
 	if fight_ended:
 		return
 
@@ -158,16 +142,17 @@ func _on_spawn_timer_timeout() -> void:
 func _on_player_auto_move_completed() -> void:
 	# Once player finishes auto-moving, face the correct direction.
 	player.set_facing_direction(enemy.player_direction)
-	# We might want to re-zoom or do something else. If you only want 
-	# the initial zoom, you can remove or modify this call.
-	_zoom_in_camera()
+	# Mark that the player has finished moving.
+	player_moved = true
+	# If the camera transition is complete, start the battle.
+	if camera_moved:
+		_start_battle()
 
 
 func _on_end_fight() -> void:
 	fight_ended = true
 	if spawn_timer:
 		spawn_timer.stop()
-
 	despawn_all_projectiles()
 	_slide_out_health_bars(Callable(self, "_fade_and_change_scene"))
 
@@ -176,66 +161,84 @@ func _on_enemy_end_fight() -> void:
 	fight_ended = true
 	if spawn_timer:
 		spawn_timer.stop()
-
 	despawn_all_projectiles()
-
-	# Fade out the vignette overlay strength, for example.
 	var vignette = get_node("Vignette")
 	if vignette and vignette.material:
 		var tween = create_tween()
 		tween.tween_property(vignette.material, "shader_parameter/overlay_strength", 0.0, 1.0)
-
 	_slide_out_health_bars(Callable(self, "_start_camera_zoom_out"))
+	
+
+# ---------------------- CAMERA TRANSITION (STARTUP) ----------------------
+func _animate_camera_transition() -> void:
+	# Get the player's Camera2D (assumed to be a child node named "Camera2D").
+	var player_cam: Camera2D = player.get_node("Camera2D")
+	# Use the player's camera global_position so we have the correct coordinates.
+	original_cam_position = player_cam.global_position
+	original_cam_zoom = player_cam.zoom
+
+	# Set this scene's camera to exactly match the player's camera.
+	camera.global_position = original_cam_position
+	camera.zoom = original_cam_zoom
+
+	# --- STEP 1: Slide the camera to the target position.
+	# Since the target (240,135) is relative to this scene,
+	# convert it to global coordinates.
+	var target_global_pos = self.to_global(Vector2(240, 135))
+	var tween_slide = create_tween()
+	tween_slide.tween_property(camera, "global_position", target_global_pos, 0.5) \
+		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	tween_slide.tween_callback(Callable(self, "_on_slide_complete"))
 
 
-#
-# ---------------------- INTERNAL METHODS ---------------
-#
-
-##
-# Movement / Setup
-##
-func _move_player_to_enemy() -> void:
-	# Move player a bit to the left or right of enemy depending on direction.
-	var offset := 36 if enemy.player_direction else -36
-	var target_pos = enemy.global_position + Vector2(offset, 0)
-	player.auto_move_to_position(target_pos)
-	player.set_facing_direction(enemy.player_direction)
+func _on_slide_complete() -> void:
+	# --- STEP 2: Zoom the camera to the target zoom.
+	var tween_zoom = create_tween()
+	tween_zoom.tween_property(camera, "zoom", Vector2(3, 3), 1.0) \
+		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	tween_zoom.tween_callback(Callable(self, "_on_camera_transition_complete"))
 
 
-##
-# Camera Tweens
-##
-func _zoom_in_camera() -> void:
-	var tween = create_tween()
-	tween.tween_property(camera, "zoom", Vector2(3, 3), 1.0).set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_callback(Callable(self, "_on_camera_zoom_in_finished"))
+func _on_camera_transition_complete() -> void:
+	# Now that the startup camera transition is complete, create the vignette.
+	_create_vignette()
+	camera_moved = true
+	if player_moved:
+		_start_battle()
 
-
-func _on_camera_zoom_in_finished() -> void:
-	# Once camera is done zooming, slide health bars onto screen.
-	_slide_in_health_bars()
-
-
+# ---------------------- CAMERA TRANSITION (FIGHT END) ----------------------
 func _start_camera_zoom_out() -> void:
-	# Zoom back out to player, or enemy, or some final location.
-	var tween = create_tween()
-	tween.tween_property(camera, "global_position", player.global_position, 1.0) \
+	# When the fight is over, first zoom back to the player's camera zoom.
+	var tween_zoom_back = create_tween()
+	tween_zoom_back.tween_property(camera, "zoom", original_cam_zoom, 1.0) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(camera, "zoom", Vector2(1, 1), 1.0) \
+	tween_zoom_back.tween_callback(Callable(self, "_on_zoom_out_complete"))
+
+
+func _on_zoom_out_complete() -> void:
+	# Then slide the camera back to the player's current camera global position.
+	var player_cam: Camera2D = player.get_node("Camera2D")
+	var target_position: Vector2 = player_cam.global_position
+	var tween_slide_back = create_tween()
+	tween_slide_back.tween_property(camera, "global_position", target_position, 0.3) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_callback(Callable(self, "_on_end_fight_complete"))
+	tween_slide_back.tween_callback(Callable(self, "_on_end_fight_complete"))
 
 
 func _on_end_fight_complete() -> void:
 	player.fighting = false
 	enemy.fighting = false
+	enemy.set_idle_with_sword_mode(false)
+	enemy.fightable = true
+	enemy.exit_tree()
 	queue_free()
 
+# ---------------------- START BATTLE ----------------------
+func _start_battle() -> void:
+	enemy.fighting = true
+	_slide_in_health_bars()
 
-##
-# Health Bars
-##
+# ---------------------- HEALTH BARS ----------------------
 func _slide_in_health_bars() -> void:
 	var tween_left = create_tween()
 	tween_left.tween_property(left_health, "position", left_final_pos, SLIDE_DURATION) \
@@ -248,8 +251,18 @@ func _slide_in_health_bars() -> void:
 
 
 func _on_health_bars_slid_in() -> void:
-	# Now we can accept the "start fight" input.
 	input_allowed = true
+	# Instead of waiting for a key press, wait 3 seconds then start the game.
+	await get_tree().create_timer(1.0).timeout
+
+	_start_game()
+
+
+func _start_game() -> void:
+	game_started = true
+	_load_spawn_data()
+	if spawn_data.size() > 0:
+		_on_spawn_timer_timeout()  # Start first projectile immediately.
 
 
 func _slide_out_health_bars(callback: Callable) -> void:
@@ -262,14 +275,12 @@ func _slide_out_health_bars(callback: Callable) -> void:
 	var tween_right = create_tween()
 	tween_right.tween_property(right_health, "position", right_offscreen, SLIDE_DURATION)
 
-	# Wait SLIDE_DURATION, then call the callback.
 	var timer = Timer.new()
 	timer.one_shot = true
 	timer.wait_time = SLIDE_DURATION
 	add_child(timer)
 	timer.connect("timeout", callback)
 	timer.start()
-
 
 func set_health_frame(health_bar: TextureRect, frame: int) -> void:
 	frame = clamp(frame, 0, MAX_HEALTH_FRAME)
@@ -278,10 +289,7 @@ func set_health_frame(health_bar: TextureRect, frame: int) -> void:
 		atlas_tex.region = Rect2(frame * HEALTH_FRAME_SIZE.x, 0, HEALTH_FRAME_SIZE.x, HEALTH_FRAME_SIZE.y)
 		health_bar.texture = atlas_tex
 
-
-##
-# Spawning / Phases
-##
+# ---------------------- SPAWNING / PHASES ----------------------
 func _load_spawn_data() -> void:
 	if config_file and character_name != "":
 		var file := FileAccess.open(config_file.resource_path, FileAccess.ModeFlags.READ)
@@ -310,13 +318,11 @@ func _spawn_projectile(spawn_info: Dictionary) -> void:
 		var position_index: int = int(spawn_info["position"]) - 1
 		var angle: float = (position_index + 1) * TAU / float(num_positions) - TAU / 4
 
-		# Spawning center = center of clipped safe area
+		# Spawning center = center of clipped safe area.
 		var center: Vector2 = clipped_safe_area.position + clipped_safe_area.size * 0.5
 		var pos: Vector2 = center + Vector2(cos(angle), sin(angle)) * circle_radius
 
-		# Attempt to cast to a custom projectile script if needed:
 		if "speed" in spawn_info:
-			# e.g. If the projectile script has a `speed` property
 			projectile.speed = spawn_info["speed"] * difficulty_multiplier
 
 		projectile.position = pos
@@ -325,21 +331,11 @@ func _spawn_projectile(spawn_info: Dictionary) -> void:
 		add_child(projectile)
 		register_projectile(projectile)
 
-		# Connect signals if the projectile script emits them
 		projectile.connect("reached_target", Callable(self, "_on_projectile_reached_target"))
 		if is_feint:
 			projectile.connect("sliced", Callable(self, "_on_feint_projectile_sliced"))
 
-	# (Optional) For debug: show a center point
-	# var color_rect = ColorRect.new()
-	# color_rect.size = Vector2(1, 1)
-	# color_rect.position = center - color_rect.size * 0.5
-	# add_child(color_rect)
-
-
-##
-# Projectile Handlers
-##
+# ---------------------- PROJECTILE HANDLERS ----------------------
 func _on_projectile_reached_target(projectile: Area2D) -> void:
 	if not (projectile is FeintProjectile):
 		phase_failed = true
@@ -371,12 +367,10 @@ func _check_remaining_projectiles() -> void:
 	if game_completed:
 		return
 
-	# If any projectile remains, wait
 	for child in get_children():
 		if is_instance_valid(child) and child is Area2D:
 			return
 
-	# Otherwise, move to next phase
 	_transition_to_next_phase()
 
 
@@ -385,7 +379,6 @@ func _transition_to_next_phase() -> void:
 		return
 
 	if not phase_failed:
-		# Player succeeded in that phase
 		if player:
 			player.play_slash_animation()
 		if enemy:
@@ -401,22 +394,17 @@ func _transition_to_next_phase() -> void:
 		current_time = 0.0
 		spawn_timer.stop()
 		if spawn_data.size() > 0:
-			spawn_timer.start(0.001)  # Kick off next wave
+			spawn_timer.start(0.001)  # Kick off next wave.
 	else:
-		# All phases completed
 		game_completed = true
 		spawn_data.clear()
 
-
-##
-# Cleanup / Fade out
-##
+# ---------------------- CLEANUP / FADE OUT ----------------------
 func _fade_and_change_scene() -> void:
 	var vignette: ColorRect = get_node("Vignette") if has_node("Vignette") else null
 	if not vignette:
 		return
 
-	# Fade out fully, then change scene
 	var tween = create_tween()
 	tween.tween_property(vignette.material, "shader_parameter/fade", 1.0, 1.0) \
 		 .set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
@@ -427,10 +415,7 @@ func _fade_and_change_scene() -> void:
 func _on_fade_complete() -> void:
 	get_tree().change_scene_to_file("res://Respawn/respawn.tscn")
 
-
-##
-# Projectiles management
-##
+# ---------------------- PROJECTILES MANAGEMENT ----------------------
 func register_projectile(projectile: Node) -> void:
 	if projectile not in projectiles:
 		projectiles.append(projectile)
@@ -447,10 +432,7 @@ func despawn_all_projectiles() -> void:
 			projectile.queue_free()
 	projectiles.clear()
 
-
-##
-# Vignette / Safe Area
-##
+# ---------------------- VIGNETTE / SAFE AREA ----------------------
 func _create_vignette() -> void:
 	var vignette = ColorRect.new()
 	vignette.name = "Vignette"
@@ -458,7 +440,6 @@ func _create_vignette() -> void:
 	vignette.modulate = Color(1, 1, 1, 1)
 	vignette.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	# Match size to the current viewport
 	var viewport_rect: Rect2 = get_viewport().get_visible_rect()
 	vignette.position = viewport_rect.position
 	vignette.size = viewport_rect.size
@@ -478,11 +459,8 @@ func _create_vignette() -> void:
 			vec2 uv = SCREEN_UV;
 			float dist = length((uv - center) * vignette_scale);
 			float factor = smoothstep(inner_radius, outer_radius, dist);
-
-			// 'factor' is how strong the vignette is at a pixel
 			float vignette_alpha = factor * overlay_strength;
 			float final_alpha = mix(vignette_alpha, 1.0, fade);
-
 			COLOR = vec4(0.0, 0.0, 0.0, final_alpha);
 		}
 	""".strip_edges()
@@ -495,7 +473,6 @@ func _create_vignette() -> void:
 	vignette.material = shader_material
 	add_child(vignette)
 
-	# Tween to fade in the overlay strength if desired
 	var tween = create_tween()
 	tween.tween_property(vignette.material, "shader_parameter/overlay_strength", 0.7, 2.0)
 
@@ -505,3 +482,10 @@ func _compute_clipped_safe_area() -> Rect2:
 	var safe_area: Rect2 = Rect2(safe_area_i.position, safe_area_i.size)
 	var visible_rect: Rect2 = get_viewport().get_visible_rect()
 	return safe_area.intersection(visible_rect)
+
+# ---------------------- MOVEMENT / SETUP ----------------------
+func _move_player_to_enemy() -> void:
+	var offset := 36 if enemy.player_direction else -36
+	var target_pos = enemy.global_position + Vector2(offset, 0)
+	player.auto_move_to_position(target_pos)
+	player.set_facing_direction(enemy.player_direction)

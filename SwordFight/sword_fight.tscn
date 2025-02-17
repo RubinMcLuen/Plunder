@@ -21,7 +21,6 @@ script = ExtResource("1_ftuw3")
 projectile_scene = ExtResource("6_u8dfi")
 feint_projectile_scene = ExtResource("8_q4u7y")
 config_file = ExtResource("4_e3b1l")
-circle_radius = 128.0
 feint_chance = 0.0
 
 [node name="Camera2D" type="Camera2D" parent="."]

@@ -1,19 +1,14 @@
-[gd_scene load_steps=8 format=3 uid="uid://cbu137n5idbij"]
+[gd_scene load_steps=7 format=3 uid="uid://cbu137n5idbij"]
 
 [ext_resource type="Script" path="res://SaveMenu/save_menu.gd" id="1_5tnio"]
 [ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://SaveMenu/assets/saveslotmenubackground.png" id="2_tqibn"]
 [ext_resource type="Texture2D" uid="uid://dpxw6omkpxdjq" path="res://SaveMenu/assets/header.png" id="3_p84tj"]
 [ext_resource type="PackedScene" uid="uid://ddnlrb63k22yr" path="res://SaveMenu/save_slot.tscn" id="4_3dcul"]
-[ext_resource type="AudioStream" uid="uid://d0m8grhuo6nq1" path="res://SFX/click3.mp3" id="4_eahwu"]
-[ext_resource type="AudioStream" uid="uid://b701nxeo82055" path="res://SFX/click4.mp3" id="4_gle5m"]
-[ext_resource type="AudioStream" uid="uid://cc70302gibsel" path="res://SFX/click2.mp3" id="5_8pbyw"]
+[ext_resource type="AudioStream" uid="uid://d0m8grhuo6nq1" path="res://SFX/addsaveslotnoise.mp3" id="5_ski6x"]
+[ext_resource type="AudioStream" uid="uid://cc70302gibsel" path="res://SFX/saveslotclicknoise.mp3" id="6_o3kvr"]
 
-[node name="SaveMenu" type="Node2D" node_paths=PackedStringArray("header_node", "bw_noise", "c_noise", "add_noise")]
+[node name="SaveMenu" type="Node2D"]
 script = ExtResource("1_5tnio")
-header_node = NodePath("Header")
-bw_noise = NodePath("BWNoise")
-c_noise = NodePath("CNoise")
-add_noise = NodePath("AddNoise")
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(240, 135)
@@ -24,15 +19,6 @@ z_index = -1
 position = Vector2(163, 46)
 texture = ExtResource("3_p84tj")
 centered = false
-
-[node name="AddNoise" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_eahwu")
-
-[node name="BWNoise" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_gle5m")
-
-[node name="CNoise" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("5_8pbyw")
 
 [node name="SaveSlots" type="Node2D" parent="."]
 position = Vector2(240, 135)
@@ -60,3 +46,9 @@ position = Vector2(36, 34)
 
 [node name="SaveSlot8" parent="SaveSlots" instance=ExtResource("4_3dcul")]
 position = Vector2(108, 34)
+
+[node name="AddSaveSlotNoise" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_ski6x")
+
+[node name="SaveSlotClickNoise" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_o3kvr")
