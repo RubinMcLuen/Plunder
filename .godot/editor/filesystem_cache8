@@ -1,5 +1,5 @@
 e22c9c70a03ae172662e56cbc433647f
-::res://::1739775614
+::res://::1739775948
 clienticon.png::CompressedTexture2D::7882032090579473772::1738636712::1738636713::1::::<><>::
 EnemyCrew.gd::GDScript::-1::1739319562::0::1::::<>Node2D<>::
 Global.gd::GDScript::-1::1738881072::0::1::::<>Node<>::
@@ -82,13 +82,13 @@ settings_view.tscn::PackedScene::5839841081119266502::1738221233::0::1::::<><>::
 ::res://Character/::1739162341
 character.gd::GDScript::-1::1739049456::0::1::::<>CharacterBody2D<>::
 character.tscn::PackedScene::5131681254143960095::1739162341::0::1::::<><>::uid://b5sgtobycgkyy::::res://CharacterCreation/customizations/skin/skin0.png<>uid://ynh5513h0bee::::res://CharacterCreation/customizations/bottom/LeftLeg/lleg0.png<>uid://fwn2eoahwu5w::::res://CharacterCreation/customizations/bottom/RightLeg/rleg0.png
-::res://Character/NPC/::1739775614
+::res://Character/NPC/::1739775770
 npc.gd::GDScript::-1::1739773193::0::1::::NPC<>CharacterBody2D<>::
 npc.tscn::PackedScene::1130333279975514458::1739775770::0::1::::<><>::uid://cfd3bm3d7gr3t::::res://Character/character.tscn<>res://Character/NPC/npc.gd
 ::res://Character/NPC/npcs/::1739775356
 BartenderTutorial.gd::GDScript::-1::1739775356::0::1::::BartenderTutorial<>NPC<>::
 TutorialPirate.gd::GDScript::-1::1739775321::0::1::::TutorialPirate<>NPC<>::
-::res://Character/Player/::1739775614
+::res://Character/Player/::1739775770
 Player.gd::GDScript::-1::1739749533::0::1::::<>CharacterBody2D<>::
 player.tscn::PackedScene::7947538893599309052::1739775770::0::1::::<><>::uid://cfd3bm3d7gr3t::::res://Character/character.tscn<>res://Character/Player/Player.gd
 ::res://CharacterCreation/::1739661300
@@ -208,12 +208,12 @@ rarm6.png::CompressedTexture2D::3982707317840627969::1738812007::1738812007::1::
 rarm7.png::CompressedTexture2D::4544241208311255463::1738812007::1738812007::1::::<><>::
 rarm8.png::CompressedTexture2D::3942617785306920097::1739318798::1739318798::1::::<><>::
 rarm9.png::CompressedTexture2D::3613888044754421301::1739318798::1739318798::1::::<><>::
-::res://Cutscene/::1739775614
+::res://Cutscene/::1739775770
 CutsceneManager.gd::GDScript::-1::1739742819::0::1::::<>Node<>::
 CutsceneManager.tscn::PackedScene::2056831710804279326::1739775770::0::1::::<><>::res://Cutscene/CutsceneManager.gd
 ::res://Cutscene/cutscenes/::1739743111
 KelpTownIntroCutscene.json::JSON::-1::1739743111::0::1::::<><>::
-::res://Dialogue/::1739775614
+::res://Dialogue/::1739775771
 balloon.gd::GDScript::-1::1739739248::0::1::::<>CanvasLayer<>::
 balloon.tscn::PackedScene::1374632843758497411::1739775771::0::1::::<><>::res://Dialogue/balloon.gd<>uid://c8ixypn3iikla::::res://Dialogue/assets/dialogue_frame.png<>res://addons/dialogue_manager/dialogue_label.gd<>uid://bbvvk8cijnn3b::::res://PlunderFont.ttf<>uid://b5jekmswl6p1g::::res://Dialogue/assets/dialogue_text_box.png<>uid://6cuew7522vte::::res://Dialogue/assets/dialogue_next_button.png<>uid://c0v3jgq5xt625::::res://Dialogue/assets/dialogue_next_button_down.png<>uid://b0f640v1pvyg0::::res://Dialogue/assets/dialogue_option_button.png<>uid://c5kccr5n6tcb1::::res://Dialogue/assets/dialogue_option_button_down.png<>uid://d1njd1bw0ryjq::::res://Dialogue/assets/dialogue_portrait_background.png
 ::res://Dialogue/assets/::1738221422
@@ -228,7 +228,7 @@ dialogue_portrait_bartender.png::CompressedTexture2D::1583529362296033542::17382
 dialogue_text_box.png::CompressedTexture2D::4510926777632922270::1738216679::1738221418::1::::<><>::
 textbox.png::CompressedTexture2D::8689980746912966066::1738217304::1738221418::1::::<><>::
 textboxnoportrait.png::CompressedTexture2D::5656004391750771496::1738217307::1738221418::1::::<><>::
-::res://Dialogue/dialogues/::1739775615
+::res://Dialogue/dialogues/::1739775771
 bartender.dialogue::Resource::7961472973291121971::1739752792::1739775771::1::::<><>::res://addons/dialogue_manager/dialogue_resource.gd
 buster.dialogue::Resource::4488239970391757208::1739057620::1739089918::1::::<><>::res://addons/dialogue_manager/dialogue_resource.gd
 captain.dialogue::Resource::1512043126554315343::1739320422::1739320582::1::::<><>::res://addons/dialogue_manager/dialogue_resource.gd
@@ -241,7 +241,7 @@ island.gd::GDScript::-1::1739172455::0::1::::<>Node2D<>::
 island.tscn::PackedScene::5140388616864515183::1739502486::0::1::::<><>::res://Island/island.gd<>uid://gt7i83bhox4y::::res://Island/newisland.png<>uid://dlh32l6ht3jiy::::res://Character/Player/player.tscn<>uid://qdsooeakwd1k::::res://Character/NPC/npc.tscn<>uid://dabpkrvna14lq::::res://EnemyCrew/enemy_crew.tscn<>res://Island/ShipControlArea.gd<>uid://bbvvk8cijnn3b::::res://PlunderFont.ttf
 newisland.png::CompressedTexture2D::462315245855542094::1739413867::1739413868::1::::<><>::
 ShipControlArea.gd::GDScript::-1::1739433691::0::1::::<>Area2D<>::
-::res://KelptownInn/::1739775614
+::res://KelptownInn/::1739775770
 KelptownInn.gd::GDScript::-1::1739133192::0::1::::<>Node2D<>::
 KelptownInn.tscn::PackedScene::5394083297899691786::1739687129::0::1::::<><>::res://KelptownInn/KelptownInn.gd<>uid://qdsooeakwd1k::::res://Character/NPC/npc.tscn<>uid://dlh32l6ht3jiy::::res://Character/Player/player.tscn<>uid://dtl865k56rp5b::::res://KelptownInn/assets/taverninterior2.png<>uid://b0an8k1ojomxd::::res://KelptownInn/assets/1.png<>uid://cxriu4ggtgh5a::::res://KelptownInn/assets/3.png<>uid://cnrkygmkm1vnj::::res://KelptownInn/assets/6.png<>uid://bbtinyu68crr8::::res://KelptownInn/assets/12.png<>uid://ci57eoplr72nk::::res://KelptownInn/assets/19.png<>uid://cl37dxegmmo2c::::res://KelptownInn/assets/22.png<>uid://c6hb81oobd11l::::res://KelptownInn/assets/4.png<>uid://bucu8u1pyulne::::res://KelptownInn/assets/2.png<>uid://brodly2dirtk8::::res://KelptownInn/assets/5.png<>uid://b7wnwukubyevy::::res://KelptownInn/assets/7.png<>uid://6lk7bdbims4s::::res://KelptownInn/assets/8.png<>uid://bb7tbgttc706k::::res://KelptownInn/assets/9.png<>uid://c2lnemmy7rsgo::::res://KelptownInn/assets/10.png<>uid://pxejptwub70b::::res://KelptownInn/assets/11.png<>uid://chlsccmqsk2fd::::res://KelptownInn/assets/13.png<>uid://bept4ck0yqplj::::res://KelptownInn/assets/14.png<>uid://bhe32vnjtfp8t::::res://KelptownInn/assets/15.png<>uid://b517x1nd2drms::::res://KelptownInn/assets/16.png<>uid://btvc5dmcyecpv::::res://KelptownInn/assets/17.png<>uid://34u2c70fx2xi::::res://KelptownInn/assets/18.png<>uid://bbyylfcs0cy8m::::res://KelptownInn/assets/20.png<>uid://ckujdqy7k2xhl::::res://KelptownInn/assets/21.png<>uid://crigct5tc3mx0::::res://KelptownInn/assets/23.png<>uid://boaswpskyfsht::::res://KelptownInn/assets/24.png<>uid://ugjd5ls5sf8k::::res://KelptownInn/assets/25.png<>uid://u2o1ep1ov5d5::::res://KelptownInn/assets/26.png<>uid://cspyynoayouwp::::res://KelptownInn/assets/27.png<>uid://t8g5otoebhr7::::res://KelptownInn/assets/28.png
 KelptownInnIntroCutscene.gd::GDScript::-1::1739775614::0::1::::<>Node2D<>::
@@ -343,7 +343,7 @@ splash2.png::CompressedTexture2D::4110312278300871281::1739423260::1739423260::1
 splash3.png::CompressedTexture2D::8057787025955252712::1739423260::1739423260::1::::<><>::
 splash.gd::GDScript::-1::1739423260::0::1::::<>AnimatedSprite2D<>::
 splash.tscn::PackedScene::7014792295000452990::1739434482::0::1::::<><>::uid://cdkcpkhv4jbwe::::res://Ships/splash1.png<>uid://bytciitcbuf6p::::res://Ships/splash2.png<>uid://dm2its1fp5dcy::::res://Ships/splash3.png<>res://Ships/splash.gd
-::res://SwordFight/::1739775614
+::res://SwordFight/::1739775771
 back.png::CompressedTexture2D::8929476017017346206::1739767315::1739767315::1::::<><>::
 done.png::CompressedTexture2D::7883049255208827835::1739767315::1739767315::1::::<><>::
 easy.json::JSON::-1::1739311348::0::1::::<><>::
