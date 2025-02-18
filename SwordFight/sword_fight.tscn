@@ -31,13 +31,6 @@ z_index = 10
 width = 1.0
 script = ExtResource("4_0ph4i")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-offset_right = 486.0
-offset_bottom = 280.0
-mouse_filter = 2
-color = Color(0.107576, 0.392569, 0.248209, 1)
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 10
 follow_viewport_scale = 3.0
@@ -68,3 +61,21 @@ grow_horizontal = 0
 grow_vertical = 2
 texture = SubResource("AtlasTexture_sekvc")
 stretch_mode = 2
+
+[node name="SpawnReference" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/SpawnReference"]
+offset_left = -240.0
+offset_top = -135.0
+offset_right = -239.0
+offset_bottom = -134.0
+mouse_filter = 2
+color = Color(0.107576, 0.392569, 0.248209, 1)

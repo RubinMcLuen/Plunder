@@ -53,7 +53,7 @@ shape = SubResource("RectangleShape2D_jxd76")
 
 [node name="Buster" parent="." instance=ExtResource("4_w8pbf")]
 position = Vector2(60, -91)
-npc_name = "buster"
+npc_name = "TutorialPirate"
 fightable = true
 
 [node name="EnemyCrew" parent="." instance=ExtResource("5_j7hqq")]

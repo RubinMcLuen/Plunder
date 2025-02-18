@@ -1,11 +1,12 @@
-res://CharacterCreation/character_creator.tscn
+res://KelptownInn/KelptownInnIntroCutscene.tscn
 res://SaveMenu/save_menu.gd
 res://SwordFight/swordfight.gd
-res://CharacterCreation/character_creator.gd
 res://Character/NPC/npc.tscn
 res://Character/Player/player.tscn
 res://Cutscene/CutsceneManager.tscn
-res://KelptownInn/KelptownInnIntroCutscene.tscn
 res://Dialogue/balloon.tscn
 res://SwordFight/sword_fight.tscn
 res://SwordFight/SwordFightTutorial.tscn
+res://CharacterCreation/character_creator.tscn
+res://Island/island.tscn
+res://KelptownInn/KelptownInnIntroCutscene.gd

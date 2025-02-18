@@ -44,15 +44,15 @@ var projectiles: Array[Node] = []
 var player_health_frame: int = MAX_HEALTH_FRAME
 var enemy_health_frame: int = MAX_HEALTH_FRAME
 
-# Final positions for the health bars, computed from the safe area in _ready().
+# Final positions for the health bars, computed from the visible area.
 var left_final_pos: Vector2
 var right_final_pos: Vector2
 
 # We don’t allow user input (e.g., "ui_accept") until the bars have slid in.
 var input_allowed: bool = false
 
-# Stored clipped safe area for this device’s screen.
-var clipped_safe_area: Rect2
+# Stored visible area for this device’s screen.
+var visible_area: Rect2
 
 # Flags to delay battle start.
 var player_moved: bool = false
@@ -88,13 +88,13 @@ func _ready() -> void:
 	add_child(spawn_timer)
 	spawn_timer.connect("timeout", Callable(self, "_on_spawn_timer_timeout"))
 
-	# Compute the clipped safe area for positioning health bars.
-	clipped_safe_area = _compute_clipped_safe_area()
+	# Get the full visible area for positioning UI elements.
+	visible_area = get_viewport().get_visible_rect()
 
 	# Calculate final health bar positions once on screen.
-	left_final_pos = Vector2(clipped_safe_area.position.x + SIDE_OFFSET, left_health.position.y)
+	left_final_pos = Vector2(visible_area.position.x + SIDE_OFFSET, left_health.position.y)
 	right_final_pos = Vector2(
-		clipped_safe_area.position.x + clipped_safe_area.size.x - right_health.size.x - SIDE_OFFSET,
+		visible_area.position.x + visible_area.size.x - right_health.size.x - SIDE_OFFSET,
 		right_health.position.y
 	)
 
@@ -103,9 +103,9 @@ func _ready() -> void:
 	right_health.z_index = 100
 
 	# Move health bars off-screen initially.
-	left_health.position = Vector2(-left_health.size.x, left_health.position.y)
+	left_health.position = Vector2(visible_area.position.x - left_health.size.x, left_health.position.y)
 	right_health.position = Vector2(
-		clipped_safe_area.position.x + clipped_safe_area.size.x,
+		visible_area.position.x + visible_area.size.x,
 		right_health.position.y
 	)
 
@@ -114,7 +114,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	# We no longer wait for a key press; the game will start automatically after a 3-second delay.
+	# We no longer wait for a key press; the game will start automatically after a delay.
 	pass
 
 # ---------------------- SIGNAL CALLBACKS ----------------------
@@ -252,7 +252,7 @@ func _slide_in_health_bars() -> void:
 
 func _on_health_bars_slid_in() -> void:
 	input_allowed = true
-	# Instead of waiting for a key press, wait 3 seconds then start the game.
+	# Instead of waiting for a key press, wait a short delay then start the game.
 	await get_tree().create_timer(1.0).timeout
 
 	_start_game()
@@ -266,8 +266,9 @@ func _start_game() -> void:
 
 
 func _slide_out_health_bars(callback: Callable) -> void:
-	var left_offscreen = Vector2(clipped_safe_area.position.x - left_health.size.x, left_health.position.y)
-	var right_offscreen = Vector2(clipped_safe_area.position.x + clipped_safe_area.size.x, right_health.position.y)
+	var visible_rect = get_viewport().get_visible_rect()
+	var left_offscreen = Vector2(visible_rect.position.x - left_health.size.x, left_health.position.y)
+	var right_offscreen = Vector2(visible_rect.position.x + visible_rect.size.x, right_health.position.y)
 
 	var tween_left = create_tween()
 	tween_left.tween_property(left_health, "position", left_offscreen, SLIDE_DURATION)
@@ -305,6 +306,8 @@ func _load_spawn_data() -> void:
 		spawn_data = all_phases[0]
 
 
+@onready var spawn_reference: Control = $CanvasLayer/SpawnReference
+
 func _spawn_projectile(spawn_info: Dictionary) -> void:
 	var is_feint = randf() < feint_chance
 	var projectile: Node
@@ -315,17 +318,28 @@ func _spawn_projectile(spawn_info: Dictionary) -> void:
 		projectile = projectile_scene.instantiate()
 
 	if projectile:
+		# Determine the angle based on the projectile's spawn index.
 		var position_index: int = int(spawn_info["position"]) - 1
 		var angle: float = (position_index + 1) * TAU / float(num_positions) - TAU / 4
 
-		# Spawning center = center of clipped safe area.
-		var center: Vector2 = clipped_safe_area.position + clipped_safe_area.size * 0.5
-		var pos: Vector2 = center + Vector2(cos(angle), sin(angle)) * circle_radius
-
+		# Set projectile speed if provided.
 		if "speed" in spawn_info:
 			projectile.speed = spawn_info["speed"] * difficulty_multiplier
 
-		projectile.position = pos
+		# Get the SpawnReference's global position (a point in screen space).
+		var screen_point: Vector2 = spawn_reference.global_position
+		# Convert the screen point to world coordinates using the viewport's canvas transform.
+		var world_center: Vector2 = get_viewport().get_canvas_transform().affine_inverse() * screen_point
+
+		# Calculate the final spawn position offset from the world center.
+		var spawn_pos: Vector2 = world_center + Vector2(cos(angle), sin(angle)) * circle_radius
+
+		print_debug("SpawnReference global pos: ", spawn_reference.global_position,
+			"World center: ", world_center,
+			"Chosen angle: ", angle,
+			"Final spawn pos: ", spawn_pos)
+
+		projectile.global_position = spawn_pos
 		projectile.rotation = angle
 		projectile.z_index = 11
 		add_child(projectile)
@@ -334,6 +348,23 @@ func _spawn_projectile(spawn_info: Dictionary) -> void:
 		projectile.connect("reached_target", Callable(self, "_on_projectile_reached_target"))
 		if is_feint:
 			projectile.connect("sliced", Callable(self, "_on_feint_projectile_sliced"))
+
+
+
+func _add_debug_marker(world_pos: Vector2, color: Color, name_prefix: String) -> void:
+	var marker = Node2D.new()
+	marker.name = name_prefix
+	marker.position = world_pos
+
+	var rect = ColorRect.new()
+	rect.color = color
+	rect.size = Vector2(6, 6)
+	rect.position = Vector2(-3, -3)  # So the square is centered on the marker
+	marker.add_child(rect)
+
+	add_child(marker)
+
+
 
 # ---------------------- PROJECTILE HANDLERS ----------------------
 func _on_projectile_reached_target(projectile: Area2D) -> void:
@@ -478,10 +509,8 @@ func _create_vignette() -> void:
 
 
 func _compute_clipped_safe_area() -> Rect2:
-	var safe_area_i: Rect2i = DisplayServer.get_display_safe_area()
-	var safe_area: Rect2 = Rect2(safe_area_i.position, safe_area_i.size)
-	var visible_rect: Rect2 = get_viewport().get_visible_rect()
-	return safe_area.intersection(visible_rect)
+	# For consistency, use the full visible area.
+	return get_viewport().get_visible_rect()
 
 # ---------------------- MOVEMENT / SETUP ----------------------
 func _move_player_to_enemy() -> void:
