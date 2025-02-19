@@ -1,13 +1,22 @@
 extends NPC
 class_name BartenderTutorial
 
-signal talked_to_bartender
+signal dialogue_requested(dialogue_section: String)
+
+var state: String = "TutorialRedirect"
 
 func _on_area_input_event(_viewport, event, _shape_idx) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		get_tree().get_current_scene().get_node("CanvasLayer/TutorialHint2").visible = false
-		var balloon = DialogueManager.show_dialogue_balloon(dialogue_resource, "introduction", [self])
-		balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
+		var dialogue_section = _get_dialogue_section_and_update_state()
+		emit_signal("dialogue_requested", dialogue_section)
 
-func _on_dialogue_finished() -> void:
-	emit_signal("talked_to_bartender")
+# This function returns the current dialogue section and then updates the state if needed.
+func _get_dialogue_section_and_update_state() -> String:
+	var dialogue_section = state
+	if state == "TutorialFinished":
+		state = "TutorialFinishedRepeat"
+	# Additional state logic can be added here in the future.
+	return dialogue_section
+
+func _on_pirate_dead() -> void:
+	state = "TutorialFinished"

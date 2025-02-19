@@ -26,7 +26,7 @@ var idle_start_time: int = 0
 # Health Mechanics
 # ---------------------------
 signal end_fight   # Signal emitted when enemy health reaches 0
-var health: int = 3
+@export var health: int = 3
 
 # ---------------------------
 # Override Animation Variables

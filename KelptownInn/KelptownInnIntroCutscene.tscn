@@ -1,8 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://b3xx1r1h6gki5"]
+[gd_scene load_steps=15 format=3 uid="uid://b3xx1r1h6gki5"]
 
 [ext_resource type="PackedScene" uid="uid://ci36078u3htw1" path="res://KelptownInn/KelptownInn.tscn" id="1_b3fmw"]
 [ext_resource type="Script" path="res://KelptownInn/KelptownInnIntroCutscene.gd" id="2_uqa76"]
 [ext_resource type="PackedScene" uid="uid://4klyn0h8t7vm" path="res://Cutscene/CutsceneManager.tscn" id="2_xaxja"]
+[ext_resource type="PackedScene" uid="uid://tt5acos0n34b" path="res://Dialogue/balloon.tscn" id="3_hu5lq"]
+[ext_resource type="Resource" uid="uid://dloukc748ca08" path="res://Dialogue/dialogues/bartender.dialogue" id="3_nw6ac"]
 [ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="4_updwp"]
 [ext_resource type="PackedScene" uid="uid://cjn8sut1cl3vw" path="res://SwordFight/SwordFightTutorial.tscn" id="4_vnlhx"]
 [ext_resource type="Script" path="res://Character/NPC/npcs/BartenderTutorial.gd" id="5_wvvsv"]
@@ -48,8 +50,12 @@ _data = {
 "new_animation": SubResource("Animation_j1k64")
 }
 
-[node name="KelptownInn" instance=ExtResource("1_b3fmw")]
+[node name="KelptownInn" node_paths=PackedStringArray("bartender", "pirate") instance=ExtResource("1_b3fmw")]
 script = ExtResource("2_uqa76")
+bartender = NodePath("Bartender")
+pirate = NodePath("Pirate")
+dialogue_resource = ExtResource("3_nw6ac")
+dialogue_scene = ExtResource("3_hu5lq")
 
 [node name="CutsceneManager" parent="." index="0" node_paths=PackedStringArray("player", "camera", "npcs") instance=ExtResource("2_xaxja")]
 player = NodePath("../Player")
@@ -106,7 +112,8 @@ mouse_filter = 2
 theme_override_fonts/normal_font = ExtResource("7_11mh4")
 theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
-text = "\"[center]
+text = "[center]
+
 
 
 Press anywhere to move
@@ -129,12 +136,10 @@ mouse_filter = 2
 theme_override_fonts/normal_font = ExtResource("7_11mh4")
 theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
-text = "\"[center]
+text = "[center]
 
 
 
 Tap the bartender to talk[/center]"
 
 [connection signal="cutscene_finished" from="CutsceneManager" to="." method="_on_cutscene_manager_cutscene_finished"]
-[connection signal="talked_to_bartender" from="Bartender" to="." method="_on_talked_to_bartender"]
-[connection signal="pirate_dead" from="Pirate" to="." method="_on_pirate_dead"]

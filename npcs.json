@@ -67,13 +67,13 @@
   },
 "TutorialPirate": {
 	"dialogue_file": "res://Dialogue/dialogues/patron.dialogue",
-	"skin": "res://CharacterCreation/customizations/skin/skin1.png",
-	"hat": "res://CharacterCreation/customizations/hat/hat6.png",
-	"facialhair": "",
-	"leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm9.png",
-	"rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm9.png",
-	"body": "res://CharacterCreation/customizations/top/Body/body9.png",
-	"leftleg": "",
-	"rightleg": ""
+	"skin": "res://CharacterCreation/customizations/skin/skin0.png",
+	"hat": "res://CharacterCreation/customizations/hat/hat7.png",
+	"facialhair": "res://CharacterCreation/customizations/facialhair/facialhair1.png",
+	"leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm10.png",
+	"rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm10.png",
+	"body": "res://CharacterCreation/customizations/top/Body/body10.png",
+	"leftleg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg3.png",
+	"rightleg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg3.png"
   }
 }

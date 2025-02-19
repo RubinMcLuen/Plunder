@@ -1,3 +1,18 @@
+~ TutorialRedirect
+Bartender: Oh sure, let’s have a calm conversation while that pirate swings his sword around like a drunken windmill. Go handle it!
+=> END
+
+~ TutorialFinished
+Bartender: Well, that was a show! I haven’t seen a fight that messy since Old Salty tried to arm-wrestle a crab. Thanks for dealing with that scoundrel!
+Bartender: Unfortunately, he’s just one barnacle on a very annoying ship. His crew’s been stirring up all kinds of trouble in town.
+Bartender: If you’re feeling up to it, go ask around town. Someone’s bound to know where the rest of those troublemakers are hiding.
+=> END
+
+~ TutorialFinishedRepeat
+Bartender: I already told ya—ask around town if you want to find those pirates. Someone’s bound to know where they’re hiding. 
+Bartender: And hey, pirates don’t just cause trouble—they hoard gold. Deal with ‘em, and you might just walk away richer!
+=> END
+
 ~ finished_bounty
 Bartender: Welcome back captain!
 Bartender: I heard you turned in that bounty, must have been a [[fierce|legendary]] battle aye?

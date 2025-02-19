@@ -72,6 +72,12 @@ func _ready() -> void:
 	enemy = get_parent() as CharacterBody2D
 	player = get_tree().current_scene.get_node("Player") as CharacterBody2D
 
+	# If enemy.player_direction is true, swap the textures on the health bars.
+	if enemy and enemy.player_direction:
+		var temp_texture = left_health.texture
+		left_health.texture = right_health.texture
+		right_health.texture = temp_texture
+
 	# Connect signals from player/enemy if they exist.
 	if player and enemy:
 		player.connect("auto_move_completed", Callable(self, "_on_player_auto_move_completed"))
@@ -230,7 +236,7 @@ func _on_end_fight_complete() -> void:
 	enemy.fighting = false
 	enemy.set_idle_with_sword_mode(false)
 	enemy.fightable = true
-	enemy.exit_tree()
+	enemy.on_death()
 	queue_free()
 
 # ---------------------- START BATTLE ----------------------
@@ -263,7 +269,6 @@ func _start_game() -> void:
 	_load_spawn_data()
 	if spawn_data.size() > 0:
 		_on_spawn_timer_timeout()  # Start first projectile immediately.
-
 
 func _slide_out_health_bars(callback: Callable) -> void:
 	var visible_rect = get_viewport().get_visible_rect()
@@ -305,9 +310,6 @@ func _load_spawn_data() -> void:
 	if all_phases.size() > 0:
 		spawn_data = all_phases[0]
 
-
-@onready var spawn_reference: Control = $CanvasLayer/SpawnReference
-
 func _spawn_projectile(spawn_info: Dictionary) -> void:
 	var is_feint = randf() < feint_chance
 	var projectile: Node
@@ -318,28 +320,19 @@ func _spawn_projectile(spawn_info: Dictionary) -> void:
 		projectile = projectile_scene.instantiate()
 
 	if projectile:
-		# Determine the angle based on the projectile's spawn index.
 		var position_index: int = int(spawn_info["position"]) - 1
 		var angle: float = (position_index + 1) * TAU / float(num_positions) - TAU / 4
 
-		# Set projectile speed if provided.
+		# Use the center of the visible area for spawning.
+		var visible_rect: Rect2 = get_viewport().get_visible_rect()
+		var center: Vector2 = Vector2(240, 135)
+		var pos: Vector2 = center + Vector2(cos(angle), sin(angle)) * circle_radius
+		print(visible_rect)
+		print(center)
 		if "speed" in spawn_info:
 			projectile.speed = spawn_info["speed"] * difficulty_multiplier
 
-		# Get the SpawnReference's global position (a point in screen space).
-		var screen_point: Vector2 = spawn_reference.global_position
-		# Convert the screen point to world coordinates using the viewport's canvas transform.
-		var world_center: Vector2 = get_viewport().get_canvas_transform().affine_inverse() * screen_point
-
-		# Calculate the final spawn position offset from the world center.
-		var spawn_pos: Vector2 = world_center + Vector2(cos(angle), sin(angle)) * circle_radius
-
-		print_debug("SpawnReference global pos: ", spawn_reference.global_position,
-			"World center: ", world_center,
-			"Chosen angle: ", angle,
-			"Final spawn pos: ", spawn_pos)
-
-		projectile.global_position = spawn_pos
+		projectile.position = pos
 		projectile.rotation = angle
 		projectile.z_index = 11
 		add_child(projectile)
@@ -349,23 +342,6 @@ func _spawn_projectile(spawn_info: Dictionary) -> void:
 		if is_feint:
 			projectile.connect("sliced", Callable(self, "_on_feint_projectile_sliced"))
 
-
-
-func _add_debug_marker(world_pos: Vector2, color: Color, name_prefix: String) -> void:
-	var marker = Node2D.new()
-	marker.name = name_prefix
-	marker.position = world_pos
-
-	var rect = ColorRect.new()
-	rect.color = color
-	rect.size = Vector2(6, 6)
-	rect.position = Vector2(-3, -3)  # So the square is centered on the marker
-	marker.add_child(rect)
-
-	add_child(marker)
-
-
-
 # ---------------------- PROJECTILE HANDLERS ----------------------
 func _on_projectile_reached_target(projectile: Area2D) -> void:
 	if not (projectile is FeintProjectile):
@@ -373,26 +349,32 @@ func _on_projectile_reached_target(projectile: Area2D) -> void:
 		if player:
 			player.take_damage()
 			player_health_frame -= 1
-			set_health_frame(left_health, player_health_frame)
+			# If enemy.player_direction is true, update the right health bar (player's bar); otherwise, update the left.
+			if enemy and enemy.player_direction:
+				set_health_frame(right_health, player_health_frame)
+			else:
+				set_health_frame(left_health, player_health_frame)
 		if enemy:
 			enemy.play_slash_animation()
 
 	if is_instance_valid(projectile):
 		projectile.queue_free()
 
-
 func _on_feint_projectile_sliced(projectile: Area2D) -> void:
 	phase_failed = true
 	if player:
 		player.take_damage()
 		player_health_frame -= 1
-		set_health_frame(left_health, player_health_frame)
+		# Swap the health bar update if enemy.player_direction is true.
+		if enemy and enemy.player_direction:
+			set_health_frame(right_health, player_health_frame)
+		else:
+			set_health_frame(left_health, player_health_frame)
 	if enemy:
 		enemy.play_slash_animation()
 
 	if is_instance_valid(projectile):
 		projectile.queue_free()
-
 
 func _check_remaining_projectiles() -> void:
 	if game_completed:
@@ -404,7 +386,6 @@ func _check_remaining_projectiles() -> void:
 
 	_transition_to_next_phase()
 
-
 func _transition_to_next_phase() -> void:
 	if game_completed:
 		return
@@ -415,7 +396,11 @@ func _transition_to_next_phase() -> void:
 		if enemy:
 			enemy.take_damage()
 			enemy_health_frame -= 1
-			set_health_frame(right_health, enemy_health_frame)
+			# When enemy.player_direction is true, update the left health bar (enemy's bar); otherwise, update the right.
+			if enemy.player_direction:
+				set_health_frame(left_health, enemy_health_frame)
+			else:
+				set_health_frame(right_health, enemy_health_frame)
 
 	phase_failed = false
 	current_phase_index += 1
@@ -442,7 +427,6 @@ func _fade_and_change_scene() -> void:
 	tween.tween_interval(1.0)
 	tween.tween_callback(Callable(self, "_on_fade_complete"))
 
-
 func _on_fade_complete() -> void:
 	get_tree().change_scene_to_file("res://Respawn/respawn.tscn")
 
@@ -451,11 +435,9 @@ func register_projectile(projectile: Node) -> void:
 	if projectile not in projectiles:
 		projectiles.append(projectile)
 
-
 func deregister_projectile(projectile: Node) -> void:
 	if projectile in projectiles:
 		projectiles.erase(projectile)
-
 
 func despawn_all_projectiles() -> void:
 	for projectile in projectiles:
@@ -506,7 +488,6 @@ func _create_vignette() -> void:
 
 	var tween = create_tween()
 	tween.tween_property(vignette.material, "shader_parameter/overlay_strength", 0.7, 2.0)
-
 
 func _compute_clipped_safe_area() -> Rect2:
 	# For consistency, use the full visible area.

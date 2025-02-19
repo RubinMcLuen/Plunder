@@ -4,8 +4,12 @@ class_name TutorialPirate
 
 signal pirate_dead
 
-func exit_tree() -> void:
+func on_death():
 	emit_signal("pirate_dead")
+	$Appearance.visible = false
+	$DeathAnimation.visible = true
+	$DeathAnimation.play()
+	await $DeathAnimation.animation_finished
 	queue_free()
 
 func _on_area_input_event(_viewport, event, _shape_idx) -> void:

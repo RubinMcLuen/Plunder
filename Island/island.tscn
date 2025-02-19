@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://cfibpjveqehsp"]
+[gd_scene load_steps=11 format=3 uid="uid://cfibpjveqehsp"]
 
 [ext_resource type="Script" path="res://Island/island.gd" id="1_eaqko"]
 [ext_resource type="Texture2D" uid="uid://gt7i83bhox4y" path="res://Island/newisland.png" id="2_b8wm4"]
 [ext_resource type="PackedScene" uid="uid://dlh32l6ht3jiy" path="res://Character/Player/player.tscn" id="3_xihff"]
 [ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="4_w8pbf"]
+[ext_resource type="Script" path="res://Character/NPC/npcs/buster.gd" id="5_2w7p5"]
 [ext_resource type="PackedScene" uid="uid://dabpkrvna14lq" path="res://EnemyCrew/enemy_crew.tscn" id="5_j7hqq"]
 [ext_resource type="Script" path="res://Island/ShipControlArea.gd" id="6_182vu"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="8_q310d"]
@@ -22,7 +23,7 @@ position = Vector2(-128, 476)
 texture = ExtResource("2_b8wm4")
 
 [node name="Player" parent="." instance=ExtResource("3_xihff")]
-position = Vector2(-184, 644)
+position = Vector2(97, -103)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 
@@ -53,8 +54,10 @@ shape = SubResource("RectangleShape2D_jxd76")
 
 [node name="Buster" parent="." instance=ExtResource("4_w8pbf")]
 position = Vector2(60, -91)
-npc_name = "TutorialPirate"
+script = ExtResource("5_2w7p5")
+npc_name = "buster"
 fightable = true
+health = 1
 
 [node name="EnemyCrew" parent="." instance=ExtResource("5_j7hqq")]
 position = Vector2(-10, -154)

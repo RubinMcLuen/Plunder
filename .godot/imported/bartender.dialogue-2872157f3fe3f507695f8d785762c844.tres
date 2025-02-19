@@ -1,16 +1,19 @@
 [gd_resource type="Resource" script_class="DialogueResource" load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_7i50f"]
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_akfxq"]
 
 [resource]
-script = ExtResource("1_7i50f")
+script = ExtResource("1_akfxq")
 using_states = PackedStringArray()
 titles = {
-"Intro7": "33",
-"finished_bounty": "2",
-"introduction": "21",
-"normal": "13",
-"repeat_introduction": "28"
+"Intro7": "48",
+"TutorialFinished": "6",
+"TutorialFinishedRepeat": "12",
+"TutorialRedirect": "2",
+"finished_bounty": "17",
+"introduction": "36",
+"normal": "28",
+"repeat_introduction": "43"
 }
 character_names = PackedStringArray("Bartender")
 first_title = "2"
@@ -18,93 +21,50 @@ lines = {
 "1": {
 "id": "1",
 "next_id": "2",
-"text": "finished_bounty",
+"text": "TutorialRedirect",
 "type": &"title"
 },
-"10": {
-"id": "10",
-"is_snippet": false,
-"next_id": "end",
-"type": &"goto"
+"11": {
+"id": "11",
+"next_id": "12",
+"text": "TutorialFinishedRepeat",
+"type": &"title"
 },
 "12": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
 "id": "12",
 "next_id": "13",
-"text": "normal",
-"type": &"title"
+"notes": "",
+"tags": PackedStringArray(),
+"text": "I already told ya—ask around town if you want to find those pirates. Someone’s bound to know where they’re hiding.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "I already told ya—ask around town if you want to find those pirates. Someone’s bound to know where they’re hiding.",
+"type": &"dialogue"
 },
 "13": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
 "id": "13",
-"next_id": "18",
+"next_id": "14",
 "notes": "",
-"siblings": [{
-"condition": {},
-"id": "13",
-"weight": 1.0
-}, {
-"condition": {},
-"id": "14",
-"weight": 1.0
-}, {
-"condition": {},
-"id": "15",
-"weight": 1.0
-}, {
-"condition": {},
-"id": "16",
-"weight": 1.0
-}, {
-"condition": {},
-"id": "17",
-"weight": 1.0
-}],
 "tags": PackedStringArray(),
-"text": "It's a pleasure to have you captain.",
+"text": "And hey, pirates don’t just cause trouble—they hoard gold. Deal with ‘em, and you might just walk away richer!",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "It's a pleasure to have you captain.",
+"translation_key": "And hey, pirates don’t just cause trouble—they hoard gold. Deal with ‘em, and you might just walk away richer!",
 "type": &"dialogue"
 },
 "14": {
-"character": "Bartender",
-"character_replacements": Array[Dictionary]([]),
 "id": "14",
-"next_id": "18",
-"notes": "",
-"tags": PackedStringArray(),
-"text": "Aye, the sea's been kind to ye today?",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Aye, the sea's been kind to ye today?",
-"type": &"dialogue"
-},
-"15": {
-"character": "Bartender",
-"character_replacements": Array[Dictionary]([]),
-"id": "15",
-"next_id": "18",
-"notes": "",
-"tags": PackedStringArray(),
-"text": "What's a pirate's favorite letter?
-You'd think it's R, but it's the C they love most.",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "What's a pirate's favorite letter?
-You'd think it's R, but it's the C they love most.",
-"type": &"dialogue"
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
 },
 "16": {
-"character": "Bartender",
-"character_replacements": Array[Dictionary]([]),
 "id": "16",
-"next_id": "18",
-"notes": "",
-"tags": PackedStringArray(),
-"text": "Why don't pirates take a bath before they walk the plank?
-Because they'll just wash up on shore later.",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Why don't pirates take a bath before they walk the plank?
-Because they'll just wash up on shore later.",
-"type": &"dialogue"
+"next_id": "17",
+"text": "finished_bounty",
+"type": &"title"
 },
 "17": {
 "character": "Bartender",
@@ -113,18 +73,36 @@ Because they'll just wash up on shore later.",
 "next_id": "18",
 "notes": "",
 "tags": PackedStringArray(),
-"text": "What did the ocean say to the pirate?
-Nothing, it just waved.",
+"text": "Welcome back captain!",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "What did the ocean say to the pirate?
-Nothing, it just waved.",
+"translation_key": "Welcome back captain!",
 "type": &"dialogue"
 },
 "18": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
 "id": "18",
-"is_snippet": false,
-"next_id": "end",
-"type": &"goto"
+"next_id": "19",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "I heard you turned in that bounty, must have been a [[fierce|legendary]] battle aye?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "I heard you turned in that bounty, must have been a [[fierce|legendary]] battle aye?",
+"type": &"dialogue"
+},
+"19": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "19",
+"next_id": "21",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Care for a drink?
+This one is on the house.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Care for a drink?
+This one is on the house.",
+"type": &"dialogue"
 },
 "2": {
 "character": "Bartender",
@@ -133,52 +111,50 @@ Nothing, it just waved.",
 "next_id": "3",
 "notes": "",
 "tags": PackedStringArray(),
-"text": "Welcome back captain!",
+"text": "Oh sure, let’s have a calm conversation while that pirate swings his sword around like a drunken windmill. Go handle it!",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "Welcome back captain!",
+"translation_key": "Oh sure, let’s have a calm conversation while that pirate swings his sword around like a drunken windmill. Go handle it!",
 "type": &"dialogue"
 },
-"20": {
-"id": "20",
-"next_id": "21",
-"text": "introduction",
-"type": &"title"
-},
 "21": {
-"character": "Bartender",
+"character": "",
 "character_replacements": Array[Dictionary]([]),
 "id": "21",
 "next_id": "22",
+"next_id_after": "25",
 "notes": "",
+"responses": PackedStringArray("21", "23"),
 "tags": PackedStringArray(),
-"text": "Finally got your sea legs back aye?",
+"text": "Yes",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "Finally got your sea legs back aye?",
-"type": &"dialogue"
+"translation_key": "Yes",
+"type": &"response"
 },
 "22": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
 "id": "22",
-"next_id": "23",
+"next_id": "25",
 "notes": "",
+"parent_id": "21",
 "tags": PackedStringArray(),
-"text": "That scurvy is no funny business, you ought to spend less time on the poopdeck.",
+"text": "Here you go lad.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "That scurvy is no funny business, you ought to spend less time on the poopdeck.",
+"translation_key": "Here you go lad.",
 "type": &"dialogue"
 },
 "23": {
-"character": "Bartender",
+"character": "",
 "character_replacements": Array[Dictionary]([]),
 "id": "23",
 "next_id": "24",
+"next_id_after": "25",
 "notes": "",
 "tags": PackedStringArray(),
-"text": "If you're looking for work, check the bounty board outside.",
+"text": "No",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "If you're looking for work, check the bounty board outside.",
-"type": &"dialogue"
+"translation_key": "No",
+"type": &"response"
 },
 "24": {
 "character": "Bartender",
@@ -186,10 +162,11 @@ Nothing, it just waved.",
 "id": "24",
 "next_id": "25",
 "notes": "",
+"parent_id": "23",
 "tags": PackedStringArray(),
-"text": "I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.",
+"text": "Suit yourself.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.",
+"translation_key": "Suit yourself.",
 "type": &"dialogue"
 },
 "25": {
@@ -201,14 +178,143 @@ Nothing, it just waved.",
 "27": {
 "id": "27",
 "next_id": "28",
-"text": "repeat_introduction",
+"text": "normal",
 "type": &"title"
 },
 "28": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
 "id": "28",
-"next_id": "29",
+"next_id": "33",
+"notes": "",
+"siblings": [{
+"condition": {},
+"id": "28",
+"weight": 1.0
+}, {
+"condition": {},
+"id": "29",
+"weight": 1.0
+}, {
+"condition": {},
+"id": "30",
+"weight": 1.0
+}, {
+"condition": {},
+"id": "31",
+"weight": 1.0
+}, {
+"condition": {},
+"id": "32",
+"weight": 1.0
+}],
+"tags": PackedStringArray(),
+"text": "It's a pleasure to have you captain.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "It's a pleasure to have you captain.",
+"type": &"dialogue"
+},
+"29": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "29",
+"next_id": "33",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Aye, the sea's been kind to ye today?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Aye, the sea's been kind to ye today?",
+"type": &"dialogue"
+},
+"3": {
+"id": "3",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"30": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "30",
+"next_id": "33",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "What's a pirate's favorite letter?
+You'd think it's R, but it's the C they love most.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "What's a pirate's favorite letter?
+You'd think it's R, but it's the C they love most.",
+"type": &"dialogue"
+},
+"31": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "31",
+"next_id": "33",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Why don't pirates take a bath before they walk the plank?
+Because they'll just wash up on shore later.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Why don't pirates take a bath before they walk the plank?
+Because they'll just wash up on shore later.",
+"type": &"dialogue"
+},
+"32": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "32",
+"next_id": "33",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "What did the ocean say to the pirate?
+Nothing, it just waved.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "What did the ocean say to the pirate?
+Nothing, it just waved.",
+"type": &"dialogue"
+},
+"33": {
+"id": "33",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"35": {
+"id": "35",
+"next_id": "36",
+"text": "introduction",
+"type": &"title"
+},
+"36": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "36",
+"next_id": "37",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Finally got your sea legs back aye?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Finally got your sea legs back aye?",
+"type": &"dialogue"
+},
+"37": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "37",
+"next_id": "38",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "That scurvy is no funny business, you ought to spend less time on the poopdeck.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "That scurvy is no funny business, you ought to spend less time on the poopdeck.",
+"type": &"dialogue"
+},
+"38": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "38",
+"next_id": "39",
 "notes": "",
 "tags": PackedStringArray(),
 "text": "If you're looking for work, check the bounty board outside.",
@@ -216,11 +322,11 @@ Nothing, it just waved.",
 "translation_key": "If you're looking for work, check the bounty board outside.",
 "type": &"dialogue"
 },
-"29": {
+"39": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
-"id": "29",
-"next_id": "30",
+"id": "39",
+"next_id": "40",
 "notes": "",
 "tags": PackedStringArray(),
 "text": "I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.",
@@ -228,35 +334,59 @@ Nothing, it just waved.",
 "translation_key": "I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.",
 "type": &"dialogue"
 },
-"3": {
-"character": "Bartender",
-"character_replacements": Array[Dictionary]([]),
-"id": "3",
-"next_id": "4",
-"notes": "",
-"tags": PackedStringArray(),
-"text": "I heard you turned in that bounty, must have been a [[fierce|legendary]] battle aye?",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "I heard you turned in that bounty, must have been a [[fierce|legendary]] battle aye?",
-"type": &"dialogue"
-},
-"30": {
-"id": "30",
+"40": {
+"id": "40",
 "is_snippet": false,
 "next_id": "end",
 "type": &"goto"
 },
-"32": {
-"id": "32",
-"next_id": "33",
+"42": {
+"id": "42",
+"next_id": "43",
+"text": "repeat_introduction",
+"type": &"title"
+},
+"43": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "43",
+"next_id": "44",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "If you're looking for work, check the bounty board outside.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "If you're looking for work, check the bounty board outside.",
+"type": &"dialogue"
+},
+"44": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "44",
+"next_id": "45",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "I hear there's a ship just off the coast, and they're offering a pretty penny for the captain.",
+"type": &"dialogue"
+},
+"45": {
+"id": "45",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"47": {
+"id": "47",
+"next_id": "48",
 "text": "Intro7",
 "type": &"title"
 },
-"33": {
+"48": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
-"id": "33",
-"next_id": "34",
+"id": "48",
+"next_id": "49",
 "notes": "",
 "tags": PackedStringArray(),
 "text": "Oi! No slicin’ up the customers ‘til they’ve paid their tab!",
@@ -264,10 +394,10 @@ Nothing, it just waved.",
 "translation_key": "Oi! No slicin’ up the customers ‘til they’ve paid their tab!",
 "type": &"dialogue"
 },
-"34": {
+"49": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
-"id": "34",
+"id": "49",
 "next_id": &"end",
 "notes": "",
 "tags": PackedStringArray(),
@@ -276,75 +406,71 @@ Nothing, it just waved.",
 "translation_key": "You there—sort this scoundrel out ‘fore he wrecks me place!",
 "type": &"dialogue"
 },
-"4": {
-"character": "Bartender",
-"character_replacements": Array[Dictionary]([]),
-"id": "4",
+"5": {
+"id": "5",
 "next_id": "6",
-"notes": "",
-"tags": PackedStringArray(),
-"text": "Care for a drink?
-This one is on the house.",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Care for a drink?
-This one is on the house.",
-"type": &"dialogue"
+"text": "TutorialFinished",
+"type": &"title"
 },
 "6": {
-"character": "",
+"character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
 "id": "6",
 "next_id": "7",
-"next_id_after": "10",
 "notes": "",
-"responses": PackedStringArray("6", "8"),
 "tags": PackedStringArray(),
-"text": "Yes",
+"text": "Well, that was a show! I haven’t seen a fight that messy since Old Salty tried to arm-wrestle a crab. Thanks for dealing with that scoundrel!",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "Yes",
-"type": &"response"
+"translation_key": "Well, that was a show! I haven’t seen a fight that messy since Old Salty tried to arm-wrestle a crab. Thanks for dealing with that scoundrel!",
+"type": &"dialogue"
 },
 "7": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
 "id": "7",
-"next_id": "10",
+"next_id": "8",
 "notes": "",
-"parent_id": "6",
 "tags": PackedStringArray(),
-"text": "Here you go lad.",
+"text": "Unfortunately, he’s just one barnacle on a very annoying ship. His crew’s been stirring up all kinds of trouble in town.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "Here you go lad.",
+"translation_key": "Unfortunately, he’s just one barnacle on a very annoying ship. His crew’s been stirring up all kinds of trouble in town.",
 "type": &"dialogue"
 },
 "8": {
-"character": "",
+"character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
 "id": "8",
 "next_id": "9",
-"next_id_after": "10",
 "notes": "",
 "tags": PackedStringArray(),
-"text": "No",
+"text": "If you’re feeling up to it, go ask around town. Someone’s bound to know where the rest of those troublemakers are hiding.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "No",
-"type": &"response"
+"translation_key": "If you’re feeling up to it, go ask around town. Someone’s bound to know where the rest of those troublemakers are hiding.",
+"type": &"dialogue"
 },
 "9": {
-"character": "Bartender",
-"character_replacements": Array[Dictionary]([]),
 "id": "9",
-"next_id": "10",
-"notes": "",
-"parent_id": "8",
-"tags": PackedStringArray(),
-"text": "Suit yourself.",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Suit yourself.",
-"type": &"dialogue"
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
 }
 }
-raw_text = "~ finished_bounty
+raw_text = "~ TutorialRedirect
+Bartender: Oh sure, let’s have a calm conversation while that pirate swings his sword around like a drunken windmill. Go handle it!
+=> END
+
+~ TutorialFinished
+Bartender: Well, that was a show! I haven’t seen a fight that messy since Old Salty tried to arm-wrestle a crab. Thanks for dealing with that scoundrel!
+Bartender: Unfortunately, he’s just one barnacle on a very annoying ship. His crew’s been stirring up all kinds of trouble in town.
+Bartender: If you’re feeling up to it, go ask around town. Someone’s bound to know where the rest of those troublemakers are hiding.
+=> END
+
+~ TutorialFinishedRepeat
+Bartender: I already told ya—ask around town if you want to find those pirates. Someone’s bound to know where they’re hiding. 
+Bartender: And hey, pirates don’t just cause trouble—they hoard gold. Deal with ‘em, and you might just walk away richer!
+=> END
+
+~ finished_bounty
 Bartender: Welcome back captain!
 Bartender: I heard you turned in that bounty, must have been a [[fierce|legendary]] battle aye?
 Bartender: Care for a drink?

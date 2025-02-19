@@ -77,9 +77,16 @@ func _physics_process(_delta: float) -> void:
 	if customization_only:
 		return
 
+	# Disable collisions while auto-moving.
+	if auto_move:
+		$CollisionShape2D.disabled = true
+	else:
+		$CollisionShape2D.disabled = false
+
 	handle_player_input()
 	update_animation()
 	move_character()
+
 
 
 # ---------------------------
@@ -169,10 +176,6 @@ func _unhandled_input(event: InputEvent) -> void:
 	# If auto-moving or fighting, ignore.
 	if fighting or auto_move:
 		return
-
-	# You could do additional checks here if you only want to start
-	# drag movement when pressed over the character, etc.
-	# But by default, we rely on handle_player_input() above.
 
 
 # ---------------------------

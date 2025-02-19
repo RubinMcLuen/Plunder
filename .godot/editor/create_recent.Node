@@ -1,3 +1,4 @@
+AnimatedSprite2D
 Control
 ColorRect
 Node2D
@@ -11,4 +12,3 @@ TileMap
 Button
 CollisionShape2D
 Area2D
-AnimatedSprite2D

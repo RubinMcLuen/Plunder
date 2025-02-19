@@ -9,4 +9,15 @@ res://SwordFight/sword_fight.tscn
 res://SwordFight/SwordFightTutorial.tscn
 res://CharacterCreation/character_creator.tscn
 res://Island/island.tscn
+res://Character/NPC/npcs/TutorialPirate.gd
+res://Character/NPC/npcs/buster.gd
+res://Respawn/respawn.tscn
 res://KelptownInn/KelptownInnIntroCutscene.gd
+res://Dialogue/balloon.gd
+res://Character/Player/Player.gd
+res://project_exporter.gd
+res://Main.tscn
+res://Character/NPC/npcs/BartenderTutorial.gd
+res://Character/character.tscn
+res://Character/NPC/npc.gd
+res://npcs.json

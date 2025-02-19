@@ -125,8 +125,19 @@ _data = {
 [node name="SwordFightTutorial" type="CanvasLayer"]
 script = ExtResource("1_rh7qk")
 
-[node name="Node2D" type="Node2D" parent="."]
-position = Vector2(76, 46)
+[node name="Node2D" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -164.0
+offset_top = -89.0
+offset_right = 164.0
+offset_bottom = 89.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Background" type="Sprite2D" parent="Node2D"]
 texture = ExtResource("1_16eeq")
