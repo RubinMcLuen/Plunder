@@ -11,10 +11,10 @@ collision_layer = 4
 collision_mask = 4
 script = ExtResource("2_danvb")
 
-[node name="facialhair" parent="Appearance" index="2"]
+[node name="Top" parent="Appearance" index="2"]
 z_index = 0
 
-[node name="Top" parent="Appearance" index="4"]
+[node name="facialhair" parent="Appearance" index="4"]
 z_index = 0
 
 [node name="Area2D" type="Area2D" parent="." index="2"]

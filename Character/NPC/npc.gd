@@ -231,6 +231,7 @@ func take_damage() -> void:
 # Node Setup & Dialogue
 # ---------------------------
 func _ready() -> void:
+	add_to_group("npc")
 	load_appearance()
 	$Area2D.connect("input_event", Callable(self, "_on_area_input_event"))
 	

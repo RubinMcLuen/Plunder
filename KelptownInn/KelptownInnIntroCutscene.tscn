@@ -54,6 +54,7 @@ _data = {
 script = ExtResource("2_uqa76")
 bartender = NodePath("Bartender")
 pirate = NodePath("Pirate")
+scene_state = "default"
 dialogue_resource = ExtResource("3_nw6ac")
 dialogue_scene = ExtResource("3_hu5lq")
 

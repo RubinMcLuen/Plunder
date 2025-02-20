@@ -7,6 +7,8 @@ signal cutscene_finished
 @export var camera: Camera2D    # The Camera2D node (we will tween its properties)
 @export var npcs: Array[Node] = []  # Array of NPC nodes
 
+var is_cutscene_active: bool = false
+
 # The list of actions to process.
 var actions: Array = []
 var current_action_index: int = 0
@@ -16,12 +18,17 @@ var original_zoom: Vector2 = Vector2.ONE
 var original_camera_position: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
+	# If no cutscene is active, hide the ColorRect by default.
+	if not is_cutscene_active:
+		$ColorRect.hide()
 	if camera:
 		original_zoom = camera.zoom
 		original_camera_position = camera.global_position
 
 # Called with an array of actions (parsed from JSON) to begin the cutscene.
 func start_cutscene(action_list: Array) -> void:
+	is_cutscene_active = true
+	$ColorRect.show()  # Show the overlay to block input during the cutscene.
 	actions = action_list
 	current_action_index = 0
 	if player:
@@ -72,7 +79,6 @@ func process_next_action() -> void:
 				var new_speed: float = action["speed"]
 				var old_speed: float = player.speed
 				player.speed = new_speed
-				# Use a lambda so that every connection is unique.
 				player.connect("auto_move_completed", func() -> void:
 					_on_move_completed_with_speed_override(old_speed)
 				, CONNECT_ONE_SHOT)
@@ -83,7 +89,6 @@ func process_next_action() -> void:
 			player.auto_move_to_position(target_pos)
 		
 		"move_npc":
-			# Look up the NPC from the "npc" key.
 			var target_npc: Node = null
 			if action.has("npc"):
 				var npc_identifier = action["npc"]
@@ -281,7 +286,6 @@ func process_next_action() -> void:
 			process_next_action()
 		
 		"delete_npc":
-			# New action to delete an NPC from the scene.
 			var target_npc: Node = null
 			if action.has("npc"):
 				var npc_identifier = action["npc"]
@@ -289,7 +293,6 @@ func process_next_action() -> void:
 					for i in range(npcs.size()):
 						if npcs[i].name == npc_identifier:
 							target_npc = npcs[i]
-							# Remove from our array as well
 							npcs.remove_at(i)
 							break
 				elif npc_identifier is int:
@@ -405,7 +408,8 @@ func finish_cutscene() -> void:
 
 func _on_camera_reset_finished() -> void:
 	print("Camera has been reset to original settings.")
-	$ColorRect.hide()
+	is_cutscene_active = false
+	$ColorRect.hide()  # Hide the overlay when the cutscene finishes.
 	if player:
 		player.disable_user_input = false
 	emit_signal("cutscene_finished")
