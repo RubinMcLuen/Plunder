@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://0ab5frbt0cuk"]
+[gd_scene load_steps=7 format=3 uid="uid://0ab5frbt0cuk"]
 
 [ext_resource type="Script" path="res://Ships/PlayerShip.gd" id="1_uaqh5"]
 [ext_resource type="PackedScene" uid="uid://cepi4n24b2mso" path="res://Ships/cannonball.tscn" id="2_fwr3b"]
 [ext_resource type="PackedScene" uid="uid://cn0j5qsgevekp" path="res://Ships/hit.tscn" id="3_swdta"]
+[ext_resource type="PackedScene" uid="uid://bv47a7gnpila8" path="res://Ships/Trail.tscn" id="4_18woo"]
 [ext_resource type="Texture2D" uid="uid://bqbc76dxaqw1y" path="res://Ships/boat_sprite.png" id="4_vd4iv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pwcr0"]
@@ -15,6 +16,9 @@ script = ExtResource("1_uaqh5")
 cannonball_scene = ExtResource("2_fwr3b")
 splash_scene = ExtResource("3_swdta")
 hit_scene = ExtResource("3_swdta")
+
+[node name="Trail" parent="." instance=ExtResource("4_18woo")]
+z_index = -1
 
 [node name="ShipSprite" type="Sprite2D" parent="."]
 position = Vector2(0, -0.5)

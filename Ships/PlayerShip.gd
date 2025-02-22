@@ -1,5 +1,7 @@
 extends Area2D
 
+@onready var trail_sprite: Sprite2D = $Trail/SubViewport/Circle
+
 const NUM_FRAMES = 360
 const ANGLE_PER_FRAME = 360.0 / NUM_FRAMES
 const MAX_CHARGE_TIME = 2.0
@@ -19,8 +21,6 @@ const MOUSE_BUTTON_LEFT = 1
 @export var cannonball_scene: PackedScene
 @export var splash_scene: PackedScene
 @export var hit_scene: PackedScene
-@export var tilemap: TileMap
-@export var world_border: Area2D
 @export var deceleration_factor = 100
 @export var charge_time_left = 1.0
 @export var charge_time_right = 1.0
@@ -73,18 +73,14 @@ func _ready():
 
 	$ShipCamera.make_current()
 
-	if not world_border:
-		print("Error: WorldBorder node not found!")
-
 func _process(delta):
 	if sprite:
 		handle_input(delta)
-		adjust_speed_based_on_water()
 		update_movement(delta)
 
 		var new_position = global_position + velocity * delta
 
-		if not is_colliding_with_land(new_position) and not is_exiting_world_border(new_position):
+		if not is_colliding_with_land(new_position):
 			global_position = new_position
 			emit_signal("position_updated", global_position)
 
@@ -129,6 +125,9 @@ func update_frame():
 		sprite.frame = (int(current_frame) + int(float(NUM_FRAMES) / 2)) % NUM_FRAMES
 	if collision_shape:
 		collision_shape.rotation_degrees = current_frame * ANGLE_PER_FRAME
+	# Update trail sprite rotation to match boat's facing direction
+	if trail_sprite:
+		trail_sprite.rotation_degrees = current_frame * ANGLE_PER_FRAME
 
 func rotate_right(delta):
 	current_rotation_speed = min(current_rotation_speed + rotation_acceleration * delta, max_rotation_speed)
@@ -226,22 +225,6 @@ func start():
 func _on_gun_cooldown_timeout():
 	can_shoot = true
 
-func adjust_speed_based_on_water():
-	if tilemap:
-		var local_position = tilemap.to_local(global_position)
-		var tile_position = tilemap.local_to_map(local_position)
-		var tile_id = tilemap.get_cell_source_id(0, tile_position)
-
-		match tile_id:
-			0:
-				target_speed = 40.0
-			1:
-				target_speed = 30.0
-			2:
-				target_speed = 20.0
-			_:
-				target_speed = 40.0
-
 func is_colliding_with_land(new_position):
 	var space_state = get_world_2d().direct_space_state
 	var query = PhysicsPointQueryParameters2D.new()
@@ -255,20 +238,6 @@ func is_colliding_with_land(new_position):
 			return true
 	return false
 
-func is_exiting_world_border(new_position):
-	if world_border:
-		var border_shape = world_border.get_node("CollisionShape2D").shape
-		if border_shape:
-			var border_rect = border_shape.get_rect()
-			if not border_rect.has_point(new_position):
-				handle_world_border_collision()
-				return true
-	return false
-
-func handle_world_border_collision():
-	velocity = Vector2.ZERO
-	current_speed = 0.0
-	print("Player exited the world border!")
 
 func handle_input(delta):
 	if is_bot_controlled:
@@ -276,7 +245,7 @@ func handle_input(delta):
 	else:
 		handle_player_input(delta)
 
-func handle_bot_input(delta):
+func handle_bot_input(_delta):
 	if bot_input["rotate_right"]:
 		rotating_right = true
 		rotating_left = false

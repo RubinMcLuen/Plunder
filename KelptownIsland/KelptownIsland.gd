@@ -16,9 +16,8 @@ var collision_shape_node: CollisionShape2D
 var button_node: Button
 
 # Set the specific target position
-@export var target_position: Vector2 = Vector2(-26, -247)
+@export var target_position: Vector2 = Vector2(-2, 41)
 
-@export var target_scene: PackedScene
 
 func _ready():
 	# Get the reference to the Sprite2D node
@@ -110,8 +109,8 @@ func _on_dock_button_pressed():
 
 	# Set specific coordinates for switching to the character scene
 	print("pressed")
-	var specific_position = Vector2(-40.5575, 107.9375)  # Camera translation position
-	var player_position = Vector2(-137, 63)  # Position in the new scene
+	var specific_position = Vector2(-11.875, 40.5)  # Camera translation position
+	var player_position = Vector2(-190, 648)  # Position in the new scene
 
 	SceneSwitcher.switch_scene("res://Island/island.tscn", player_position, "zoom", Vector2(16, 16), specific_position)
 	print("Dock button pressed, switching to character scene.")

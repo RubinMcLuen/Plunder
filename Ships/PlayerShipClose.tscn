@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://7iti6gihoxcn"]
+
+[ext_resource type="Texture2D" uid="uid://bbecueeouc3gh" path="res://Ships/detailedboat.png" id="1_8k8p6"]
+
+[node name="PlayerShipClose" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_8k8p6")
+centered = false

@@ -99,30 +99,11 @@ script = ExtResource("1_8g3rb")
 player = NodePath("Player")
 
 [node name="Player" parent="." instance=ExtResource("3_v7aqn")]
-position = Vector2(381, 41)
+position = Vector2(269, 237)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -8)
 zoom = Vector2(1.5, 1.5)
-
-[node name="exit" type="ColorRect" parent="Player/Camera2D"]
-z_index = 5
-offset_left = -160.0
-offset_top = -90.0
-offset_right = 160.0
-offset_bottom = 90.0
-mouse_filter = 2
-color = Color(0, 0, 0, 0)
-
-[node name="enter" type="ColorRect" parent="Player/Camera2D"]
-visible = false
-z_index = 5
-offset_left = -377.0
-offset_top = -223.0
-offset_right = 330.0
-offset_bottom = 269.0
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
 
 [node name="Bartender" parent="." instance=ExtResource("2_iwfcd")]
 position = Vector2(270, 68)

@@ -1,6 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://cepi4n24b2mso"]
+[gd_scene load_steps=6 format=3 uid="uid://cepi4n24b2mso"]
 
 [ext_resource type="Script" path="res://Ships/cannonball.gd" id="1_tjms4"]
+[ext_resource type="PackedScene" uid="uid://c67ausqpgncj3" path="res://Ships/splash.tscn" id="2_n4t5b"]
+[ext_resource type="PackedScene" uid="uid://cn0j5qsgevekp" path="res://Ships/hit.tscn" id="3_bi5rj"]
+[ext_resource type="Texture2D" uid="uid://ctqalmvuy8mp7" path="res://Ships/cannonball.png" id="4_xqqjh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xts1r"]
 size = Vector2(1, 1)
@@ -9,8 +12,11 @@ size = Vector2(1, 1)
 z_index = 16
 collision_layer = 2
 script = ExtResource("1_tjms4")
+splash_scene = ExtResource("2_n4t5b")
+hit_scene = ExtResource("3_bi5rj")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("4_xqqjh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_xts1r")

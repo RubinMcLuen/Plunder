@@ -1,11 +1,11 @@
-AnimatedSprite2D
-Control
+Sprite2D
 ColorRect
-Node2D
 CanvasLayer
+Control
+AnimatedSprite2D
+Node2D
 AnimationPlayer
 TextureButton
-Sprite2D
 RichTextLabel
 Timer
 TileMap

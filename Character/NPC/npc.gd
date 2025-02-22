@@ -260,7 +260,7 @@ func set_facing_direction(is_left: bool) -> void:
 	for part in sprite_parts:
 		part.flip_h = is_left
 		
-func _on_area_input_event(_viewport, event, _shape_idx) -> void:
+func _on_area_input_event(_viewport, _event, _shape_idx) -> void:
 	pass
 
 func _on_dialogue_finished() -> void:

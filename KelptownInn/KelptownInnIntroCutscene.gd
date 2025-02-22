@@ -146,11 +146,7 @@ func _on_dialogue_finished() -> void:
 
 func _on_exit_body_entered(body):
 	if bartender_talked and body == player:
-		Global.spawn_position = Vector2(-88, -59)
-		var tween = create_tween()
-		tween.tween_property($Player/Camera2D/exit, "color:a", 1.0, 1.0)
-		await tween.finished
-		get_tree().change_scene_to_file("res://Island/island.tscn")
+		SceneSwitcher.switch_scene("res://Island/island.tscn", Vector2(64, -42), "fade")
 
 
 func get_scene_state() -> String:

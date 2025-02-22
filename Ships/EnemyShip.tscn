@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://cnxn3imjbuqru"]
+[gd_scene load_steps=5 format=3 uid="uid://cnxn3imjbuqru"]
 
 [ext_resource type="Script" path="res://Ships/EnemyShip.gd" id="1_j5nyo"]
+[ext_resource type="PackedScene" uid="uid://bv47a7gnpila8" path="res://Ships/Trail.tscn" id="2_86ndw"]
 [ext_resource type="Texture2D" uid="uid://bqbc76dxaqw1y" path="res://Ships/boat_sprite.png" id="2_io26m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4rmrt"]
@@ -9,6 +10,9 @@ size = Vector2(30, 16)
 [node name="EnemyShip" type="Area2D"]
 collision_mask = 2
 script = ExtResource("1_j5nyo")
+
+[node name="Trail" parent="." instance=ExtResource("2_86ndw")]
+z_index = -1
 
 [node name="Boat" type="Sprite2D" parent="."]
 texture = ExtResource("2_io26m")

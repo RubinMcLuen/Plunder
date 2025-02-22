@@ -1,0 +1,48 @@
+[gd_scene load_steps=8 format=3 uid="uid://bv47a7gnpila8"]
+
+[ext_resource type="Material" uid="uid://tj1entgdpoef" path="res://Ships/Assets/Shaders/WaterTrailSpriteMaterial.tres" id="1_32rc1"]
+[ext_resource type="Script" path="res://Ships/Scripts/Trails.gd" id="2_vil55"]
+[ext_resource type="Texture2D" uid="uid://bkmtl116unb3p" path="res://Ships/Assets/Shaders/WaterTrailGradient.png" id="3_06otc"]
+[ext_resource type="Texture2D" uid="uid://2lul8k14hwv5" path="res://Ships/Assets/Shaders/CircleBlur64x64.png" id="5_tey7m"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_bh0l8"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="Curve" id="Curve_5sb63"]
+_data = [Vector2(0, 0.78022), 0.0, 0.0, 0, 0, Vector2(1, 0.483516), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_wq4sq"]
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1)
+
+[node name="Trail" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = ExtResource("1_32rc1")
+texture = SubResource("ViewportTexture_bh0l8")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+size = Vector2i(480, 270)
+
+[node name="Line2D" type="Line2D" parent="SubViewport" node_paths=PackedStringArray("sub_viewport", "parent")]
+width = 34.0
+width_curve = SubResource("Curve_5sb63")
+gradient = SubResource("Gradient_wq4sq")
+texture = ExtResource("3_06otc")
+texture_mode = 2
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+script = ExtResource("2_vil55")
+MAX_LENGTH = 100
+sub_viewport = NodePath("..")
+parent = NodePath("../..")
+smallestTipWidth = 0.5
+largestTipWidth = 1.0
+
+[node name="Circle" type="Sprite2D" parent="SubViewport"]
+position = Vector2(240, 138)
+scale = Vector2(0.7, 0.4)
+texture = ExtResource("5_tey7m")

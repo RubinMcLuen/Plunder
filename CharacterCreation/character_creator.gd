@@ -336,7 +336,7 @@ func _on_finish_button_pressed() -> void:
 	file_write.close()
 
 	print("Finished customization, data saved, and loading Tavern.")
-	get_tree().change_scene_to_file("res://KelptownInn/KelptownInnIntroCutscene.tscn")
+	SceneSwitcher.switch_scene("res://KelptownInn/KelptownInnIntroCutscene.tscn", Vector2(381, 23), "fade")
 
 
 

@@ -21,4 +21,4 @@ func _on_body_exited(body: Node) -> void:
 	print("Body exited: ", body.name)
 
 func _on_button_pressed() -> void:
-	SceneSwitcher.switch_scene("res://Ocean/ocean.tscn", Vector2(-32, 109), "zoom", Vector2(0.0625, 0.0625), Vector2(-184, 684))
+	SceneSwitcher.switch_scene("res://Ocean/ocean.tscn", Vector2(-2, 41), "zoom", Vector2(0.0625, 0.0625), Vector2(-32, 656))

@@ -172,7 +172,7 @@ func set_facing_direction(is_left: bool) -> void:
 # ---------------------------
 # _unhandled_input
 # ---------------------------
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(_event: InputEvent) -> void:
 	# If auto-moving or fighting, ignore.
 	if fighting or auto_move:
 		return

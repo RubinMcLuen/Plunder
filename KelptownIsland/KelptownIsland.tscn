@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://dqgren0rgall7" path="res://KelptownIsland/Sprite-0001-Recovered-0x0-1000x1000.png" id="2_68p8q"]
 [ext_resource type="Texture2D" uid="uid://b4p2jpqa48a20" path="res://KelptownIsland/kelptown.png" id="3_0a737"]
 [ext_resource type="Texture2D" uid="uid://cjx15p1itpu0y" path="res://KelptownIsland/foam.png" id="4_7rd1c"]
-[ext_resource type="Texture2D" uid="uid://bnup0l37nm3jl" path="res://KelptownIsland/Sprite-0001-Recovered.png" id="5_brlml"]
+[ext_resource type="Texture2D" uid="uid://c01pfxvgxpa2i" path="res://Island/shipsand.png" id="5_k84jc"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r8klm"]
 radius = 114.003
@@ -132,6 +132,7 @@ offset_top = 13.0
 offset_right = 19.0
 offset_bottom = 44.0
 text = "Dock"
+metadata/_edit_use_anchors_ = true
 
 [node name="Foam" type="AnimatedSprite2D" parent="."]
 z_index = 1
@@ -140,4 +141,5 @@ autoplay = "default"
 frame_progress = 0.282934
 
 [node name="Sand" type="Sprite2D" parent="."]
-texture = ExtResource("5_brlml")
+position = Vector2(0, -22)
+texture = ExtResource("5_k84jc")

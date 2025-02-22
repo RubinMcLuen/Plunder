@@ -1,27 +1,31 @@
-[gd_scene load_steps=6 format=3 uid="uid://cn0j5qsgevekp"]
+[gd_scene load_steps=7 format=3 uid="uid://cn0j5qsgevekp"]
 
+[ext_resource type="Texture2D" uid="uid://csyiatjya6o1g" path="res://Ships/hit.png" id="1_60pqt"]
 [ext_resource type="Script" path="res://Ships/hit.gd" id="1_rvae5"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_prxlo"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_tn421"]
+atlas = ExtResource("1_60pqt")
 region = Rect2(0, 0, 3, 3)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_smjwu"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_xu670"]
+atlas = ExtResource("1_60pqt")
 region = Rect2(3, 0, 3, 3)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_nhuln"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_m2xlk"]
+atlas = ExtResource("1_60pqt")
 region = Rect2(6, 0, 3, 3)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_vrcof"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_prxlo")
+"texture": SubResource("AtlasTexture_tn421")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_smjwu")
+"texture": SubResource("AtlasTexture_xu670")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_nhuln")
+"texture": SubResource("AtlasTexture_m2xlk")
 }],
 "loop": false,
 "name": &"hit",

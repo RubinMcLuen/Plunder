@@ -3,22 +3,12 @@ extends Node2D
 @export var player: CharacterBody2D
 # Island.gd (or any scene with the player)
 func _ready():
-	load_player_position()
+	#load_player_position()
 	$Exit.body_entered.connect(_on_exit_body_entered)
-	var color_rect = $Player/Camera2D/enter
-	color_rect.visible = true
-	
-	# Tween the alpha from 1 to 0 over 1 second.
-	var tween = create_tween()
-	tween.tween_property(color_rect, "color:a", 0.0, 1.0)
 
 func _on_exit_body_entered(body):
 	if body == player:
-		Global.spawn_position = Vector2(-88, -59)  # Save spawn coordinate
-		var tween = create_tween()
-		tween.tween_property($Player/Camera2D/exit, "color:a", 1.0, 1.0)
-		await tween.finished  # Wait until the tween is done
-		get_tree().change_scene_to_file("res://Island/island.tscn")
+		SceneSwitcher.switch_scene("res://Island/island.tscn", Vector2(64, -42), "fade")
 
 
 

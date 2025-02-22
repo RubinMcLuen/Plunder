@@ -1,13 +1,17 @@
-[gd_scene load_steps=11 format=3 uid="uid://cfibpjveqehsp"]
+[gd_scene load_steps=15 format=3 uid="uid://cfibpjveqehsp"]
 
 [ext_resource type="Script" path="res://Island/island.gd" id="1_eaqko"]
-[ext_resource type="Texture2D" uid="uid://gt7i83bhox4y" path="res://Island/newisland.png" id="2_b8wm4"]
+[ext_resource type="Texture2D" uid="uid://c01pfxvgxpa2i" path="res://Island/shipsand.png" id="2_2gr7v"]
+[ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/playerisland.png" id="3_tglov"]
 [ext_resource type="PackedScene" uid="uid://dlh32l6ht3jiy" path="res://Character/Player/player.tscn" id="3_xihff"]
 [ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="4_w8pbf"]
 [ext_resource type="Script" path="res://Character/NPC/npcs/buster.gd" id="5_2w7p5"]
 [ext_resource type="PackedScene" uid="uid://dabpkrvna14lq" path="res://EnemyCrew/enemy_crew.tscn" id="5_j7hqq"]
+[ext_resource type="Texture2D" uid="uid://b5ddreq732vo1" path="res://Island/shipisland.png" id="5_sbbi0"]
 [ext_resource type="Script" path="res://Island/ShipControlArea.gd" id="6_182vu"]
+[ext_resource type="Texture2D" uid="uid://bw35wphcy4ysm" path="res://Island/shipship.png" id="6_o8764"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="8_q310d"]
+[ext_resource type="PackedScene" uid="uid://7iti6gihoxcn" path="res://Ships/PlayerShipClose.tscn" id="10_mm3n7"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxd76"]
 size = Vector2(26, 5)
@@ -18,52 +22,60 @@ size = Vector2(96, 128)
 [node name="Island" type="Node2D"]
 script = ExtResource("1_eaqko")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(-128, 476)
-texture = ExtResource("2_b8wm4")
+[node name="SandSprite" type="Sprite2D" parent="."]
+position = Vector2(480, -1440)
+scale = Vector2(16, 16)
+texture = ExtResource("2_2gr7v")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -15004.0
+offset_top = -9772.0
+offset_right = 14996.0
+offset_bottom = 10228.0
+color = Color(0.321569, 0.34902, 0.596078, 0.8)
+
+[node name="IslandSprite" type="Sprite2D" parent="."]
+position = Vector2(256, -1472)
+texture = ExtResource("3_tglov")
+
+[node name="PlayerShipClose" parent="." instance=ExtResource("10_mm3n7")]
+position = Vector2(-324, 460)
+
+[node name="MixSprite" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(256, -1472)
+scale = Vector2(16, 16)
+texture = ExtResource("5_sbbi0")
+
+[node name="Ship" type="Sprite2D" parent="MixSprite"]
+position = Vector2(-33, 122)
+texture = ExtResource("6_o8764")
+centered = false
 
 [node name="Player" parent="." instance=ExtResource("3_xihff")]
-position = Vector2(97, -103)
+position = Vector2(64, -42)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 
-[node name="enter" type="ColorRect" parent="Player/Camera2D"]
-visible = false
-z_index = 5
-offset_left = -452.0
-offset_top = -241.0
-offset_right = 473.0
-offset_bottom = 223.0
-mouse_filter = 2
-color = Color(0, 0, 0, 1)
-
-[node name="exit" type="ColorRect" parent="Player/Camera2D"]
-z_index = 5
-offset_left = -450.0
-offset_top = -294.0
-offset_right = 622.0
-offset_bottom = 272.0
-mouse_filter = 2
-color = Color(0, 0, 0, 0)
-
 [node name="Exit" type="Area2D" parent="."]
+position = Vector2(152, 12)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
 position = Vector2(-88, -78.5)
 shape = SubResource("RectangleShape2D_jxd76")
 
 [node name="Buster" parent="." instance=ExtResource("4_w8pbf")]
-position = Vector2(60, -91)
+position = Vector2(212, -79)
 script = ExtResource("5_2w7p5")
 npc_name = "buster"
 fightable = true
 health = 1
 
 [node name="EnemyCrew" parent="." instance=ExtResource("5_j7hqq")]
-position = Vector2(-10, -154)
+position = Vector2(142, -142)
 
 [node name="ShipControlArea" type="Area2D" parent="."]
-position = Vector2(-322, 623)
+position = Vector2(-170, 635)
 script = ExtResource("6_182vu")
 button_path = NodePath("Button")
 
