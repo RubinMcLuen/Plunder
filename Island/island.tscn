@@ -1,26 +1,62 @@
-[gd_scene load_steps=15 format=3 uid="uid://cfibpjveqehsp"]
+[gd_scene load_steps=28 format=3 uid="uid://cfibpjveqehsp"]
 
 [ext_resource type="Script" path="res://Island/island.gd" id="1_eaqko"]
 [ext_resource type="Texture2D" uid="uid://c01pfxvgxpa2i" path="res://Island/shipsand.png" id="2_2gr7v"]
+[ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_d82p3"]
 [ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/playerisland.png" id="3_tglov"]
 [ext_resource type="PackedScene" uid="uid://dlh32l6ht3jiy" path="res://Character/Player/player.tscn" id="3_xihff"]
 [ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="4_w8pbf"]
-[ext_resource type="Script" path="res://Character/NPC/npcs/buster.gd" id="5_2w7p5"]
-[ext_resource type="PackedScene" uid="uid://dabpkrvna14lq" path="res://EnemyCrew/enemy_crew.tscn" id="5_j7hqq"]
 [ext_resource type="Texture2D" uid="uid://b5ddreq732vo1" path="res://Island/shipisland.png" id="5_sbbi0"]
 [ext_resource type="Script" path="res://Island/ShipControlArea.gd" id="6_182vu"]
 [ext_resource type="Texture2D" uid="uid://bw35wphcy4ysm" path="res://Island/shipship.png" id="6_o8764"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="8_q310d"]
 [ext_resource type="PackedScene" uid="uid://7iti6gihoxcn" path="res://Ships/PlayerShipClose.tscn" id="10_mm3n7"]
+[ext_resource type="Texture2D" uid="uid://docbhg71ou20u" path="res://Island/rail1.png" id="10_nq04j"]
+[ext_resource type="Texture2D" uid="uid://d13iw7rwft51w" path="res://Island/rail2.png" id="11_8di88"]
+[ext_resource type="Script" path="res://Character/NPC/npcs/MonteCoral.gd" id="13_dfdk6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxd76"]
-size = Vector2(26, 5)
+size = Vector2(26, 6)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_htmtw"]
 size = Vector2(96, 128)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u0ebn"]
+size = Vector2(115, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4gs0e"]
+size = Vector2(45, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p8kmx"]
+size = Vector2(0, 53)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rakrq"]
+size = Vector2(0, 53)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yki55"]
+size = Vector2(0, 554)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_huwry"]
+size = Vector2(0, 554)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2m8t0"]
+size = Vector2(128, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qjrks"]
+size = Vector2(6, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yj0x6"]
+size = Vector2(0, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n25iy"]
+size = Vector2(0, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_etuke"]
+size = Vector2(26, 0)
+
 [node name="Island" type="Node2D"]
 script = ExtResource("1_eaqko")
+dialogue_resource = ExtResource("2_d82p3")
 
 [node name="SandSprite" type="Sprite2D" parent="."]
 position = Vector2(480, -1440)
@@ -32,6 +68,7 @@ offset_left = -15004.0
 offset_top = -9772.0
 offset_right = 14996.0
 offset_bottom = 10228.0
+mouse_filter = 2
 color = Color(0.321569, 0.34902, 0.596078, 0.8)
 
 [node name="IslandSprite" type="Sprite2D" parent="."]
@@ -61,18 +98,8 @@ position = Vector2(64, -42)
 position = Vector2(152, 12)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
-position = Vector2(-88, -78.5)
+position = Vector2(-88, -78)
 shape = SubResource("RectangleShape2D_jxd76")
-
-[node name="Buster" parent="." instance=ExtResource("4_w8pbf")]
-position = Vector2(212, -79)
-script = ExtResource("5_2w7p5")
-npc_name = "buster"
-fightable = true
-health = 1
-
-[node name="EnemyCrew" parent="." instance=ExtResource("5_j7hqq")]
-position = Vector2(142, -142)
 
 [node name="ShipControlArea" type="Area2D" parent="."]
 position = Vector2(-170, 635)
@@ -92,4 +119,71 @@ theme_override_fonts/font = ExtResource("8_q310d")
 theme_override_font_sizes/font_size = 11
 text = "Set Sail"
 
+[node name="Collisions" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Collisions"]
+position = Vector2(-23, -74)
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/StaticBody2D"]
+position = Vector2(98, 58)
+texture = ExtResource("10_nq04j")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Collisions/StaticBody2D"]
+position = Vector2(20, 64)
+texture = ExtResource("11_8di88")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Collisions/StaticBody2D"]
+position = Vector2(-38, 64)
+texture = ExtResource("11_8di88")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
+position = Vector2(16.5, 11)
+shape = SubResource("RectangleShape2D_u0ebn")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
+position = Vector2(122.5, 11)
+shape = SubResource("RectangleShape2D_4gs0e")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
+position = Vector2(145, 37.5)
+shape = SubResource("RectangleShape2D_p8kmx")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
+position = Vector2(-41, 37.5)
+shape = SubResource("RectangleShape2D_rakrq")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
+position = Vector2(-35, 341)
+shape = SubResource("RectangleShape2D_yki55")
+
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
+position = Vector2(17, 341)
+shape = SubResource("RectangleShape2D_huwry")
+
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
+position = Vector2(81, 63)
+shape = SubResource("RectangleShape2D_2m8t0")
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
+position = Vector2(-38, 64)
+shape = SubResource("RectangleShape2D_qjrks")
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
+position = Vector2(74, 1)
+shape = SubResource("RectangleShape2D_yj0x6")
+
+[node name="CollisionShape2D10" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
+position = Vector2(100, 1)
+shape = SubResource("RectangleShape2D_n25iy")
+
+[node name="CollisionShape2D11" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
+position = Vector2(87, -9)
+shape = SubResource("RectangleShape2D_etuke")
+
+[node name="MonteCoral" parent="." instance=ExtResource("4_w8pbf")]
+position = Vector2(-41, -48)
+script = ExtResource("13_dfdk6")
+npc_name = "MonteCoral"
+
 [connection signal="pressed" from="ShipControlArea/Button" to="ShipControlArea" method="_on_button_pressed"]
+[connection signal="dialogue_requested" from="MonteCoral" to="." method="_on_monte_coral_dialogue_requested"]

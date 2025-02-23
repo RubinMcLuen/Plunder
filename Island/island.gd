@@ -1,8 +1,10 @@
 extends Node2D
 
 @onready var player: CharacterBody2D = $Player
-
+@onready var monte_coral: CharacterBody2D = $MonteCoral
 var skip_fade: bool = false
+@export var dialogue_resource: Resource
+@export var dialogue_scene: PackedScene = preload("res://Dialogue/balloon.tscn")
 
 func _ready():
 	#load_player_position()
@@ -14,11 +16,6 @@ func _on_exit_body_entered(body):
 		SceneSwitcher.switch_scene("res://KelptownInn/KelptownInn.tscn", Vector2(269, 220), "fade")
 
 func load_player_position():
-	if Global.spawn_position != null:
-		player.position = Global.spawn_position
-		print("Loaded player position from Global:", player.position)
-		Global.spawn_position = null  # Reset after using it
-		return
 		
 	var slot = Global.active_save_slot
 	var save_file_path = "user://saveslot" + str(slot) + ".json"
@@ -43,3 +40,13 @@ func load_player_position():
 			print("Failed to parse save file for loading position.")
 	else:
 		print("No save file found, using default position.")
+
+
+func _on_monte_coral_dialogue_requested(dialogue_section):
+	player.disable_user_input = true
+	var balloon = DialogueManager.show_dialogue_balloon(dialogue_resource, dialogue_section, [monte_coral])
+	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
+	
+func _on_dialogue_finished() -> void:
+	# Re-enable player input.
+	player.disable_user_input = false

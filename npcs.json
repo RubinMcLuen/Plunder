@@ -75,5 +75,16 @@
 	"body": "res://CharacterCreation/customizations/top/Body/body10.png",
 	"leftleg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg3.png",
 	"rightleg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg3.png"
+  },
+"MonteCoral": {
+	"dialogue_file": "res://Dialogue/dialogues/MonteCoral.dialogue",
+	"skin": "res://CharacterCreation/customizations/skin/skin2.png",
+	"hat": "res://CharacterCreation/customizations/hat/hat0.png",
+	"facialhair": "res://CharacterCreation/customizations/facialhair/facialhair1.png",
+	"leftarm": "res://CharacterCreation/customizations/top/LeftArm/larm2.png",
+	"rightarm": "res://CharacterCreation/customizations/top/RightArm/rarm2.png",
+	"body": "res://CharacterCreation/customizations/top/Body/body2.png",
+	"leftleg": "res://CharacterCreation/customizations/bottom/LeftLeg/lleg3.png",
+	"rightleg": "res://CharacterCreation/customizations/bottom/RightLeg/rleg3.png"
   }
 }

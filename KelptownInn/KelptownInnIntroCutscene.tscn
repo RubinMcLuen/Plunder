@@ -50,11 +50,8 @@ _data = {
 "new_animation": SubResource("Animation_j1k64")
 }
 
-[node name="KelptownInn" node_paths=PackedStringArray("bartender", "pirate") instance=ExtResource("1_b3fmw")]
+[node name="KelptownInn" instance=ExtResource("1_b3fmw")]
 script = ExtResource("2_uqa76")
-bartender = NodePath("Bartender")
-pirate = NodePath("Pirate")
-scene_state = "default"
 dialogue_resource = ExtResource("3_nw6ac")
 dialogue_scene = ExtResource("3_hu5lq")
 
@@ -82,7 +79,7 @@ fightable = true
 position = Vector2(295, 132)
 npc_name = "patron"
 
-[node name="Arrow" type="Sprite2D" parent="." index="41"]
+[node name="Arrow" type="Sprite2D" parent="." index="8"]
 visible = false
 position = Vector2(254, 94)
 texture = ExtResource("6_34htp")
@@ -94,7 +91,7 @@ libraries = {
 }
 autoplay = "new_animation"
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." index="42"]
+[node name="CanvasLayer" type="CanvasLayer" parent="." index="9"]
 
 [node name="TutorialHint1" type="RichTextLabel" parent="CanvasLayer" index="0"]
 visible = false
@@ -142,5 +139,3 @@ text = "[center]
 
 
 Tap the bartender to talk[/center]"
-
-[connection signal="cutscene_finished" from="CutsceneManager" to="." method="_on_cutscene_manager_cutscene_finished"]

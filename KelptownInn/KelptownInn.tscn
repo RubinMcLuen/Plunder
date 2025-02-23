@@ -33,6 +33,9 @@
 [ext_resource type="Texture2D" uid="uid://cspyynoayouwp" path="res://KelptownInn/assets/27.png" id="31_2413o"]
 [ext_resource type="Texture2D" uid="uid://t8g5otoebhr7" path="res://KelptownInn/assets/28.png" id="32_5vnuh"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5j50s"]
+size = Vector2(26, 4)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_au3fy"]
 size = Vector2(0, 224)
 
@@ -90,9 +93,6 @@ size = Vector2(32, 18)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ru76x"]
 size = Vector2(48, 20)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_5j50s"]
-size = Vector2(26, 4)
-
 [node name="KelptownInn" type="Node2D" node_paths=PackedStringArray("player")]
 y_sort_enabled = true
 script = ExtResource("1_8g3rb")
@@ -110,411 +110,10 @@ position = Vector2(270, 68)
 collision_layer = 2
 npc_name = "bartender"
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Background" type="Sprite2D" parent="."]
 z_index = -1
 position = Vector2(269, 135)
 texture = ExtResource("4_ketps")
-
-[node name="LeftBorder" type="StaticBody2D" parent="."]
-position = Vector2(141, 135)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftBorder"]
-position = Vector2(0, -2)
-shape = SubResource("RectangleShape2D_au3fy")
-
-[node name="BorderTop" type="StaticBody2D" parent="."]
-position = Vector2(151, 44)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderTop"]
-position = Vector2(100, 10)
-shape = SubResource("RectangleShape2D_dveij")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="BorderTop"]
-position = Vector2(230, -23)
-shape = SubResource("RectangleShape2D_glf74")
-
-[node name="BorderBottom" type="StaticBody2D" parent="."]
-position = Vector2(151, 235)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderBottom"]
-position = Vector2(47.5, 10)
-shape = SubResource("RectangleShape2D_lnveo")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="BorderBottom"]
-position = Vector2(188.75, 10)
-shape = SubResource("RectangleShape2D_lnveo")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="BorderBottom"]
-position = Vector2(118, 14)
-shape = SubResource("RectangleShape2D_eh1jv")
-
-[node name="BorderRight" type="StaticBody2D" parent="."]
-position = Vector2(398, 94)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BorderRight"]
-position = Vector2(-1, 39)
-shape = SubResource("RectangleShape2D_05sn2")
-
-[node name="Bar" type="StaticBody2D" parent="."]
-position = Vector2(260, 75)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Bar"]
-position = Vector2(0, 5)
-shape = SubResource("RectangleShape2D_jjoao")
-
-[node name="Sprite2D" type="Sprite2D" parent="Bar"]
-position = Vector2(0, -6)
-texture = ExtResource("5_ip47w")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Bar"]
-position = Vector2(-66, -14)
-shape = SubResource("RectangleShape2D_f17m2")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="Bar"]
-position = Vector2(14, -21.5)
-shape = SubResource("RectangleShape2D_vejx4")
-
-[node name="Table" type="StaticBody2D" parent="."]
-position = Vector2(364, 117)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Table"]
-position = Vector2(0.5, 13)
-shape = SubResource("RectangleShape2D_bbrvj")
-
-[node name="Sprite2D" type="Sprite2D" parent="Table"]
-position = Vector2(-12, -10)
-texture = ExtResource("6_7haqx")
-centered = false
-
-[node name="Table2" type="StaticBody2D" parent="."]
-position = Vector2(195, 130)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Table2"]
-position = Vector2(0.5, 13)
-shape = SubResource("RectangleShape2D_gweus")
-
-[node name="Sprite2D" type="Sprite2D" parent="Table2"]
-position = Vector2(-12, -10)
-texture = ExtResource("7_dlpkk")
-centered = false
-
-[node name="Table3" type="StaticBody2D" parent="."]
-position = Vector2(303, 162)
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Table3"]
-position = Vector2(0.5, 13)
-shape = SubResource("RectangleShape2D_3r2hi")
-
-[node name="Sprite2D" type="Sprite2D" parent="Table3"]
-position = Vector2(-12, -10)
-texture = ExtResource("8_3bfsv")
-centered = false
-
-[node name="Table4" type="StaticBody2D" parent="."]
-position = Vector2(174, 191)
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Table4"]
-position = Vector2(13, 14)
-shape = SubResource("RectangleShape2D_rwp4b")
-
-[node name="Sprite2D" type="Sprite2D" parent="Table4"]
-position = Vector2(-12, -10)
-texture = ExtResource("9_mgbth")
-centered = false
-
-[node name="Table5" type="StaticBody2D" parent="."]
-position = Vector2(358, 195)
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Table5"]
-position = Vector2(0.5, 13)
-shape = SubResource("RectangleShape2D_q8ifc")
-
-[node name="Sprite2D" type="Sprite2D" parent="Table5"]
-position = Vector2(-12, -10)
-texture = ExtResource("10_lqwnu")
-centered = false
-
-[node name="Chair" type="StaticBody2D" parent="."]
-position = Vector2(342, 112)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair"]
-position = Vector2(0.5, 5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair"]
-position = Vector2(-5, -4)
-texture = ExtResource("11_popof")
-centered = false
-
-[node name="Chair2" type="StaticBody2D" parent="."]
-position = Vector2(194, 120)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair2"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair2"]
-position = Vector2(-5, -4)
-texture = ExtResource("12_dq8mm")
-centered = false
-
-[node name="Chair3" type="StaticBody2D" parent="."]
-position = Vector2(383, 117)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair3"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair3"]
-position = Vector2(-5, -4)
-texture = ExtResource("13_la8i2")
-centered = false
-
-[node name="Chair4" type="StaticBody2D" parent="."]
-position = Vector2(213, 131)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair4"]
-position = Vector2(-2.5, 5)
-shape = SubResource("RectangleShape2D_b088e")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair4"]
-position = Vector2(-5, -4)
-texture = ExtResource("14_w04ji")
-centered = false
-
-[node name="Chair5" type="StaticBody2D" parent="."]
-position = Vector2(383, 132)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair5"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair5"]
-position = Vector2(-5, -4)
-texture = ExtResource("15_xxy4n")
-centered = false
-
-[node name="Chair6" type="StaticBody2D" parent="."]
-position = Vector2(215, 144)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair6"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair6"]
-position = Vector2(-5, -4)
-texture = ExtResource("16_cdl7m")
-centered = false
-
-[node name="Chair7" type="StaticBody2D" parent="."]
-position = Vector2(175, 145)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair7"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair7"]
-position = Vector2(-5, -4)
-texture = ExtResource("17_0ndt1")
-centered = false
-
-[node name="Chair8" type="StaticBody2D" parent="."]
-position = Vector2(310, 147)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair8"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair8"]
-position = Vector2(-5, -4)
-texture = ExtResource("18_fe5ab")
-centered = false
-
-[node name="Chair9" type="StaticBody2D" parent="."]
-position = Vector2(283, 158)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair9"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair9"]
-position = Vector2(-5, -4)
-texture = ExtResource("19_d80p0")
-centered = false
-
-[node name="Chair10" type="StaticBody2D" parent="."]
-position = Vector2(323, 159)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair10"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair10"]
-position = Vector2(-5, -4)
-texture = ExtResource("20_a8tne")
-centered = false
-
-[node name="Chair11" type="StaticBody2D" parent="."]
-position = Vector2(389, 167)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair11"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair11"]
-position = Vector2(-5, -4)
-texture = ExtResource("21_0b4k2")
-centered = false
-
-[node name="Chair12" type="StaticBody2D" parent="."]
-position = Vector2(175, 176)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair12"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair12"]
-position = Vector2(-5, -4)
-texture = ExtResource("22_8pru8")
-centered = false
-
-[node name="Chair13" type="StaticBody2D" parent="."]
-position = Vector2(283, 178)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair13"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair13"]
-position = Vector2(-5, -4)
-texture = ExtResource("23_pnete")
-centered = false
-
-[node name="Chair14" type="StaticBody2D" parent="."]
-position = Vector2(323, 178)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair14"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair14"]
-position = Vector2(-5, -4)
-texture = ExtResource("24_01m44")
-centered = false
-
-[node name="Chair15" type="StaticBody2D" parent="."]
-position = Vector2(153, 190)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair15"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair15"]
-position = Vector2(-5, -4)
-texture = ExtResource("25_mm05i")
-centered = false
-
-[node name="Chair16" type="StaticBody2D" parent="."]
-position = Vector2(217, 190)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair16"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair16"]
-position = Vector2(-5, -4)
-texture = ExtResource("26_5kt8t")
-centered = false
-
-[node name="Chair17" type="StaticBody2D" parent="."]
-position = Vector2(340, 198)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair17"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair17"]
-position = Vector2(-5, -4)
-texture = ExtResource("27_n4pb0")
-centered = false
-
-[node name="Chair18" type="StaticBody2D" parent="."]
-position = Vector2(376, 203)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair18"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair18"]
-position = Vector2(-5, -4)
-texture = ExtResource("28_gxrfc")
-centered = false
-
-[node name="Chair19" type="StaticBody2D" parent="."]
-position = Vector2(218, 205)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair19"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair19"]
-position = Vector2(-5, -4)
-texture = ExtResource("29_t1tbb")
-centered = false
-
-[node name="Chair20" type="StaticBody2D" parent="."]
-position = Vector2(153, 205)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair20"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair20"]
-position = Vector2(-5, -4)
-texture = ExtResource("30_ct7yg")
-centered = false
-
-[node name="Chair21" type="StaticBody2D" parent="."]
-position = Vector2(175, 217)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair21"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair21"]
-position = Vector2(-5, -4)
-texture = ExtResource("31_2413o")
-centered = false
-
-[node name="Chair22" type="StaticBody2D" parent="."]
-position = Vector2(200, 217)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chair22"]
-position = Vector2(0.5, 4.5)
-shape = SubResource("RectangleShape2D_0da4m")
-
-[node name="Sprite2D" type="Sprite2D" parent="Chair22"]
-position = Vector2(-5, -4)
-texture = ExtResource("32_5vnuh")
-centered = false
-
-[node name="StairRailing" type="StaticBody2D" parent="."]
-position = Vector2(360, 65)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StairRailing"]
-position = Vector2(3, -9.5)
-shape = SubResource("RectangleShape2D_tco2u")
-
-[node name="BarStools" type="StaticBody2D" parent="."]
-position = Vector2(214, 88)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BarStools"]
-position = Vector2(6, 1)
-shape = SubResource("RectangleShape2D_bltdw")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="BarStools"]
-position = Vector2(73, 0)
-shape = SubResource("RectangleShape2D_ru76x")
 
 [node name="Exit" type="Area2D" parent="."]
 position = Vector2(266, 255)
@@ -522,3 +121,407 @@ position = Vector2(266, 255)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
 position = Vector2(3, -8)
 shape = SubResource("RectangleShape2D_5j50s")
+
+[node name="Collisions" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="LeftBorder" type="StaticBody2D" parent="Collisions"]
+position = Vector2(141, 135)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/LeftBorder"]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_au3fy")
+
+[node name="BorderTop" type="StaticBody2D" parent="Collisions"]
+position = Vector2(151, 44)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/BorderTop"]
+position = Vector2(100, 10)
+shape = SubResource("RectangleShape2D_dveij")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/BorderTop"]
+position = Vector2(230, -23)
+shape = SubResource("RectangleShape2D_glf74")
+
+[node name="BorderBottom" type="StaticBody2D" parent="Collisions"]
+position = Vector2(151, 235)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/BorderBottom"]
+position = Vector2(47.5, 10)
+shape = SubResource("RectangleShape2D_lnveo")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/BorderBottom"]
+position = Vector2(188.75, 10)
+shape = SubResource("RectangleShape2D_lnveo")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Collisions/BorderBottom"]
+position = Vector2(118, 14)
+shape = SubResource("RectangleShape2D_eh1jv")
+
+[node name="BorderRight" type="StaticBody2D" parent="Collisions"]
+position = Vector2(398, 94)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/BorderRight"]
+position = Vector2(-1, 39)
+shape = SubResource("RectangleShape2D_05sn2")
+
+[node name="Bar" type="StaticBody2D" parent="Collisions"]
+position = Vector2(260, 75)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Bar"]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_jjoao")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Bar"]
+position = Vector2(0, -6)
+texture = ExtResource("5_ip47w")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/Bar"]
+position = Vector2(-66, -14)
+shape = SubResource("RectangleShape2D_f17m2")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Collisions/Bar"]
+position = Vector2(14, -21.5)
+shape = SubResource("RectangleShape2D_vejx4")
+
+[node name="Table" type="StaticBody2D" parent="Collisions"]
+position = Vector2(364, 117)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Table"]
+position = Vector2(0.5, 13)
+shape = SubResource("RectangleShape2D_bbrvj")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Table"]
+position = Vector2(-12, -10)
+texture = ExtResource("6_7haqx")
+centered = false
+
+[node name="Table2" type="StaticBody2D" parent="Collisions"]
+position = Vector2(195, 130)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Table2"]
+position = Vector2(0.5, 13)
+shape = SubResource("RectangleShape2D_gweus")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Table2"]
+position = Vector2(-12, -10)
+texture = ExtResource("7_dlpkk")
+centered = false
+
+[node name="Table3" type="StaticBody2D" parent="Collisions"]
+position = Vector2(303, 162)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/Table3"]
+position = Vector2(0.5, 13)
+shape = SubResource("RectangleShape2D_3r2hi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Table3"]
+position = Vector2(-12, -10)
+texture = ExtResource("8_3bfsv")
+centered = false
+
+[node name="Table4" type="StaticBody2D" parent="Collisions"]
+position = Vector2(174, 191)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/Table4"]
+position = Vector2(13, 14)
+shape = SubResource("RectangleShape2D_rwp4b")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Table4"]
+position = Vector2(-12, -10)
+texture = ExtResource("9_mgbth")
+centered = false
+
+[node name="Table5" type="StaticBody2D" parent="Collisions"]
+position = Vector2(358, 195)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/Table5"]
+position = Vector2(0.5, 13)
+shape = SubResource("RectangleShape2D_q8ifc")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Table5"]
+position = Vector2(-12, -10)
+texture = ExtResource("10_lqwnu")
+centered = false
+
+[node name="Chair" type="StaticBody2D" parent="Collisions"]
+position = Vector2(342, 112)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair"]
+position = Vector2(0.5, 5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair"]
+position = Vector2(-5, -4)
+texture = ExtResource("11_popof")
+centered = false
+
+[node name="Chair2" type="StaticBody2D" parent="Collisions"]
+position = Vector2(194, 120)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair2"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair2"]
+position = Vector2(-5, -4)
+texture = ExtResource("12_dq8mm")
+centered = false
+
+[node name="Chair3" type="StaticBody2D" parent="Collisions"]
+position = Vector2(383, 117)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair3"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair3"]
+position = Vector2(-5, -4)
+texture = ExtResource("13_la8i2")
+centered = false
+
+[node name="Chair4" type="StaticBody2D" parent="Collisions"]
+position = Vector2(213, 131)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair4"]
+position = Vector2(-2.5, 5)
+shape = SubResource("RectangleShape2D_b088e")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair4"]
+position = Vector2(-5, -4)
+texture = ExtResource("14_w04ji")
+centered = false
+
+[node name="Chair5" type="StaticBody2D" parent="Collisions"]
+position = Vector2(383, 132)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair5"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair5"]
+position = Vector2(-5, -4)
+texture = ExtResource("15_xxy4n")
+centered = false
+
+[node name="Chair6" type="StaticBody2D" parent="Collisions"]
+position = Vector2(215, 144)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair6"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair6"]
+position = Vector2(-5, -4)
+texture = ExtResource("16_cdl7m")
+centered = false
+
+[node name="Chair7" type="StaticBody2D" parent="Collisions"]
+position = Vector2(175, 145)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair7"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair7"]
+position = Vector2(-5, -4)
+texture = ExtResource("17_0ndt1")
+centered = false
+
+[node name="Chair8" type="StaticBody2D" parent="Collisions"]
+position = Vector2(310, 147)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair8"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair8"]
+position = Vector2(-5, -4)
+texture = ExtResource("18_fe5ab")
+centered = false
+
+[node name="Chair9" type="StaticBody2D" parent="Collisions"]
+position = Vector2(283, 158)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair9"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair9"]
+position = Vector2(-5, -4)
+texture = ExtResource("19_d80p0")
+centered = false
+
+[node name="Chair10" type="StaticBody2D" parent="Collisions"]
+position = Vector2(323, 159)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair10"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair10"]
+position = Vector2(-5, -4)
+texture = ExtResource("20_a8tne")
+centered = false
+
+[node name="Chair11" type="StaticBody2D" parent="Collisions"]
+position = Vector2(389, 167)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair11"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair11"]
+position = Vector2(-5, -4)
+texture = ExtResource("21_0b4k2")
+centered = false
+
+[node name="Chair12" type="StaticBody2D" parent="Collisions"]
+position = Vector2(175, 176)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair12"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair12"]
+position = Vector2(-5, -4)
+texture = ExtResource("22_8pru8")
+centered = false
+
+[node name="Chair13" type="StaticBody2D" parent="Collisions"]
+position = Vector2(283, 178)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair13"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair13"]
+position = Vector2(-5, -4)
+texture = ExtResource("23_pnete")
+centered = false
+
+[node name="Chair14" type="StaticBody2D" parent="Collisions"]
+position = Vector2(323, 178)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair14"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair14"]
+position = Vector2(-5, -4)
+texture = ExtResource("24_01m44")
+centered = false
+
+[node name="Chair15" type="StaticBody2D" parent="Collisions"]
+position = Vector2(153, 190)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair15"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair15"]
+position = Vector2(-5, -4)
+texture = ExtResource("25_mm05i")
+centered = false
+
+[node name="Chair16" type="StaticBody2D" parent="Collisions"]
+position = Vector2(217, 190)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair16"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair16"]
+position = Vector2(-5, -4)
+texture = ExtResource("26_5kt8t")
+centered = false
+
+[node name="Chair17" type="StaticBody2D" parent="Collisions"]
+position = Vector2(340, 198)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair17"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair17"]
+position = Vector2(-5, -4)
+texture = ExtResource("27_n4pb0")
+centered = false
+
+[node name="Chair18" type="StaticBody2D" parent="Collisions"]
+position = Vector2(376, 203)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair18"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair18"]
+position = Vector2(-5, -4)
+texture = ExtResource("28_gxrfc")
+centered = false
+
+[node name="Chair19" type="StaticBody2D" parent="Collisions"]
+position = Vector2(218, 205)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair19"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair19"]
+position = Vector2(-5, -4)
+texture = ExtResource("29_t1tbb")
+centered = false
+
+[node name="Chair20" type="StaticBody2D" parent="Collisions"]
+position = Vector2(153, 205)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair20"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair20"]
+position = Vector2(-5, -4)
+texture = ExtResource("30_ct7yg")
+centered = false
+
+[node name="Chair21" type="StaticBody2D" parent="Collisions"]
+position = Vector2(175, 217)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair21"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair21"]
+position = Vector2(-5, -4)
+texture = ExtResource("31_2413o")
+centered = false
+
+[node name="Chair22" type="StaticBody2D" parent="Collisions"]
+position = Vector2(200, 217)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair22"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair22"]
+position = Vector2(-5, -4)
+texture = ExtResource("32_5vnuh")
+centered = false
+
+[node name="StairRailing" type="StaticBody2D" parent="Collisions"]
+position = Vector2(360, 65)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/StairRailing"]
+position = Vector2(3, -9.5)
+shape = SubResource("RectangleShape2D_tco2u")
+
+[node name="BarStools" type="StaticBody2D" parent="Collisions"]
+position = Vector2(214, 88)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/BarStools"]
+position = Vector2(6, 1)
+shape = SubResource("RectangleShape2D_bltdw")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/BarStools"]
+position = Vector2(73, 0)
+shape = SubResource("RectangleShape2D_ru76x")

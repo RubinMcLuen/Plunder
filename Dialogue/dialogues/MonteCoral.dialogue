@@ -1,0 +1,13 @@
+~ introduction
+Monte Coral: Luck and charm, my friend. That’s how you survive on the high seas. Speaking of which, what can I do for you?
+- Ask about pirate crew.
+	Monte Coral: Last I heard, they were drifting somewhere northeast. Of course, pirates do have a habit of moving around.
+	- Say goodbye.
+		Monte Coral: Fair winds and following seas, my friend.
+- Say goodbye.
+	Monte Coral: Fair winds and following seas, my friend.
+=> END
+
+
+
+

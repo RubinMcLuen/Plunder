@@ -24,15 +24,22 @@ func _on_playbutton_pressed():
 		if parse_result == OK:
 			save_file_data = json.data
 		if save_file_data.has("scene"):
-			var scene_name = save_file_data["scene"].get("name", "res://Tavern/tavern.tscn")
-			print("Loading saved scene:", scene_name)
-			get_tree().change_scene_to_file(scene_name)
+			var scene_data = save_file_data["scene"]
+			var scene_name = scene_data.get("name", "res://Tavern/tavern.tscn")
+			var position_data = scene_data.get("position", {})
+			# Use default coordinates if not provided
+			var pos_x = position_data.get("x", 381)
+			var pos_y = position_data.get("y", 23)
+			var scene_position = Vector2(pos_x, pos_y)
+			print("Loading saved scene:", scene_name, "at position", scene_position)
+			SceneSwitcher.switch_scene(scene_name, scene_position, "fade")
 		else:
 			print("No saved scene found. Defaulting to Tavern.")
 			get_tree().change_scene_to_file("res://Tavern/tavern.tscn")
 	else:
 		print("No save file found, starting at Tavern.")
 		get_tree().change_scene_to_file("res://Tavern/tavern.tscn")
+
 
 func _on_deletebutton_pressed():
 	slot_index = Global.active_save_slot

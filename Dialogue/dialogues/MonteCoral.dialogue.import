@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_13"
+type="Resource"
+uid="uid://cqxjyogd27nmq"
+path="res://.godot/imported/MonteCoral.dialogue-02964cf3945379ee30e952f4e627b596.tres"
+
+[deps]
+
+source_file="res://Dialogue/dialogues/MonteCoral.dialogue"
+dest_files=["res://.godot/imported/MonteCoral.dialogue-02964cf3945379ee30e952f4e627b596.tres"]
+
+[params]
+
+defaults=true

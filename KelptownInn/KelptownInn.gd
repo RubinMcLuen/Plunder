@@ -13,11 +13,6 @@ func _on_exit_body_entered(body):
 
 
 func load_player_position():
-	if Global.spawn_position != null:
-		player.position = Global.spawn_position
-		print("Loaded player position from Global:", player.position)
-		Global.spawn_position = null  # Reset after using it
-		return
 		
 	var slot = Global.active_save_slot
 	var save_file_path = "user://saveslot" + str(slot) + ".json"
