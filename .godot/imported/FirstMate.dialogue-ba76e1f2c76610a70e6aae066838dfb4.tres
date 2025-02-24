@@ -6,6 +6,8 @@
 script = ExtResource("1_gakj2")
 using_states = PackedStringArray()
 titles = {
+"OnShipNotReady": "13",
+"OnShipReady": "9",
 "OutsideKelptownInn": "2"
 }
 character_names = PackedStringArray("First Mate")
@@ -16,6 +18,36 @@ lines = {
 "next_id": "2",
 "text": "OutsideKelptownInn",
 "type": &"title"
+},
+"10": {
+"id": "10",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"12": {
+"id": "12",
+"next_id": "13",
+"text": "OnShipNotReady",
+"type": &"title"
+},
+"13": {
+"character": "First Mate",
+"character_replacements": Array[Dictionary]([]),
+"id": "13",
+"next_id": "14",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "I’d love to set sail, Captain, but uh… where exactly are we sailin’ to? Maybe ask around town, see if anyone’s got somethin’ worth chasin’!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "I’d love to set sail, Captain, but uh… where exactly are we sailin’ to? Maybe ask around town, see if anyone’s got somethin’ worth chasin’!",
+"type": &"dialogue"
+},
+"14": {
+"id": "14",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
 },
 "2": {
 "character": "First Mate",
@@ -70,6 +102,24 @@ lines = {
 "is_snippet": false,
 "next_id": "end",
 "type": &"goto"
+},
+"8": {
+"id": "8",
+"next_id": "9",
+"text": "OnShipReady",
+"type": &"title"
+},
+"9": {
+"character": "First Mate",
+"character_replacements": Array[Dictionary]([]),
+"id": "9",
+"next_id": "10",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Tap the wheel when yer ready, Captain. Just try not to steer us straight into a kraken this time!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Tap the wheel when yer ready, Captain. Just try not to steer us straight into a kraken this time!",
+"type": &"dialogue"
 }
 }
 raw_text = "~ OutsideKelptownInn
@@ -79,7 +129,11 @@ First Mate: Anyway, ship's all ready, sittin pretty at the end of the dock.
 First Mate: Just holler when you're ready to set sail, I'll be there, makin' sure the rum barrel don't get lonely.
 => END
 
+~ OnShipReady
+First Mate: Tap the wheel when yer ready, Captain. Just try not to steer us straight into a kraken this time!
+=> END
 
-
-"
+~ OnShipNotReady
+First Mate: I’d love to set sail, Captain, but uh… where exactly are we sailin’ to? Maybe ask around town, see if anyone’s got somethin’ worth chasin’!
+=> END"
 metadata/dialogue_manager_version = "2.45.0"

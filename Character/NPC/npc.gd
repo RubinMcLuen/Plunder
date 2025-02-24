@@ -12,7 +12,9 @@ const NPC_DATA_PATH := "res://npcs.json"  # Adjust as needed
 
 var dialogue_resource
 
+# ---------------------------
 # Animation and Fighting Variables
+# ---------------------------
 var fighting: bool = false
 var direction: Vector2 = Vector2.RIGHT
 const FRAMES_PER_ANIMATION = 8
@@ -25,11 +27,11 @@ var idle_start_time: int = 0
 # ---------------------------
 # Health Mechanics
 # ---------------------------
-signal end_fight   # Signal emitted when enemy health reaches 0
+signal end_fight   # Signal emitted when NPC health reaches 0
 @export var health: int = 3
 
 # ---------------------------
-# Override Animation Variables
+# Animation Override Variables
 # ---------------------------
 var anim_override: bool = false
 var anim_override_start_time: int = 0
@@ -43,16 +45,16 @@ func set_idle_with_sword_mode(enabled: bool) -> void:
 	idle_with_sword = enabled
 
 # ---------------------------
-# NEW: Auto-Move Variables (similar to player)
+# Movement and Auto-Move Variables
 # ---------------------------
 @export var speed: float = 100
 var auto_move: bool = false
 var auto_target_position: Vector2 = Vector2.ZERO
 
-# We now define a unique signal for NPC auto-move completion.
+# Unique signal for when auto-movement finishes
 signal npc_move_completed
 
-# We also match the "disable_user_input" & "custom_velocity" from the player script
+# Matching player's input variables
 var disable_user_input: bool = false
 var custom_velocity: Vector2 = Vector2.ZERO
 
@@ -77,14 +79,14 @@ func load_appearance() -> void:
 		var npc_data = json.get_data()
 		if npc_data.has(npc_name):
 			var data = npc_data[npc_name]
-			$Appearance/skin.texture         = safe_load(data.get("skin", ""))
-			$Appearance/hat.texture          = safe_load(data.get("hat", ""))
-			$Appearance/facialhair.texture   = safe_load(data.get("facialhair", ""))
-			$Appearance/Top/leftarm.texture    = safe_load(data.get("leftarm", ""))
-			$Appearance/Top/rightarm.texture   = safe_load(data.get("rightarm", ""))
-			$Appearance/Top/body.texture       = safe_load(data.get("body", ""))
-			$Appearance/Bottom/leftleg.texture    = safe_load(data.get("leftleg", ""))
-			$Appearance/Bottom/rightleg.texture   = safe_load(data.get("rightleg", ""))
+			$Appearance/skin.texture       = safe_load(data.get("skin", ""))
+			$Appearance/hat.texture        = safe_load(data.get("hat", ""))
+			$Appearance/facialhair.texture = safe_load(data.get("facialhair", ""))
+			$Appearance/Top/leftarm.texture  = safe_load(data.get("leftarm", ""))
+			$Appearance/Top/rightarm.texture = safe_load(data.get("rightarm", ""))
+			$Appearance/Top/body.texture     = safe_load(data.get("body", ""))
+			$Appearance/Bottom/leftleg.texture  = safe_load(data.get("leftleg", ""))
+			$Appearance/Bottom/rightleg.texture = safe_load(data.get("rightleg", ""))
 
 			var dialogue_path = data.get("dialogue_file", "")
 			if dialogue_path.strip_edges() != "":
@@ -121,14 +123,25 @@ func play_idle_with_sword() -> void:
 func play_hurt_animation() -> void:
 	anim_override = true
 	anim_override_start_time = Time.get_ticks_msec()
-	anim_override_duration = 300  # row 6, 3 frames
+	anim_override_duration = 300  # 3 frames * 100ms each
 	current_anim = "hurt"
 
 func play_slash_animation() -> void:
 	anim_override = true
 	anim_override_start_time = Time.get_ticks_msec()
-	anim_override_duration = 800  # row 4, 8 frames
+	anim_override_duration = 800  # 8 frames * 100ms each
 	current_anim = "slash"
+
+# New: Walk animation similar to player's script
+const WALK_ROW = 2
+func animate_walk() -> void:
+	var frame = (Time.get_ticks_msec() / 100) % FRAMES_PER_ANIMATION
+	var base_frame = WALK_ROW * FRAMES_PER_ANIMATION
+	var current_frame = base_frame + frame
+	var flip_h = (direction == Vector2.LEFT)
+	for part in sprite_parts:
+		part.flip_h = flip_h
+		part.frame = current_frame
 
 func update_animation() -> void:
 	if customization_only:
@@ -164,8 +177,11 @@ func update_animation() -> void:
 			idle_offset = randi() % FRAMES_PER_ANIMATION
 			idle_start_time = Time.get_ticks_msec()
 	else:
-		# Match player's logic: if fighting, show sword idle, else normal idle
-		if idle_with_sword:
+		# Use walk animation if auto-moving
+		if auto_move:
+			animate_walk()
+		# If fighting and idle_with_sword is enabled, use sword idle
+		elif fighting and idle_with_sword:
 			play_idle_with_sword()
 		else:
 			play_idle()
@@ -179,16 +195,16 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func handle_npc_input() -> void:
-	# If user input is disabled AND not auto-move, zero out velocity
+	# If input is disabled and not auto-moving, zero velocity.
 	if disable_user_input and not auto_move:
 		custom_velocity = Vector2.ZERO
 		velocity = custom_velocity
 		return
 
-	# Auto-movement takes priority
+	# Auto-movement takes priority.
 	if auto_move:
 		var diff = auto_target_position - global_position
-		# Increase tolerance from 1.0 to 5.0 pixels
+		# Tolerance increased to 5.0 pixels.
 		if diff.length() < 5.0:
 			global_position = auto_target_position
 			auto_move = false
@@ -198,32 +214,32 @@ func handle_npc_input() -> void:
 			emit_signal("npc_move_completed")
 		else:
 			custom_velocity = diff.normalized() * speed
-			# Optionally update direction if needed
 			velocity = custom_velocity
+			# Update facing direction based on movement.
+			direction = (Vector2.LEFT if diff.x < 0 else Vector2.RIGHT)
 		return
 
-	# If fighting is active, no normal user movement
+	# If fighting is active, no movement.
 	if fighting:
 		custom_velocity = Vector2.ZERO
 		velocity = custom_velocity
 		return
 
-	# Otherwise, no keyboard input for NPC, so default to zero velocity if not auto-moving
+	# Default to zero velocity.
 	custom_velocity = Vector2.ZERO
 	velocity = custom_velocity
-
 
 # ---------------------------
 # Health and Damage
 # ---------------------------
 func take_damage() -> void:
-	print("Enemy was hit by a projectile!")
+	print("NPC was hit!")
 	play_hurt_animation()
 	health -= 1
-	print("Enemy health is now: ", health)
+	print("NPC health is now: ", health)
 	
 	if health <= 0:
-		print("Enemy health reached 0! Emitting end_fight signal.")
+		print("NPC health reached 0! Emitting end_fight signal.")
 		emit_signal("end_fight")
 		play_hurt_animation()
 
@@ -256,19 +272,14 @@ func show_dialogue(dialogue_key: String) -> Node:
 	return balloon
 
 func set_facing_direction(is_left: bool) -> void:
-	direction = Vector2.LEFT if is_left else Vector2.RIGHT
+	direction = (Vector2.LEFT if is_left else Vector2.RIGHT)
 	for part in sprite_parts:
 		part.flip_h = is_left
-		
+
 func _on_area_input_event(_viewport, _event, _shape_idx) -> void:
+	# Optionally handle input events for the NPC.
 	pass
 
-func _on_dialogue_finished() -> void:
-	pass
-
-# ---------------------------
-# Auto-move initiation
-# ---------------------------
 func auto_move_to_position(target: Vector2) -> void:
 	auto_move = true
 	auto_target_position = target

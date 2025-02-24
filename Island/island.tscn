@@ -195,4 +195,3 @@ npc_name = "FirstMate"
 
 [connection signal="pressed" from="ShipControlArea/Button" to="ShipControlArea" method="_on_button_pressed"]
 [connection signal="dialogue_requested" from="MonteCoral" to="." method="_on_monte_coral_dialogue_requested"]
-[connection signal="dialogue_requested" from="FirstMate" to="." method="_on_first_mate_dialogue_requested"]

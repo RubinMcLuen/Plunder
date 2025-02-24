@@ -17,3 +17,4 @@ res://SaveMenu/Info/info.gd
 res://SaveMenu/save_menu.tscn
 res://Character/NPC/npcs/FirstMate.gd
 res://npcs.json
+res://Character/NPC/npc.gd

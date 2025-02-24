@@ -5,5 +5,10 @@ First Mate: Anyway, ship's all ready, sittin pretty at the end of the dock.
 First Mate: Just holler when you're ready to set sail, I'll be there, makin' sure the rum barrel don't get lonely.
 => END
 
+~ OnShipReady
+First Mate: Tap the wheel when yer ready, Captain. Just try not to steer us straight into a kraken this time!
+=> END
 
-
+~ OnShipNotReady
+First Mate: I’d love to set sail, Captain, but uh… where exactly are we sailin’ to? Maybe ask around town, see if anyone’s got somethin’ worth chasin’!
+=> END

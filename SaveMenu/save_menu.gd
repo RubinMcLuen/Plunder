@@ -109,6 +109,7 @@ func _handle_add_slot(slot: Node, slot_index: int) -> void:
 		file.close()
 	
 	Global.active_save_slot = slot_index
+	QuestManager.load_quest_data()
 	active_slot_index = slot_index
 	
 	# Update the slot's texture.
@@ -126,6 +127,7 @@ func _handle_add_slot(slot: Node, slot_index: int) -> void:
 
 func _handle_c_slot(slot: Node, slot_index: int) -> void:
 	Global.active_save_slot = slot_index
+	QuestManager.load_quest_data()
 	active_slot_index = slot_index
 	
 	if info_instance and is_instance_valid(info_instance):
