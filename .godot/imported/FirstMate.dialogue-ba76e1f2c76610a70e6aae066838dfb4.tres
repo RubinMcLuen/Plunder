@@ -1,0 +1,85 @@
+[gd_resource type="Resource" script_class="DialogueResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_gakj2"]
+
+[resource]
+script = ExtResource("1_gakj2")
+using_states = PackedStringArray()
+titles = {
+"OutsideKelptownInn": "2"
+}
+character_names = PackedStringArray("First Mate")
+first_title = "2"
+lines = {
+"1": {
+"id": "1",
+"next_id": "2",
+"text": "OutsideKelptownInn",
+"type": &"title"
+},
+"2": {
+"character": "First Mate",
+"character_replacements": Array[Dictionary]([]),
+"id": "2",
+"next_id": "3",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Captain! There ya are! Finally got yer sea legs back, aye?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Captain! There ya are! Finally got yer sea legs back, aye?",
+"type": &"dialogue"
+},
+"3": {
+"character": "First Mate",
+"character_replacements": Array[Dictionary]([]),
+"id": "3",
+"next_id": "4",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "That scurvy is no funny business, you ought to spend less time on the poopdeck!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "That scurvy is no funny business, you ought to spend less time on the poopdeck!",
+"type": &"dialogue"
+},
+"4": {
+"character": "First Mate",
+"character_replacements": Array[Dictionary]([]),
+"id": "4",
+"next_id": "5",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Anyway, ship's all ready, sittin pretty at the end of the dock.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Anyway, ship's all ready, sittin pretty at the end of the dock.",
+"type": &"dialogue"
+},
+"5": {
+"character": "First Mate",
+"character_replacements": Array[Dictionary]([]),
+"id": "5",
+"next_id": "6",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Just holler when you're ready to set sail, I'll be there, makin' sure the rum barrel don't get lonely.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Just holler when you're ready to set sail, I'll be there, makin' sure the rum barrel don't get lonely.",
+"type": &"dialogue"
+},
+"6": {
+"id": "6",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+}
+}
+raw_text = "~ OutsideKelptownInn
+First Mate: Captain! There ya are! Finally got yer sea legs back, aye?
+First Mate: That scurvy is no funny business, you ought to spend less time on the poopdeck!
+First Mate: Anyway, ship's all ready, sittin pretty at the end of the dock.
+First Mate: Just holler when you're ready to set sail, I'll be there, makin' sure the rum barrel don't get lonely.
+=> END
+
+
+
+"
+metadata/dialogue_manager_version = "2.45.0"

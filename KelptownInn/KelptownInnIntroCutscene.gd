@@ -20,9 +20,7 @@ func _ready() -> void:
 	# 1) Load player position from your save file.
 	load_player_position()
 
-	# 2) Explicitly reload quest data (in case QuestManager._ready ran too early)
-	var quest_manager = get_node("/root/QuestManager")
-	quest_manager.reload_quest_data()
+	QuestManager.reload_quest_data()
 
 	# 3) Connect signals.
 	bartender.dialogue_requested.connect(_on_bartender_dialogue_requested)
@@ -60,14 +58,13 @@ func load_player_position():
 
 
 func apply_scene_state_from_quest():
-	var quest_manager = get_node("/root/QuestManager")
 	var quest_id = "TutorialQuest"
 
 	# If the quest doesn't exist in the log, add it.
-	if not quest_id in quest_manager.quests:
-		quest_manager.add_quest(quest_id, 4)
+	if not quest_id in QuestManager.quests:
+		QuestManager.add_quest(quest_id, 4)
 	
-	var step = quest_manager.quests[quest_id]["current_step"]
+	var step = QuestManager.quests[quest_id]["current_step"]
 	print(step)
 	var step_int = int(step)  # Cast the value to an integer.
 	
@@ -116,11 +113,9 @@ func apply_scene_state_from_quest():
 
 
 func _on_cutscene_manager_cutscene_finished():
-	# When cutscene finishes, move from step 1 => step 2.
-	var quest_manager = get_node("/root/QuestManager")
 	var quest_id = "TutorialQuest"
-	if quest_manager.quests[quest_id]["current_step"] == 1:
-		quest_manager.advance_quest_step(quest_id)  # sets step to 2
+	if QuestManager.quests[quest_id]["current_step"] == 1:
+		QuestManager.advance_quest_step(quest_id)  # sets step to 2
 	Global.save_game_state()
 	apply_scene_state_from_quest()
 
@@ -130,10 +125,9 @@ func _on_bartender_dialogue_requested(dialogue_section: String) -> void:
 	if player:
 		player.disable_user_input = true
 	# When bartender is spoken to on step 3, advance to step 4.
-	var quest_manager = get_node("/root/QuestManager")
 	var quest_id = "TutorialQuest"
-	if quest_manager.quests[quest_id]["current_step"] == 3:
-		quest_manager.advance_quest_step(quest_id)  # sets step to 4
+	if QuestManager.quests[quest_id]["current_step"] == 3:
+		QuestManager.advance_quest_step(quest_id)
 	Global.save_game_state()
 	var balloon = DialogueManager.show_dialogue_balloon(dialogue_resource, dialogue_section, [bartender])
 	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
@@ -145,11 +139,9 @@ func _on_dialogue_finished() -> void:
 
 
 func _on_pirate_dead():
-	# When pirate dies on step 2, advance to step 3.
-	var quest_manager = get_node("/root/QuestManager")
 	var quest_id = "TutorialQuest"
-	if quest_manager.quests[quest_id]["current_step"] == 2:
-		quest_manager.advance_quest_step(quest_id)  # sets step to 3
+	if QuestManager.quests[quest_id]["current_step"] == 2:
+		QuestManager.advance_quest_step(quest_id)  # sets step to 3
 	Global.save_game_state()
 	apply_scene_state_from_quest()
 

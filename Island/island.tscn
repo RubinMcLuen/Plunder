@@ -1,8 +1,9 @@
-[gd_scene load_steps=28 format=3 uid="uid://cfibpjveqehsp"]
+[gd_scene load_steps=30 format=3 uid="uid://cfibpjveqehsp"]
 
 [ext_resource type="Script" path="res://Island/island.gd" id="1_eaqko"]
 [ext_resource type="Texture2D" uid="uid://c01pfxvgxpa2i" path="res://Island/shipsand.png" id="2_2gr7v"]
 [ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_d82p3"]
+[ext_resource type="Resource" uid="uid://cuv7qfb43qg7d" path="res://Dialogue/dialogues/FirstMate.dialogue" id="3_hfcdw"]
 [ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/playerisland.png" id="3_tglov"]
 [ext_resource type="PackedScene" uid="uid://dlh32l6ht3jiy" path="res://Character/Player/player.tscn" id="3_xihff"]
 [ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="4_w8pbf"]
@@ -14,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://docbhg71ou20u" path="res://Island/rail1.png" id="10_nq04j"]
 [ext_resource type="Texture2D" uid="uid://d13iw7rwft51w" path="res://Island/rail2.png" id="11_8di88"]
 [ext_resource type="Script" path="res://Character/NPC/npcs/MonteCoral.gd" id="13_dfdk6"]
+[ext_resource type="Script" path="res://Character/NPC/npcs/FirstMate.gd" id="15_4oxlv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxd76"]
 size = Vector2(26, 6)
@@ -56,7 +58,8 @@ size = Vector2(26, 0)
 
 [node name="Island" type="Node2D"]
 script = ExtResource("1_eaqko")
-dialogue_resource = ExtResource("2_d82p3")
+monte_coral_dialogue = ExtResource("2_d82p3")
+first_mate_dialogue = ExtResource("3_hfcdw")
 
 [node name="SandSprite" type="Sprite2D" parent="."]
 position = Vector2(480, -1440)
@@ -185,5 +188,11 @@ position = Vector2(-41, -48)
 script = ExtResource("13_dfdk6")
 npc_name = "MonteCoral"
 
+[node name="FirstMate" parent="." instance=ExtResource("4_w8pbf")]
+position = Vector2(111, -53)
+script = ExtResource("15_4oxlv")
+npc_name = "FirstMate"
+
 [connection signal="pressed" from="ShipControlArea/Button" to="ShipControlArea" method="_on_button_pressed"]
 [connection signal="dialogue_requested" from="MonteCoral" to="." method="_on_monte_coral_dialogue_requested"]
+[connection signal="dialogue_requested" from="FirstMate" to="." method="_on_first_mate_dialogue_requested"]

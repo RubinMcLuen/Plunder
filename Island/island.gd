@@ -2,8 +2,10 @@ extends Node2D
 
 @onready var player: CharacterBody2D = $Player
 @onready var monte_coral: CharacterBody2D = $MonteCoral
+@onready var first_mate: CharacterBody2D = $FirstMate
 var skip_fade: bool = false
-@export var dialogue_resource: Resource
+@export var monte_coral_dialogue: Resource
+@export var first_mate_dialogue: Resource
 @export var dialogue_scene: PackedScene = preload("res://Dialogue/balloon.tscn")
 
 func _ready():
@@ -44,9 +46,18 @@ func load_player_position():
 
 func _on_monte_coral_dialogue_requested(dialogue_section):
 	player.disable_user_input = true
-	var balloon = DialogueManager.show_dialogue_balloon(dialogue_resource, dialogue_section, [monte_coral])
+	var balloon = DialogueManager.show_dialogue_balloon(monte_coral_dialogue, dialogue_section, [monte_coral])
 	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
-	
+	if QuestManager.quests["TutorialQuest"]["current_step"] == 4:
+		QuestManager.advance_quest_step("TutorialQuest")
+
+func _on_first_mate_dialogue_requested(dialogue_section):
+	player.disable_user_input = true
+	var balloon = DialogueManager.show_dialogue_balloon(first_mate_dialogue, dialogue_section, [first_mate])
+	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
+
 func _on_dialogue_finished() -> void:
 	# Re-enable player input.
 	player.disable_user_input = false
+
+

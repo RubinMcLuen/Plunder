@@ -15,3 +15,5 @@ res://SceneSwitcher.gd
 res://SaveMenu/Info/info.tscn
 res://SaveMenu/Info/info.gd
 res://SaveMenu/save_menu.tscn
+res://Character/NPC/npcs/FirstMate.gd
+res://npcs.json

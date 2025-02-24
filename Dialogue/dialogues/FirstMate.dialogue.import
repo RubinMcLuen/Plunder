@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_13"
+type="Resource"
+uid="uid://cuv7qfb43qg7d"
+path="res://.godot/imported/FirstMate.dialogue-ba76e1f2c76610a70e6aae066838dfb4.tres"
+
+[deps]
+
+source_file="res://Dialogue/dialogues/FirstMate.dialogue"
+dest_files=["res://.godot/imported/FirstMate.dialogue-ba76e1f2c76610a70e6aae066838dfb4.tres"]
+
+[params]
+
+defaults=true
