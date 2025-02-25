@@ -33,7 +33,6 @@ func _on_area_entered(area: Area2D) -> void:
 		return
 	# If the colliding area has a take_damage() method, apply damage.
 	if area.has_method("take_damage"):
-		print("tru")
 		area.take_damage(1)  # Default damage value; adjust as needed.
 		create_hit_effect()
 		queue_free()

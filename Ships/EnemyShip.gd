@@ -82,7 +82,7 @@ func _process(delta):
 	if player:
 		update_distance_and_angle()
 
-	queue_redraw()
+	#queue_redraw()
 
 ##
 # TIMER CALLBACK (DecideTimer): runs every 5 seconds.

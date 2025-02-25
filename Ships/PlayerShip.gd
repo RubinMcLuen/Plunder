@@ -4,11 +4,9 @@ extends Area2D
 
 const NUM_FRAMES = 360
 const ANGLE_PER_FRAME = 360.0 / NUM_FRAMES
-const MAX_CHARGE_TIME = 2.0
 const BASE_CANNONBALL_SPEED = 30
 const BASE_CANNONBALL_DISTANCE = 80
 
-# Define MOUSE_BUTTON_LEFT if not already defined.
 const MOUSE_BUTTON_LEFT = 1
 
 @export var rotation_speed = 75.0
@@ -16,17 +14,30 @@ const MOUSE_BUTTON_LEFT = 1
 @export var acceleration_factor = 0.5
 @export var max_rotation_speed = 100.0
 @export var rotation_acceleration = 100.0
-@export var steering_wheel: Sprite2D
+@export var steering_wheel: TextureRect
 @export var cooldown = 1.0
 @export var cannonball_scene: PackedScene
 @export var splash_scene: PackedScene
 @export var hit_scene: PackedScene
 @export var deceleration_factor = 100
-@export var charge_time_left = 1.0
-@export var charge_time_right = 1.0
+@export var swipe_sensitivity: float = 1.0  # Adjust for more sensitivity
 
-# NEW: Swipe sensitivity – higher values mean a small swipe rotates the ship more.
-@export var swipe_sensitivity: float = 0.2
+# Health mechanic
+@export var health: int = 100
+
+# --- Steering simulation variables ---
+# Current steering offset (in degrees)
+var steering_angle: float = 0.0         
+# Angular velocity (deg/s) of the steering input
+var steering_velocity: float = 0.0        
+@export var steering_spring_constant: float = 10.0  # Higher pulls back faster
+@export var steering_damping: float = 3.0           # Damping of momentum
+@export var steering_to_rotation_factor: float = 1.0  # Influence on ship rotation
+# Multiplier for the visual rotation of the steering wheel
+@export var steering_wheel_multiplier: float = 3.0  
+
+# Flag set by _input() when a swipe is detected.
+var swipe_input_active: bool = false
 
 var current_frame = 0
 var sprite: Sprite2D = null
@@ -49,15 +60,11 @@ var bot_input = {
 	"shoot_left": false,
 	"shoot_right": false
 }
-const ANGLE_TOLERANCE = 1.0  # Degrees
-const DISTANCE_TOLERANCE = 1.0  # Distance units
+const ANGLE_TOLERANCE = 1.0   # degrees
+const DISTANCE_TOLERANCE = 1.0   # distance units
 
-# Preload the Pixel scene
-
-# Store references to pixel instances
+# Trail variables
 var pixel_trail = []
-
-# Time interval for dropping pixels
 var trail_interval = 0.05
 var time_since_last_trail = 0.0
 
@@ -70,41 +77,29 @@ func _ready():
 	start()
 	sprite = $ShipSprite
 	collision_shape = $ShipHitbox
-
 	$ShipCamera.make_current()
+	$CanvasLayer/CannonLeft.connect("pressed", Callable(self, "_on_CannonLeft_pressed"))
+	$CanvasLayer/CannonRight.connect("pressed", Callable(self, "_on_CannonRight_pressed"))
+	connect("area_entered", Callable(self, "_on_area_entered"))
 
 func _process(delta):
 	if sprite:
 		handle_input(delta)
 		update_movement(delta)
-
 		var new_position = global_position + velocity * delta
-
 		if not is_colliding_with_land(new_position):
 			global_position = new_position
 			emit_signal("position_updated", global_position)
-
+		
 		if is_bot_controlled:
 			if target_angle >= 0:
 				rotate_to_target_angle(delta)
 			else:
 				move_to_target(delta)
-
-		if not rotating_right and not rotating_left:
-			apply_rotation_deceleration(delta)
-
-		if rotating_right:
-			rotate_right(delta)
-		elif rotating_left:
-			rotate_left(delta)
-
-		if steering_wheel:
-			steering_wheel.rotation_degrees = current_frame * ANGLE_PER_FRAME * 3
-
-		# Update the time since the last trail pixel was created
+		else:
+			update_swipe_steering(delta)
+		
 		time_since_last_trail += delta
-
-		# Check if it's time to create a new trail pixel
 		if time_since_last_trail >= trail_interval:
 			time_since_last_trail = 0.0
 
@@ -112,11 +107,8 @@ func get_collision_shape_corner():
 	if collision_shape and collision_shape.shape is RectangleShape2D:
 		var rect_shape = collision_shape.shape
 		var extents = rect_shape.extents
-		# Bottom-left corner example, adjust as needed
 		var corner_local_pos = Vector2(extents.x, -extents.y)
-		# Calculate the global position based on the player's rotation
-		var rotation = global_rotation
-		var corner_global_pos = global_position + corner_local_pos.rotated(rotation)
+		var corner_global_pos = global_position + corner_local_pos.rotated(global_rotation)
 		return corner_global_pos
 	return global_position
 
@@ -125,9 +117,46 @@ func update_frame():
 		sprite.frame = (int(current_frame) + int(float(NUM_FRAMES) / 2)) % NUM_FRAMES
 	if collision_shape:
 		collision_shape.rotation_degrees = current_frame * ANGLE_PER_FRAME
-	# Update trail sprite rotation to match boat's facing direction
 	if trail_sprite:
 		trail_sprite.rotation_degrees = current_frame * ANGLE_PER_FRAME
+
+# --- Updated Steering Simulation Function ---
+func update_swipe_steering(delta):
+	# Determine whether manual input is active (keyboard or a recent swipe)
+	var manual_input_active = Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_left") or swipe_input_active
+	var old_angle = steering_angle
+	# Always integrate the spring–damper simulation:
+	var steering_acceleration = -steering_spring_constant * steering_angle - steering_damping * steering_velocity
+	steering_velocity += steering_acceleration * delta
+	steering_angle += steering_velocity * delta
+	
+	# If no manual input is active, prevent overshooting past zero:
+	if not manual_input_active:
+		if (old_angle > 0 and steering_angle < 0) or (old_angle < 0 and steering_angle > 0):
+			steering_angle = 0
+			steering_velocity = 0
+	
+	# Reset the swipe flag after processing.
+	swipe_input_active = false
+	
+	# Update ship rotation based on the steering input.
+	current_frame += steering_angle * steering_to_rotation_factor * delta
+	current_frame = fmod(current_frame, NUM_FRAMES)
+	if current_frame < 0:
+		current_frame += NUM_FRAMES
+	update_frame()
+	
+	# The steering wheel’s visual rotation reflects only the steering input.
+	if steering_wheel:
+		steering_wheel.rotation_degrees = steering_angle * steering_wheel_multiplier
+
+func _input(event):
+	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+		var dx = event.relative.x
+		if dx != 0:
+			# Increase steering velocity based on swipe movement.
+			steering_velocity += dx * swipe_sensitivity
+			swipe_input_active = true
 
 func rotate_right(delta):
 	current_rotation_speed = min(current_rotation_speed + rotation_acceleration * delta, max_rotation_speed)
@@ -169,7 +198,6 @@ func update_movement(delta):
 		current_speed = lerp(current_speed, target_speed, acceleration_factor * delta)
 	else:
 		current_speed *= damping_factor
-
 	var direction = calculate_direction()
 	velocity = direction * current_speed
 
@@ -184,10 +212,7 @@ func shoot_left():
 	$GunCooldown.start()
 	var ship_direction = calculate_direction()
 	var left_direction = Vector2(ship_direction.y, -ship_direction.x)
-
-	var distance_factor = charge_time_left / MAX_CHARGE_TIME
-	var cannonball_distance = (BASE_CANNONBALL_DISTANCE * distance_factor) + 50
-
+	var cannonball_distance = (BASE_CANNONBALL_DISTANCE * 1.0) + 50
 	for i in range(5):
 		var c = cannonball_scene.instantiate()
 		c.splash_scene = splash_scene
@@ -204,10 +229,7 @@ func shoot_right():
 	$GunCooldown.start()
 	var ship_direction = calculate_direction()
 	var right_direction = Vector2(-ship_direction.y, ship_direction.x)
-
-	var distance_factor = charge_time_right / MAX_CHARGE_TIME
-	var cannonball_distance = (BASE_CANNONBALL_DISTANCE * distance_factor) + 50
-
+	var cannonball_distance = (BASE_CANNONBALL_DISTANCE * 1.0) + 50
 	for i in range(5):
 		var c = cannonball_scene.instantiate()
 		c.splash_scene = splash_scene
@@ -231,13 +253,11 @@ func is_colliding_with_land(new_position):
 	query.position = new_position
 	query.collide_with_bodies = true
 	query.collide_with_areas = false
-
 	var result = space_state.intersect_point(query)
 	for collision in result:
 		if collision.collider is StaticBody2D:
 			return true
 	return false
-
 
 func handle_input(delta):
 	if is_bot_controlled:
@@ -264,32 +284,24 @@ func handle_bot_input(_delta):
 		shoot_right()
 
 func handle_player_input(delta):
+	var key_impulse = 0.0
 	if Input.is_action_pressed("ui_right"):
+		key_impulse += 1.0
 		emit_signal("manual_rotation_started")
-		rotating_right = true
-		rotating_left = false
-	elif Input.is_action_pressed("ui_left"):
+	if Input.is_action_pressed("ui_left"):
+		key_impulse -= 1.0
 		emit_signal("manual_rotation_started")
-		rotating_right = false
-		rotating_left = true
-	else:
-		rotating_right = false
-		rotating_left = false
-
+	if key_impulse != 0:
+		var impulse_multiplier = 50.0
+		steering_velocity += key_impulse * impulse_multiplier * delta
+	
 	if Input.is_action_just_pressed("ui_select"):
 		toggle_forward_movement()
-
-	if Input.is_action_pressed("shoot_left"):
-		charge_time_left = min(charge_time_left + delta, MAX_CHARGE_TIME)
-	elif Input.is_action_just_released("shoot_left"):
+	
+	if Input.is_action_just_pressed("shoot_left"):
 		shoot_left()
-		charge_time_left = 0.0
-
-	if Input.is_action_pressed("shoot_right"):
-		charge_time_right = min(charge_time_right + delta, MAX_CHARGE_TIME)
-	elif Input.is_action_just_released("shoot_right"):
+	if Input.is_action_just_pressed("shoot_right"):
 		shoot_right()
-		charge_time_right = 0.0
 
 func reset_bot_input():
 	bot_input["rotate_right"] = false
@@ -307,64 +319,44 @@ func drive_to_target_position(target_pos):
 var stuck_timer = 0.0
 var last_distance = INF
 
-const STUCK_TIME_LIMIT = 2.0  # seconds
-const SNAP_DISTANCE = 10.0    # how close it must be before we allow a forced snap
+const STUCK_TIME_LIMIT = 2.0
+const SNAP_DISTANCE = 10.0
 
 func move_to_target(delta):
 	var direction_to_target = (target_position - global_position).normalized()
 	var angle_to_target = direction_to_target.angle()
-
-	# Make sure we use the same angle logic as calculate_direction()
 	var current_angle = deg_to_rad(current_frame * ANGLE_PER_FRAME)
 	var angle_diff = wrapf(angle_to_target - current_angle, -PI, PI)
 	var angle_diff_degrees = abs(rad_to_deg(angle_diff))
-
-	# --- ROTATION LOGIC (same as your existing approach) ---
 	if angle_diff_degrees > ANGLE_TOLERANCE:
 		var rotation_speed_adjusted = rotation_speed * delta
 		if angle_diff_degrees < ANGLE_TOLERANCE * 5:
-			rotation_speed_adjusted *= 0.5  # optional slow-down near final angle
-
+			rotation_speed_adjusted *= 0.5
 		if angle_diff > 0:
 			current_frame += rotation_speed_adjusted
 		else:
 			current_frame -= rotation_speed_adjusted
-
 		current_frame = fmod(current_frame, NUM_FRAMES)
 		if current_frame < 0:
 			current_frame += NUM_FRAMES
-
 		update_frame()
-
-	# --- TRANSLATION LOGIC ---
 	var distance_to_target = global_position.distance_to(target_position)
-	
-	# Check if we're still too far
 	if distance_to_target > DISTANCE_TOLERANCE:
-		# Increase stuck timer if not making progress
 		if distance_to_target > last_distance - 0.01:
 			stuck_timer += delta
 		else:
-			stuck_timer = 0.0  # We got closer, so reset stuck timer
-
-		# Accelerate up to some speed
+			stuck_timer = 0.0
 		if current_speed < target_speed * 0.5:
 			current_speed = target_speed * 0.5
 		else:
 			current_speed = lerp(current_speed, target_speed, acceleration_factor * delta)
-
 		var direction = calculate_direction()
 		velocity = direction * current_speed
 		global_position += velocity * delta
-
-		# If we're close enough AND stuck too long, forcibly snap
 		if distance_to_target < SNAP_DISTANCE and stuck_timer > STUCK_TIME_LIMIT:
 			_force_snap_to_target()
 	else:
-		# Normal successful snap
 		_force_snap_to_target()
-
-	# Update last_distance for next frame
 	last_distance = distance_to_target
 
 func _force_snap_to_target():
@@ -375,48 +367,31 @@ func _force_snap_to_target():
 	stuck_timer = 0.0
 	last_distance = 0.0
 	emit_signal("player_docked")
-
-	# Now handle final rotation if needed
 	_choose_final_dock_angle()
 
-# Helper: Returns the signed minimal difference (in degrees) between two angles.
 func signed_angle_difference(deg1: float, deg2: float) -> float:
 	var diff = deg1 - deg2
 	diff = fposmod(diff + 180, 360) - 180
 	return diff
 
-# Helper: Normalize an angle to [0, 360)
 func normalize_angle(deg: float) -> float:
-	var a = fposmod(deg, 360)
-	return a
+	return fposmod(deg, 360)
 
-# When docking, choose the final angle based on the ship’s current facing.
 func _choose_final_dock_angle():
-	# Compute the current ship angle in degrees.
 	var current_angle_deg = normalize_angle(current_frame * ANGLE_PER_FRAME)
 	print("DEBUG: _choose_final_dock_angle -> current_frame:", current_frame, "=> current_angle_deg:", current_angle_deg)
-	
-	# Compare differences to candidate angles.
 	var diff_east = abs(signed_angle_difference(0, current_angle_deg))
 	var diff_west = abs(signed_angle_difference(180, current_angle_deg))
 	print("DEBUG: _choose_final_dock_angle -> diff_east (0°):", diff_east, "diff_west (180°):", diff_west)
-	
-	# Choose the candidate closest to the current facing.
 	target_angle = 0 if diff_east < diff_west else 180
 	print("DEBUG: _choose_final_dock_angle -> chosen target_angle:", target_angle)
-	# (Let _process() drive the gradual rotation.)
 
-# Rotate the ship gradually toward target_angle.
 func rotate_to_target_angle(delta):
 	var current_angle_deg = normalize_angle(current_frame * ANGLE_PER_FRAME)
 	var target_angle_norm = normalize_angle(target_angle)
-	
 	var diff = signed_angle_difference(target_angle_norm, current_angle_deg)
 	print("DEBUG: rotate_to_target_angle -> current_angle_deg:", current_angle_deg, "target_angle_norm:", target_angle_norm, "diff:", diff)
-	
 	var rotation_step = rotation_speed * delta
-	
-	# If the difference is smaller than what we’d rotate this frame, snap to target.
 	if abs(diff) <= rotation_step:
 		current_frame = target_angle_norm / ANGLE_PER_FRAME
 		update_frame()
@@ -424,36 +399,41 @@ func rotate_to_target_angle(delta):
 		target_angle = -1.0
 		print("DEBUG: rotate_to_target_angle -> snapping to target angle.")
 		return
-
-	# Optionally slow rotation when very close.
 	if abs(diff) < ANGLE_TOLERANCE * 5:
 		rotation_step *= 0.5
-
-	# Rotate in the proper direction.
 	if diff > 0:
 		current_frame += rotation_step / ANGLE_PER_FRAME
 	else:
 		current_frame -= rotation_step / ANGLE_PER_FRAME
-
 	current_frame = fmod(current_frame, NUM_FRAMES)
 	if current_frame < 0:
 		current_frame += NUM_FRAMES
 	update_frame()
-	
-	print("DEBUG: rotate_to_target_angle -> updated current_frame:", current_frame, 
-		  "=> new current_angle_deg:", normalize_angle(current_frame * ANGLE_PER_FRAME))
+	print("DEBUG: rotate_to_target_angle -> updated current_frame:", current_frame, "=> new current_angle_deg:", normalize_angle(current_frame * ANGLE_PER_FRAME))
 
-# --- NEW: Mouse swipe input handling ---
-func _input(event):
-	# Check for mouse motion while the left mouse button is held down.
-	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		# Use the horizontal motion (event.relative.x) to adjust the rotation.
-		var dx = event.relative.x
-		if dx != 0:
-			# Multiply by swipe_sensitivity so that even small swipes rotate the ship noticeably.
-			var rotation_change = dx * swipe_sensitivity
-			current_frame += rotation_change / ANGLE_PER_FRAME
-			current_frame = fmod(current_frame, NUM_FRAMES)
-			if current_frame < 0:
-				current_frame += NUM_FRAMES
-			update_frame()
+func _input_event(viewport, event, shape_idx):
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+		print("Ship clicked!")
+		toggle_forward_movement()
+
+func _on_CannonLeft_pressed():
+	shoot_left()
+
+func _on_CannonRight_pressed():
+	shoot_right()
+
+func _on_area_entered(area: Area2D) -> void:
+	if area.is_in_group("cannonball"):
+		var dmg = 10
+		if area.has("damage"):
+			dmg = area.damage
+		take_damage(dmg)
+		area.queue_free()
+		print("Player hit! Damage:", dmg, "New Health:", health)
+
+func take_damage(amount: int) -> void:
+	health -= amount
+	print("Player took", amount, "damage. Health now:", health)
+	if health <= 0:
+		print("Player has died.")
+		queue_free()
