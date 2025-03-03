@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://cwlpgtbhderfk"]
+[gd_scene load_steps=18 format=3 uid="uid://cwlpgtbhderfk"]
 
 [ext_resource type="Script" path="res://CharacterCreation/character_creator.gd" id="1_njf4n"]
 [ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://SaveMenu/assets/saveslotmenubackground.png" id="1_yjhog"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://bhrqe0xbobwf5" path="res://CharacterCreation/category_buttons.tscn" id="8_whkqo"]
 [ext_resource type="PackedScene" uid="uid://c57wj6nmw2lgl" path="res://CharacterCreation/slider.tscn" id="10_1njpe"]
 [ext_resource type="PackedScene" uid="uid://cfd3bm3d7gr3t" path="res://Character/character.tscn" id="11_4qdb2"]
+[ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character2/Player/Player.tscn" id="12_1gfj4"]
 [ext_resource type="Script" path="res://CharacterCreation/CharacterNameArea.gd" id="12_7i56c"]
 [ext_resource type="Texture2D" uid="uid://s5jx1ajy7ojo" path="res://CharacterCreation/assets/entername.png" id="12_giet6"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="17_3vrev"]
@@ -68,8 +69,14 @@ position = Vector2(-15, -47)
 position = Vector2(146, -41)
 
 [node name="Character" parent="." instance=ExtResource("11_4qdb2")]
+visible = false
 position = Vector2(-93, 42)
 scale = Vector2(4, 4)
+
+[node name="Player" parent="." instance=ExtResource("12_1gfj4")]
+position = Vector2(-93, 42)
+scale = Vector2(4, 4)
+customization_only = true
 
 [node name="CharacterNameArea" type="Node2D" parent="."]
 script = ExtResource("12_7i56c")

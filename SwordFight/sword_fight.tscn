@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cadok2distotv"]
+[gd_scene load_steps=12 format=3 uid="uid://cadok2distotv"]
 
 [ext_resource type="Script" path="res://SwordFight/swordfight.gd" id="1_ftuw3"]
 [ext_resource type="Script" path="res://SwordFight/sword_trail.gd" id="4_0ph4i"]
@@ -6,7 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://buqpxsdew0uhc" path="res://SwordFight/playerhealthbar.png" id="6_5x6yg"]
 [ext_resource type="PackedScene" uid="uid://dqnox1fpo26y" path="res://SwordFight/Projectile.tscn" id="6_u8dfi"]
 [ext_resource type="Texture2D" uid="uid://djnwe1i5fvmge" path="res://SwordFight/enemyhealthbar.png" id="7_7axcv"]
+[ext_resource type="PackedScene" uid="uid://dlh32l6ht3jiy" path="res://Character/Player/player.tscn" id="8_em1rf"]
 [ext_resource type="PackedScene" uid="uid://dyhw0haqd1jup" path="res://SwordFight/feint_projectile.tscn" id="8_q4u7y"]
+[ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="9_2v30o"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2eamg"]
 atlas = ExtResource("6_5x6yg")
@@ -80,3 +82,9 @@ offset_right = -239.0
 offset_bottom = -134.0
 mouse_filter = 2
 color = Color(0.107576, 0.392569, 0.248209, 1)
+
+[node name="Player" parent="." instance=ExtResource("8_em1rf")]
+position = Vector2(262, 146)
+
+[node name="Enemy" parent="." instance=ExtResource("9_2v30o")]
+position = Vector2(218, 145)

@@ -1,1 +1,2 @@
+CharacterCustomizationResource
 JSON

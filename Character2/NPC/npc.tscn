@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://ffn8w5p8euu4"]
+
+[ext_resource type="PackedScene" uid="uid://cup2getx61mv4" path="res://Character2/Character.tscn" id="1_3oo2f"]
+[ext_resource type="Script" path="res://Character2/NPC/NPC.gd" id="2_a5s4y"]
+[ext_resource type="Material" uid="uid://cuyioujxk4e8s" path="res://Character2/Player/UVLookupMaterial.tres" id="2_i1xkx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dtxe3"]
+size = Vector2(17, 22)
+
+[node name="NPC" instance=ExtResource("1_3oo2f")]
+script = ExtResource("2_a5s4y")
+
+[node name="Appearance" parent="." index="0"]
+material = ExtResource("2_i1xkx")
+
+[node name="Area2D" type="Area2D" parent="." index="3"]
+position = Vector2(0, -10)
+
+[node name="SelectHitbox" type="CollisionShape2D" parent="Area2D" index="0"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_dtxe3")
+
+[connection signal="input_event" from="Area2D" to="Area2D" method="_on_input_event"]

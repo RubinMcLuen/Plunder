@@ -62,32 +62,46 @@ var camera_moved: bool = false
 var original_cam_position: Vector2
 var original_cam_zoom: Vector2
 
+# Flag for standalone mode (when Player and Enemy are direct children of this scene)
+var standalone_mode: bool = false
+
 # ---------------------- LIFECYCLE ----------------------
 func _ready() -> void:
 	# Make our scene camera current.
 	camera.make_current()
 	set_process(true)
 
-	# Get Player and Enemy references.
-	enemy = get_parent() as CharacterBody2D
-	player = get_tree().current_scene.get_node("Player") as CharacterBody2D
+	# Determine if this scene is in standalone mode by checking for direct children "Player" and "Enemy".
+	if has_node("Player") and has_node("Enemy"):
+		standalone_mode = true
+		player = $Player as CharacterBody2D
+		enemy = $Enemy as CharacterBody2D
+	else:
+		standalone_mode = false
+		# Fallback: get player from the current scene and enemy from parent.
+		player = get_tree().current_scene.get_node("Player") as CharacterBody2D
+		enemy = get_parent() as CharacterBody2D
+
+	# Ensure both nodes exist.
+	if not player or not enemy:
+		push_error("Player or Enemy not found in the scene. Ensure they exist as children (named 'Player' and 'Enemy') or are set in the current scene.")
+		return
 
 	# If enemy.player_direction is true, swap the textures on the health bars.
-	if enemy and enemy.player_direction:
+	if enemy.player_direction:
 		var temp_texture = left_health.texture
 		left_health.texture = right_health.texture
 		right_health.texture = temp_texture
 
 	# Connect signals from player/enemy if they exist.
-	if player and enemy:
-		player.connect("auto_move_completed", Callable(self, "_on_player_auto_move_completed"))
-		player.connect("end_fight", Callable(self, "_on_end_fight"))
-		enemy.connect("end_fight", Callable(self, "_on_enemy_end_fight"))
-		player.fighting = true
-		enemy.set_idle_with_sword_mode(true)
+	player.connect("auto_move_completed", Callable(self, "_on_player_auto_move_completed"))
+	player.connect("end_fight", Callable(self, "_on_end_fight"))
+	enemy.connect("end_fight", Callable(self, "_on_enemy_end_fight"))
+	player.fighting = true
+	enemy.set_idle_with_sword_mode(true)
 
-		# Automatically move the player toward the enemy before the fight starts.
-		_move_player_to_enemy()
+	# Automatically move the player toward the enemy before the fight starts.
+	_move_player_to_enemy()
 
 	# Create a Timer node for spawning projectiles.
 	spawn_timer = Timer.new()
@@ -177,30 +191,35 @@ func _on_enemy_end_fight() -> void:
 
 # ---------------------- CAMERA TRANSITION (STARTUP) ----------------------
 func _animate_camera_transition() -> void:
-	# Get the player's Camera2D (assumed to be a child node named "Camera2D").
-	var player_cam: Camera2D = player.get_node("Camera2D")
-	# Use the player's camera global_position so we have the correct coordinates.
-	original_cam_position = player_cam.global_position
-	original_cam_zoom = player_cam.zoom
+	if standalone_mode:
+		# Use the scene's camera settings directly.
+		original_cam_position = camera.global_position
+		original_cam_zoom = camera.zoom
 
-	# Set this scene's camera to exactly match the player's camera.
-	camera.global_position = original_cam_position
-	camera.zoom = original_cam_zoom
+		var target_global_pos = self.to_global(Vector2(240, 135))
+		var tween_slide = create_tween()
+		tween_slide.tween_property(camera, "global_position", target_global_pos, 0.5) \
+			.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+		tween_slide.tween_callback(Callable(self, "_on_slide_complete"))
+	else:
+		# Original behavior: use the player's Camera2D.
+		var player_cam: Camera2D = player.get_node("Camera2D")
+		original_cam_position = player_cam.global_position
+		original_cam_zoom = player_cam.zoom
+		camera.global_position = original_cam_position
+		camera.zoom = original_cam_zoom
 
-	# --- STEP 1: Slide the camera to the target position.
-	# Since the target (240,135) is relative to this scene,
-	# convert it to global coordinates.
-	var target_global_pos = self.to_global(Vector2(240, 135))
-	var tween_slide = create_tween()
-	tween_slide.tween_property(camera, "global_position", target_global_pos, 0.5) \
-		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	tween_slide.tween_callback(Callable(self, "_on_slide_complete"))
+		var target_global_pos = self.to_global(Vector2(240, 135))
+		var tween_slide = create_tween()
+		tween_slide.tween_property(camera, "global_position", target_global_pos, 0.5) \
+			.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+		tween_slide.tween_callback(Callable(self, "_on_slide_complete"))
 
 
 func _on_slide_complete() -> void:
-	# --- STEP 2: Zoom the camera to the target zoom.
+	# Zoom the camera to the target zoom.
 	var tween_zoom = create_tween()
-	tween_zoom.tween_property(camera, "zoom", Vector2(3, 3), 1.0) \
+	tween_zoom.tween_property(camera, "zoom", Vector2(4, 4), 1.0) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 	tween_zoom.tween_callback(Callable(self, "_on_camera_transition_complete"))
 
@@ -212,9 +231,10 @@ func _on_camera_transition_complete() -> void:
 	if player_moved:
 		_start_battle()
 
+
 # ---------------------- CAMERA TRANSITION (FIGHT END) ----------------------
 func _start_camera_zoom_out() -> void:
-	# When the fight is over, first zoom back to the player's camera zoom.
+	# When the fight is over, first zoom back to the original zoom.
 	var tween_zoom_back = create_tween()
 	tween_zoom_back.tween_property(camera, "zoom", original_cam_zoom, 1.0) \
 		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
@@ -222,13 +242,19 @@ func _start_camera_zoom_out() -> void:
 
 
 func _on_zoom_out_complete() -> void:
-	# Then slide the camera back to the player's current camera global position.
-	var player_cam: Camera2D = player.get_node("Camera2D")
-	var target_position: Vector2 = player_cam.global_position
-	var tween_slide_back = create_tween()
-	tween_slide_back.tween_property(camera, "global_position", target_position, 0.3) \
-		.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
-	tween_slide_back.tween_callback(Callable(self, "_on_end_fight_complete"))
+	if standalone_mode:
+		var target_position: Vector2 = player.global_position
+		var tween_slide_back = create_tween()
+		tween_slide_back.tween_property(camera, "global_position", target_position, 0.3) \
+			.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+		tween_slide_back.tween_callback(Callable(self, "_on_end_fight_complete"))
+	else:
+		var player_cam: Camera2D = player.get_node("Camera2D")
+		var target_position: Vector2 = player_cam.global_position
+		var tween_slide_back = create_tween()
+		tween_slide_back.tween_property(camera, "global_position", target_position, 0.3) \
+			.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+		tween_slide_back.tween_callback(Callable(self, "_on_end_fight_complete"))
 
 
 func _on_end_fight_complete() -> void:

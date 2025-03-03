@@ -1,3 +1,6 @@
+CollisionShape2D
+AnimatedSprite2D
+CharacterBody2D
 TextureButton
 TextureRect
 CanvasLayer
@@ -5,10 +8,7 @@ Control
 Sprite2D
 NPC
 CollisionPolygon2D
-CollisionShape2D
 StaticBody2D
 Node2D
 ColorRect
-AnimatedSprite2D
 AnimationPlayer
-RichTextLabel
