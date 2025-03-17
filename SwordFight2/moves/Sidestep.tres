@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Move" load_steps=2 format=3 uid="uid://cmsnak1dltk2g"]
+
+[ext_resource type="Script" path="res://SwordFight2/Move.gd" id="1_17fwq"]
+
+[resource]
+script = ExtResource("1_17fwq")
+move_name = "Sidestep"
+move_type = "Defensive"
+base_power = 0
+accuracy = 0.8
+stamina_cost = 0
+special_effect = "sidestep"

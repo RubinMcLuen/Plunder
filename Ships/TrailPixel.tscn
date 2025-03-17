@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cnwtof1h1lle2"]
+
+[ext_resource type="Script" path="res://Ships/TrailPixel.gd" id="1_mtnil"]
+
+[node name="TrailPixel" type="Node2D"]
+script = ExtResource("1_mtnil")
+fade_time = 0.1

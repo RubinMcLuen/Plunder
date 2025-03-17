@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CharacterStats" load_steps=3 format=3 uid="uid://d2rq3mkjkxu7f"]
+
+[ext_resource type="Resource" uid="uid://3n1p1wl2ev4s" path="res://SwordFight2/moves/Slash.tres" id="1_btv8b"]
+[ext_resource type="Script" path="res://SwordFight2/CharacterStats.gd" id="1_cxfno"]
+
+[resource]
+script = ExtResource("1_cxfno")
+character_name = "Enemy"
+level = 1
+max_hp = 50
+current_hp = 50
+strength = 10
+speed = 10
+defense = 10
+max_stamina = 20
+stamina = 20
+moves = Array[Resource("res://SwordFight2/Move.gd")]([ExtResource("1_btv8b")])

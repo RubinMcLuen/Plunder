@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Move" load_steps=2 format=3 uid="uid://chhhjesq35afv"]
+
+[ext_resource type="Script" path="res://SwordFight2/Move.gd" id="1_2j33q"]
+
+[resource]
+script = ExtResource("1_2j33q")
+move_name = "Riposte"
+move_type = "Defensive"
+base_power = 2
+accuracy = 0.9
+stamina_cost = 2
+special_effect = "riposte"

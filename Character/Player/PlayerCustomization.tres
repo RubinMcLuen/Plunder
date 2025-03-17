@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CharacterCustomizationResource" load_steps=3 format=3 uid="uid://dsbh3rvy63tr2"]
+
+[ext_resource type="Script" path="res://Character/Player/CharacterCustomizationResource.gd" id="1_sh26a"]
+[ext_resource type="Texture2D" uid="uid://beyw5lt2cbrue" path="res://Character/assets/PlayerCustomizationSprites.png" id="2_ynvat"]
+
+[resource]
+script = ExtResource("1_sh26a")
+sprite_atlas = ExtResource("2_ynvat")
+skin_option = 0
+top_option = 0
+bottom_option = 0
+hat_option = 0
+facial_hair_option = 0
+hair_option = 0
+misc_eyepatch = false
+misc_hook = false
+misc_peg_leg = false
+lookup_size = Vector2i(48, 48)

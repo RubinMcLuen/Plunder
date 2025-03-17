@@ -1,2 +1,3 @@
+CharacterStats
 CharacterCustomizationResource
 JSON

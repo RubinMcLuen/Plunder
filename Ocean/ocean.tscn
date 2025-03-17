@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://kbt3hu1lmvfj"]
+[gd_scene load_steps=10 format=3 uid="uid://kbt3hu1lmvfj"]
 
 [ext_resource type="Script" path="res://Ocean/Ocean.gd" id="1_kxoef"]
 [ext_resource type="Texture2D" uid="uid://fxlwkiykamae" path="res://Ocean/frame_0100-sheet.png" id="1_xs5hd"]
@@ -6,10 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://0ab5frbt0cuk" path="res://Ships/PlayerShip.tscn" id="3_qc67i"]
 [ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/playerisland.png" id="5_3mcoo"]
 [ext_resource type="Texture2D" uid="uid://bbecueeouc3gh" path="res://Ships/detailedboat.png" id="6_fpc3e"]
-[ext_resource type="PackedScene" uid="uid://cnxn3imjbuqru" path="res://Ships/EnemyShip.tscn" id="7_0yto6"]
-[ext_resource type="PackedScene" uid="uid://cepi4n24b2mso" path="res://Ships/cannonball.tscn" id="8_0lioj"]
-[ext_resource type="PackedScene" uid="uid://c67ausqpgncj3" path="res://Ships/splash.tscn" id="9_xdley"]
-[ext_resource type="PackedScene" uid="uid://cn0j5qsgevekp" path="res://Ships/hit.tscn" id="10_y4x18"]
+[ext_resource type="PackedScene" uid="uid://b1v75pr8ihha3" path="res://Ocean/Rock/rock.tscn" id="7_twmxx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8clfk"]
 texture = ExtResource("1_xs5hd")
@@ -303,11 +300,6 @@ texture = ExtResource("5_3mcoo")
 position = Vector2(-239.5, 2125)
 texture = ExtResource("6_fpc3e")
 
-[node name="EnemyShip" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_0yto6")]
-position = Vector2(353, 396)
-player = NodePath("../PlayerShip")
-cannonball_scene = ExtResource("8_0lioj")
-splash_scene = ExtResource("9_xdley")
-hit_scene = ExtResource("10_y4x18")
-health = 40
-show_debug = false
+[node name="Rock" parent="." instance=ExtResource("7_twmxx")]
+visible = false
+position = Vector2(1, 95)

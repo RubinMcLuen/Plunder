@@ -1,8 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://cnxn3imjbuqru"]
+[gd_scene load_steps=8 format=3 uid="uid://cnxn3imjbuqru"]
 
 [ext_resource type="Script" path="res://Ships/EnemyShip.gd" id="1_j5nyo"]
 [ext_resource type="PackedScene" uid="uid://bv47a7gnpila8" path="res://Ships/Trail.tscn" id="2_86ndw"]
+[ext_resource type="PackedScene" uid="uid://cepi4n24b2mso" path="res://Ships/cannonball.tscn" id="2_ii1n5"]
 [ext_resource type="Texture2D" uid="uid://bqbc76dxaqw1y" path="res://Ships/boat_sprite.png" id="2_io26m"]
+[ext_resource type="PackedScene" uid="uid://cx2ap46ajhblu" path="res://Ships/splash.tscn" id="3_unqm3"]
+[ext_resource type="PackedScene" uid="uid://cn0j5qsgevekp" path="res://Ships/hit.tscn" id="4_uviaf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4rmrt"]
 size = Vector2(30, 16)
@@ -10,6 +13,9 @@ size = Vector2(30, 16)
 [node name="EnemyShip" type="Area2D"]
 collision_mask = 2
 script = ExtResource("1_j5nyo")
+cannonball_scene = ExtResource("2_ii1n5")
+splash_scene = ExtResource("3_unqm3")
+hit_scene = ExtResource("4_uviaf")
 
 [node name="Trail" parent="." instance=ExtResource("2_86ndw")]
 z_index = -1

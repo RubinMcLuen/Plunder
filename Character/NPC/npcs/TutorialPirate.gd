@@ -30,11 +30,11 @@ func _on_area_input_event(_viewport, event, _shape_idx) -> void:
 		player.disable_user_input = false
 		
 		# After the tutorial, start the sword fight.
-		var sword_fight_scene = load("res://SwordFight/sword_fight.tscn")
+		var sword_fight_scene = load("res://SwordFight2/SwordFight.tscn")
 		if sword_fight_scene:
 			var sword_fight_instance = sword_fight_scene.instantiate()
 			var offset = Vector2(-258.5, -146.5)
-			if player_direction:
+			if fight_side_right:
 				offset.x += 36
 			sword_fight_instance.position += offset
 			self.add_child(sword_fight_instance)

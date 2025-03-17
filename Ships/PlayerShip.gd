@@ -1,11 +1,14 @@
 extends Area2D
 
 @onready var trail_sprite: Sprite2D = $Trail/SubViewport/Circle
+@onready var cannon_shot_sound: AudioStreamPlayer2D = $CannonShotSound  # Cannon shot sound effect
+@onready var splash_sound_fx: AudioStreamPlayer = $SplashSound         # Splash sound effect
+@onready var hit_sound_fx: AudioStreamPlayer = $HitSound               # Hit sound effect
 
 const NUM_FRAMES = 360
 const ANGLE_PER_FRAME = 360.0 / NUM_FRAMES
 const BASE_CANNONBALL_SPEED = 30
-const BASE_CANNONBALL_DISTANCE = 80
+const BASE_CANNONBALL_DISTANCE = 40
 
 const MOUSE_BUTTON_LEFT = 1
 
@@ -19,6 +22,7 @@ const MOUSE_BUTTON_LEFT = 1
 @export var cannonball_scene: PackedScene
 @export var splash_scene: PackedScene
 @export var hit_scene: PackedScene
+@export var cannon_smoke_scene: PackedScene
 @export var deceleration_factor = 100
 @export var swipe_sensitivity: float = 1.0  # Adjust for more sensitivity
 
@@ -26,24 +30,20 @@ const MOUSE_BUTTON_LEFT = 1
 @export var health: int = 100
 
 # --- Steering simulation variables ---
-# Current steering offset (in degrees)
 var steering_angle: float = 0.0         
-# Angular velocity (deg/s) of the steering input
 var steering_velocity: float = 0.0        
-@export var steering_spring_constant: float = 10.0  # Higher pulls back faster
-@export var steering_damping: float = 3.0           # Damping of momentum
-@export var steering_to_rotation_factor: float = 1.0  # Influence on ship rotation
-# Multiplier for the visual rotation of the steering wheel
+@export var steering_spring_constant: float = 10.0  
+@export var steering_damping: float = 3.0           
+@export var steering_to_rotation_factor: float = 1.0  
 @export var steering_wheel_multiplier: float = 3.0  
 
-# Flag set by _input() when a swipe is detected.
 var swipe_input_active: bool = false
 
 var current_frame = 0
 var sprite: Sprite2D = null
 var collision_shape: CollisionShape2D = null
 var velocity = Vector2.ZERO
-var target_speed = 40.0
+var target_speed = 60.0
 var current_speed = 0.0
 var moving_forward = false
 var current_rotation_speed = 0.0
@@ -60,13 +60,17 @@ var bot_input = {
 	"shoot_left": false,
 	"shoot_right": false
 }
-const ANGLE_TOLERANCE = 1.0   # degrees
-const DISTANCE_TOLERANCE = 1.0   # distance units
+const ANGLE_TOLERANCE = 1.0   
+const DISTANCE_TOLERANCE = 1.0   
 
 # Trail variables
 var pixel_trail = []
 var trail_interval = 0.05
 var time_since_last_trail = 0.0
+
+# Variables for controlling sound effects per volley
+var shot_splash_played = false
+var shot_hit_played = false
 
 signal position_updated(new_position: Vector2)
 signal movement_started()
@@ -74,7 +78,6 @@ signal player_docked()
 signal manual_rotation_started()
 
 func _ready():
-	start()
 	sprite = $ShipSprite
 	collision_shape = $ShipHitbox
 	$ShipCamera.make_current()
@@ -122,31 +125,25 @@ func update_frame():
 
 # --- Updated Steering Simulation Function ---
 func update_swipe_steering(delta):
-	# Determine whether manual input is active (keyboard or a recent swipe)
 	var manual_input_active = Input.is_action_pressed("ui_right") or Input.is_action_pressed("ui_left") or swipe_input_active
 	var old_angle = steering_angle
-	# Always integrate the spring–damper simulation:
 	var steering_acceleration = -steering_spring_constant * steering_angle - steering_damping * steering_velocity
 	steering_velocity += steering_acceleration * delta
 	steering_angle += steering_velocity * delta
 	
-	# If no manual input is active, prevent overshooting past zero:
 	if not manual_input_active:
 		if (old_angle > 0 and steering_angle < 0) or (old_angle < 0 and steering_angle > 0):
 			steering_angle = 0
 			steering_velocity = 0
 	
-	# Reset the swipe flag after processing.
 	swipe_input_active = false
 	
-	# Update ship rotation based on the steering input.
 	current_frame += steering_angle * steering_to_rotation_factor * delta
 	current_frame = fmod(current_frame, NUM_FRAMES)
 	if current_frame < 0:
 		current_frame += NUM_FRAMES
 	update_frame()
 	
-	# The steering wheel’s visual rotation reflects only the steering input.
 	if steering_wheel:
 		steering_wheel.rotation_degrees = steering_angle * steering_wheel_multiplier
 
@@ -154,7 +151,6 @@ func _input(event):
 	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 		var dx = event.relative.x
 		if dx != 0:
-			# Increase steering velocity based on swipe movement.
 			steering_velocity += dx * swipe_sensitivity
 			swipe_input_active = true
 
@@ -210,39 +206,89 @@ func shoot_left():
 		return
 	can_shoot = false
 	$GunCooldown.start()
+	
+	# Reset sound flags for this volley.
+	shot_splash_played = false
+	shot_hit_played = false
+
+	if cannon_shot_sound:
+		cannon_shot_sound.play()
 	var ship_direction = calculate_direction()
 	var left_direction = Vector2(ship_direction.y, -ship_direction.x)
-	var cannonball_distance = (BASE_CANNONBALL_DISTANCE * 1.0) + 50
+	camera_shake(-left_direction)
+
 	for i in range(5):
 		var c = cannonball_scene.instantiate()
 		c.splash_scene = splash_scene
 		c.hit_scene = hit_scene
+		c.shooter = self   # Pass the shooter so the cannonball can request sounds
 		get_tree().current_scene.add_child(c)
 		var offset = ship_direction.normalized() * (i * 3 - 6)
-		var start_position = position + offset + left_direction * 8
-		c.start(start_position, left_direction, cannonball_distance, self)
+		# Spawn smoke 1 pixel further outwards (8 becomes 9).
+		var start_position = position + offset + left_direction * 9
+		
+		var smoke = cannon_smoke_scene.instantiate()
+		get_tree().current_scene.add_child(smoke)
+		smoke.position = start_position
+		
+		var cannonball_distance = (((BASE_CANNONBALL_DISTANCE * 1.0) + 50) * randf_range(0.85, 1.15))
+		
+		# Calculate spread: middle shot is straight (offset 0°), adjacent shots differ by 5°.
+		var spread_angle = deg_to_rad((i - 2) * 2)
+		var spread_direction = left_direction.rotated(spread_angle)
+		c.start(start_position, spread_direction, cannonball_distance, self)
+
 
 func shoot_right():
 	if not can_shoot:
 		return
 	can_shoot = false
 	$GunCooldown.start()
+	
+	# Reset sound flags for this volley.
+	shot_splash_played = false
+	shot_hit_played = false
+
+	if cannon_shot_sound:
+		cannon_shot_sound.play()
 	var ship_direction = calculate_direction()
 	var right_direction = Vector2(-ship_direction.y, ship_direction.x)
-	var cannonball_distance = (BASE_CANNONBALL_DISTANCE * 1.0) + 50
+	camera_shake(-right_direction)
+
 	for i in range(5):
 		var c = cannonball_scene.instantiate()
 		c.splash_scene = splash_scene
 		c.hit_scene = hit_scene
+		c.shooter = self   # Pass the shooter so the cannonball can request sounds
 		get_tree().current_scene.add_child(c)
 		var offset = ship_direction.normalized() * (i * 3 - 6)
-		var start_position = position + offset + right_direction * 8
-		c.start(start_position, right_direction, cannonball_distance, self)
+		# Spawn smoke 1 pixel further outwards (8 becomes 9).
+		var start_position = position + offset + right_direction * 9
+		
+		var smoke = cannon_smoke_scene.instantiate()
+		get_tree().current_scene.add_child(smoke)
+		smoke.position = start_position
+		
+		var cannonball_distance = (((BASE_CANNONBALL_DISTANCE * 1.0) + 50) * randf_range(0.85, 1.15))
+		
+		# Calculate spread: middle shot (i == 2) goes straight; for others, reverse the angle spread.
+		var spread_angle = deg_to_rad((i - 2) * 2)
+		var spread_direction = right_direction.rotated(-spread_angle)
+		c.start(start_position, spread_direction, cannonball_distance, self)
 
-func start():
-	if cooldown <= 0:
-		cooldown = 1.0
-	$GunCooldown.wait_time = cooldown
+
+
+
+func camera_shake(shake_direction: Vector2):
+	var amplitude = 5.0
+	var duration = 0.1
+	var tween = get_tree().create_tween()
+	tween.tween_property($ShipCamera, "offset",
+		shake_direction.normalized() * amplitude,
+		duration
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property($ShipCamera, "offset", Vector2.ZERO, duration
+	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 func _on_gun_cooldown_timeout():
 	can_shoot = true
@@ -292,9 +338,9 @@ func handle_player_input(delta):
 		key_impulse -= 1.0
 		emit_signal("manual_rotation_started")
 	if key_impulse != 0:
-		var impulse_multiplier = 50.0
-		steering_velocity += key_impulse * impulse_multiplier * delta
-	
+		var keyboard_impulse_multiplier = 10.0  
+		steering_velocity += key_impulse * keyboard_impulse_multiplier
+
 	if Input.is_action_just_pressed("ui_select"):
 		toggle_forward_movement()
 	
@@ -437,3 +483,14 @@ func take_damage(amount: int) -> void:
 	if health <= 0:
 		print("Player has died.")
 		queue_free()
+
+# Functions for playing splash/hit sound effects upon request from cannonballs
+func request_splash_sound():
+	if not shot_splash_played and splash_sound_fx:
+		splash_sound_fx.play()
+		shot_splash_played = true
+
+func request_hit_sound():
+	if not shot_hit_played and hit_sound_fx:
+		hit_sound_fx.play()
+		shot_hit_played = true

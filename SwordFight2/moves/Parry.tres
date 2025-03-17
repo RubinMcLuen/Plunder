@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Move" load_steps=2 format=3 uid="uid://g1lx86t4t1i8"]
+
+[ext_resource type="Script" path="res://SwordFight2/Move.gd" id="1_bysvt"]
+
+[resource]
+script = ExtResource("1_bysvt")
+move_name = "Parry"
+move_type = "Defensive"
+base_power = 0
+accuracy = 1.0
+stamina_cost = 1
+special_effect = "parry"

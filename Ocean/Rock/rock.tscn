@@ -1,0 +1,74 @@
+[gd_scene load_steps=12 format=3 uid="uid://b1v75pr8ihha3"]
+
+[ext_resource type="Script" path="res://Ocean/Rock/rock.gd" id="1_4vp6m"]
+[ext_resource type="Texture2D" uid="uid://dbrcgx8r4vpl7" path="res://Ocean/Rock/rock.png" id="2_o3gjp"]
+[ext_resource type="Texture2D" uid="uid://ha0c2me5efbk" path="res://Ocean/Rock/rock_explosion.png" id="3_0eibt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hkcoh"]
+size = Vector2(35, 29)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2mcvh"]
+atlas = ExtResource("3_0eibt")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w735r"]
+atlas = ExtResource("3_0eibt")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bgpb7"]
+atlas = ExtResource("3_0eibt")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ni64g"]
+atlas = ExtResource("3_0eibt")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n3dmh"]
+atlas = ExtResource("3_0eibt")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kjcoc"]
+atlas = ExtResource("3_0eibt")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cw68r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2mcvh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w735r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bgpb7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ni64g")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n3dmh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kjcoc")
+}],
+"loop": false,
+"name": &"explosion",
+"speed": 5.0
+}]
+
+[node name="Rock" type="Area2D" groups=["enemies"]]
+script = ExtResource("1_4vp6m")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_o3gjp")
+hframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-1.5, 1.5)
+shape = SubResource("RectangleShape2D_hkcoh")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+visible = false
+sprite_frames = SubResource("SpriteFrames_cw68r")
+animation = &"explosion"

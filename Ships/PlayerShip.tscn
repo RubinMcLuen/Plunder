@@ -1,15 +1,19 @@
-[gd_scene load_steps=12 format=3 uid="uid://0ab5frbt0cuk"]
+[gd_scene load_steps=16 format=3 uid="uid://0ab5frbt0cuk"]
 
 [ext_resource type="Script" path="res://Ships/PlayerShip.gd" id="1_uaqh5"]
 [ext_resource type="PackedScene" uid="uid://cepi4n24b2mso" path="res://Ships/cannonball.tscn" id="2_fwr3b"]
-[ext_resource type="PackedScene" uid="uid://c67ausqpgncj3" path="res://Ships/splash.tscn" id="3_0glqt"]
+[ext_resource type="PackedScene" uid="uid://cx2ap46ajhblu" path="res://Ships/splash.tscn" id="3_0glqt"]
 [ext_resource type="PackedScene" uid="uid://cn0j5qsgevekp" path="res://Ships/hit.tscn" id="3_swdta"]
 [ext_resource type="PackedScene" uid="uid://bv47a7gnpila8" path="res://Ships/Trail.tscn" id="4_18woo"]
 [ext_resource type="Texture2D" uid="uid://bqbc76dxaqw1y" path="res://Ships/boat_sprite.png" id="4_vd4iv"]
+[ext_resource type="PackedScene" uid="uid://jw4tqg00wiia" path="res://Ships/CannonSmoke.tscn" id="5_qqd84"]
 [ext_resource type="Texture2D" uid="uid://ur7t6yhonkjc" path="res://Ocean/wheel.png" id="6_pbcj7"]
 [ext_resource type="Texture2D" uid="uid://c8htjf3jopxs7" path="res://Ocean/compass.png" id="7_7xlbo"]
 [ext_resource type="Texture2D" uid="uid://ik4w4o1qsr3" path="res://Ocean/questlog.png" id="7_nfivg"]
 [ext_resource type="Texture2D" uid="uid://c6y0bmm4jqrqb" path="res://Ocean/cannon.png" id="8_dumyh"]
+[ext_resource type="AudioStream" uid="uid://cfj5q5vjaofvm" path="res://Ships/converted_audio2.mp3" id="11_otwp8"]
+[ext_resource type="AudioStream" uid="uid://bf7ih7g0442mg" path="res://Ships/hit.mp3" id="12_0iegi"]
+[ext_resource type="AudioStream" uid="uid://yvsvg4l72r6n" path="res://Ships/SplashSoundEffect.mp3" id="12_wvo0i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pwcr0"]
 size = Vector2(30, 16)
@@ -22,6 +26,7 @@ steering_wheel = NodePath("CanvasLayer/Wheel")
 cannonball_scene = ExtResource("2_fwr3b")
 splash_scene = ExtResource("3_0glqt")
 hit_scene = ExtResource("3_swdta")
+cannon_smoke_scene = ExtResource("5_qqd84")
 health = 60
 
 [node name="Trail" parent="." instance=ExtResource("4_18woo")]
@@ -43,6 +48,7 @@ one_shot = true
 [node name="ShipCamera" type="Camera2D" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Wheel" type="TextureRect" parent="CanvasLayer"]
 anchors_preset = 2
@@ -108,5 +114,16 @@ grow_horizontal = 0
 grow_vertical = 0
 scale = Vector2(1.5, 1.5)
 texture_normal = ExtResource("8_dumyh")
+
+[node name="CannonShotSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("11_otwp8")
+
+[node name="HitSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_0iegi")
+volume_db = -25.272
+
+[node name="SplashSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_wvo0i")
+volume_db = -16.38
 
 [connection signal="timeout" from="GunCooldown" to="." method="_on_gun_cooldown_timeout"]

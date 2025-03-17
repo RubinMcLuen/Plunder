@@ -28,6 +28,7 @@ const ANGLE_PER_FRAME = 360.0 / NUM_FRAMES
 @export var hit_scene: PackedScene
 @export var cooldown := 1.0
 var can_shoot = true
+@onready var trail_sprite: Sprite2D = $Trail/SubViewport/Circle
 
 @export var health := 80
 
@@ -208,6 +209,8 @@ func update_frame():
 		sprite.frame = (int(current_frame) + int(NUM_FRAMES / 2)) % NUM_FRAMES
 	if collision_shape:
 		collision_shape.rotation_degrees = current_frame * ANGLE_PER_FRAME
+	if trail_sprite:
+		trail_sprite.rotation_degrees = current_frame * ANGLE_PER_FRAME
 
 ##
 # SHOOTING LOGIC

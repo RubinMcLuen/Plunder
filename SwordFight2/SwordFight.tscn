@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://wquncao13mcp"]
+
+[ext_resource type="Script" path="res://SwordFight2/SwordFight.gd" id="1_mphb0"]
+[ext_resource type="PackedScene" uid="uid://bav7gmb8hxktr" path="res://SwordFight2/SwordFightUI.tscn" id="2_1456n"]
+
+[node name="SwordFight" type="Node2D"]
+script = ExtResource("1_mphb0")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(135, 135)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="BattleUI" parent="CanvasLayer" instance=ExtResource("2_1456n")]

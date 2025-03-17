@@ -5,8 +5,8 @@
 [ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_d82p3"]
 [ext_resource type="Resource" uid="uid://cuv7qfb43qg7d" path="res://Dialogue/dialogues/FirstMate.dialogue" id="3_hfcdw"]
 [ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/playerisland.png" id="3_tglov"]
-[ext_resource type="PackedScene" uid="uid://dlh32l6ht3jiy" path="res://Character/Player/player.tscn" id="3_xihff"]
-[ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="4_w8pbf"]
+[ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/Player.tscn" id="3_xihff"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="4_w8pbf"]
 [ext_resource type="Texture2D" uid="uid://b5ddreq732vo1" path="res://Island/shipisland.png" id="5_sbbi0"]
 [ext_resource type="Script" path="res://Island/ShipControlArea.gd" id="6_182vu"]
 [ext_resource type="Texture2D" uid="uid://bw35wphcy4ysm" path="res://Island/shipship.png" id="6_o8764"]
@@ -94,6 +94,7 @@ centered = false
 
 [node name="Player" parent="." instance=ExtResource("3_xihff")]
 position = Vector2(64, -42)
+override_map_texture = true
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 
@@ -105,6 +106,7 @@ position = Vector2(-88, -78)
 shape = SubResource("RectangleShape2D_jxd76")
 
 [node name="ShipControlArea" type="Area2D" parent="."]
+visible = false
 position = Vector2(-170, 635)
 script = ExtResource("6_182vu")
 button_path = NodePath("Button")
@@ -187,11 +189,22 @@ shape = SubResource("RectangleShape2D_etuke")
 position = Vector2(-41, -48)
 script = ExtResource("13_dfdk6")
 npc_name = "MonteCoral"
+dialogue_resource = ExtResource("2_d82p3")
+npc_texture_index = 3
 
 [node name="FirstMate" parent="." instance=ExtResource("4_w8pbf")]
 position = Vector2(111, -53)
 script = ExtResource("15_4oxlv")
 npc_name = "FirstMate"
+dialogue_resource = ExtResource("3_hfcdw")
+npc_texture_index = 4
+
+[node name="FirstMate2" parent="." instance=ExtResource("4_w8pbf")]
+position = Vector2(-178, 690)
+script = ExtResource("15_4oxlv")
+npc_name = "FirstMate"
+dialogue_resource = ExtResource("3_hfcdw")
+npc_texture_index = 4
 
 [connection signal="pressed" from="ShipControlArea/Button" to="ShipControlArea" method="_on_button_pressed"]
 [connection signal="dialogue_requested" from="MonteCoral" to="." method="_on_monte_coral_dialogue_requested"]

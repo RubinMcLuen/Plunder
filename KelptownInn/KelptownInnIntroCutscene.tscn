@@ -1,16 +1,19 @@
-[gd_scene load_steps=15 format=3 uid="uid://b3xx1r1h6gki5"]
+[gd_scene load_steps=18 format=3 uid="uid://b3xx1r1h6gki5"]
 
 [ext_resource type="PackedScene" uid="uid://ci36078u3htw1" path="res://KelptownInn/KelptownInn.tscn" id="1_b3fmw"]
 [ext_resource type="Script" path="res://KelptownInn/KelptownInnIntroCutscene.gd" id="2_uqa76"]
 [ext_resource type="PackedScene" uid="uid://4klyn0h8t7vm" path="res://Cutscene/CutsceneManager.tscn" id="2_xaxja"]
 [ext_resource type="PackedScene" uid="uid://tt5acos0n34b" path="res://Dialogue/balloon.tscn" id="3_hu5lq"]
 [ext_resource type="Resource" uid="uid://dloukc748ca08" path="res://Dialogue/dialogues/bartender.dialogue" id="3_nw6ac"]
-[ext_resource type="PackedScene" uid="uid://qdsooeakwd1k" path="res://Character/NPC/npc.tscn" id="4_updwp"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="4_updwp"]
 [ext_resource type="PackedScene" uid="uid://cjn8sut1cl3vw" path="res://SwordFight/SwordFightTutorial.tscn" id="4_vnlhx"]
-[ext_resource type="Script" path="res://Character/NPC/npcs/BartenderTutorial.gd" id="5_wvvsv"]
-[ext_resource type="Script" path="res://Character/NPC/npcs/TutorialPirate.gd" id="5_y6wri"]
 [ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="6_34htp"]
+[ext_resource type="Resource" uid="uid://bk580kgk1y5pk" path="res://Character/Player/PlayerStats.tres" id="6_kaw53"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="7_11mh4"]
+[ext_resource type="Script" path="res://Character/NPC/NPCs/BartenderTutorial.gd" id="7_fv4vo"]
+[ext_resource type="Script" path="res://Character/NPC/NPCs/TutorialPirate.gd" id="9_uvxy1"]
+[ext_resource type="Resource" uid="uid://cmmrss1f1nkt0" path="res://Dialogue/dialogues/patron.dialogue" id="10_wfwdx"]
+[ext_resource type="Resource" uid="uid://d2rq3mkjkxu7f" path="res://Character/NPC/NPCs/EnemyStats.tres" id="11_obs1j"]
 
 [sub_resource type="Animation" id="Animation_unt7p"]
 length = 0.001
@@ -62,22 +65,31 @@ npcs = [NodePath("../Pirate"), NodePath("../Patron"), NodePath("../Bartender")]
 
 [node name="Player" parent="." index="1"]
 position = Vector2(381, 23)
+stats = ExtResource("6_kaw53")
 
 [node name="SwordFightTutorial" parent="Player" index="3" instance=ExtResource("4_vnlhx")]
 visible = false
 
 [node name="Bartender" parent="." index="2"]
-script = ExtResource("5_wvvsv")
+script = ExtResource("7_fv4vo")
+npc_name = "Bartender"
+dialogue_resource = ExtResource("3_nw6ac")
 
 [node name="Pirate" parent="." index="3" instance=ExtResource("4_updwp")]
 position = Vector2(259, 132)
-script = ExtResource("5_y6wri")
+script = ExtResource("9_uvxy1")
 npc_name = "TutorialPirate"
+fight_side_right = true
+stats = ExtResource("11_obs1j")
 fightable = true
+dialogue_resource = ExtResource("10_wfwdx")
+npc_texture_index = 1
 
 [node name="Patron" parent="." index="4" instance=ExtResource("4_updwp")]
 position = Vector2(295, 132)
 npc_name = "patron"
+dialogue_resource = ExtResource("10_wfwdx")
+npc_texture_index = 2
 
 [node name="Arrow" type="Sprite2D" parent="." index="8"]
 visible = false

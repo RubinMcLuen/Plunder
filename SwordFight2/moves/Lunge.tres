@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="Move" load_steps=2 format=3 uid="uid://be28oepmeeik7"]
+
+[ext_resource type="Script" path="res://SwordFight2/Move.gd" id="1_cgelj"]
+
+[resource]
+script = ExtResource("1_cgelj")
+move_name = "Lunge"
+move_type = "Aggressive"
+base_power = 15
+accuracy = 0.8
+stamina_cost = 2
+special_effect = "lunge"

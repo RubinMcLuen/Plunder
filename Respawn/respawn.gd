@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 func _ready():
 	# Ensure the skull starts fully transparent (alpha = 0)

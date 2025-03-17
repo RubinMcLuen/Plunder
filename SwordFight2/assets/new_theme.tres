@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://7kggovvi0fa3"]
+
+[ext_resource type="FontFile" uid="uid://dvy302iubs8kw" path="res://swordfightassets/font.ttf" id="1_1h1ey"]
+
+[resource]
+Label/colors/font_color = Color(1, 0.996078, 0.941176, 1)
+Label/font_sizes/font_size = 11
+Label/fonts/font = ExtResource("1_1h1ey")

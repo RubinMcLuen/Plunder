@@ -98,6 +98,7 @@ func _ready() -> void:
 	player.connect("end_fight", Callable(self, "_on_end_fight"))
 	enemy.connect("end_fight", Callable(self, "_on_enemy_end_fight"))
 	player.fighting = true
+	player.sword.visible = true
 	enemy.set_idle_with_sword_mode(true)
 
 	# Automatically move the player toward the enemy before the fight starts.
@@ -259,6 +260,7 @@ func _on_zoom_out_complete() -> void:
 
 func _on_end_fight_complete() -> void:
 	player.fighting = false
+	player.sword.visible = false
 	enemy.fighting = false
 	enemy.set_idle_with_sword_mode(false)
 	enemy.fightable = true

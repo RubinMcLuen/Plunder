@@ -41,10 +41,14 @@ general/balloon_path="res://Dialogue/balloon.tscn"
 
 window/size/viewport_width=480
 window/size/viewport_height=270
-window/size/window_width_override=2520
+window/size/window_width_override=1920
 window/size/window_height_override=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+
+[editor]
+
+movie_writer/movie_file="C:/Users/Rubin/Desktop/swordfight.avi"
 
 [editor_plugins]
 
