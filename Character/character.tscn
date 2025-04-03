@@ -305,6 +305,7 @@ animations = [{
 }]
 
 [node name="Character" type="CharacterBody2D"]
+motion_mode = 1
 
 [node name="Appearance" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -10)

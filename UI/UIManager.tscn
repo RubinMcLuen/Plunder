@@ -1,0 +1,177 @@
+[gd_scene load_steps=7 format=3 uid="uid://db6lj2cbdv3s7"]
+
+[ext_resource type="Texture2D" uid="uid://dwya1p360m0a4" path="res://UI/LocationBackground.png" id="1_o0auw"]
+[ext_resource type="Script" path="res://UI/UIManager.gd" id="1_vahum"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="2_pvq82"]
+[ext_resource type="Texture2D" uid="uid://ctf5135sw2547" path="res://UI/SetSailBackground.png" id="3_m3yuq"]
+[ext_resource type="Texture2D" uid="uid://7682pl1s7683" path="res://UI/SetSailButton.png" id="4_46jhm"]
+[ext_resource type="Texture2D" uid="uid://bews4ip52bfa8" path="res://UI/DockShipButton.png" id="5_kosj3"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_vahum")
+
+[node name="UIManager" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 480.0
+offset_bottom = 270.0
+mouse_filter = 2
+
+[node name="LocationNotification" type="TextureRect" parent="UIManager"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -49.0
+offset_top = -32.0
+offset_right = 49.0
+offset_bottom = -10.0
+grow_horizontal = 2
+texture = ExtResource("1_o0auw")
+stretch_mode = 2
+
+[node name="LocationName" type="Label" parent="UIManager/LocationNotification"]
+layout_mode = 0
+offset_right = 98.0
+offset_bottom = 22.0
+theme_override_colors/font_color = Color(1, 0.996078, 0.941176, 1)
+theme_override_fonts/font = ExtResource("2_pvq82")
+theme_override_font_sizes/font_size = 11
+text = "Kelptown"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SetSailMenu" type="TextureRect" parent="UIManager"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -70.0
+offset_top = -50.0
+offset_right = 70.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("3_m3yuq")
+
+[node name="SetSailButton" type="TextureButton" parent="UIManager/SetSailMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -26.0
+offset_right = 31.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+action_mode = 0
+texture_normal = ExtResource("4_46jhm")
+
+[node name="SetSailLabel" type="Label" parent="UIManager/SetSailMenu/SetSailButton"]
+layout_mode = 0
+offset_right = 61.0
+offset_bottom = 18.0
+theme_override_colors/font_color = Color(0.788235, 0.788235, 0.788235, 1)
+theme_override_fonts/font = ExtResource("2_pvq82")
+theme_override_font_sizes/font_size = 11
+text = "Set Sail"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ReadyToLeaveLabel" type="Label" parent="UIManager/SetSailMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -10.0
+offset_right = 60.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_fonts/font = ExtResource("2_pvq82")
+theme_override_font_sizes/font_size = 11
+text = "Ready to leave?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DockShipMenu" type="TextureRect" parent="UIManager"]
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -70.0
+offset_top = -50.0
+offset_right = 70.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("3_m3yuq")
+
+[node name="DockShipButton" type="TextureButton" parent="UIManager/DockShipMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -30.0
+offset_top = -26.0
+offset_right = 31.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 0
+texture_normal = ExtResource("5_kosj3")
+
+[node name="DockShipLabel" type="Label" parent="UIManager/DockShipMenu/DockShipButton"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -36.5
+offset_top = -9.0
+offset_right = 36.5
+offset_bottom = 9.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.788235, 0.788235, 0.788235, 1)
+theme_override_fonts/font = ExtResource("2_pvq82")
+theme_override_font_sizes/font_size = 11
+text = "Dock Ship"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ComingAshoreLabel" type="Label" parent="UIManager/DockShipMenu"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -10.0
+offset_right = 60.0
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_fonts/font = ExtResource("2_pvq82")
+theme_override_font_sizes/font_size = 11
+text = "Coming ashore?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="UIManager/SetSailMenu/SetSailButton" to="." method="_on_set_sail_button_pressed"]
+[connection signal="pressed" from="UIManager/DockShipMenu/DockShipButton" to="." method="_on_dock_ship_button_pressed"]

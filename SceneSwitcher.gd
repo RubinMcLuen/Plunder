@@ -16,23 +16,24 @@ var transition_in_progress: bool = false
 ##
 var target_scene_path: String = ""
 var target_position: Vector2 = Vector2.ZERO
-var target_zoom: Vector2 = Vector2.ONE
+
+# Separate zoom controls:
+var old_camera_zoom: Vector2 = Vector2.ONE      # For the camera in the *old* scene (e.g. tween from 1→16)
+var new_camera_zoom: Vector2 = Vector2.ONE      # For the camera in the *new* scene (e.g. force 1× on island)
 var pending_transition_type: String = "none"
 var specific_position: Vector2 = Vector2.ZERO
 
 ##
-# Fade canvas/rect for fade transitions.
+# Fade canvas/rect for fade transitions (unused if you just do "zoom" or "none," but left here for completeness).
 ##
 var fade_canvas: CanvasLayer
 var fade_rect: ColorRect
-
 
 func _ready():
 	# 1) Build a CanvasLayer for fade transitions (always on top).
 	fade_canvas = CanvasLayer.new()
 	fade_canvas.name = "FadeCanvas"
 	fade_canvas.layer = 100
-	# In Godot 4, 'process_mode = Node.PROCESS_MODE_ALWAYS' means it ignores pause.
 	fade_canvas.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(fade_canvas)
 
@@ -54,46 +55,35 @@ func _ready():
 	if not active_scene:
 		_try_detect_current_scene()
 
-
-##
-# If you start the game in the editor from some arbitrary scene, this tries
-# to detect that scene in the root so SceneSwitcher can remove it later.
-##
 func _try_detect_current_scene():
 	var root = get_tree().root
 	for child in root.get_children():
-		# Skip ourselves (the autoload), skip the fade canvas, etc.
+		# Skip ourselves (the autoload) and the fade canvas, etc.
 		if child == self or child == fade_canvas:
 			continue
 		# We found a node that might be your "active_scene."
-		# If you only ever load Node2D or Control as a top-level scene, you might check for that:
 		if child is Node2D or child is Control:
 			active_scene = child
 			print("SceneSwitcher: Auto-detected active_scene =", child.name)
 			break
 
-
-##
-# If you prefer manual control, you can call this once in your _ready():
-#   SceneSwitcher.set_initial_scene(self)
-# ... so the SceneSwitcher knows which scene to remove next.
-##
 func set_initial_scene(scene: Node):
 	active_scene = scene
 	print("SceneSwitcher: set_initial_scene:", scene.name)
 
 
 ##
-# The main function, matching your original signature.
+# The main function, matching your original signature but with an extra param for the new scene's zoom.
 # Example usage:
-#   SceneSwitcher.switch_scene("res://KelptownInn/MyScene.tscn", Vector2(100,200), "fade")
+#   SceneSwitcher.switch_scene("res://MyScene.tscn", Vector2(100,200), "zoom", Vector2(16,16), Vector2.ZERO, Vector2(1,1))
 ##
 func switch_scene(
 	scene_path: String,
 	player_position: Vector2,
 	transition_type: String = "none",
-	zoom_level: Vector2 = Vector2(1.0, 1.0),
-	specific_position_override: Vector2 = Vector2()
+	old_scene_zoom_level: Vector2 = Vector2(1.0, 1.0),
+	specific_position_override: Vector2 = Vector2(),
+	new_scene_zoom_level: Vector2 = Vector2(1.0, 1.0)
 ):
 	if transition_in_progress:
 		print("SceneSwitcher: Scene switch requested but one is already in progress. Ignoring.")
@@ -103,13 +93,14 @@ func switch_scene(
 
 	target_scene_path = scene_path
 	target_position = player_position
-	target_zoom = zoom_level
+	old_camera_zoom = old_scene_zoom_level
+	new_camera_zoom = new_scene_zoom_level
 	pending_transition_type = transition_type
 	specific_position = specific_position_override
 
+	# If a "specific_position" was provided, we first tween the old camera to that location (if any),
+	# then do the chosen transition. If it's Vector2.ZERO, we skip that step.
 	if specific_position != Vector2():
-		# If you provided a "specific_position," we do a camera tween first,
-		# then fade or zoom or none.
 		_translate_camera(specific_position, transition_type)
 	else:
 		match transition_type:
@@ -122,7 +113,6 @@ func switch_scene(
 			_:
 				print("SceneSwitcher: Unknown transition type:", transition_type)
 				_start_direct_transition()
-
 
 # -----------------------------------------------------------
 # CAMERA TRANSLATION (optional)
@@ -149,12 +139,11 @@ func _on_camera_translation_finished(transition_type: String):
 			print("SceneSwitcher: Unknown transition type:", transition_type)
 			_start_direct_transition()
 
-
 # -----------------------------------------------------------
-# FADE TRANSITION
+# FADE TRANSITION (unused if you don't call "fade," but left in for completeness)
 # -----------------------------------------------------------
 func _start_fade_transition():
-	fade_rect.color = Color(0, 0, 0, 0)  # reset alpha
+	fade_rect.color = Color(0, 0, 0, 0)
 	fade_rect.visible = true
 
 	print("SceneSwitcher: FADE OUT START")
@@ -164,7 +153,6 @@ func _start_fade_transition():
 
 func _on_fade_out_finished():
 	print("SceneSwitcher: FADE OUT FINISHED")
-	# Short pause at full black
 	var delay_tween = create_tween()
 	delay_tween.tween_interval(0.2)
 	delay_tween.connect("finished", Callable(self, "_on_fade_out_delay_finished"))
@@ -188,21 +176,20 @@ func _on_fade_in_finished():
 	fade_rect.visible = false
 	transition_in_progress = false
 
-
 # -----------------------------------------------------------
 # ZOOM TRANSITION
 # -----------------------------------------------------------
 func _start_zoom_transition():
-	print("SceneSwitcher: ZOOM transition start. We'll tween the camera's zoom if it exists.")
+	print("SceneSwitcher: ZOOM transition start. We'll tween the *old* scene's camera if it exists.")
 	var camera = _get_camera_node()
 	if camera:
 		var tween = create_tween()
-		tween.tween_property(camera, "zoom", target_zoom, 2.0)
+		tween.tween_property(camera, "zoom", old_camera_zoom, 2.0)
 		tween.connect("finished", Callable(self, "_on_zoom_finished"))
 	else:
 		_on_zoom_finished()  # no camera, skip to finishing
 
-	# Example: if you have "MixSprite" or "Waves" in your scene for fade effects
+	# If your active_scene has some fade sprites, this is an example:
 	if active_scene and active_scene.has_node("MixSprite"):
 		var mix_sprite = active_scene.get_node("MixSprite")
 		mix_sprite.modulate.a = 0.0
@@ -224,7 +211,6 @@ func _remove_old_scene_and_load_new_scene_zoom():
 	_load_and_instantiate_new_scene()
 	transition_in_progress = false
 
-
 # -----------------------------------------------------------
 # NO TRANSITION
 # -----------------------------------------------------------
@@ -235,7 +221,6 @@ func _remove_old_scene_and_load_new_scene_none():
 	_remove_active_scene_if_valid()
 	_load_and_instantiate_new_scene()
 	transition_in_progress = false
-
 
 # -----------------------------------------------------------
 # ACTUAL REMOVE & LOAD
@@ -249,7 +234,6 @@ func _remove_active_scene_if_valid():
 		print("SceneSwitcher: No old scene to remove (null or invalid).")
 	active_scene = null
 
-
 func _load_and_instantiate_new_scene():
 	print("SceneSwitcher: Loading scene:", target_scene_path)
 	var packed = ResourceLoader.load(target_scene_path) as PackedScene
@@ -257,15 +241,25 @@ func _load_and_instantiate_new_scene():
 		var new_scene = packed.instantiate()
 		if new_scene:
 			print("SceneSwitcher: Instantiating new scene:", new_scene.name)
-			get_tree().root.add_child(new_scene)
+			
+			# 1) Set the player's position, so it doesn't spawn at default (0,0).
 			_set_player_position(new_scene)
+
+			# 2) Force the new scene's camera to new_camera_zoom before adding to the tree.
+			var new_cam = _find_camera_in_scene(new_scene)
+			if new_cam:
+				new_cam.zoom = new_camera_zoom
+				# If you also want to ensure it starts at a particular position, do so here:
+				#   new_cam.global_position = some_position
+
+			# 3) Now add to the tree
+			get_tree().root.add_child(new_scene)
 			active_scene = new_scene
-			get_tree().current_scene = new_scene  # Optional
+			get_tree().current_scene = new_scene  # optional
 		else:
 			print("SceneSwitcher: Error instantiating new scene.")
 	else:
 		print("SceneSwitcher: Error loading resource:", target_scene_path)
-
 
 # -----------------------------------------------------------
 # PLAYER POSITION
@@ -273,10 +267,8 @@ func _load_and_instantiate_new_scene():
 func _set_player_position(scene: Node):
 	if scene.has_node("Player"):
 		scene.get_node("Player").global_position = target_position
-		print(target_position)
 	elif scene.has_node("PlayerShip"):
 		scene.get_node("PlayerShip").global_position = target_position
-
 
 # -----------------------------------------------------------
 # CAMERA HELPER
@@ -284,11 +276,18 @@ func _set_player_position(scene: Node):
 func _get_camera_node() -> Camera2D:
 	if active_scene:
 		if active_scene.has_node("PlayerShip/ShipCamera"):
-			return active_scene.get_node("PlayerShip/ShipCamera")
+			return active_scene.get_node("PlayerShip/ShipCamera") as Camera2D
 		elif active_scene.has_node("Player/Camera2D"):
-			return active_scene.get_node("Player/Camera2D")
+			return active_scene.get_node("Player/Camera2D") as Camera2D
 	return null
 
+func _find_camera_in_scene(scene: Node) -> Camera2D:
+	# This helper is used to set the new scene's camera before it appears.
+	if scene.has_node("PlayerShip/ShipCamera"):
+		return scene.get_node("PlayerShip/ShipCamera") as Camera2D
+	elif scene.has_node("Player/Camera2D"):
+		return scene.get_node("Player/Camera2D") as Camera2D
+	return null
 
 func _exit_tree():
 	pass

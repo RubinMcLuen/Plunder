@@ -2,13 +2,13 @@ extends Area2D
 
 @onready var trail_sprite: Sprite2D = $Trail/SubViewport/Circle
 @onready var cannon_shot_sound: AudioStreamPlayer2D = $CannonShotSound  # Cannon shot sound effect
-@onready var splash_sound_fx: AudioStreamPlayer = $SplashSound         # Splash sound effect
-@onready var hit_sound_fx: AudioStreamPlayer = $HitSound               # Hit sound effect
+@onready var splash_sound_fx: AudioStreamPlayer2D = $SplashSound         # Splash sound effect
+@onready var hit_sound_fx: AudioStreamPlayer2D = $HitSound               # Hit sound effect
 
 const NUM_FRAMES = 360
 const ANGLE_PER_FRAME = 360.0 / NUM_FRAMES
 const BASE_CANNONBALL_SPEED = 30
-const BASE_CANNONBALL_DISTANCE = 40
+const BASE_CANNONBALL_DISTANCE = 20
 
 const MOUSE_BUTTON_LEFT = 1
 
@@ -40,8 +40,8 @@ var steering_velocity: float = 0.0
 var swipe_input_active: bool = false
 
 var current_frame = 0
-var sprite: Sprite2D = null
-var collision_shape: CollisionShape2D = null
+var sprite: Sprite2D
+var collision_shape: CollisionShape2D
 var velocity = Vector2.ZERO
 var target_speed = 60.0
 var current_speed = 0.0
@@ -207,7 +207,7 @@ func shoot_left():
 	can_shoot = false
 	$GunCooldown.start()
 	
-	# Reset sound flags for this volley.
+	# Reset sound flags for this volley
 	shot_splash_played = false
 	shot_hit_played = false
 
@@ -221,23 +221,18 @@ func shoot_left():
 		var c = cannonball_scene.instantiate()
 		c.splash_scene = splash_scene
 		c.hit_scene = hit_scene
-		c.shooter = self   # Pass the shooter so the cannonball can request sounds
+		c.shooter = self
 		get_tree().current_scene.add_child(c)
 		var offset = ship_direction.normalized() * (i * 3 - 6)
-		# Spawn smoke 1 pixel further outwards (8 becomes 9).
 		var start_position = position + offset + left_direction * 9
-		
-		var smoke = cannon_smoke_scene.instantiate()
-		get_tree().current_scene.add_child(smoke)
-		smoke.position = start_position
+		# var smoke = cannon_smoke_scene.instantiate()
+		# get_tree().current_scene.add_child(smoke)
+		# smoke.position = start_position
 		
 		var cannonball_distance = (((BASE_CANNONBALL_DISTANCE * 1.0) + 50) * randf_range(0.85, 1.15))
-		
-		# Calculate spread: middle shot is straight (offset 0°), adjacent shots differ by 5°.
 		var spread_angle = deg_to_rad((i - 2) * 2)
 		var spread_direction = left_direction.rotated(spread_angle)
 		c.start(start_position, spread_direction, cannonball_distance, self)
-
 
 func shoot_right():
 	if not can_shoot:
@@ -245,7 +240,7 @@ func shoot_right():
 	can_shoot = false
 	$GunCooldown.start()
 	
-	# Reset sound flags for this volley.
+	# Reset sound flags for this volley
 	shot_splash_played = false
 	shot_hit_played = false
 
@@ -259,25 +254,18 @@ func shoot_right():
 		var c = cannonball_scene.instantiate()
 		c.splash_scene = splash_scene
 		c.hit_scene = hit_scene
-		c.shooter = self   # Pass the shooter so the cannonball can request sounds
+		c.shooter = self
 		get_tree().current_scene.add_child(c)
 		var offset = ship_direction.normalized() * (i * 3 - 6)
-		# Spawn smoke 1 pixel further outwards (8 becomes 9).
 		var start_position = position + offset + right_direction * 9
-		
-		var smoke = cannon_smoke_scene.instantiate()
-		get_tree().current_scene.add_child(smoke)
-		smoke.position = start_position
+		# var smoke = cannon_smoke_scene.instantiate()
+		# get_tree().current_scene.add_child(smoke)
+		# smoke.position = start_position
 		
 		var cannonball_distance = (((BASE_CANNONBALL_DISTANCE * 1.0) + 50) * randf_range(0.85, 1.15))
-		
-		# Calculate spread: middle shot (i == 2) goes straight; for others, reverse the angle spread.
 		var spread_angle = deg_to_rad((i - 2) * 2)
 		var spread_direction = right_direction.rotated(-spread_angle)
 		c.start(start_position, spread_direction, cannonball_distance, self)
-
-
-
 
 func camera_shake(shake_direction: Vector2):
 	var amplitude = 5.0
@@ -338,7 +326,7 @@ func handle_player_input(delta):
 		key_impulse -= 1.0
 		emit_signal("manual_rotation_started")
 	if key_impulse != 0:
-		var keyboard_impulse_multiplier = 10.0  
+		var keyboard_impulse_multiplier = 10.0
 		steering_velocity += key_impulse * keyboard_impulse_multiplier
 
 	if Input.is_action_just_pressed("ui_select"):
@@ -362,19 +350,31 @@ func drive_to_target_position(target_pos):
 	moving_forward = false
 	reset_bot_input()
 
+# We track whether we’re stuck and how far we got
 var stuck_timer = 0.0
 var last_distance = INF
 
-const STUCK_TIME_LIMIT = 2.0
-const SNAP_DISTANCE = 10.0
+const STUCK_TIME_LIMIT = 10.0
+const SNAP_DISTANCE = 1.0
 
 func move_to_target(delta):
+	var distance_to_target = global_position.distance_to(target_position)
+	
+	# If we’re already within minimal tolerance, snap immediately
+	if distance_to_target <= DISTANCE_TOLERANCE:
+		_force_snap_to_target()
+		return
+
+	# Turn toward the target
 	var direction_to_target = (target_position - global_position).normalized()
 	var angle_to_target = direction_to_target.angle()
 	var current_angle = deg_to_rad(current_frame * ANGLE_PER_FRAME)
 	var angle_diff = wrapf(angle_to_target - current_angle, -PI, PI)
 	var angle_diff_degrees = abs(rad_to_deg(angle_diff))
+
+	# Rotate in place if we’re significantly off
 	if angle_diff_degrees > ANGLE_TOLERANCE:
+		stuck_timer += delta  # Because we’re turning but not closing distance
 		var rotation_speed_adjusted = rotation_speed * delta
 		if angle_diff_degrees < ANGLE_TOLERANCE * 5:
 			rotation_speed_adjusted *= 0.5
@@ -382,27 +382,27 @@ func move_to_target(delta):
 			current_frame += rotation_speed_adjusted
 		else:
 			current_frame -= rotation_speed_adjusted
+
 		current_frame = fmod(current_frame, NUM_FRAMES)
 		if current_frame < 0:
 			current_frame += NUM_FRAMES
 		update_frame()
-	var distance_to_target = global_position.distance_to(target_position)
-	if distance_to_target > DISTANCE_TOLERANCE:
-		if distance_to_target > last_distance - 0.01:
-			stuck_timer += delta
-		else:
-			stuck_timer = 0.0
-		if current_speed < target_speed * 0.5:
-			current_speed = target_speed * 0.5
-		else:
-			current_speed = lerp(current_speed, target_speed, acceleration_factor * delta)
-		var direction = calculate_direction()
-		velocity = direction * current_speed
-		global_position += velocity * delta
-		if distance_to_target < SNAP_DISTANCE and stuck_timer > STUCK_TIME_LIMIT:
-			_force_snap_to_target()
 	else:
+		# Angle is close enough; now move forward
+		if distance_to_target < last_distance - 0.01:
+			# We made progress; reset the stuck timer
+			stuck_timer = 0.0
+		else:
+			stuck_timer += delta
+
+		current_speed = lerp(current_speed, target_speed, acceleration_factor * delta)
+		velocity = calculate_direction() * current_speed
+		global_position += velocity * delta
+
+	# If we’re too close, or stuck for too long, force snap to the dock
+	if distance_to_target < SNAP_DISTANCE or stuck_timer >= STUCK_TIME_LIMIT:
 		_force_snap_to_target()
+
 	last_distance = distance_to_target
 
 func _force_snap_to_target():
@@ -425,37 +425,50 @@ func normalize_angle(deg: float) -> float:
 
 func _choose_final_dock_angle():
 	var current_angle_deg = normalize_angle(current_frame * ANGLE_PER_FRAME)
-	print("DEBUG: _choose_final_dock_angle -> current_frame:", current_frame, "=> current_angle_deg:", current_angle_deg)
 	var diff_east = abs(signed_angle_difference(0, current_angle_deg))
 	var diff_west = abs(signed_angle_difference(180, current_angle_deg))
-	print("DEBUG: _choose_final_dock_angle -> diff_east (0°):", diff_east, "diff_west (180°):", diff_west)
-	target_angle = 0 if diff_east < diff_west else 180
-	print("DEBUG: _choose_final_dock_angle -> chosen target_angle:", target_angle)
+	if diff_east < diff_west:
+		target_angle = 0
+	else:
+		target_angle = 180
 
 func rotate_to_target_angle(delta):
 	var current_angle_deg = normalize_angle(current_frame * ANGLE_PER_FRAME)
 	var target_angle_norm = normalize_angle(target_angle)
 	var diff = signed_angle_difference(target_angle_norm, current_angle_deg)
-	print("DEBUG: rotate_to_target_angle -> current_angle_deg:", current_angle_deg, "target_angle_norm:", target_angle_norm, "diff:", diff)
+	
 	var rotation_step = rotation_speed * delta
-	if abs(diff) <= rotation_step:
-		current_frame = target_angle_norm / ANGLE_PER_FRAME
+	# If we're already close enough in angle, snap
+	if abs(diff) < ANGLE_TOLERANCE:
+		# Round so we don't end up in a fractional frame that can cause small angle errors
+		current_frame = int(round(target_angle_norm / ANGLE_PER_FRAME)) % NUM_FRAMES
 		update_frame()
+		
+		# Reset leftover steering so it doesn't "pull" us off angle in the next frame
+		steering_angle = 0.0
+		steering_velocity = 0.0
+		current_rotation_speed = 0.0
+		
 		is_bot_controlled = false
 		target_angle = -1.0
-		print("DEBUG: rotate_to_target_angle -> snapping to target angle.")
+		print("DEBUG: rotate_to_target_angle -> snapped to final dock angle.")
 		return
+
+	# Otherwise keep rotating
 	if abs(diff) < ANGLE_TOLERANCE * 5:
 		rotation_step *= 0.5
 	if diff > 0:
 		current_frame += rotation_step / ANGLE_PER_FRAME
 	else:
 		current_frame -= rotation_step / ANGLE_PER_FRAME
+
 	current_frame = fmod(current_frame, NUM_FRAMES)
 	if current_frame < 0:
 		current_frame += NUM_FRAMES
 	update_frame()
-	print("DEBUG: rotate_to_target_angle -> updated current_frame:", current_frame, "=> new current_angle_deg:", normalize_angle(current_frame * ANGLE_PER_FRAME))
+	print("DEBUG: rotate_to_target_angle -> current_angle_deg:", current_angle_deg,
+		" target_angle_norm:", target_angle_norm, " diff:", diff)
+
 
 func _input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:

@@ -60,7 +60,6 @@ func _ready():
 func _physics_process(_delta: float) -> void:
 	if customization_only:
 		return
-	
 	# Disable collisions while auto-moving.
 	$CollisionShape2D.disabled = auto_move
 	
@@ -98,11 +97,6 @@ func handle_player_input() -> void:
 		custom_velocity = Vector2.ZERO
 		velocity = custom_velocity
 		return
-
-	if Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		mouse_move_active = true
-	else:
-		mouse_move_active = false
 
 	custom_velocity = Vector2.ZERO
 
@@ -142,9 +136,13 @@ func set_facing_direction(is_left: bool) -> void:
 	appearance.flip_h = is_left
 	sword.flip_h = is_left
 
-func _unhandled_input(_event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if fighting or auto_move:
 		return
+
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		mouse_move_active = event.pressed
+
 
 # ---------------------------
 # Animations

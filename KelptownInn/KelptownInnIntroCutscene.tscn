@@ -65,18 +65,21 @@ npcs = [NodePath("../Pirate"), NodePath("../Patron"), NodePath("../Bartender")]
 
 [node name="Player" parent="." index="1"]
 position = Vector2(381, 23)
+motion_mode = 0
 stats = ExtResource("6_kaw53")
 
 [node name="SwordFightTutorial" parent="Player" index="3" instance=ExtResource("4_vnlhx")]
 visible = false
 
 [node name="Bartender" parent="." index="2"]
+motion_mode = 0
 script = ExtResource("7_fv4vo")
 npc_name = "Bartender"
 dialogue_resource = ExtResource("3_nw6ac")
 
 [node name="Pirate" parent="." index="3" instance=ExtResource("4_updwp")]
 position = Vector2(259, 132)
+motion_mode = 0
 script = ExtResource("9_uvxy1")
 npc_name = "TutorialPirate"
 fight_side_right = true
@@ -87,6 +90,7 @@ npc_texture_index = 1
 
 [node name="Patron" parent="." index="4" instance=ExtResource("4_updwp")]
 position = Vector2(295, 132)
+motion_mode = 0
 npc_name = "patron"
 dialogue_resource = ExtResource("10_wfwdx")
 npc_texture_index = 2

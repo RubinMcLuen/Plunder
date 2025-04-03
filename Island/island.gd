@@ -20,7 +20,6 @@ func _ready() -> void:
 		monte_coral.dialogue_requested.connect(_on_monte_coral_dialogue_requested)
 	
 	apply_scene_state()
-	load_player_position()
 
 func apply_scene_state() -> void:
 	# Determine scene state based on the ShipTutorial quest's step.

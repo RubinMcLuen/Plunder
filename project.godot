@@ -28,6 +28,7 @@ DialogueManager="*res://addons/dialogue_manager/dialogue_manager.gd"
 SceneSwitcher="*res://SceneSwitcher.gd"
 NPCStateManager="*res://NPCStateManager.gd"
 QuestManager="*res://QuestManager.gd"
+UIManager="*res://UI/UIManager.tscn"
 
 [debug]
 

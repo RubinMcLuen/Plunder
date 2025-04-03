@@ -1,7 +1,7 @@
 extends Node2D
 
 # Reference to the Sprite2D node
-@export var sprite_node_path: NodePath
+
 var sprite_node: Sprite2D
 
 # Reference to the CollisionShape2D node
@@ -11,9 +11,6 @@ var collision_shape_node: CollisionShape2D
 # Path to the player node
 @export var player_node_path: NodePath
 
-# Path to the button node
-@export var button_node_path: NodePath
-var button_node: Button
 
 # Set the specific target position
 @export var target_position: Vector2 = Vector2(-2, 41)
@@ -21,15 +18,9 @@ var button_node: Button
 
 func _ready():
 	# Get the reference to the Sprite2D node
-	sprite_node = get_node(sprite_node_path)
-	sprite_node.visible = false
 
 	# Get the reference to the CollisionShape2D node
 	collision_shape_node = get_node(collision_shape_node_path)
-
-	# Get the reference to the Button node
-	button_node = get_node(button_node_path)
-	button_node.connect("pressed", Callable(self, "_on_dock_button_pressed"))
 
 	# Connect to the player's signals
 	var player = get_node(player_node_path)
@@ -80,18 +71,17 @@ func move_player_to_target(target_pos: Vector2):
 		print("Player node not found.")
 
 func _on_player_docked():
-	sprite_node.visible = true
+	UIManager.show_dock_ship_menu()
+	UIManager.show_location_notification()
 	print("Sprite made visible due to player docking.")
 
 func _on_player_movement_started():
-	if sprite_node.visible:
-		sprite_node.visible = false
-		print("Sprite made invisible due to player starting to move.")
+	UIManager.hide_dock_ship_menu()
+	print("Sprite made invisible due to player starting to move.")
 
 func _on_manual_rotation_started():
-	if sprite_node.visible:
-		sprite_node.visible = false
-		print("Sprite made invisible due to player starting to rotate manually.")
+	UIManager.hide_dock_ship_menu()
+	print("Sprite made invisible due to player starting to rotate manually.")
 
 # Script where _on_dock_button_pressed is defined
 
@@ -112,7 +102,14 @@ func _on_dock_button_pressed():
 	var specific_position = Vector2(-11.875, 40.5)  # Camera translation position
 	var player_position = Vector2(-190, 648)  # Position in the new scene
 
-	SceneSwitcher.switch_scene("res://Island/island.tscn", player_position, "zoom", Vector2(16, 16), specific_position)
+	SceneSwitcher.switch_scene(
+		"res://Island/island.tscn",
+		Vector2(-190, 648),      # Where Player spawns in new scene
+		"zoom",                  # Tells SceneSwitcher to tween the *old* camera from current -> old_camera_zoom
+		Vector2(16,16),         # old_camera_zoom = 16×
+		Vector2(-11.875, 40.5), # If you want the old camera to move to this position first (optional)
+		Vector2(1,1)            # The *new* scene's camera will be forced to 1×
+	)
 	print("Dock button pressed, switching to character scene.")
 
 
