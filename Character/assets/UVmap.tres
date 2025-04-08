@@ -289,7 +289,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bh717")
 }],
-"loop": true,
+"loop": false,
 "name": &"AttackBlock",
 "speed": 10.0
 }, {
@@ -318,7 +318,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xccb4")
 }],
-"loop": true,
+"loop": false,
 "name": &"AttackLunge",
 "speed": 10.0
 }, {
@@ -347,7 +347,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_krbc7")
 }],
-"loop": true,
+"loop": false,
 "name": &"AttackSlash",
 "speed": 10.0
 }, {
@@ -361,7 +361,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_43chc")
 }],
-"loop": true,
+"loop": false,
 "name": &"Hurt",
 "speed": 10.0
 }, {
@@ -477,7 +477,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_mo56e")
 }],
-"loop": true,
+"loop": false,
 "name": &"Talk",
 "speed": 10.0
 }, {

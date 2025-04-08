@@ -1,0 +1,12 @@
+~ default
+Paid Actor: Fight me!
+=> END
+
+~ one
+Paid Actor: Come back when ye’ve sailed through more storms, Captain—I'm not takin’ orders from a guppy.
+=> END
+
+~ two
+Paid Actor: If ye can outdrink me without kissin’ the floor, I’ll consider joinin’ yer sorry crew.
+=> END
+

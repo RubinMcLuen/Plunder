@@ -231,7 +231,7 @@ func update_portrait(character_node: Node) -> void:
 
 	
 	# Add the new portrait instance to a container or to self.
-	$Balloon/Container.add_child(new_portrait)
+	$Node2D/Balloon/Container.add_child(new_portrait)
 
 
 

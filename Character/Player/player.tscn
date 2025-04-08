@@ -6,7 +6,8 @@
 
 [node name="Player" groups=["player"] instance=ExtResource("1_e3d1v")]
 script = ExtResource("2_1sqq0")
+override_map_texture = true
 
 [node name="Appearance" parent="." index="0"]
 material = ExtResource("3_updfa")
-animation = &"AttackBlock"
+animation = &"IdleStand"

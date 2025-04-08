@@ -14,7 +14,7 @@ var collision_shape_node: CollisionShape2D
 
 # Set the specific target position
 @export var target_position: Vector2 = Vector2(-2, 41)
-
+@export var location_name: String = "Kelptown"
 
 func _ready():
 	# Get the reference to the Sprite2D node
@@ -72,7 +72,7 @@ func move_player_to_target(target_pos: Vector2):
 
 func _on_player_docked():
 	UIManager.show_dock_ship_menu()
-	UIManager.show_location_notification()
+	UIManager.show_location_notification(location_name)
 	print("Sprite made visible due to player docking.")
 
 func _on_player_movement_started():

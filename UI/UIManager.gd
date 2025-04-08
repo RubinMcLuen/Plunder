@@ -21,11 +21,16 @@ func _on_dock_ship_button_pressed():
 	hide_dock_ship_menu()
 
 # Moves location_notification down 40 pixels over 0.3 seconds, waits 3 seconds, then moves it back up.
-func show_location_notification():
+func show_location_notification(location_text: String):
+	# 1) Update the label’s text (assuming there's a Label node under `LocationNotification`).
+	var label = location_notification.get_node("LocationName") as Label
+	label.text = location_text
+
+	# 2) Animate the notification
 	var tween = get_tree().create_tween()
 	var original_pos = location_notification.position
 	tween.tween_property(location_notification, "position", original_pos + Vector2(0, 40), 0.3)
-	tween.tween_interval(3)
+	tween.tween_interval(2)
 	tween.tween_property(location_notification, "position", original_pos, 0.3)
 
 # Functions to toggle the set_sail_menu visibility.

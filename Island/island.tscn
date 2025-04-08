@@ -92,9 +92,7 @@ texture = ExtResource("6_o8764")
 centered = false
 
 [node name="Player" parent="." instance=ExtResource("3_xihff")]
-position = Vector2(-194, 619)
-motion_mode = 0
-override_map_texture = true
+position = Vector2(64, -34)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 
@@ -177,24 +175,24 @@ shape = SubResource("RectangleShape2D_etuke")
 [node name="Sprite2D4" type="Sprite2D" parent="Collisions/StaticBody2D"]
 
 [node name="MonteCoral" parent="." instance=ExtResource("4_w8pbf")]
-position = Vector2(-41, -48)
-motion_mode = 0
+visible = false
+position = Vector2(-345, 65)
 script = ExtResource("13_dfdk6")
 npc_name = "MonteCoral"
 dialogue_resource = ExtResource("2_d82p3")
 npc_texture_index = 3
 
 [node name="FirstMate" parent="." instance=ExtResource("4_w8pbf")]
-position = Vector2(111, -53)
-motion_mode = 0
+visible = false
+position = Vector2(297, 112)
 script = ExtResource("15_4oxlv")
 npc_name = "FirstMate"
 dialogue_resource = ExtResource("3_hfcdw")
 npc_texture_index = 4
 
 [node name="FirstMate2" parent="." instance=ExtResource("4_w8pbf")]
-position = Vector2(-178, 690)
-motion_mode = 0
+visible = false
+position = Vector2(-352, 764)
 script = ExtResource("15_4oxlv")
 npc_name = "FirstMate"
 dialogue_resource = ExtResource("3_hfcdw")

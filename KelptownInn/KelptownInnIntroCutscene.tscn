@@ -1,9 +1,8 @@
-[gd_scene load_steps=18 format=3 uid="uid://b3xx1r1h6gki5"]
+[gd_scene load_steps=17 format=3 uid="uid://b3xx1r1h6gki5"]
 
 [ext_resource type="PackedScene" uid="uid://ci36078u3htw1" path="res://KelptownInn/KelptownInn.tscn" id="1_b3fmw"]
 [ext_resource type="Script" path="res://KelptownInn/KelptownInnIntroCutscene.gd" id="2_uqa76"]
 [ext_resource type="PackedScene" uid="uid://4klyn0h8t7vm" path="res://Cutscene/CutsceneManager.tscn" id="2_xaxja"]
-[ext_resource type="PackedScene" uid="uid://tt5acos0n34b" path="res://Dialogue/balloon.tscn" id="3_hu5lq"]
 [ext_resource type="Resource" uid="uid://dloukc748ca08" path="res://Dialogue/dialogues/bartender.dialogue" id="3_nw6ac"]
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="4_updwp"]
 [ext_resource type="PackedScene" uid="uid://cjn8sut1cl3vw" path="res://SwordFight/SwordFightTutorial.tscn" id="4_vnlhx"]
@@ -55,27 +54,26 @@ _data = {
 
 [node name="KelptownInn" instance=ExtResource("1_b3fmw")]
 script = ExtResource("2_uqa76")
-dialogue_resource = ExtResource("3_nw6ac")
-dialogue_scene = ExtResource("3_hu5lq")
+dialogue_resource = null
 
 [node name="CutsceneManager" parent="." index="0" node_paths=PackedStringArray("player", "camera", "npcs") instance=ExtResource("2_xaxja")]
 player = NodePath("../Player")
 camera = NodePath("../Player/Camera2D")
 npcs = [NodePath("../Pirate"), NodePath("../Patron"), NodePath("../Bartender")]
 
-[node name="Player" parent="." index="1"]
+[node name="Bartender" parent="." index="1"]
+motion_mode = 0
+script = ExtResource("7_fv4vo")
+npc_name = "Bartender"
+dialogue_resource = ExtResource("3_nw6ac")
+
+[node name="Player" parent="." index="2"]
 position = Vector2(381, 23)
 motion_mode = 0
 stats = ExtResource("6_kaw53")
 
 [node name="SwordFightTutorial" parent="Player" index="3" instance=ExtResource("4_vnlhx")]
 visible = false
-
-[node name="Bartender" parent="." index="2"]
-motion_mode = 0
-script = ExtResource("7_fv4vo")
-npc_name = "Bartender"
-dialogue_resource = ExtResource("3_nw6ac")
 
 [node name="Pirate" parent="." index="3" instance=ExtResource("4_updwp")]
 position = Vector2(259, 132)
@@ -155,3 +153,9 @@ text = "[center]
 
 
 Tap the bartender to talk[/center]"
+
+[node name="PaidActor1" parent="." index="10"]
+visible = false
+
+[node name="PaidActor2" parent="." index="11"]
+visible = false

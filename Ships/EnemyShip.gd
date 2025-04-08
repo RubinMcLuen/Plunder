@@ -1,10 +1,16 @@
 extends Area2D
 
+## -------------------------------------------------------
+##  ENEMY SHIP with UPDATED CANNON-FIRING (Smoke + Volley)
+##  Includes hit/splash sound effects
+## -------------------------------------------------------
+
 const NUM_FRAMES = 360
 const ANGLE_PER_FRAME = 360.0 / NUM_FRAMES
+const BASE_CANNONBALL_DISTANCE = 40   # For randomized shot distance calculation
 
 @export var debug_font: Font
-@export var player: Node2D                # Assign the player's node
+@export var player: Node2D
 @export var approach_distance := 150.0
 @export var align_distance := 100.0
 
@@ -19,20 +25,24 @@ const ANGLE_PER_FRAME = 360.0 / NUM_FRAMES
 @export var turn_deceleration = 120.0
 @export var angle_tolerance = 4.0
 
-# Circle parameters: lower turn speed gives a much larger turning radius (≈5× larger)
+# Circle parameters
 @export var circle_turn_speed := 16.0
 @export var circle_move_speed := 30.0
 
 @export var cannonball_scene: PackedScene
 @export var splash_scene: PackedScene
 @export var hit_scene: PackedScene
+@export var cannon_smoke_scene: PackedScene   # Smoke effect
 @export var cooldown := 1.0
-var can_shoot = true
-@onready var trail_sprite: Sprite2D = $Trail/SubViewport/Circle
 
+# Sound effects
+@onready var cannon_shot_sound: AudioStreamPlayer2D = $CannonShotSound
+@onready var splash_sound_fx: AudioStreamPlayer2D = $SplashSound
+@onready var hit_sound_fx: AudioStreamPlayer2D = $HitSound
+
+@onready var trail_sprite: Sprite2D = $Trail/SubViewport/Circle
 @export var health := 80
 
-# Export a variable to toggle debug info.
 @export var show_debug: bool = true
 
 # AI states
@@ -45,8 +55,8 @@ var current_state = EnemyState.APPROACH
 
 # For post-fire circle duration (3 timer cycles)
 var post_fire_cycles = 0
-var circle_direction = 1            # +1 for right, -1 for left
-var side_offset_degs = -90.0        # Determines whether to align left (-90) or right (90)
+var circle_direction = 1
+var side_offset_degs = -90.0
 
 var current_action = "Unknown"
 var distance_to_player = 999.0
@@ -60,11 +70,12 @@ var current_speed = 0.0
 var current_rotation_speed = 0.0
 var velocity = Vector2.ZERO
 
+var can_shoot = true
+
 func _ready():
 	sprite = $Boat
 	collision_shape = $CollisionShape2D
 	current_speed = full_speed
-	# Connect collision signal using Callable.
 	connect("area_entered", Callable(self, "_on_area_entered"))
 	print("Enemy initialized. Health =", health)
 
@@ -82,8 +93,6 @@ func _process(delta):
 
 	if player:
 		update_distance_and_angle()
-
-	#queue_redraw()
 
 ##
 # TIMER CALLBACK (DecideTimer): runs every 5 seconds.
@@ -129,10 +138,10 @@ func apply_align_and_shoot_behavior(delta):
 		current_speed = lerp(current_speed, max(slow_speed, min_speed), acceleration_factor * delta)
 	else:
 		current_speed = lerp(current_speed, full_speed, acceleration_factor * delta)
+
 	var angle_diff = turn_side_toward_player_eased(delta, side_offset_degs)
 	if abs(angle_diff) < 5.0:
 		print("Enemy aligned for firing. Angle difference =", angle_diff)
-		# Revert to original shooting: if side_offset_degs is negative, fire left; else fire right.
 		shoot_cannons(side_offset_degs)
 		post_fire_cycles = 3
 		circle_direction = -1 if randf() < 0.5 else 1
@@ -213,10 +222,9 @@ func update_frame():
 		trail_sprite.rotation_degrees = current_frame * ANGLE_PER_FRAME
 
 ##
-# SHOOTING LOGIC
+# SHOOTING LOGIC with Smoke/Volley + Sound
 ##
 func shoot_cannons(side_degs: float):
-	# Invert the firing: if side_degs < 0, fire left; else fire right.
 	if side_degs > 0:
 		shoot_left()
 	else:
@@ -225,48 +233,161 @@ func shoot_cannons(side_degs: float):
 func shoot_left():
 	if not can_shoot:
 		return
-	print("Enemy firing left cannons!")
 	can_shoot = false
+	$GunCooldown.start()
+
+	print("Enemy firing left cannons (new volley system)!")
+
+	var indices = [4, 3, 2, 1, 0]
+	for i in indices:
+		var delay = randf_range(0, 0.8)
+		var timer = Timer.new()
+		timer.one_shot = true
+		timer.wait_time = delay
+		add_child(timer)
+		timer.timeout.connect(Callable(self, "_fire_left_cannon").bind(i))
+		timer.start()
+
+func _fire_left_cannon(i):
 	var ship_direction = calculate_direction()
 	var left_direction = Vector2(ship_direction.y, -ship_direction.x)
-	var cannonball_distance = 100.0
-	for i in range(5):
-		var c = cannonball_scene.instantiate()
-		c.splash_scene = splash_scene
-		c.hit_scene = hit_scene
-		get_tree().current_scene.add_child(c)
-		var offset = ship_direction.normalized() * (i * 3 - 6)
-		var start_position = position + offset + left_direction * 8
-		c.start(start_position, left_direction, cannonball_distance, self)
-	$GunCooldown.wait_time = cooldown
-	$GunCooldown.start()
+
+	_play_shot_sound()
+	_play_splash_sound()
+
+	var offset = ship_direction.normalized() * (i * 3 - 6)
+	var start_position = position + offset + left_direction * 9
+
+	var spread_direction: Vector2
+
+	if cannon_smoke_scene:
+		var smoke = cannon_smoke_scene.instantiate()
+		get_tree().current_scene.add_child(smoke)
+		smoke.position = start_position
+		smoke.rotation = ship_direction.angle() - PI / 2
+
+		var spread_angle = deg_to_rad((i - 2) * 2)
+		spread_direction = left_direction.rotated(spread_angle)
+		smoke.flip_v = spread_direction.x < 0
+
+		smoke.start(velocity)
+	else:
+		var spread_angle = deg_to_rad((i - 2) * 2)
+		spread_direction = left_direction.rotated(spread_angle)
+
+	var cannonball_distance = (((BASE_CANNONBALL_DISTANCE * 1.0) + 50) * randf_range(0.85, 1.15))
+
+	var c = cannonball_scene.instantiate()
+	c.splash_scene = splash_scene
+	c.hit_scene = hit_scene
+	c.shooter = self
+	get_tree().current_scene.add_child(c)
+
+	c.start(start_position, spread_direction, cannonball_distance, self, velocity)
 
 func shoot_right():
 	if not can_shoot:
 		return
-	print("Enemy firing right cannons!")
 	can_shoot = false
+	$GunCooldown.start()
+
+	print("Enemy firing right cannons (new volley system)!")
+
+	var indices = [4, 3, 2, 1, 0]
+	for i in indices:
+		var delay = randf_range(0, 0.8)
+		var timer = Timer.new()
+		timer.one_shot = true
+		timer.wait_time = delay
+		add_child(timer)
+		timer.timeout.connect(Callable(self, "_fire_right_cannon").bind(i))
+		timer.start()
+
+func _fire_right_cannon(i):
 	var ship_direction = calculate_direction()
 	var right_direction = Vector2(-ship_direction.y, ship_direction.x)
-	var cannonball_distance = 100.0
-	for i in range(5):
-		var c = cannonball_scene.instantiate()
-		c.splash_scene = splash_scene
-		c.hit_scene = hit_scene
-		get_tree().current_scene.add_child(c)
-		var offset = ship_direction.normalized() * (i * 3 - 6)
-		var start_position = position + offset + right_direction * 8
-		c.start(start_position, right_direction, cannonball_distance, self)
-	$GunCooldown.wait_time = cooldown
-	$GunCooldown.start()
+
+	_play_shot_sound()
+	_play_splash_sound()
+
+	var offset = ship_direction.normalized() * (i * 3 - 6)
+	var start_position = position + offset + right_direction * 9
+
+	var spread_direction: Vector2
+
+	if cannon_smoke_scene:
+		var smoke = cannon_smoke_scene.instantiate()
+		get_tree().current_scene.add_child(smoke)
+		smoke.position = start_position
+		smoke.rotation = ship_direction.angle() + PI / 2
+
+		var spread_angle = deg_to_rad((i - 2) * 2)
+		spread_direction = right_direction.rotated(-spread_angle)
+		smoke.flip_v = spread_direction.x < 0
+
+		smoke.start(velocity)
+	else:
+		var spread_angle = deg_to_rad((i - 2) * 2)
+		spread_direction = right_direction.rotated(-spread_angle)
+
+	var cannonball_distance = (((BASE_CANNONBALL_DISTANCE * 1.0) + 50) * randf_range(0.85, 1.15))
+
+	var c = cannonball_scene.instantiate()
+	c.splash_scene = splash_scene
+	c.hit_scene = hit_scene
+	c.shooter = self
+	get_tree().current_scene.add_child(c)
+
+	c.start(start_position, spread_direction, cannonball_distance, self, velocity)
 
 func _on_gun_cooldown_timeout():
 	can_shoot = true
 	print("Enemy gun cooldown finished. can_shoot =", can_shoot)
 
-func calculate_direction() -> Vector2:
-	var angle = deg_to_rad(current_frame * ANGLE_PER_FRAME)
-	return Vector2(cos(angle), sin(angle))
+##
+# Sound-Playing Helpers
+##
+func _play_shot_sound():
+	if cannon_shot_sound:
+		var shot_sound = cannon_shot_sound.duplicate()
+		get_tree().current_scene.add_child(shot_sound)
+		shot_sound.global_position = global_position
+		shot_sound.play()
+		var sound_length = shot_sound.stream.get_length()
+		var free_timer = Timer.new()
+		free_timer.one_shot = true
+		free_timer.wait_time = sound_length
+		add_child(free_timer)
+		free_timer.timeout.connect(Callable(shot_sound, "queue_free"))
+		free_timer.start()
+
+func _play_splash_sound():
+	if splash_sound_fx:
+		var splash_sound = splash_sound_fx.duplicate()
+		get_tree().current_scene.add_child(splash_sound)
+		splash_sound.global_position = global_position
+		splash_sound.play()
+		var sound_length = splash_sound.stream.get_length()
+		var free_timer = Timer.new()
+		free_timer.one_shot = true
+		free_timer.wait_time = sound_length
+		add_child(free_timer)
+		free_timer.timeout.connect(Callable(splash_sound, "queue_free"))
+		free_timer.start()
+
+func _play_hit_sound():
+	if hit_sound_fx:
+		var hit_sound = hit_sound_fx.duplicate()
+		get_tree().current_scene.add_child(hit_sound)
+		hit_sound.global_position = global_position
+		hit_sound.play()
+		var sound_length = hit_sound.stream.get_length()
+		var free_timer = Timer.new()
+		free_timer.one_shot = true
+		free_timer.wait_time = sound_length
+		add_child(free_timer)
+		free_timer.timeout.connect(Callable(hit_sound, "queue_free"))
+		free_timer.start()
 
 ##
 # MOVEMENT
@@ -276,6 +397,10 @@ func update_movement(delta):
 		current_speed = min_speed
 	var direction = calculate_direction()
 	velocity = direction * current_speed
+
+func calculate_direction() -> Vector2:
+	var angle = deg_to_rad(current_frame * ANGLE_PER_FRAME)
+	return Vector2(cos(angle), sin(angle))
 
 ##
 # HEALTH / DAMAGE
@@ -308,6 +433,7 @@ func _on_area_entered(area: Area2D) -> void:
 	if area.has_method("take_damage"):
 		area.take_damage(10)
 		create_hit_effect()
+		_play_hit_sound()
 		queue_free()
 		print("Enemy hit! Damage: 10, New Health:", health)
 
@@ -318,24 +444,25 @@ func create_hit_effect():
 		get_tree().current_scene.add_child(hit)
 
 ##
-# DEBUG DRAWING
+# DEBUG DRAWING (Commented out as requested)
 ##
 func _draw():
-	if show_debug:
-		draw_circle(Vector2.ZERO, approach_distance, Color(0, 0, 1, 0.2))
-		draw_circle(Vector2.ZERO, align_distance, Color(1, 0, 0, 0.2))
-		var debug_info = [
-			"State: %s" % str(current_state),
-			"Action: %s" % current_action,
-			"DistToPlayer: %.1f" % distance_to_player,
-			"CurSpeed: %.1f" % current_speed,
-			"RotSpeed: %.1f" % current_rotation_speed,
-			"post_fire_cycles: %d" % post_fire_cycles,
-			"side_offset_degs: %.1f" % side_offset_degs,
-			"Enemy HP: %d" % health,
-			"can_shoot? %s" % str(can_shoot)
-		]
-		var start_pos = Vector2(10, -40)
-		var spacing = 14
-		for i in range(debug_info.size()):
-			draw_string(debug_font, start_pos + Vector2(0, i * spacing), debug_info[i])
+	# if show_debug:
+	# 	draw_circle(Vector2.ZERO, approach_distance, Color(0, 0, 1, 0.2))
+	# 	draw_circle(Vector2.ZERO, align_distance, Color(1, 0, 0, 0.2))
+	# 	var debug_info = [
+	# 		"State: %s" % str(current_state),
+	# 		"Action: %s" % current_action,
+	# 		"DistToPlayer: %.1f" % distance_to_player,
+	# 		"CurSpeed: %.1f" % current_speed,
+	# 		"RotSpeed: %.1f" % current_rotation_speed,
+	# 		"post_fire_cycles: %d" % post_fire_cycles,
+	# 		"side_offset_degs: %.1f" % side_offset_degs,
+	# 		"Enemy HP: %d" % health,
+	# 		"can_shoot? %s" % str(can_shoot)
+	# 	]
+	# 	var start_pos = Vector2(10, -40)
+	# 	var spacing = 14
+	# 	for i in range(debug_info.size()):
+	# 		draw_string(debug_font, start_pos + Vector2(0, i * spacing), debug_info[i])
+	pass

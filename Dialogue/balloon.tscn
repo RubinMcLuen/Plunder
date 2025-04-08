@@ -14,7 +14,11 @@
 [node name="ExampleBalloon" type="CanvasLayer"]
 script = ExtResource("1_i6w4i")
 
-[node name="Balloon" type="Control" parent="."]
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(-48, -54)
+scale = Vector2(1.2, 1.2)
+
+[node name="Balloon" type="Control" parent="Node2D"]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 7
@@ -22,17 +26,18 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -144.0
-offset_top = -64.0
-offset_right = 144.0
+offset_left = 96.0
+offset_top = 206.0
+offset_right = 384.0
+offset_bottom = 270.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="Frame" type="Sprite2D" parent="Balloon"]
+[node name="Frame" type="Sprite2D" parent="Node2D/Balloon"]
 position = Vector2(144, 32)
 texture = ExtResource("2_a8s57")
 
-[node name="MarginContainer" type="MarginContainer" parent="Balloon"]
+[node name="MarginContainer" type="MarginContainer" parent="Node2D/Balloon"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -47,11 +52,11 @@ grow_vertical = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_right = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Balloon/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Node2D/Balloon/MarginContainer"]
 clip_contents = true
 layout_mode = 2
 
-[node name="CharacterLabel" type="RichTextLabel" parent="Balloon/MarginContainer/VBoxContainer"]
+[node name="CharacterLabel" type="RichTextLabel" parent="Node2D/Balloon/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 z_index = 1
 custom_minimum_size = Vector2(0, 11)
@@ -64,7 +69,7 @@ bbcode_enabled = true
 text = "[center]character"
 scroll_active = false
 
-[node name="DialogueLabel" type="RichTextLabel" parent="Balloon/MarginContainer/VBoxContainer"]
+[node name="DialogueLabel" type="RichTextLabel" parent="Node2D/Balloon/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 z_index = 1
 custom_minimum_size = Vector2(0, 40)
@@ -80,11 +85,11 @@ shortcut_keys_enabled = false
 script = ExtResource("2_itne3")
 skip_pause_at_abbreviations = PackedStringArray("Mr", "Mrs", "Ms", "Dr", "etc", "eg", "ex")
 
-[node name="TextBox" type="Sprite2D" parent="Balloon"]
+[node name="TextBox" type="Sprite2D" parent="Node2D/Balloon"]
 position = Vector2(154, 32)
 texture = ExtResource("5_tvq0j")
 
-[node name="NextButton" type="TextureButton" parent="Balloon"]
+[node name="NextButton" type="TextureButton" parent="Node2D/Balloon"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 247.0
@@ -95,7 +100,7 @@ texture_normal = ExtResource("6_4ecox")
 texture_pressed = ExtResource("7_yiuh7")
 texture_hover = ExtResource("7_yiuh7")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Balloon/NextButton"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Node2D/Balloon/NextButton"]
 layout_mode = 0
 offset_left = 1.0
 offset_top = 23.0
@@ -108,7 +113,7 @@ theme_override_font_sizes/normal_font_size = 8
 bbcode_enabled = true
 text = "[center]Next"
 
-[node name="Responses" type="MarginContainer" parent="Balloon"]
+[node name="Responses" type="MarginContainer" parent="Node2D/Balloon"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 7
@@ -125,10 +130,10 @@ grow_vertical = 0
 theme_override_constants/margin_left = 2
 theme_override_constants/margin_right = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Balloon/Responses"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Node2D/Balloon/Responses"]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Balloon/Responses/VBoxContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Node2D/Balloon/Responses/VBoxContainer"]
 custom_minimum_size = Vector2(0, 11)
 layout_mode = 2
 theme_override_colors/default_color = Color(1, 0.996078, 0.941176, 1)
@@ -137,17 +142,17 @@ theme_override_font_sizes/normal_font_size = 8
 bbcode_enabled = true
 text = "[center]Choose an option:"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Balloon/Responses/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Node2D/Balloon/Responses/VBoxContainer"]
 layout_mode = 2
 
-[node name="Option1Button" type="TextureButton" parent="Balloon/Responses/VBoxContainer/HBoxContainer"]
+[node name="Option1Button" type="TextureButton" parent="Node2D/Balloon/Responses/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
 texture_normal = ExtResource("8_ckuti")
 texture_pressed = ExtResource("9_ydi6i")
 
-[node name="Option1Label" type="RichTextLabel" parent="Balloon/Responses/VBoxContainer/HBoxContainer/Option1Button"]
+[node name="Option1Label" type="RichTextLabel" parent="Node2D/Balloon/Responses/VBoxContainer/HBoxContainer/Option1Button"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 1.0
@@ -161,14 +166,14 @@ theme_override_font_sizes/normal_font_size = 6
 bbcode_enabled = true
 fit_content = true
 
-[node name="Option2Button" type="TextureButton" parent="Balloon/Responses/VBoxContainer/HBoxContainer"]
+[node name="Option2Button" type="TextureButton" parent="Node2D/Balloon/Responses/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
 texture_normal = ExtResource("8_ckuti")
 texture_pressed = ExtResource("9_ydi6i")
 
-[node name="Option2Label" type="RichTextLabel" parent="Balloon/Responses/VBoxContainer/HBoxContainer/Option2Button"]
+[node name="Option2Label" type="RichTextLabel" parent="Node2D/Balloon/Responses/VBoxContainer/HBoxContainer/Option2Button"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 1.0
@@ -182,17 +187,17 @@ theme_override_font_sizes/normal_font_size = 6
 bbcode_enabled = true
 fit_content = true
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Balloon/Responses/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="Node2D/Balloon/Responses/VBoxContainer"]
 layout_mode = 2
 
-[node name="Option3Button" type="TextureButton" parent="Balloon/Responses/VBoxContainer/HBoxContainer2"]
+[node name="Option3Button" type="TextureButton" parent="Node2D/Balloon/Responses/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
 texture_normal = ExtResource("8_ckuti")
 texture_pressed = ExtResource("9_ydi6i")
 
-[node name="Option3Label" type="RichTextLabel" parent="Balloon/Responses/VBoxContainer/HBoxContainer2/Option3Button"]
+[node name="Option3Label" type="RichTextLabel" parent="Node2D/Balloon/Responses/VBoxContainer/HBoxContainer2/Option3Button"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 1.0
@@ -206,14 +211,14 @@ theme_override_font_sizes/normal_font_size = 6
 bbcode_enabled = true
 fit_content = true
 
-[node name="Option4Button" type="TextureButton" parent="Balloon/Responses/VBoxContainer/HBoxContainer2"]
+[node name="Option4Button" type="TextureButton" parent="Node2D/Balloon/Responses/VBoxContainer/HBoxContainer2"]
 unique_name_in_owner = true
 layout_mode = 2
 toggle_mode = true
 texture_normal = ExtResource("8_ckuti")
 texture_pressed = ExtResource("9_ydi6i")
 
-[node name="Option4Label" type="RichTextLabel" parent="Balloon/Responses/VBoxContainer/HBoxContainer2/Option4Button"]
+[node name="Option4Label" type="RichTextLabel" parent="Node2D/Balloon/Responses/VBoxContainer/HBoxContainer2/Option4Button"]
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 1.0
@@ -227,7 +232,7 @@ theme_override_font_sizes/normal_font_size = 6
 bbcode_enabled = true
 fit_content = true
 
-[node name="Container" type="Container" parent="Balloon"]
+[node name="Container" type="Container" parent="Node2D/Balloon"]
 clip_contents = true
 layout_mode = 0
 offset_left = 4.0
@@ -235,9 +240,9 @@ offset_top = 4.0
 offset_right = 60.0
 offset_bottom = 60.0
 
-[node name="PortraitBackground" type="Sprite2D" parent="Balloon/Container"]
+[node name="PortraitBackground" type="Sprite2D" parent="Node2D/Balloon/Container"]
 position = Vector2(28, 28)
 texture = ExtResource("10_jw8tt")
 
-[connection signal="gui_input" from="Balloon" to="." method="_on_balloon_gui_input"]
-[connection signal="pressed" from="Balloon/NextButton" to="." method="_on_next_button_pressed"]
+[connection signal="gui_input" from="Node2D/Balloon" to="." method="_on_balloon_gui_input"]
+[connection signal="pressed" from="Node2D/Balloon/NextButton" to="." method="_on_next_button_pressed"]

@@ -10,8 +10,8 @@
 script = ExtResource("1_xnoka")
 character_name = "Player"
 level = 1
-max_hp = 100
-current_hp = 100
+max_hp = 40
+current_hp = 40
 strength = 10
 speed = 10
 defense = 10

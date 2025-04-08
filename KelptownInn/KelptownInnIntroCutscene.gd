@@ -18,8 +18,12 @@ var scene_state: String = ""  # We'll set this based on the quest step.
 
 func _ready() -> void:
 	# 1) Load player position from your save file.
-	load_player_position()
-
+	#load_player_position()
+	
+	# Set the player's camera zoom immediately to 1.5x.
+	if player.has_node("Camera2D"):
+		player.get_node("Camera2D").zoom = Vector2(1.5, 1.5)
+		
 	QuestManager.reload_quest_data()
 
 	# 3) Connect signals.
@@ -32,6 +36,7 @@ func _ready() -> void:
 
 	# 4) Apply scene state & NPC states from quest step.
 	apply_scene_state_from_quest()
+
 
 
 func load_player_position():

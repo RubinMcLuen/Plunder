@@ -4,7 +4,7 @@ extends Node2D
 @onready var monte_coral: CharacterBody2D = $MonteCoral
 @onready var first_mate: NPC = $FirstMate
 var skip_fade: bool = false
-
+@export var location_name: String = "Kelptown"
 @export var monte_coral_dialogue: Resource
 @export var first_mate_dialogue: Resource
 @export var dialogue_scene: PackedScene = preload("res://Dialogue/balloon.tscn")
@@ -13,13 +13,18 @@ var scene_state: String = "pre_shiptutorial"
 
 func _ready() -> void:
 	$Exit.body_entered.connect(_on_exit_body_entered)
-	
+	UIManager.show_location_notification(location_name)
 	# Connect dialogue signals.
 	first_mate.dialogue_requested.connect(_on_first_mate_dialogue_requested)
 	if monte_coral.has_method("dialogue_requested"):
 		monte_coral.dialogue_requested.connect(_on_monte_coral_dialogue_requested)
 	
 	apply_scene_state()
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
+		UIManager.show_location_notification(location_name)
+
 
 func apply_scene_state() -> void:
 	# Determine scene state based on the ShipTutorial quest's step.

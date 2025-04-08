@@ -1,0 +1,102 @@
+[gd_resource type="Resource" script_class="DialogueResource" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_prok8"]
+
+[resource]
+script = ExtResource("1_prok8")
+using_states = PackedStringArray()
+titles = {
+"default": "2",
+"one": "6",
+"two": "10"
+}
+character_names = PackedStringArray("Paid Actor")
+first_title = "2"
+lines = {
+"1": {
+"id": "1",
+"next_id": "2",
+"text": "default",
+"type": &"title"
+},
+"10": {
+"character": "Paid Actor",
+"character_replacements": Array[Dictionary]([]),
+"id": "10",
+"next_id": "11",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "If ye can outdrink me without kissin’ the floor, I’ll consider joinin’ yer sorry crew.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "If ye can outdrink me without kissin’ the floor, I’ll consider joinin’ yer sorry crew.",
+"type": &"dialogue"
+},
+"11": {
+"id": "11",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"2": {
+"character": "Paid Actor",
+"character_replacements": Array[Dictionary]([]),
+"id": "2",
+"next_id": "3",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Fight me!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Fight me!",
+"type": &"dialogue"
+},
+"3": {
+"id": "3",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"5": {
+"id": "5",
+"next_id": "6",
+"text": "one",
+"type": &"title"
+},
+"6": {
+"character": "Paid Actor",
+"character_replacements": Array[Dictionary]([]),
+"id": "6",
+"next_id": "7",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Come back when ye’ve sailed through more storms, Captain—I'm not takin’ orders from a guppy.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Come back when ye’ve sailed through more storms, Captain—I'm not takin’ orders from a guppy.",
+"type": &"dialogue"
+},
+"7": {
+"id": "7",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"9": {
+"id": "9",
+"next_id": "10",
+"text": "two",
+"type": &"title"
+}
+}
+raw_text = "~ default
+Paid Actor: Fight me!
+=> END
+
+~ one
+Paid Actor: Come back when ye’ve sailed through more storms, Captain—I'm not takin’ orders from a guppy.
+=> END
+
+~ two
+Paid Actor: If ye can outdrink me without kissin’ the floor, I’ll consider joinin’ yer sorry crew.
+=> END
+
+"
+metadata/dialogue_manager_version = "2.45.0"

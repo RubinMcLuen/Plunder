@@ -1,11 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://cnxn3imjbuqru"]
+[gd_scene load_steps=12 format=3 uid="uid://cnxn3imjbuqru"]
 
 [ext_resource type="Script" path="res://Ships/EnemyShip.gd" id="1_j5nyo"]
 [ext_resource type="PackedScene" uid="uid://bv47a7gnpila8" path="res://Ships/Trail.tscn" id="2_86ndw"]
 [ext_resource type="PackedScene" uid="uid://cepi4n24b2mso" path="res://Ships/cannonball.tscn" id="2_ii1n5"]
-[ext_resource type="Texture2D" uid="uid://bqbc76dxaqw1y" path="res://Ships/boat_sprite.png" id="2_io26m"]
 [ext_resource type="PackedScene" uid="uid://cx2ap46ajhblu" path="res://Ships/splash.tscn" id="3_unqm3"]
 [ext_resource type="PackedScene" uid="uid://cn0j5qsgevekp" path="res://Ships/hit.tscn" id="4_uviaf"]
+[ext_resource type="PackedScene" uid="uid://jw4tqg00wiia" path="res://Ships/CannonSmoke.tscn" id="5_4fxwd"]
+[ext_resource type="Texture2D" uid="uid://bvmq32sobhihj" path="res://Ships/enemy_boat_sprite.png" id="7_ay5u3"]
+[ext_resource type="AudioStream" uid="uid://cfj5q5vjaofvm" path="res://Ships/converted_audio2.mp3" id="8_e6ojg"]
+[ext_resource type="AudioStream" uid="uid://bf7ih7g0442mg" path="res://Ships/hit.mp3" id="9_kiohd"]
+[ext_resource type="AudioStream" uid="uid://yvsvg4l72r6n" path="res://Ships/SplashSoundEffect.mp3" id="10_ivc8j"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4rmrt"]
 size = Vector2(30, 16)
@@ -16,12 +20,13 @@ script = ExtResource("1_j5nyo")
 cannonball_scene = ExtResource("2_ii1n5")
 splash_scene = ExtResource("3_unqm3")
 hit_scene = ExtResource("4_uviaf")
+cannon_smoke_scene = ExtResource("5_4fxwd")
 
 [node name="Trail" parent="." instance=ExtResource("2_86ndw")]
 z_index = -1
 
 [node name="Boat" type="Sprite2D" parent="."]
-texture = ExtResource("2_io26m")
+texture = ExtResource("7_ay5u3")
 hframes = 360
 frame = 180
 
@@ -38,6 +43,17 @@ enabled = false
 [node name="DecideTimer" type="Timer" parent="."]
 wait_time = 2.0
 autostart = true
+
+[node name="CannonShotSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("8_e6ojg")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("9_kiohd")
+volume_db = -25.272
+
+[node name="SplashSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("10_ivc8j")
+volume_db = -10.19
 
 [connection signal="timeout" from="GunCooldown" to="." method="_on_gun_cooldown_timeout"]
 [connection signal="timeout" from="DecideTimer" to="." method="_on_decide_timer_timeout"]

@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_13"
+type="Resource"
+uid="uid://cswlnoh68rgyw"
+path="res://.godot/imported/PaidActor.dialogue-61062a6a1f02fc5ff5d27c6aa655e473.tres"
+
+[deps]
+
+source_file="res://Dialogue/dialogues/PaidActor.dialogue"
+dest_files=["res://.godot/imported/PaidActor.dialogue-61062a6a1f02fc5ff5d27c6aa655e473.tres"]
+
+[params]
+
+defaults=true

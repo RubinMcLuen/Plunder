@@ -1,8 +1,11 @@
-[gd_scene load_steps=53 format=3 uid="uid://ci36078u3htw1"]
+[gd_scene load_steps=57 format=3 uid="uid://ci36078u3htw1"]
 
 [ext_resource type="Script" path="res://KelptownInn/KelptownInn.gd" id="1_8g3rb"]
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="2_iwfcd"]
+[ext_resource type="Resource" uid="uid://dloukc748ca08" path="res://Dialogue/dialogues/bartender.dialogue" id="3_43j7b"]
 [ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/Player.tscn" id="3_v7aqn"]
+[ext_resource type="Resource" uid="uid://cswlnoh68rgyw" path="res://Dialogue/dialogues/PaidActor.dialogue" id="3_vvvut"]
+[ext_resource type="Script" path="res://Character/NPC/NPCs/Bartender.gd" id="3_yne2m"]
 [ext_resource type="Texture2D" uid="uid://dtl865k56rp5b" path="res://KelptownInn/assets/taverninterior2.png" id="4_ketps"]
 [ext_resource type="Texture2D" uid="uid://b0an8k1ojomxd" path="res://KelptownInn/assets/1.png" id="5_ip47w"]
 [ext_resource type="Texture2D" uid="uid://cxriu4ggtgh5a" path="res://KelptownInn/assets/3.png" id="6_7haqx"]
@@ -32,6 +35,7 @@
 [ext_resource type="Texture2D" uid="uid://u2o1ep1ov5d5" path="res://KelptownInn/assets/26.png" id="30_ct7yg"]
 [ext_resource type="Texture2D" uid="uid://cspyynoayouwp" path="res://KelptownInn/assets/27.png" id="31_2413o"]
 [ext_resource type="Texture2D" uid="uid://t8g5otoebhr7" path="res://KelptownInn/assets/28.png" id="32_5vnuh"]
+[ext_resource type="Script" path="res://Character/NPC/NPCs/PaidActor.gd" id="35_nlb7u"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5j50s"]
 size = Vector2(26, 4)
@@ -97,18 +101,19 @@ size = Vector2(48, 20)
 y_sort_enabled = true
 script = ExtResource("1_8g3rb")
 player = NodePath("Player")
-
-[node name="Player" parent="." instance=ExtResource("3_v7aqn")]
-position = Vector2(269, 237)
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(0, -8)
-zoom = Vector2(1.5, 1.5)
+bartender_dialogue_resource = ExtResource("3_43j7b")
+paid_actor_dialogue_resource = ExtResource("3_vvvut")
 
 [node name="Bartender" parent="." instance=ExtResource("2_iwfcd")]
 position = Vector2(270, 68)
 collision_layer = 2
-npc_name = "bartender"
+script = ExtResource("3_yne2m")
+
+[node name="Player" parent="." instance=ExtResource("3_v7aqn")]
+position = Vector2(268, 226)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.5, 1.5)
 
 [node name="Background" type="Sprite2D" parent="."]
 z_index = -1
@@ -525,3 +530,15 @@ shape = SubResource("RectangleShape2D_bltdw")
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/BarStools"]
 position = Vector2(73, 0)
 shape = SubResource("RectangleShape2D_ru76x")
+
+[node name="PaidActor1" parent="." instance=ExtResource("2_iwfcd")]
+position = Vector2(235, 133)
+script = ExtResource("35_nlb7u")
+state = "one"
+npc_texture_index = 1
+
+[node name="PaidActor2" parent="." instance=ExtResource("2_iwfcd")]
+position = Vector2(310, 222)
+script = ExtResource("35_nlb7u")
+state = "two"
+npc_texture_index = 2

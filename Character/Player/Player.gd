@@ -13,7 +13,15 @@ signal end_fight  # Emitted when player's health reaches 0
 
 var health: int = 3
 var fighting: bool = false
-var disable_user_input: bool = false
+var disable_user_input: bool = false:
+	set(new_value):
+		disable_user_input = new_value
+		# Whenever we turn user input back on, reset the mouse drag state.
+		if not new_value:
+			mouse_move_active = false
+	get:
+		return disable_user_input
+
 
 # Use one AnimatedSprite2D node named "Appearance"
 @onready var appearance: AnimatedSprite2D = $Appearance

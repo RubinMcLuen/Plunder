@@ -25,4 +25,5 @@ func _ready():
 
 func _change_scene():
 	# Change to the scene "Tavern/tavern.tscn"
-	get_tree().change_scene_to_file("res://Tavern/tavern.tscn")
+	SceneSwitcher.switch_scene("res://KelptownInn/KelptownInnIntroCutscene.tscn", Vector2(100, 100))
+
