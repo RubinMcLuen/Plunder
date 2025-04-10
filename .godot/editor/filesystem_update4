@@ -8,6 +8,7 @@ res://Character/Player/PlayerStats.tres
 res://Character/NPC/NPCs/EnemyStats.tres
 res://Ships/Assets/Shaders/RippleShader.tres
 res://Ships/Assets/Shaders/WaterTrailSpriteMaterial.tres
+res://Ocean/delete.gdshader
 res://KelptownInn/KelptownInn.tscn
 res://Dialogue/balloon.tscn
 res://KelptownInn/KelptownInnIntroCutscene.tscn
@@ -15,3 +16,5 @@ res://Character/NPC/NPC.tscn
 res://Island/island.tscn
 res://Respawn/respawn.tscn
 res://Ships/EnemyShip.tscn
+res://Ships/PlayerShip.tscn
+res://Ships/Trail.tscn

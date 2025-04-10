@@ -12,6 +12,7 @@ var queue: Array = []
 var offset: Vector2 = Vector2.ZERO
 
 func _ready():
+	z_index = -1
 	offset = sub_viewport.size / 2
 
 func _process(delta):

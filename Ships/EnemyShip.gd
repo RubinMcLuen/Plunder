@@ -1,3 +1,4 @@
+
 extends Area2D
 
 ## -------------------------------------------------------
@@ -80,19 +81,8 @@ func _ready():
 	print("Enemy initialized. Health =", health)
 
 func _process(delta):
-	match current_state:
-		EnemyState.APPROACH:
-			apply_approach_behavior(delta)
-		EnemyState.ALIGN:
-			apply_align_and_shoot_behavior(delta)
-		EnemyState.CIRCLE:
-			apply_circle_behavior(delta)
+	pass
 
-	update_movement(delta)
-	global_position += velocity * delta
-
-	if player:
-		update_distance_and_angle()
 
 ##
 # TIMER CALLBACK (DecideTimer): runs every 5 seconds.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://kbt3hu1lmvfj"]
+[gd_scene load_steps=12 format=3 uid="uid://kbt3hu1lmvfj"]
 
 [ext_resource type="Script" path="res://Ocean/Ocean.gd" id="1_kxoef"]
 [ext_resource type="Texture2D" uid="uid://fxlwkiykamae" path="res://Ocean/frame_0100-sheet.png" id="1_xs5hd"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/playerisland.png" id="5_3mcoo"]
 [ext_resource type="Texture2D" uid="uid://bbecueeouc3gh" path="res://Ships/detailedboat.png" id="6_fpc3e"]
 [ext_resource type="PackedScene" uid="uid://cnxn3imjbuqru" path="res://Ships/EnemyShip.tscn" id="7_6y6ch"]
+[ext_resource type="Shader" path="res://Ocean/delete.gdshader" id="8_q2cvh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8clfk"]
 texture = ExtResource("1_xs5hd")
@@ -259,6 +260,10 @@ texture_region_size = Vector2i(128, 128)
 tile_size = Vector2i(128, 128)
 sources/0 = SubResource("TileSetAtlasSource_8clfk")
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6onfh"]
+shader = ExtResource("8_q2cvh")
+shader_parameter/boost = 0.35
+
 [node name="Ocean" type="Node2D"]
 script = ExtResource("1_kxoef")
 
@@ -300,6 +305,15 @@ texture = ExtResource("5_3mcoo")
 position = Vector2(-239.5, 2125)
 texture = ExtResource("6_fpc3e")
 
-[node name="EnemyShip" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_6y6ch")]
-position = Vector2(108, 163)
-player = NodePath("../PlayerShip")
+[node name="EnemyShip" parent="." instance=ExtResource("7_6y6ch")]
+position = Vector2(-2, 98)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_6onfh")
+offset_right = 480.0
+offset_bottom = 270.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+color = Color(1, 1, 1, 0)
