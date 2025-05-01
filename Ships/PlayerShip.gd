@@ -80,8 +80,6 @@ func _ready():
 	sprite = $ShipSprite
 	collision_shape = $ShipHitbox
 	$ShipCamera.make_current()
-	$CanvasLayer/CannonLeft.connect("pressed", Callable(self, "_on_CannonLeft_pressed"))
-	$CanvasLayer/CannonRight.connect("pressed", Callable(self, "_on_CannonRight_pressed"))
 	connect("area_entered", Callable(self, "_on_area_entered"))
 
 func _process(delta):
@@ -156,6 +154,7 @@ func update_movement(delta):
 	else:
 		current_speed *= damping_factor
 	velocity = calculate_direction() * current_speed
+
 
 func calculate_direction():
 	var angle = deg_to_rad(current_frame * ANGLE_PER_FRAME)

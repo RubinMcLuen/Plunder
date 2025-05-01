@@ -9,4 +9,4 @@ func _ready():
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		var camera = get_node("PlayerShip/ShipCamera")
-		get_tree().create_tween().tween_property(camera, "zoom", Vector2(0.2, 0.2), 5.0)
+		get_tree().create_tween().tween_property(camera, "zoom", Vector2(0.4, 0.4), 5.0)

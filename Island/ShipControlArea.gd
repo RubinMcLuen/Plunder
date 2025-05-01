@@ -1,7 +1,7 @@
 extends Area2D
 
 @export var target_scene: PackedScene          # The scene to switch to
-var allow_menu: bool = false  # Prevent showing the menu on initial scene load
+var allow_menu: bool = true  # Prevent showing the menu on initial scene load
 
 func _ready() -> void:
 	connect("body_entered", Callable(self, "_on_body_entered"))

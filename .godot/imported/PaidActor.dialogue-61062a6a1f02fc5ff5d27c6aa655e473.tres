@@ -1,16 +1,16 @@
 [gd_resource type="Resource" script_class="DialogueResource" load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_prok8"]
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_ftux2"]
 
 [resource]
-script = ExtResource("1_prok8")
+script = ExtResource("1_ftux2")
 using_states = PackedStringArray()
 titles = {
 "default": "2",
 "one": "6",
 "two": "10"
 }
-character_names = PackedStringArray("Paid Actor")
+character_names = PackedStringArray("Paid Actor", "Jack Sands")
 first_title = "2"
 lines = {
 "1": {
@@ -62,7 +62,7 @@ lines = {
 "type": &"title"
 },
 "6": {
-"character": "Paid Actor",
+"character": "Jack Sands",
 "character_replacements": Array[Dictionary]([]),
 "id": "6",
 "next_id": "7",
@@ -91,7 +91,7 @@ Paid Actor: Fight me!
 => END
 
 ~ one
-Paid Actor: Come back when ye’ve sailed through more storms, Captain—I'm not takin’ orders from a guppy.
+Jack Sands: Come back when ye’ve sailed through more storms, Captain—I'm not takin’ orders from a guppy.
 => END
 
 ~ two

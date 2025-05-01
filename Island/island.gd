@@ -2,7 +2,7 @@ extends Node2D
 
 @onready var player: CharacterBody2D = $Player
 @onready var monte_coral: CharacterBody2D = $MonteCoral
-@onready var first_mate: NPC = $FirstMate
+@onready var first_mate: NPC = $FirstMate2
 var skip_fade: bool = false
 @export var location_name: String = "Kelptown"
 @export var monte_coral_dialogue: Resource
@@ -15,7 +15,6 @@ func _ready() -> void:
 	$Exit.body_entered.connect(_on_exit_body_entered)
 	UIManager.show_location_notification(location_name)
 	# Connect dialogue signals.
-	first_mate.dialogue_requested.connect(_on_first_mate_dialogue_requested)
 	if monte_coral.has_method("dialogue_requested"):
 		monte_coral.dialogue_requested.connect(_on_monte_coral_dialogue_requested)
 	
@@ -92,3 +91,12 @@ func _on_first_mate_dialogue_requested(dialogue_section: String) -> void:
 
 func _on_dialogue_finished() -> void:
 	player.disable_user_input = false
+
+
+func _on_first_mate_2_dialogue_requested(dialogue_section):
+	player.disable_user_input = true
+	var balloon = DialogueManager.show_dialogue_balloon(first_mate_dialogue, dialogue_section, [first_mate])
+	# Let the First Mate handle his own state change when dialogue finishes.
+	balloon.connect("dialogue_finished", Callable(first_mate, "_on_dialogue_finished"))
+	# Also re-enable player input after dialogue completes.
+	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))

@@ -1,14 +1,15 @@
 [gd_resource type="Resource" script_class="DialogueResource" load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_ioie6"]
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_3njs2"]
 
 [resource]
-script = ExtResource("1_ioie6")
+script = ExtResource("1_3njs2")
 using_states = PackedStringArray()
 titles = {
 "OnShipNotReady": "13",
 "OnShipReady": "9",
-"OutsideKelptownInn": "2"
+"OutsideKelptownInn": "2",
+"default": "17"
 }
 character_names = PackedStringArray("First Mate")
 first_title = "2"
@@ -48,6 +49,24 @@ lines = {
 "is_snippet": false,
 "next_id": "end",
 "type": &"goto"
+},
+"16": {
+"id": "16",
+"next_id": "17",
+"text": "default",
+"type": &"title"
+},
+"17": {
+"character": "First Mate",
+"character_replacements": Array[Dictionary]([]),
+"id": "17",
+"next_id": &"end",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "That scurvy is no funny business, you ought to spend less time on the poopdeck!",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "That scurvy is no funny business, you ought to spend less time on the poopdeck!",
+"type": &"dialogue"
 },
 "2": {
 "character": "First Mate",
@@ -135,5 +154,8 @@ First Mate: Tap the wheel when yer ready, Captain. Just try not to steer us stra
 
 ~ OnShipNotReady
 First Mate: I’d love to set sail, Captain, but uh… where exactly are we sailin’ to? Maybe ask around town, see if anyone’s got somethin’ worth chasin’!
-=> END"
+=> END
+
+~ default
+First Mate: That scurvy is no funny business, you ought to spend less time on the poopdeck!"
 metadata/dialogue_manager_version = "2.45.0"

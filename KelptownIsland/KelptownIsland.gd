@@ -81,7 +81,6 @@ func _on_player_movement_started():
 
 func _on_manual_rotation_started():
 	UIManager.hide_dock_ship_menu()
-	print("Sprite made invisible due to player starting to rotate manually.")
 
 # Script where _on_dock_button_pressed is defined
 

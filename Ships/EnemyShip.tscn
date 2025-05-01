@@ -31,7 +31,7 @@ z_index = -1
 [node name="Boat" type="Sprite2D" parent="."]
 texture = ExtResource("7_ay5u3")
 hframes = 360
-frame = 180
+frame = 213
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1)

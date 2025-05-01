@@ -1,10 +1,10 @@
 [gd_scene load_steps=15 format=3 uid="uid://cjn8sut1cl3vw"]
 
-[ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://SaveMenu/assets/saveslotmenubackground.png" id="1_16eeq"]
+[ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://CharacterCreator/assets/window.png" id="1_16eeq"]
 [ext_resource type="Script" path="res://SwordFight/SwordFightTutorial.gd" id="1_rh7qk"]
 [ext_resource type="Texture2D" uid="uid://2n4r0m1kwv86" path="res://SwordFight/header.png" id="2_jqyv7"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="3_2jasl"]
-[ext_resource type="Texture2D" uid="uid://f15wrm7l2bud" path="res://CharacterCreation/assets/item_background_off.png" id="4_83707"]
+[ext_resource type="Texture2D" uid="uid://f15wrm7l2bud" path="res://CharacterCreator/assets/item_background_off.png" id="4_83707"]
 [ext_resource type="Texture2D" uid="uid://7a4bsx2ha1tu" path="res://SwordFight/projectile.png" id="5_xo7aa"]
 [ext_resource type="Texture2D" uid="uid://buqpxsdew0uhc" path="res://SwordFight/playerhealthbar.png" id="7_1a7n4"]
 [ext_resource type="Texture2D" uid="uid://djnwe1i5fvmge" path="res://SwordFight/enemyhealthbar.png" id="8_leflf"]

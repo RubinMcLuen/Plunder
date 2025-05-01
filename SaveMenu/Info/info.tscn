@@ -1,40 +1,40 @@
 [gd_scene load_steps=9 format=3 uid="uid://dadq4qd7elc50"]
 
-[ext_resource type="Script" path="res://SaveMenu/Info/info.gd" id="1_5mxbx"]
-[ext_resource type="Texture2D" uid="uid://deslq2y8f8myq" path="res://SaveMenu/Info/background.png" id="1_bxchc"]
-[ext_resource type="Texture2D" uid="uid://drt1ekkil3pj7" path="res://SaveMenu/Info/portraitframe.png" id="2_ofus4"]
-[ext_resource type="Texture2D" uid="uid://dgrw1tmcrnmxw" path="res://SaveMenu/Info/portraitbackground.png" id="3_hnh0h"]
-[ext_resource type="Texture2D" uid="uid://dt4jpqh3j16wp" path="res://SaveMenu/Info/playicon.png" id="4_buhal"]
-[ext_resource type="Texture2D" uid="uid://ci84x50648pgy" path="res://SaveMenu/Info/deleteicon.png" id="5_ketnp"]
-[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="7_1f16l"]
-[ext_resource type="PackedScene" uid="uid://dlh32l6ht3jiy" path="res://Character/Player/player.tscn" id="7_orbcw"]
+[ext_resource type="Script" path="res://SaveMenu/Info/Info.gd" id="1_3ryb0"]
+[ext_resource type="Texture2D" uid="uid://deslq2y8f8myq" path="res://SaveMenu/Info/assets/background.png" id="2_k52di"]
+[ext_resource type="Texture2D" uid="uid://dgrw1tmcrnmxw" path="res://SaveMenu/Info/assets/portraitbackground.png" id="3_k2kuw"]
+[ext_resource type="Texture2D" uid="uid://drt1ekkil3pj7" path="res://SaveMenu/Info/assets/portraitframe.png" id="4_cbdyi"]
+[ext_resource type="Texture2D" uid="uid://dt4jpqh3j16wp" path="res://SaveMenu/Info/assets/playicon.png" id="5_cbuyg"]
+[ext_resource type="Texture2D" uid="uid://ci84x50648pgy" path="res://SaveMenu/Info/assets/deleteicon.png" id="6_nhngs"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="7_ltj2q"]
+[ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/Player.tscn" id="8_4i5k8"]
 
 [node name="Info" type="Node2D"]
-script = ExtResource("1_5mxbx")
+script = ExtResource("1_3ryb0")
 
 [node name="MenuBackground" type="Sprite2D" parent="."]
-texture = ExtResource("1_bxchc")
+texture = ExtResource("2_k52di")
 
 [node name="PortraitBackground" type="Sprite2D" parent="."]
 position = Vector2(-65, 0)
-texture = ExtResource("3_hnh0h")
+texture = ExtResource("3_k2kuw")
 
 [node name="PortraitFrame" type="Sprite2D" parent="."]
 position = Vector2(-65, 0)
-texture = ExtResource("2_ofus4")
+texture = ExtResource("4_cbdyi")
 
 [node name="PlayButton" type="TextureButton" parent="."]
 offset_left = -44.0
 offset_top = -2.0
 offset_bottom = 16.0
-texture_normal = ExtResource("4_buhal")
+texture_normal = ExtResource("5_cbuyg")
 
 [node name="DeleteButton" type="TextureButton" parent="."]
 offset_left = 5.0
 offset_top = -2.0
 offset_right = 24.0
 offset_bottom = 16.0
-texture_normal = ExtResource("5_ketnp")
+texture_normal = ExtResource("6_nhngs")
 
 [node name="Name" type="RichTextLabel" parent="."]
 offset_left = -45.0
@@ -42,7 +42,7 @@ offset_top = -18.0
 offset_right = 83.0
 offset_bottom = -1.0
 theme_override_colors/default_color = Color(0.309804, 0.309804, 0.309804, 1)
-theme_override_fonts/normal_font = ExtResource("7_1f16l")
+theme_override_fonts/normal_font = ExtResource("7_ltj2q")
 theme_override_font_sizes/normal_font_size = 11
 text = "Captain"
 scroll_active = false
@@ -57,7 +57,7 @@ offset_top = -14.0
 offset_right = -51.0
 offset_bottom = 14.0
 
-[node name="Player" parent="Control" instance=ExtResource("7_orbcw")]
+[node name="Player" parent="Control" instance=ExtResource("8_4i5k8")]
 position = Vector2(14, 42)
 scale = Vector2(2, 2)
 customization_only = true

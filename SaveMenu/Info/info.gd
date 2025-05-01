@@ -1,84 +1,67 @@
+# Info.gd — Godot 4.22
 extends Node2D
+class_name SaveInfo
 
-# Adjust 'slot_index' as needed – you might want to get it dynamically or set a default.
-var slot_index = -1
+@onready var btn_play:   TextureButton = $PlayButton
+@onready var btn_delete: TextureButton = $DeleteButton
+@onready var lbl_name:   RichTextLabel  = $Name
+@onready var player:     Node   = $Control/Player
 
-func _ready():
-	$PlayButton.pressed.connect(self._on_playbutton_pressed)
-	$DeleteButton.pressed.connect(self._on_deletebutton_pressed)  # <-- Add this line
-	await $Control/Player  # Wait for the player node to be ready
-	var player = $Control/Player
-	var player_name = player.name_input
-	$Name.text = "Captain " + player_name
+const DEFAULT_SCENE     := "res://Tavern/tavern.tscn"
+const SAVE_PATH_FORMAT  := "user://saveslot%d.json"
+const SAVE_DATA_PATH    := "user://save_data.json"
 
+func _ready() -> void:
+	btn_play.pressed.connect(_on_play_pressed)
+	btn_delete.pressed.connect(_on_delete_pressed)
+	await get_tree().process_frame  # ensure player node is ready
+	lbl_name.text = "Captain %s" % player.name_input
 
-func _on_playbutton_pressed():
-	slot_index = Global.active_save_slot
-	var save_file_path = "user://saveslot%s.json" % slot_index
-	if FileAccess.file_exists(save_file_path):
-		var file = FileAccess.open(save_file_path, FileAccess.READ)
-		var json = JSON.new()
-		var parse_result = json.parse(file.get_as_text())
-		file.close()
-		var save_file_data = {}
-		if parse_result == OK:
-			save_file_data = json.data
-		if save_file_data.has("scene"):
-			var scene_data = save_file_data["scene"]
-			var scene_name = scene_data.get("name", "res://Tavern/tavern.tscn")
-			var position_data = scene_data.get("position", {})
-			# Use default coordinates if not provided
-			var pos_x = position_data.get("x", 381)
-			var pos_y = position_data.get("y", 23)
-			var scene_position = Vector2(pos_x, pos_y)
-			print("Loading saved scene:", scene_name, "at position", scene_position)
-			SceneSwitcher.switch_scene(scene_name, scene_position, "fade")
-		else:
-			print("No saved scene found. Defaulting to Tavern.")
-			get_tree().change_scene_to_file("res://Tavern/tavern.tscn")
+func _on_play_pressed() -> void:
+	var slot_idx = Global.active_save_slot
+	var save_data = _load_json(SAVE_PATH_FORMAT % slot_idx)
+
+	if save_data.has("scene"):
+		var scene_info = save_data["scene"]
+		var scene_path = scene_info.get("name", DEFAULT_SCENE)
+		var pos_map    = scene_info.get("position", {})
+		var x = pos_map.get("x", 381)
+		var y = pos_map.get("y", 23)
+		SceneSwitcher.switch_scene(scene_path, Vector2(x, y), "fade")
 	else:
-		print("No save file found, starting at Tavern.")
-		get_tree().change_scene_to_file("res://Tavern/tavern.tscn")
+		get_tree().change_scene_to_file(DEFAULT_SCENE)
 
+func _on_delete_pressed() -> void:
+	var slot_idx = Global.active_save_slot
+	var path = SAVE_PATH_FORMAT % slot_idx
 
-func _on_deletebutton_pressed():
-	slot_index = Global.active_save_slot
-	var file_name = "saveslot%s.json" % slot_index
-	var save_file_path = "user://" + file_name
+	if FileAccess.file_exists(path):
+		var dir = DirAccess.open("user://")
+		if dir:
+			dir.remove("saveslot%d.json" % slot_idx)
 
-	# Delete the save file if it exists using DirAccess.
-	var dir = DirAccess.open("user://")
-	if dir and dir.file_exists(file_name):
-		var err = dir.remove(file_name)
-		if err == OK:
-			print("Save file deleted:", save_file_path)
-		else:
-			print("Failed to delete save file:", save_file_path)
-	else:
-		print("No save file found at", save_file_path)
+	_update_save_registry(slot_idx)
+	queue_free()
 
-	# Update save_data.json by removing the corresponding key
-	var save_data_path = "user://save_data.json"
-	if FileAccess.file_exists(save_data_path):
-		var file = FileAccess.open(save_data_path, FileAccess.READ)
-		var json_text = file.get_as_text()
-		file.close()
+func _load_json(path: String) -> Dictionary:
+	if not FileAccess.file_exists(path):
+		return {}
+	var file = FileAccess.open(path, FileAccess.READ)
+	var text = file.get_as_text()
+	file.close()
+	var parsed = JSON.parse_string(text)
+	if parsed.error == OK:
+		return parsed.result as Dictionary
+	return {}
 
-		var json_parser = JSON.new()
-		if json_parser.parse(json_text) == OK:
-			var save_data = json_parser.data
-			var key = str(slot_index)
-			if save_data.has(key):
-				save_data.erase(key)
-				print("Removed slot", key, "from save_data.json")
-				
-				# Write the updated save_data back to file
-				file = FileAccess.open(save_data_path, FileAccess.WRITE)
-				file.store_string(JSON.stringify(save_data))
-				file.close()
-			else:
-				print("Key", key, "not found in save_data.json")
-		else:
-			print("Failed to parse save_data.json")
-	else:
-		print("save_data.json not found")
+func _write_json(path: String, data: Dictionary) -> void:
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	file.store_string(JSON.stringify(data))
+	file.close()
+
+func _update_save_registry(slot_idx: int) -> void:
+	if not FileAccess.file_exists(SAVE_DATA_PATH):
+		return
+	var registry = _load_json(SAVE_DATA_PATH)
+	registry.erase(str(slot_idx))
+	_write_json(SAVE_DATA_PATH, registry)

@@ -12,3 +12,6 @@ First Mate: Tap the wheel when yer ready, Captain. Just try not to steer us stra
 ~ OnShipNotReady
 First Mate: I’d love to set sail, Captain, but uh… where exactly are we sailin’ to? Maybe ask around town, see if anyone’s got somethin’ worth chasin’!
 => END
+
+~ default
+First Mate: That scurvy is no funny business, you ought to spend less time on the poopdeck!
