@@ -13,6 +13,9 @@ const DEATH_TARGET_FRAME = int(round(DEATH_TARGET_DEG / ANGLE_PER_FRAME)) % NUM_
 const MOUSE_BUTTON_LEFT  = 1                       # click button
 const STOP_THRESHOLD     = 2.0                     # px/s → snap speed
 
+# ───────── DEBUG: spawn wreck in dead state ─────────
+@export var start_dead_for_testing: bool = false
+
 # ───────── EXPORTED / NODES ─────────
 @export var player             : Node2D
 @export var approach_distance  := 150.0
@@ -68,22 +71,33 @@ func _ready():
 	current_speed   = full_speed
 	connect("area_entered", Callable(self, "_on_area_entered"))
 	$DecideTimer.start()
-	input_pickable  = false          # clickable only when wrecked
+
+	# clickable only once wrecked
+	input_pickable     = false
+	ready_for_boarding = false
+
+	# DEBUG: immediately spawn as wreck
+	if start_dead_for_testing:
+		_die()
+		death_aligned          = true
+		current_frame          = DEATH_TARGET_FRAME
+		current_rotation_speed = 0.0
+		_update_frame()
+		current_speed          = 0.0
+		ready_for_boarding     = true
+		input_pickable         = true
 
 
 # ───────── PROCESS ─────────
 func _process(delta):
 	_update_distance_and_angle()
-
 	match current_state:
 		EnemyState.APPROACH: _behave_approach(delta)
 		EnemyState.ALIGN   : _behave_align(delta)
 		EnemyState.CIRCLE  : _behave_circle(delta)
 		EnemyState.DEAD    : _behave_dead(delta)
-
 	_update_movement(delta)
 	position += velocity * delta
-
 
 
 # ───────── STATE TIMER ─────────
@@ -92,7 +106,6 @@ func _on_decide_timer_timeout():
 		return
 
 	_update_distance_and_angle()
-
 	if current_state == EnemyState.CIRCLE:
 		post_fire_cycles -= 1
 		if post_fire_cycles <= 0:
@@ -101,7 +114,6 @@ func _on_decide_timer_timeout():
 		current_state = EnemyState.APPROACH if distance_to_player > approach_distance else EnemyState.ALIGN
 		if current_state == EnemyState.ALIGN:
 			side_offset_degs = -90.0 if randf() < 0.5 else 90.0
-
 
 
 # ───────── STATE BEHAVIOUR ─────────
@@ -113,7 +125,6 @@ func _behave_approach(delta):
 func _behave_align(delta):
 	var tgt_spd = max(slow_speed, min_speed) if distance_to_player < align_distance else full_speed
 	current_speed = lerp(current_speed, tgt_spd, acceleration_factor * delta)
-
 	var diff = _turn_side_toward_player(delta, side_offset_degs)
 	if abs(diff) < 5.0:
 		_fire_broadside(side_offset_degs)
@@ -139,7 +150,7 @@ func _behave_dead(delta):
 			death_aligned = true
 		return
 
-	# Phase 2 – constant decel until STOP_THRESHOLD, then snap 0
+	# Phase 2 – smooth decel via lerp, then snap
 	current_speed = lerp(current_speed, 0.0, acceleration_factor * delta)
 	if current_speed < STOP_THRESHOLD:
 		current_speed          = 0.0
@@ -151,12 +162,18 @@ func _behave_dead(delta):
 
 
 # ───────── CLICK-TO-BOARD ─────────
-func _input_event(viewport, event, shape_idx):
+func _input_event(viewport: Object, event: InputEvent, shape_idx: int) -> void:
 	if ready_for_boarding \
 	and event is InputEventMouseButton \
 	and event.button_index == MOUSE_BUTTON_LEFT \
 	and event.pressed:
-		get_tree().current_scene.emit_signal("board_enemy_request", global_position)
+		print("[Enemy] clicked for boarding:", name)
+		# Emit the enemy node itself (Ocean expects a Node2D)
+		get_tree().current_scene.emit_signal("board_enemy_request", self)
+
+
+
+
 
 
 
@@ -212,7 +229,7 @@ func _update_frame():
 # ───────── BROADSIDE FIRE ─────────
 func _fire_broadside(side_deg: float):
 	if side_deg > 0: _shoot_side(true) 
-	else: _shoot_side(false)
+	else:           _shoot_side(false)
 
 
 func _shoot_side(left: bool):
@@ -297,14 +314,3 @@ func _die():
 	can_shoot           = false
 	$DecideTimer.stop()
 	print("Enemy destroyed – boarding soon.")
-
-
-
-# ───────── COLLISION / DEBUG STUBS ─────────
-func _on_area_entered(_a): pass  # keep your own logic
-
-func _draw():
-	# if show_debug:
-	#     draw_circle(Vector2.ZERO, approach_distance, Color(0,0,1,0.2))
-	#     draw_circle(Vector2.ZERO, align_distance,    Color(1,0,0,0.2))
-	pass

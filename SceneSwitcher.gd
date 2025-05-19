@@ -17,26 +17,29 @@ var transition_in_progress: bool = false
 var target_scene_path: String = ""
 var target_position: Vector2 = Vector2.ZERO
 
-# Separate zoom controls:
-var old_camera_zoom: Vector2 = Vector2.ONE      # For the camera in the *old* scene
-var new_camera_zoom: Vector2 = Vector2.ONE      # For the camera in the *new* scene
+# Camera zoom levels
+var old_camera_zoom: Vector2 = Vector2.ONE
+var new_camera_zoom: Vector2 = Vector2.ONE
+
+# Transition type & optional camera translation
 var pending_transition_type: String = "none"
 var specific_position: Vector2 = Vector2.ZERO
 
-##
-# Fade canvas/rect for fade transitions (unused if you just do "zoom" or "none").
-##
+# New flag: whether to reposition the player in the new scene
+var pending_move_player: bool = true
+
+# Fade‐canvas and rectangle
 var fade_canvas: CanvasLayer
 var fade_rect: ColorRect
 
 func _ready():
-	# 1) Build a CanvasLayer for fade transitions (always on top).
+	# Build fade canvas
 	fade_canvas = CanvasLayer.new()
 	fade_canvas.name = "FadeCanvas"
 	fade_canvas.layer = 100
 	add_child(fade_canvas)
 
-	# 2) Fullscreen ColorRect to handle fade-out/fade-in
+	# Build fade rect
 	fade_rect = ColorRect.new()
 	fade_rect.name = "FadeRect"
 	fade_rect.color = Color(0, 0, 0, 0)
@@ -47,9 +50,7 @@ func _ready():
 	fade_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	fade_canvas.add_child(fade_rect)
 
-	# 3) Auto-detect active scene if none set
-	if not active_scene:
-		_try_detect_current_scene()
+	_try_detect_current_scene()
 
 func _try_detect_current_scene():
 	for child in get_tree().root.get_children():
@@ -59,33 +60,37 @@ func _try_detect_current_scene():
 			active_scene = child
 			break
 
-func set_initial_scene(scene: Node):
-	active_scene = scene
-
 ##
-# Main API – switch scenes with optional zoom and camera translation.
-# Example:
-#   switch_scene("res://My.tscn", Vector2(100,200), "zoom", Vector2(2,2), Vector2.ZERO, Vector2(1,1))
+# switch_scene parameters:
+#   scene_path: path to .tscn
+#   player_position: desired player global_position
+#   transition_type: "none", "fade", or "zoom"
+#   old_scene_zoom_level: camera zoom to tween *from*
+#   specific_position_override: if non‐zero, camera first pans here
+#   new_scene_zoom_level: camera zoom to set in new scene
+#   move_player: if true, we'll set the player’s global_position; if false, we leave it.
 ##
 func switch_scene(
 		scene_path: String,
 		player_position: Vector2,
 		transition_type: String = "none",
-		old_scene_zoom_level: Vector2 = Vector2(1,1),
-		specific_position_override: Vector2 = Vector2(),
-		new_scene_zoom_level: Vector2 = Vector2(1,1)
+		old_scene_zoom_level: Vector2 = Vector2.ONE,
+		specific_position_override: Vector2 = Vector2.ZERO,
+		new_scene_zoom_level: Vector2 = Vector2.ONE,
+		move_player: bool = true
 ):
 	if transition_in_progress:
-		print("SceneSwitcher: Already transitioning.")
+		print("SceneSwitcher: already in transition")
 		return
 
-	transition_in_progress = true
-	target_scene_path = scene_path
-	target_position   = player_position
-	old_camera_zoom   = old_scene_zoom_level
-	new_camera_zoom   = new_scene_zoom_level
-	pending_transition_type = transition_type
-	specific_position = specific_position_override
+	transition_in_progress       = true
+	target_scene_path            = scene_path
+	target_position              = player_position
+	old_camera_zoom              = old_scene_zoom_level
+	new_camera_zoom              = new_scene_zoom_level
+	pending_transition_type      = transition_type
+	specific_position            = specific_position_override
+	pending_move_player          = move_player
 
 	if specific_position != Vector2.ZERO:
 		_translate_camera(specific_position, transition_type)
@@ -102,9 +107,9 @@ func switch_scene(
 func _translate_camera(target_camera_position: Vector2, transition_type: String):
 	var camera = _get_camera_node()
 	if camera:
-		var tween = create_tween()
-		tween.tween_property(camera, "global_position", target_camera_position, 1.0)
-		tween.connect("finished", Callable(self, "_on_camera_translation_finished").bind(transition_type))
+		var tw = create_tween()
+		tw.tween_property(camera, "global_position", target_camera_position, 1.0)
+		tw.connect("finished", Callable(self, "_on_camera_translation_finished").bind(transition_type))
 	else:
 		_on_camera_translation_finished(transition_type)
 
@@ -121,14 +126,14 @@ func _on_camera_translation_finished(transition_type: String):
 func _start_fade_transition():
 	fade_rect.visible = true
 	fade_rect.color.a = 0.0
-	var tween = create_tween()
-	tween.tween_property(fade_rect, "color:a", 1.0, 1.0)
-	tween.connect("finished", Callable(self, "_on_fade_out_finished"))
+	var tw = create_tween()
+	tw.tween_property(fade_rect, "color:a", 1.0, 1.0)
+	tw.connect("finished", Callable(self, "_on_fade_out_finished"))
 
 func _on_fade_out_finished():
-	var dt = create_tween()
-	dt.tween_interval(0.2)
-	dt.connect("finished", Callable(self, "_on_fade_out_delay_finished"))
+	var dtw = create_tween()
+	dtw.tween_interval(0.2)
+	dtw.connect("finished", Callable(self, "_on_fade_out_delay_finished"))
 
 func _on_fade_out_delay_finished():
 	call_deferred("_remove_old_scene_and_load_new_scene_fade")
@@ -139,9 +144,9 @@ func _remove_old_scene_and_load_new_scene_fade():
 	_fade_back_in()
 
 func _fade_back_in():
-	var tween = create_tween()
-	tween.tween_property(fade_rect, "color:a", 0.0, 1.0)
-	tween.connect("finished", Callable(self, "_on_fade_in_finished"))
+	var tw = create_tween()
+	tw.tween_property(fade_rect, "color:a", 0.0, 1.0)
+	tw.connect("finished", Callable(self, "_on_fade_in_finished"))
 
 func _on_fade_in_finished():
 	fade_rect.visible = false
@@ -151,13 +156,18 @@ func _on_fade_in_finished():
 # ZOOM TRANSITION
 # -----------------------------------------------------------
 func _start_zoom_transition():
-	var cam = _get_camera_node()
-	if cam:
-		var tween = create_tween()
-		tween.tween_property(cam, "zoom", old_camera_zoom, 2.0)
-		tween.connect("finished", Callable(self, "_on_zoom_finished"))
+	var camera = _get_camera_node()
+	if camera:
+		# If we’re already at the requested zoom, skip the tween & load right away
+		if camera.zoom == old_camera_zoom:
+			_on_zoom_finished()
+		else:
+			var tw = create_tween()
+			tw.tween_property(camera, "zoom", old_camera_zoom, 1.0)  # ← 1-second zoom
+			tw.connect("finished", Callable(self, "_on_zoom_finished"))
 	else:
 		_on_zoom_finished()
+
 
 func _on_zoom_finished():
 	call_deferred("_remove_old_scene_and_load_new_scene_zoom")
@@ -168,7 +178,7 @@ func _remove_old_scene_and_load_new_scene_zoom():
 	transition_in_progress = false
 
 # -----------------------------------------------------------
-# NO TRANSITION
+# DIRECT (no special transition)
 # -----------------------------------------------------------
 func _start_direct_transition():
 	call_deferred("_remove_old_scene_and_load_new_scene_none")
@@ -190,19 +200,24 @@ func _remove_active_scene_if_valid():
 func _load_and_instantiate_new_scene():
 	var packed = ResourceLoader.load(target_scene_path) as PackedScene
 	if not packed:
-		print("SceneSwitcher: Failed to load ", target_scene_path)
+		print("SceneSwitcher: failed to load ", target_scene_path)
+		transition_in_progress = false
 		return
 	var new_scene = packed.instantiate()
-	# 1) Position player
-	if new_scene.has_node("PlayerShip"):
-		new_scene.get_node("PlayerShip").global_position = target_position
-	elif new_scene.has_node("Player"):
-		new_scene.get_node("Player").global_position = target_position
-	# 2) Set camera zoom on new scene
+
+	# Position player only if requested
+	if pending_move_player:
+		if new_scene.has_node("PlayerShip"):
+			new_scene.get_node("PlayerShip").global_position = target_position
+		elif new_scene.has_node("Player"):
+			new_scene.get_node("Player").global_position = target_position
+
+	# Set new scene camera zoom
 	var nc = _find_camera_in_scene(new_scene)
 	if nc:
 		nc.zoom = new_camera_zoom
-	# 3) Add to tree
+
+	# Add scene to tree
 	get_tree().root.add_child(new_scene)
 	active_scene = new_scene
 	get_tree().current_scene = new_scene

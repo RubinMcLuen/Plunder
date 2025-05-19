@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://kbt3hu1lmvfj"]
+[gd_scene load_steps=11 format=3 uid="uid://kbt3hu1lmvfj"]
 
 [ext_resource type="Script" path="res://Ocean/Ocean.gd" id="1_kxoef"]
 [ext_resource type="Texture2D" uid="uid://fxlwkiykamae" path="res://Ocean/frame_0100-sheet.png" id="1_xs5hd"]
 [ext_resource type="PackedScene" uid="uid://bw8b2mbvoo5rw" path="res://KelptownIsland/KelptownIsland.tscn" id="2_4inh8"]
 [ext_resource type="PackedScene" uid="uid://0ab5frbt0cuk" path="res://Ships/PlayerShip.tscn" id="3_qc67i"]
 [ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/PlayerIsland.png" id="5_3mcoo"]
+[ext_resource type="Texture2D" uid="uid://cecfqmsm2oaqt" path="res://Battle/ZoomedOutNewShip.png" id="5_ry4ey"]
 [ext_resource type="Texture2D" uid="uid://bbecueeouc3gh" path="res://Ships/detailedboat.png" id="6_fpc3e"]
 [ext_resource type="PackedScene" uid="uid://cnxn3imjbuqru" path="res://Ships/EnemyShip.tscn" id="7_6y6ch"]
 
@@ -290,6 +291,27 @@ z_index = 4
 position = Vector2(-2, 41)
 disable_mode = 2
 
+[node name="NoSails" type="Sprite2D" parent="PlayerShip"]
+visible = false
+z_index = -1
+position = Vector2(-22, -8)
+texture = ExtResource("5_ry4ey")
+centered = false
+
+[node name="EnemyShip" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_6y6ch")]
+position = Vector2(31, 21)
+start_dead_for_testing = true
+player = NodePath("../PlayerShip")
+full_speed = 40.0
+health = 1
+
+[node name="NoSails" type="Sprite2D" parent="EnemyShip"]
+visible = false
+z_index = -1
+position = Vector2(-22, -8)
+texture = ExtResource("5_ry4ey")
+centered = false
+
 [node name="MixSprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
 z_index = 4
@@ -300,9 +322,3 @@ texture = ExtResource("5_3mcoo")
 [node name="Sprite2D" type="Sprite2D" parent="MixSprite"]
 position = Vector2(-239.5, 2125)
 texture = ExtResource("6_fpc3e")
-
-[node name="EnemyShip" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_6y6ch")]
-position = Vector2(-83, 158)
-player = NodePath("../PlayerShip")
-full_speed = 40.0
-health = 1

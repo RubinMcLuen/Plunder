@@ -25,11 +25,12 @@ cannon_smoke_scene = ExtResource("5_qqd84")
 health = 60
 
 [node name="Trail" parent="." instance=ExtResource("4_18woo")]
-z_index = -1
+z_index = -5
 
 [node name="ShipSprite" type="Sprite2D" parent="."]
-position = Vector2(0, -0.5)
+position = Vector2(-22, -20)
 texture = ExtResource("7_aqn4w")
+centered = false
 hframes = 360
 frame = 180
 

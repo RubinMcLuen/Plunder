@@ -28,7 +28,9 @@ cannon_smoke_scene = ExtResource("6_q3dsf")
 z_index = -1
 
 [node name="Boat" type="Sprite2D" parent="."]
+position = Vector2(-22, -20)
 texture = ExtResource("8_etm1h")
+centered = false
 hframes = 360
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

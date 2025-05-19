@@ -21,3 +21,5 @@ res://Ships/PlayerShip.gd
 res://UI/UIManager.gd
 res://Ocean/Ocean.gd
 res://SceneSwitcher.gd
+res://Battle/BoardingBattle.tscn
+res://Battle/Camera.gd
