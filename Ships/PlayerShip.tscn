@@ -41,7 +41,6 @@ shape = SubResource("RectangleShape2D_pwcr0")
 one_shot = true
 
 [node name="ShipCamera" type="Camera2D" parent="."]
-enabled = false
 
 [node name="CannonShotSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("11_otwp8")

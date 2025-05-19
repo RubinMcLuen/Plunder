@@ -1,14 +1,14 @@
+Label
+TextureButton
+TextureRect
 Camera2D
 AnimatedSprite2D
 CanvasLayer
 ColorRect
 Sprite2D
-Label
 Node2D
 SubViewport
 CollisionShape2D
 Line2D
 AudioStreamPlayer2D
-TextureButton
-TextureRect
 Control

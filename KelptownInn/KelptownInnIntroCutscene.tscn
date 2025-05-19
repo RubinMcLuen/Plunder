@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://KelptownInn/KelptownInnIntroCutscene.gd" id="2_uqa76"]
 [ext_resource type="PackedScene" uid="uid://4klyn0h8t7vm" path="res://Cutscene/CutsceneManager.tscn" id="2_xaxja"]
 [ext_resource type="Resource" uid="uid://dloukc748ca08" path="res://Dialogue/dialogues/bartender.dialogue" id="3_nw6ac"]
-[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="4_updwp"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="4_updwp"]
 [ext_resource type="PackedScene" uid="uid://cjn8sut1cl3vw" path="res://SwordFight/SwordFightTutorial.tscn" id="4_vnlhx"]
 [ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="6_34htp"]
 [ext_resource type="Resource" uid="uid://bk580kgk1y5pk" path="res://Character/Player/PlayerStats.tres" id="6_kaw53"]

@@ -539,3 +539,8 @@ func _play_splash_sound():
 		add_child(free_timer)
 		free_timer.timeout.connect(Callable(splash_sound, "queue_free"))
 		free_timer.start()
+
+func dock_with_enemy(enemy_pos: Vector2):
+	var offset = Vector2(0, 15)     # 20 px below felt too far; adjust if needed
+	drive_to_target_position(enemy_pos + offset)
+	target_angle = -1

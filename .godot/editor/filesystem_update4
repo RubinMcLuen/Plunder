@@ -14,3 +14,10 @@ res://CharacterCreator/CharacterCreator.tscn
 res://KelptownInn/KelptownInnIntroCutscene.tscn
 res://KelptownIsland/KelptownIsland.tscn
 res://Ships/PlayerShip.tscn
+res://Ships/EnemyShip.tscn
+res://Ships/EnemyShip.gd
+res://UI/UIManager.tscn
+res://Ships/PlayerShip.gd
+res://UI/UIManager.gd
+res://Ocean/Ocean.gd
+res://SceneSwitcher.gd

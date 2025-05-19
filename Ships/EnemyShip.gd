@@ -1,458 +1,310 @@
-
 extends Area2D
+##
+##  ENEMY SHIP – volley cannons, death-boarding
+##
 
-## -------------------------------------------------------
-##  ENEMY SHIP with UPDATED CANNON-FIRING (Smoke + Volley)
-##  Includes hit/splash sound effects
-## -------------------------------------------------------
+# ───────── CONSTANTS ─────────
+const NUM_FRAMES               = 360
+const ANGLE_PER_FRAME          = 360.0 / NUM_FRAMES
+const BASE_CANNONBALL_DISTANCE = 40
 
-const NUM_FRAMES = 360
-const ANGLE_PER_FRAME = 360.0 / NUM_FRAMES
-const BASE_CANNONBALL_DISTANCE = 40   # For randomized shot distance calculation
+const DEATH_TARGET_DEG   = 0.0                     # face east
+const DEATH_TARGET_FRAME = int(round(DEATH_TARGET_DEG / ANGLE_PER_FRAME)) % NUM_FRAMES
+const MOUSE_BUTTON_LEFT  = 1                       # click button
+const STOP_THRESHOLD     = 2.0                     # px/s → snap speed
 
-@export var debug_font: Font
-@export var player: Node2D
-@export var approach_distance := 150.0
-@export var align_distance := 100.0
-
-@export var full_speed := 40.0
-@export var slow_speed := 20.0
-@export var min_speed := 10.0
+# ───────── EXPORTED / NODES ─────────
+@export var player             : Node2D
+@export var approach_distance  := 150.0
+@export var align_distance     := 100.0
+@export var full_speed         := 40.0
+@export var slow_speed         := 20.0
+@export var min_speed          := 10.0
 @export var acceleration_factor := 0.5
-@export var damping_factor := 0.99
+@export var damping_factor      := 0.99
+@export var max_eased_turn_speed := 80.0
+@export var turn_acceleration     = 80.0
+@export var turn_deceleration     = 120.0
+@export var angle_tolerance       = 4.0
+@export var circle_turn_speed     = 16.0
+@export var circle_move_speed     = 30.0
 
-@export var max_eased_turn_speed = 80.0
-@export var turn_acceleration = 80.0
-@export var turn_deceleration = 120.0
-@export var angle_tolerance = 4.0
-
-# Circle parameters
-@export var circle_turn_speed := 16.0
-@export var circle_move_speed := 30.0
-
-@export var cannonball_scene: PackedScene
-@export var splash_scene: PackedScene
-@export var hit_scene: PackedScene
-@export var cannon_smoke_scene: PackedScene   # Smoke effect
-@export var cooldown := 1.0
-
-# Sound effects
-@onready var cannon_shot_sound: AudioStreamPlayer2D = $CannonShotSound
-@onready var splash_sound_fx: AudioStreamPlayer2D = $SplashSound
-@onready var hit_sound_fx: AudioStreamPlayer2D = $HitSound
-
-@onready var trail_sprite: Sprite2D = $Trail/SubViewport/Circle
+@export var cannonball_scene   : PackedScene
+@export var splash_scene       : PackedScene
+@export var hit_scene          : PackedScene
+@export var cannon_smoke_scene : PackedScene
+@onready var cannon_shot_sound : AudioStreamPlayer2D = $CannonShotSound
+@onready var splash_sound_fx   : AudioStreamPlayer2D = $SplashSound
+@onready var hit_sound_fx      : AudioStreamPlayer2D = $HitSound
+@onready var trail_sprite      : Sprite2D            = $Trail/SubViewport/Circle
 @export var health := 80
 
-@export var show_debug: bool = true
-
-# AI states
-enum EnemyState {
-	APPROACH,
-	ALIGN,
-	CIRCLE
-}
-var current_state = EnemyState.APPROACH
-
-# For post-fire circle duration (3 timer cycles)
+# ───────── STATE VARIABLES ─────────
+enum EnemyState { APPROACH, ALIGN, CIRCLE, DEAD }
+var current_state : EnemyState = EnemyState.APPROACH
 var post_fire_cycles = 0
 var circle_direction = 1
 var side_offset_degs = -90.0
-
-var current_action = "Unknown"
 var distance_to_player = 999.0
-var player_angle_degrees = 0.0
 
-var current_frame = 0
-var sprite: Sprite2D
-var collision_shape: CollisionShape2D
-
-var current_speed = 0.0
+var current_frame          = 0
+var sprite                 : Sprite2D
+var collision_shape        : CollisionShape2D
+var current_speed          = 0.0
 var current_rotation_speed = 0.0
-var velocity = Vector2.ZERO
+var velocity               = Vector2.ZERO
+var can_shoot              = true
 
-var can_shoot = true
+# death / boarding helpers
+var death_initial_speed = 0.0
+var death_aligned       = false
+var ready_for_boarding  = false
 
+
+# ───────── READY ─────────
 func _ready():
-	sprite = $Boat
+	sprite          = $Boat
 	collision_shape = $CollisionShape2D
-	current_speed = full_speed
+	current_speed   = full_speed
 	connect("area_entered", Callable(self, "_on_area_entered"))
-	print("Enemy initialized. Health =", health)
+	$DecideTimer.start()
+	input_pickable  = false          # clickable only when wrecked
 
+
+# ───────── PROCESS ─────────
 func _process(delta):
-	pass
+	_update_distance_and_angle()
 
-
-##
-# TIMER CALLBACK (DecideTimer): runs every 5 seconds.
-##
-func _on_decide_timer_timeout():
-	if not player:
-		return
-	update_distance_and_angle()
-	
 	match current_state:
-		EnemyState.CIRCLE:
-			post_fire_cycles -= 1
-			print("Enemy circling; remaining cycles:", post_fire_cycles)
-			if post_fire_cycles <= 0:
-				current_state = EnemyState.APPROACH
-				print("Enemy switching to APPROACH state.")
-		_:
-			if distance_to_player > approach_distance:
-				current_state = EnemyState.APPROACH
-				print("Enemy switching to APPROACH state (distance =", distance_to_player, ").")
-			else:
-				current_state = EnemyState.ALIGN
-				if randf() < 0.5:
-					side_offset_degs = -90.0
-				else:
-					side_offset_degs = 90.0
-				print("Enemy switching to ALIGN state. Side offset set to", side_offset_degs)
+		EnemyState.APPROACH: _behave_approach(delta)
+		EnemyState.ALIGN   : _behave_align(delta)
+		EnemyState.CIRCLE  : _behave_circle(delta)
+		EnemyState.DEAD    : _behave_dead(delta)
 
-##
-# STATE: APPROACH
-##
-func apply_approach_behavior(delta):
-	current_action = "Approaching"
-	current_speed = lerp(current_speed, full_speed, acceleration_factor * delta)
-	turn_toward_player_eased(delta)
+	_update_movement(delta)
+	position += velocity * delta
 
-##
-# STATE: ALIGN & SHOOT
-##
-func apply_align_and_shoot_behavior(delta):
-	current_action = "Aligning"
-	if distance_to_player < align_distance:
-		current_speed = lerp(current_speed, max(slow_speed, min_speed), acceleration_factor * delta)
+
+
+# ───────── STATE TIMER ─────────
+func _on_decide_timer_timeout():
+	if current_state == EnemyState.DEAD or not player:
+		return
+
+	_update_distance_and_angle()
+
+	if current_state == EnemyState.CIRCLE:
+		post_fire_cycles -= 1
+		if post_fire_cycles <= 0:
+			current_state = EnemyState.APPROACH
 	else:
-		current_speed = lerp(current_speed, full_speed, acceleration_factor * delta)
+		current_state = EnemyState.APPROACH if distance_to_player > approach_distance else EnemyState.ALIGN
+		if current_state == EnemyState.ALIGN:
+			side_offset_degs = -90.0 if randf() < 0.5 else 90.0
 
-	var angle_diff = turn_side_toward_player_eased(delta, side_offset_degs)
-	if abs(angle_diff) < 5.0:
-		print("Enemy aligned for firing. Angle difference =", angle_diff)
-		shoot_cannons(side_offset_degs)
+
+
+# ───────── STATE BEHAVIOUR ─────────
+func _behave_approach(delta):
+	current_speed = lerp(current_speed, full_speed, acceleration_factor * delta)
+	_turn_toward_player(delta)
+
+
+func _behave_align(delta):
+	var tgt_spd = max(slow_speed, min_speed) if distance_to_player < align_distance else full_speed
+	current_speed = lerp(current_speed, tgt_spd, acceleration_factor * delta)
+
+	var diff = _turn_side_toward_player(delta, side_offset_degs)
+	if abs(diff) < 5.0:
+		_fire_broadside(side_offset_degs)
 		post_fire_cycles = 3
 		circle_direction = -1 if randf() < 0.5 else 1
-		current_state = EnemyState.CIRCLE
-		print("Enemy fired! Switching to CIRCLE state for", post_fire_cycles, "cycles.")
+		current_state    = EnemyState.CIRCLE
 
-##
-# STATE: CIRCLE
-##
-func apply_circle_behavior(delta):
-	current_action = "Circling"
+
+func _behave_circle(delta):
 	current_speed = lerp(current_speed, circle_move_speed, acceleration_factor * delta)
-	apply_constant_turn(delta, circle_turn_speed * circle_direction)
+	_apply_constant_turn(delta, circle_turn_speed * circle_direction)
 
-func apply_constant_turn(delta, deg_per_sec):
-	current_rotation_speed = deg_per_sec
-	current_frame += current_rotation_speed * delta / ANGLE_PER_FRAME
-	if current_frame >= NUM_FRAMES:
-		current_frame -= NUM_FRAMES
-	elif current_frame < 0:
-		current_frame += NUM_FRAMES
-	update_frame()
 
-##
-# EASING-BASED TURNING
-##
-func turn_toward_player_eased(delta):
-	if not player:
+func _behave_dead(delta):
+	# Phase 1 – rotate to east
+	if not death_aligned:
+		current_speed = death_initial_speed
+		var diff = _turn_to_angle(delta, DEATH_TARGET_DEG)
+		if abs(diff) <= 0.5:
+			current_frame          = DEATH_TARGET_FRAME
+			current_rotation_speed = 0.0
+			_update_frame()
+			death_aligned = true
 		return
-	var angle_to_player = rad_to_deg((player.global_position - global_position).angle())
-	var current_deg = wrapf(current_frame * ANGLE_PER_FRAME, 0.0, 360.0)
-	var angle_diff = wrapf(angle_to_player - current_deg, -180.0, 180.0)
-	var desired_rot_speed = 0.0
-	if abs(angle_diff) > angle_tolerance:
-		desired_rot_speed = sign(angle_diff) * max_eased_turn_speed
-	apply_rotation_easing(delta, desired_rot_speed)
 
-func turn_side_toward_player_eased(delta, side_offset_degs: float) -> float:
-	if not player:
-		return 0.0
-	var angle_to_player = rad_to_deg((player.global_position - global_position).angle())
-	var current_deg = wrapf(current_frame * ANGLE_PER_FRAME, 0.0, 360.0)
-	var desired_facing = angle_to_player + side_offset_degs
-	var angle_diff = wrapf(desired_facing - current_deg, -180.0, 180.0)
-	var desired_rot_speed = 0.0
-	if abs(angle_diff) > angle_tolerance:
-		desired_rot_speed = sign(angle_diff) * max_eased_turn_speed
-	apply_rotation_easing(delta, desired_rot_speed)
-	return angle_diff
+	# Phase 2 – constant decel until STOP_THRESHOLD, then snap 0
+	current_speed = lerp(current_speed, 0.0, acceleration_factor * delta)
+	if current_speed < STOP_THRESHOLD:
+		current_speed          = 0.0
+		current_rotation_speed = 0.0
+		if not ready_for_boarding:
+			ready_for_boarding = true
+			input_pickable     = true   # now clickable!
 
-func apply_rotation_easing(delta, target_rot_speed):
-	var diff = target_rot_speed - current_rotation_speed
-	if diff > 0:
-		var accel = turn_acceleration * delta
-		if abs(diff) < accel:
-			current_rotation_speed = target_rot_speed
-		else:
-			current_rotation_speed += accel
-	elif diff < 0:
-		var decel = turn_deceleration * delta
-		if abs(diff) < decel:
-			current_rotation_speed = target_rot_speed
-		else:
-			current_rotation_speed -= decel
-	current_frame += current_rotation_speed * delta / ANGLE_PER_FRAME
-	if current_frame >= NUM_FRAMES:
-		current_frame -= NUM_FRAMES
-	elif current_frame < 0:
-		current_frame += NUM_FRAMES
-	update_frame()
 
-func update_frame():
-	if sprite:
-		sprite.frame = (int(current_frame) + int(NUM_FRAMES / 2)) % NUM_FRAMES
-	if collision_shape:
-		collision_shape.rotation_degrees = current_frame * ANGLE_PER_FRAME
-	if trail_sprite:
-		trail_sprite.rotation_degrees = current_frame * ANGLE_PER_FRAME
 
-##
-# SHOOTING LOGIC with Smoke/Volley + Sound
-##
-func shoot_cannons(side_degs: float):
-	if side_degs > 0:
-		shoot_left()
-	else:
-		shoot_right()
+# ───────── CLICK-TO-BOARD ─────────
+func _input_event(viewport, event, shape_idx):
+	if ready_for_boarding \
+	and event is InputEventMouseButton \
+	and event.button_index == MOUSE_BUTTON_LEFT \
+	and event.pressed:
+		get_tree().current_scene.emit_signal("board_enemy_request", global_position)
 
-func shoot_left():
-	if not can_shoot:
-		return
-	can_shoot = false
-	$GunCooldown.start()
 
-	print("Enemy firing left cannons (new volley system)!")
 
-	var indices = [4, 3, 2, 1, 0]
-	for i in indices:
-		var delay = randf_range(0, 0.8)
-		var timer = Timer.new()
-		timer.one_shot = true
-		timer.wait_time = delay
-		add_child(timer)
-		timer.timeout.connect(Callable(self, "_fire_left_cannon").bind(i))
-		timer.start()
-
-func _fire_left_cannon(i):
-	var ship_direction = calculate_direction()
-	var left_direction = Vector2(ship_direction.y, -ship_direction.x)
-
-	_play_shot_sound()
-	_play_splash_sound()
-
-	var offset = ship_direction.normalized() * (i * 3 - 6)
-	var start_position = position + offset + left_direction * 9
-
-	var spread_direction: Vector2
-
-	if cannon_smoke_scene:
-		var smoke = cannon_smoke_scene.instantiate()
-		get_tree().current_scene.add_child(smoke)
-		smoke.position = start_position
-		smoke.rotation = ship_direction.angle() - PI / 2
-
-		var spread_angle = deg_to_rad((i - 2) * 2)
-		spread_direction = left_direction.rotated(spread_angle)
-		smoke.flip_v = spread_direction.x < 0
-
-		smoke.start(velocity)
-	else:
-		var spread_angle = deg_to_rad((i - 2) * 2)
-		spread_direction = left_direction.rotated(spread_angle)
-
-	var cannonball_distance = (((BASE_CANNONBALL_DISTANCE * 1.0) + 50) * randf_range(0.85, 1.15))
-
-	var c = cannonball_scene.instantiate()
-	c.splash_scene = splash_scene
-	c.hit_scene = hit_scene
-	c.shooter = self
-	get_tree().current_scene.add_child(c)
-
-	c.start(start_position, spread_direction, cannonball_distance, self, velocity)
-
-func shoot_right():
-	if not can_shoot:
-		return
-	can_shoot = false
-	$GunCooldown.start()
-
-	print("Enemy firing right cannons (new volley system)!")
-
-	var indices = [4, 3, 2, 1, 0]
-	for i in indices:
-		var delay = randf_range(0, 0.8)
-		var timer = Timer.new()
-		timer.one_shot = true
-		timer.wait_time = delay
-		add_child(timer)
-		timer.timeout.connect(Callable(self, "_fire_right_cannon").bind(i))
-		timer.start()
-
-func _fire_right_cannon(i):
-	var ship_direction = calculate_direction()
-	var right_direction = Vector2(-ship_direction.y, ship_direction.x)
-
-	_play_shot_sound()
-	_play_splash_sound()
-
-	var offset = ship_direction.normalized() * (i * 3 - 6)
-	var start_position = position + offset + right_direction * 9
-
-	var spread_direction: Vector2
-
-	if cannon_smoke_scene:
-		var smoke = cannon_smoke_scene.instantiate()
-		get_tree().current_scene.add_child(smoke)
-		smoke.position = start_position
-		smoke.rotation = ship_direction.angle() + PI / 2
-
-		var spread_angle = deg_to_rad((i - 2) * 2)
-		spread_direction = right_direction.rotated(-spread_angle)
-		smoke.flip_v = spread_direction.x < 0
-
-		smoke.start(velocity)
-	else:
-		var spread_angle = deg_to_rad((i - 2) * 2)
-		spread_direction = right_direction.rotated(-spread_angle)
-
-	var cannonball_distance = (((BASE_CANNONBALL_DISTANCE * 1.0) + 50) * randf_range(0.85, 1.15))
-
-	var c = cannonball_scene.instantiate()
-	c.splash_scene = splash_scene
-	c.hit_scene = hit_scene
-	c.shooter = self
-	get_tree().current_scene.add_child(c)
-
-	c.start(start_position, spread_direction, cannonball_distance, self, velocity)
-
-func _on_gun_cooldown_timeout():
-	can_shoot = true
-	print("Enemy gun cooldown finished. can_shoot =", can_shoot)
-
-##
-# Sound-Playing Helpers
-##
-func _play_shot_sound():
-	if cannon_shot_sound:
-		var shot_sound = cannon_shot_sound.duplicate()
-		get_tree().current_scene.add_child(shot_sound)
-		shot_sound.global_position = global_position
-		shot_sound.play()
-		var sound_length = shot_sound.stream.get_length()
-		var free_timer = Timer.new()
-		free_timer.one_shot = true
-		free_timer.wait_time = sound_length
-		add_child(free_timer)
-		free_timer.timeout.connect(Callable(shot_sound, "queue_free"))
-		free_timer.start()
-
-func _play_splash_sound():
-	if splash_sound_fx:
-		var splash_sound = splash_sound_fx.duplicate()
-		get_tree().current_scene.add_child(splash_sound)
-		splash_sound.global_position = global_position
-		splash_sound.play()
-		var sound_length = splash_sound.stream.get_length()
-		var free_timer = Timer.new()
-		free_timer.one_shot = true
-		free_timer.wait_time = sound_length
-		add_child(free_timer)
-		free_timer.timeout.connect(Callable(splash_sound, "queue_free"))
-		free_timer.start()
-
-func _play_hit_sound():
-	if hit_sound_fx:
-		var hit_sound = hit_sound_fx.duplicate()
-		get_tree().current_scene.add_child(hit_sound)
-		hit_sound.global_position = global_position
-		hit_sound.play()
-		var sound_length = hit_sound.stream.get_length()
-		var free_timer = Timer.new()
-		free_timer.one_shot = true
-		free_timer.wait_time = sound_length
-		add_child(free_timer)
-		free_timer.timeout.connect(Callable(hit_sound, "queue_free"))
-		free_timer.start()
-
-##
-# MOVEMENT
-##
-func update_movement(delta):
-	if current_speed < min_speed:
-		current_speed = min_speed
-	var direction = calculate_direction()
-	velocity = direction * current_speed
-
-func calculate_direction() -> Vector2:
-	var angle = deg_to_rad(current_frame * ANGLE_PER_FRAME)
-	return Vector2(cos(angle), sin(angle))
-
-##
-# HEALTH / DAMAGE
-##
-func take_damage(amount: int):
-	health -= amount
-	print("Enemy took", amount, "damage. Health now:", health)
-	if health <= 0:
-		print("Enemy has died.")
-		queue_free()
-
-##
-# DISTANCE & ANGLE
-##
-func update_distance_and_angle():
+# ───────── UTILITIES ─────────
+func _update_distance_and_angle():
 	if not player:
 		distance_to_player = 999.0
 		return
-	var dir = player.global_position - global_position
-	distance_to_player = dir.length()
-	player_angle_degrees = rad_to_deg(dir.angle())
-	if player_angle_degrees < 0:
-		player_angle_degrees += 360.0
+	distance_to_player = (player.global_position - global_position).length()
 
-##
-# COLLISION HANDLING
-##
-func _on_area_entered(area: Area2D) -> void:
-	# If the colliding area has take_damage(), apply damage.
-	if area.has_method("take_damage"):
-		area.take_damage(10)
-		create_hit_effect()
-		_play_hit_sound()
-		queue_free()
-		print("Enemy hit! Damage: 10, New Health:", health)
 
-func create_hit_effect():
-	if hit_scene:
-		var hit = hit_scene.instantiate()
-		hit.position = position
-		get_tree().current_scene.add_child(hit)
+func _turn_toward_player(delta):
+	if not player: return
+	var tgt = rad_to_deg((player.global_position - global_position).angle())
+	_turn_to_angle(delta, tgt)
 
-##
-# DEBUG DRAWING (Commented out as requested)
-##
+
+func _turn_side_toward_player(delta, side: float) -> float:
+	if not player: return 0.0
+	var base = rad_to_deg((player.global_position - global_position).angle()) + side
+	return _turn_to_angle(delta, base)
+
+
+func _turn_to_angle(delta, tgt_deg: float) -> float:
+	var cur  = wrapf(current_frame * ANGLE_PER_FRAME, 0, 360)
+	var diff = wrapf(tgt_deg - cur, -180, 180)
+	var tgt_speed = sign(diff) * max_eased_turn_speed if abs(diff) > angle_tolerance else 0.0
+	_apply_rot_easing(delta, tgt_speed)
+	return diff
+
+
+func _apply_rot_easing(delta, tgt_speed):
+	var d   = tgt_speed - current_rotation_speed
+	var step = (turn_acceleration if d > 0 else turn_deceleration) * delta
+	current_rotation_speed += clamp(d, -step, step)
+	current_frame = wrapf(current_frame + current_rotation_speed * delta / ANGLE_PER_FRAME, 0, NUM_FRAMES)
+	_update_frame()
+
+
+func _apply_constant_turn(delta, deg_per_sec):
+	current_rotation_speed = deg_per_sec
+	current_frame = wrapf(current_frame + deg_per_sec * delta / ANGLE_PER_FRAME, 0, NUM_FRAMES)
+	_update_frame()
+
+
+func _update_frame():
+	if $Boat:               $Boat.frame = (int(current_frame) + NUM_FRAMES / 2) % NUM_FRAMES
+	if collision_shape:     collision_shape.rotation_degrees = current_frame * ANGLE_PER_FRAME
+	if trail_sprite:        trail_sprite.rotation_degrees    = collision_shape.rotation_degrees
+
+
+
+# ───────── BROADSIDE FIRE ─────────
+func _fire_broadside(side_deg: float):
+	if side_deg > 0: _shoot_side(true) 
+	else: _shoot_side(false)
+
+
+func _shoot_side(left: bool):
+	if not can_shoot or current_state == EnemyState.DEAD: return
+	can_shoot = false
+	$GunCooldown.start()
+
+	for i in [4,3,2,1,0]:
+		var t := Timer.new()
+		t.one_shot  = true
+		t.wait_time = randf_range(0,0.8)
+		add_child(t)
+		t.timeout.connect(Callable(self,"_spawn_cannon").bind(i,left))
+		t.start()
+
+
+func _spawn_cannon(i:int,left:bool):
+	var dir  = _direction()
+	var side = Vector2(dir.y, -dir.x) if left else Vector2(-dir.y, dir.x)
+
+	_play_shot()
+	_play_splash()
+
+	var start   = position + dir.normalized()*(i*3-6) + side*9
+	var smoke_r = dir.angle() - PI/2 if left else dir.angle() + PI/2
+	var spread  = deg_to_rad((i-2)*2)
+	var shotdir = side.rotated(spread if left else -spread)
+	var dist    = (BASE_CANNONBALL_DISTANCE + 50) * randf_range(0.85,1.15)
+
+	if cannon_smoke_scene:
+		var s = cannon_smoke_scene.instantiate()
+		get_tree().current_scene.add_child(s)
+		s.position = start
+		s.rotation = smoke_r
+		s.flip_v   = shotdir.x < 0
+		s.start(velocity)
+
+	var c = cannonball_scene.instantiate()
+	c.splash_scene = splash_scene
+	c.hit_scene    = hit_scene
+	c.shooter      = self
+	get_tree().current_scene.add_child(c)
+	c.start(start, shotdir, dist, self, velocity)
+
+
+func _on_gun_cooldown_timeout(): can_shoot = true
+
+
+
+# ───────── SFX HELPERS ─────────
+func _dup_play(node:AudioStreamPlayer2D):
+	if not node: return
+	var s = node.duplicate()
+	get_tree().current_scene.add_child(s)
+	s.global_position = global_position
+	s.play()
+	var tm = Timer.new()
+	tm.one_shot = true
+	tm.wait_time = s.stream.get_length()
+	add_child(tm)
+	tm.timeout.connect(Callable(s,"queue_free"))
+	tm.start()
+
+func _play_shot():   _dup_play(cannon_shot_sound)
+func _play_splash(): _dup_play(splash_sound_fx)
+func _play_hit():    _dup_play(hit_sound_fx)
+
+
+
+# ───────── MOVEMENT & DAMAGE ─────────
+func _update_movement(_d): velocity = _direction() * current_speed
+func _direction() -> Vector2: return Vector2.RIGHT.rotated(deg_to_rad(current_frame*ANGLE_PER_FRAME))
+
+func take_damage(dmg:int):
+	health -= dmg
+	if health <= 0 and current_state != EnemyState.DEAD: _die()
+
+func _die():
+	current_state       = EnemyState.DEAD
+	death_initial_speed = max(current_speed, min_speed)
+	death_aligned       = false
+	can_shoot           = false
+	$DecideTimer.stop()
+	print("Enemy destroyed – boarding soon.")
+
+
+
+# ───────── COLLISION / DEBUG STUBS ─────────
+func _on_area_entered(_a): pass  # keep your own logic
+
 func _draw():
 	# if show_debug:
-	# 	draw_circle(Vector2.ZERO, approach_distance, Color(0, 0, 1, 0.2))
-	# 	draw_circle(Vector2.ZERO, align_distance, Color(1, 0, 0, 0.2))
-	# 	var debug_info = [
-	# 		"State: %s" % str(current_state),
-	# 		"Action: %s" % current_action,
-	# 		"DistToPlayer: %.1f" % distance_to_player,
-	# 		"CurSpeed: %.1f" % current_speed,
-	# 		"RotSpeed: %.1f" % current_rotation_speed,
-	# 		"post_fire_cycles: %d" % post_fire_cycles,
-	# 		"side_offset_degs: %.1f" % side_offset_degs,
-	# 		"Enemy HP: %d" % health,
-	# 		"can_shoot? %s" % str(can_shoot)
-	# 	]
-	# 	var start_pos = Vector2(10, -40)
-	# 	var spacing = 14
-	# 	for i in range(debug_info.size()):
-	# 		draw_string(debug_font, start_pos + Vector2(0, i * spacing), debug_info[i])
+	#     draw_circle(Vector2.ZERO, approach_distance, Color(0,0,1,0.2))
+	#     draw_circle(Vector2.ZERO, align_distance,    Color(1,0,0,0.2))
 	pass

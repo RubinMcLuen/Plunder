@@ -261,6 +261,7 @@ sources/0 = SubResource("TileSetAtlasSource_8clfk")
 
 [node name="Ocean" type="Node2D"]
 script = ExtResource("1_kxoef")
+player_ship_path = NodePath("PlayerShip")
 
 [node name="Water" type="ColorRect" parent="."]
 z_index = -2
@@ -300,9 +301,8 @@ texture = ExtResource("5_3mcoo")
 position = Vector2(-239.5, 2125)
 texture = ExtResource("6_fpc3e")
 
-[node name="EnemyShip" parent="." instance=ExtResource("7_6y6ch")]
-position = Vector2(-44, 439)
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(25, -82)
-zoom = Vector2(0.8, 0.8)
+[node name="EnemyShip" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_6y6ch")]
+position = Vector2(-83, 158)
+player = NodePath("../PlayerShip")
+full_speed = 40.0
+health = 1
