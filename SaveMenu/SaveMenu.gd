@@ -22,7 +22,7 @@ const EMPTY_ICON: Texture2D = preload("res://SaveMenu/SaveSlot/assets/emptysaves
 
 var saved_icons: Array[Texture2D] = []
 var info_popup:  Node2D          = null
-var InfoScene:   PackedScene     = preload("res://SaveMenu/Info/info.tscn")
+var InfoScene:   PackedScene     = preload("res://SaveMenu/Info/Info.tscn")
 var active_slot: int             = -1
 
 func _ready() -> void:

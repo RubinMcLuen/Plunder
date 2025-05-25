@@ -1,12 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://gyqf4ti7nmw5"]
+[gd_scene load_steps=8 format=3 uid="uid://gyqf4ti7nmw5"]
 
 [ext_resource type="Texture2D" uid="uid://cc1klfhtqilyc" path="res://Battle/ZoomedInNewShip.png" id="1_fy6vb"]
+[ext_resource type="Script" path="res://Battle/BoardingBattle.gd" id="1_offb7"]
 [ext_resource type="Script" path="res://Battle/Camera.gd" id="2_rcx86"]
+[ext_resource type="Script" path="res://Battle/BattleManager.gd" id="3_5ftdp"]
+[ext_resource type="Texture2D" uid="uid://cfvbl5eyme6xx" path="res://Battle/Plank.png" id="4_qvk0i"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_87wue"]
 size = Vector2(624, 544)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h0xrr"]
+size = Vector2(225, 112)
+
 [node name="BoardingBattle" type="Node2D"]
+script = ExtResource("1_offb7")
 
 [node name="EnemyShip" type="Sprite2D" parent="."]
 position = Vector2(-128, -64)
@@ -26,23 +33,59 @@ boundary_area_path = NodePath("../Area2D")
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-position = Vector2(280, 224)
+position = Vector2(280, 208)
 shape = SubResource("RectangleShape2D_87wue")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 z_index = -1
 offset_left = -32.0
-offset_top = -48.0
+offset_top = -64.0
 offset_right = 592.0
-offset_bottom = 496.0
+offset_bottom = 480.0
 mouse_filter = 2
 color = Color(0.223529, 0.262745, 0.596078, 0.8)
 
 [node name="ColorRect2" type="ColorRect" parent="."]
 z_index = -2
 offset_left = -32.0
-offset_top = -48.0
+offset_top = -64.0
 offset_right = 592.0
-offset_bottom = 496.0
+offset_bottom = 480.0
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
+
+[node name="BattleManager" type="Node2D" parent="."]
+script = ExtResource("3_5ftdp")
+
+[node name="PlankContainer" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="PlankContainer"]
+position = Vector2(139, 200)
+texture = ExtResource("4_qvk0i")
+
+[node name="Sprite2D2" type="Sprite2D" parent="PlankContainer"]
+position = Vector2(189, 200)
+texture = ExtResource("4_qvk0i")
+
+[node name="Sprite2D3" type="Sprite2D" parent="PlankContainer"]
+position = Vector2(239, 200)
+texture = ExtResource("4_qvk0i")
+
+[node name="Sprite2D4" type="Sprite2D" parent="PlankContainer"]
+position = Vector2(289, 200)
+texture = ExtResource("4_qvk0i")
+
+[node name="Sprite2D5" type="Sprite2D" parent="PlankContainer"]
+position = Vector2(341, 200)
+texture = ExtResource("4_qvk0i")
+
+[node name="CrewContainer" type="Node2D" parent="."]
+z_index = 1
+
+[node name="EnemyContainer" type="Node2D" parent="."]
+
+[node name="EnemySpawnArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySpawnArea"]
+position = Vector2(240.5, 88)
+shape = SubResource("RectangleShape2D_h0xrr")

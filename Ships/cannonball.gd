@@ -56,8 +56,8 @@ func create_splash_effect() -> void:
 		var splash = splash_scene.instantiate()
 		splash.position = position
 		get_tree().current_scene.add_child(splash)
-	if shooter and shooter.has_method("request_splash_sound"):
-		shooter.request_splash_sound()
+	#if shooter and shooter.has_method("request_splash_sound"):
+		#shooter.request_splash_sound()
 
 func create_hit_effect() -> void:
 	if hit_scene:

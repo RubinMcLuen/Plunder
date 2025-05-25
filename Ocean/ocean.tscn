@@ -263,6 +263,7 @@ sources/0 = SubResource("TileSetAtlasSource_8clfk")
 [node name="Ocean" type="Node2D"]
 script = ExtResource("1_kxoef")
 player_ship_path = NodePath("PlayerShip")
+metadata/_edit_horizontal_guides_ = [-151.0]
 
 [node name="Water" type="ColorRect" parent="."]
 z_index = -2
@@ -299,8 +300,7 @@ texture = ExtResource("5_ry4ey")
 centered = false
 
 [node name="EnemyShip" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_6y6ch")]
-position = Vector2(31, 21)
-start_dead_for_testing = true
+position = Vector2(-327, 316)
 player = NodePath("../PlayerShip")
 full_speed = 40.0
 health = 1

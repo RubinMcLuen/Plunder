@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://btgkhbnjlabm"]
+
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="1_8o7wt"]
+[ext_resource type="Script" path="res://Character/NPC/Enemy/Enemy.gd" id="2_0ie86"]
+[ext_resource type="Shader" path="res://Character/Player/UVLookupShader.gdshader" id="3_bc7l2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_e8l4e"]
+resource_local_to_scene = true
+shader = ExtResource("3_bc7l2")
+shader_parameter/hurt_mode = false
+shader_parameter/hurt_color = Color(0.678, 0.196, 0.196, 0.6)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t3tbr"]
+radius = 30.0
+
+[node name="Enemy" instance=ExtResource("1_8o7wt")]
+script = ExtResource("2_0ie86")
+
+[node name="Appearance" parent="." index="0"]
+material = SubResource("ShaderMaterial_e8l4e")
+animation = &"AttackSlash"
+
+[node name="Sword" parent="Appearance" index="0"]
+animation = &"AttackSlash"
+
+[node name="SelectHitbox" parent="Area2D" index="0"]
+position = Vector2(0.5, -1.5)
+
+[node name="MeleeRange" type="Area2D" parent="." index="4"]
+position = Vector2(0.5, -10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeRange" index="0"]
+shape = SubResource("CircleShape2D_t3tbr")
+
+[node name="HurtTimer" type="Timer" parent="." index="5"]
+wait_time = 0.2
+one_shot = true

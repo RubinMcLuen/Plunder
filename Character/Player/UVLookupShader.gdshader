@@ -1,39 +1,29 @@
 shader_type canvas_item;
 
-uniform sampler2D map_texture;
-uniform bool hurt_mode = false; // Toggle this in your script during the hurt animation.
-uniform vec4 hurt_color;
+/* Per-sprite palette with red flash.
+   Unused pixels are discarded so hidden parts never show. */
 
+uniform sampler2D map_texture;
+uniform bool  hurt_mode = false;
+uniform vec4  hurt_color : source_color = vec4(0.678, 0.196, 0.196, 0.6);  // #AD3232
 
 void fragment() {
-    // Sample the node's own texture (this comes from the SpriteFrames).
-    vec4 uv_color = texture(TEXTURE, UV);
-    if (uv_color.a < 0.1) {
-        discard;
-    }
-    
-    // The UV lookup is stored in the red and green channels.
-    vec2 lookup_uv = vec2(uv_color.r, uv_color.g);
-    
-    // Get the size of the composite texture.
-    vec2 map_size = vec2(textureSize(map_texture, 0));
-    
-    // Convert the normalized lookup UV into texel coordinates,
-    // then sample at the center of that texel.
-    vec2 texel_coord = floor(lookup_uv * map_size);
-    vec2 exact_uv = (texel_coord + 0.5) / map_size;
-    
-    // Sample the composite texture at the computed coordinates.
-    vec4 final_color = texture(map_texture, exact_uv);
-    
-    // Multiply the alpha from both textures.
-    final_color.a *= uv_color.a;
-    
-    // If hurt_mode is active, blend with the hurt_color.
-    if (hurt_mode) {
-        // The hurt_color's alpha (about 0.6) acts as a blending factor.
-        final_color = mix(final_color, hurt_color, hurt_color.a);
-    }
-    
-    COLOR = final_color;
+    vec4 src = texture(TEXTURE, UV);
+    if (src.a < 0.05) { discard; }
+
+    vec2 sz  = vec2(textureSize(map_texture, 0));
+    vec4 col = texture(map_texture, (floor(src.rg * sz) + 0.5) / sz);
+
+    if (col.a < 0.05) { discard; }
+
+    col.a *= src.a;
+
+    if (hurt_mode)
+        col.rgb = mix(col.rgb, hurt_color.rgb, hurt_color.a);
+
+        // full RGBA modulate
+        // preserve RGB, but multiply alpha by modulate.a
+    COLOR = vec4(col.rgb, col.a * COLOR.a);
+
+
 }

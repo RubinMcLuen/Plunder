@@ -1,3 +1,6 @@
+res://Character/NPC/Enemy
+res://Character/NPC
+res://Character/NPC/CrewMember
 res://KelptownIsland
 res://Character/NPC/NPCs
 res://Ships
@@ -17,6 +20,3 @@ res://Respawn
 res://SwordFight
 C:/Users/Rubin/Desktop/Game
 res://Island
-res://SaveMenu/Info
-res://TitleScreen
-res://Dialogue/assets

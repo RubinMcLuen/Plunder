@@ -1,9 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://b3xx1r1h6gki5"]
+[gd_scene load_steps=14 format=3 uid="uid://b3xx1r1h6gki5"]
 
 [ext_resource type="PackedScene" uid="uid://ci36078u3htw1" path="res://KelptownInn/KelptownInn.tscn" id="1_b3fmw"]
 [ext_resource type="Script" path="res://KelptownInn/KelptownInnIntroCutscene.gd" id="2_uqa76"]
 [ext_resource type="PackedScene" uid="uid://4klyn0h8t7vm" path="res://Cutscene/CutsceneManager.tscn" id="2_xaxja"]
-[ext_resource type="Resource" uid="uid://dloukc748ca08" path="res://Dialogue/dialogues/bartender.dialogue" id="3_nw6ac"]
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="4_updwp"]
 [ext_resource type="PackedScene" uid="uid://cjn8sut1cl3vw" path="res://SwordFight/SwordFightTutorial.tscn" id="4_vnlhx"]
 [ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="6_34htp"]
@@ -11,8 +10,6 @@
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="7_11mh4"]
 [ext_resource type="Script" path="res://Character/NPC/NPCs/BartenderTutorial.gd" id="7_fv4vo"]
 [ext_resource type="Script" path="res://Character/NPC/NPCs/TutorialPirate.gd" id="9_uvxy1"]
-[ext_resource type="Resource" uid="uid://cmmrss1f1nkt0" path="res://Dialogue/dialogues/patron.dialogue" id="10_wfwdx"]
-[ext_resource type="Resource" uid="uid://d2rq3mkjkxu7f" path="res://Character/NPC/NPCs/EnemyStats.tres" id="11_obs1j"]
 
 [sub_resource type="Animation" id="Animation_unt7p"]
 length = 0.001
@@ -64,8 +61,7 @@ npcs = [NodePath("../Pirate"), NodePath("../Patron"), NodePath("../Bartender")]
 [node name="Bartender" parent="." index="1"]
 motion_mode = 0
 script = ExtResource("7_fv4vo")
-npc_name = "Bartender"
-dialogue_resource = ExtResource("3_nw6ac")
+health = 3
 
 [node name="Player" parent="." index="2"]
 position = Vector2(381, 23)
@@ -79,18 +75,12 @@ visible = false
 position = Vector2(259, 132)
 motion_mode = 0
 script = ExtResource("9_uvxy1")
-npc_name = "TutorialPirate"
-fight_side_right = true
-stats = ExtResource("11_obs1j")
-fightable = true
-dialogue_resource = ExtResource("10_wfwdx")
 npc_texture_index = 1
+health = 3
 
 [node name="Patron" parent="." index="4" instance=ExtResource("4_updwp")]
 position = Vector2(295, 132)
 motion_mode = 0
-npc_name = "patron"
-dialogue_resource = ExtResource("10_wfwdx")
 npc_texture_index = 2
 
 [node name="Arrow" type="Sprite2D" parent="." index="8"]
@@ -156,6 +146,8 @@ Tap the bartender to talk[/center]"
 
 [node name="PaidActor1" parent="." index="10"]
 visible = false
+health = 3
 
 [node name="PaidActor2" parent="." index="11"]
 visible = false
+health = 3

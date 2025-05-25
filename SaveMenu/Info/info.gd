@@ -46,13 +46,15 @@ func _on_delete_pressed() -> void:
 func _load_json(path: String) -> Dictionary:
 	if not FileAccess.file_exists(path):
 		return {}
-	var file = FileAccess.open(path, FileAccess.READ)
-	var text = file.get_as_text()
+
+	var file := FileAccess.open(path, FileAccess.READ)
+	var text := file.get_as_text()
 	file.close()
-	var parsed = JSON.parse_string(text)
-	if parsed.error == OK:
-		return parsed.result as Dictionary
-	return {}
+
+	# parse_string() returns the data (Dictionary/Array) or null on failure
+	var data = JSON.parse_string(text)
+	return data if data is Dictionary else {}
+
 
 func _write_json(path: String, data: Dictionary) -> void:
 	var file = FileAccess.open(path, FileAccess.WRITE)

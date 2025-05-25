@@ -151,7 +151,7 @@ func _behave_dead(delta):
 		return
 
 	# Phase 2 – smooth decel via lerp, then snap
-	current_speed = lerp(current_speed, 0.0, acceleration_factor * delta)
+	current_speed = lerp(current_speed, 0.0, acceleration_factor * 4 * delta)
 	if current_speed < STOP_THRESHOLD:
 		current_speed          = 0.0
 		current_rotation_speed = 0.0
