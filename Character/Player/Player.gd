@@ -57,13 +57,13 @@ var save_slot: int = -1
 # _ready & _physics_process
 # ---------------------------
 func _ready():
-	load_customization()
+	load_customization_from_save()   # use save-file if present
 	if customization_only:
 		set_physics_process(false)
 	else:
-		# Start with the idle animation.
 		appearance.play("IdleStand")
 		set_physics_process(true)
+
 
 func _physics_process(_delta: float) -> void:
 	if customization_only:
@@ -251,7 +251,7 @@ func load_customization():
 		print("Assigned custom texture with RID: ", custom_map_texture.get_rid())
 		return
 
-	var char_res = ResourceLoader.load("res://Character/Player/PlayerCustomization.tres") as CharacterCustomizationResource
+	var char_res = (ResourceLoader.load("res://Character/Player/PlayerCustomization.tres") as CharacterCustomizationResource).duplicate()
 	if char_res:
 		var composite_tex: Texture2D = char_res.generate_lookup_texture()
 		if composite_tex:
@@ -267,5 +267,55 @@ func load_customization():
 
 
 func load_customization_from_save():
-	# Update save/load functionality as needed.
-	pass
+	# If no slot yet, fall back to default resource.
+	if Global.active_save_slot < 0:
+		load_customization()
+		return
+
+	var path := "user://saveslot%d.json" % Global.active_save_slot
+	if not FileAccess.file_exists(path):
+		load_customization()
+		return
+
+		# read & parse JSON
+	var save_dict: Dictionary = {}
+	var text := FileAccess.get_file_as_string(path)
+	var parsed = JSON.parse_string(text)
+
+	# only use it if it really is a Dictionary
+	if parsed is Dictionary:
+		save_dict = parsed
+
+	if not save_dict.has("character"):
+		load_customization()
+		return
+
+	var char: Dictionary = save_dict["character"] as Dictionary
+
+	var res = (ResourceLoader.load("res://Character/Player/PlayerCustomization.tres") as CharacterCustomizationResource).duplicate()
+	if not res:
+		push_error("Could not load PlayerCustomization.tres")
+		return
+
+	# apply the saved selections
+	res.skin_option   = int(char.get("skin",   res.skin_option))
+	res.top_option    = int(char.get("top",    res.top_option))
+	res.bottom_option = int(char.get("bottom", res.bottom_option))
+	res.hat_option    = int(char.get("hat",    res.hat_option))
+	res.hair_option   = int(char.get("hair",   res.hair_option))
+
+	var misc: Dictionary = char.get("misc", {}) as Dictionary
+
+	res.misc_eyepatch = bool(misc.get("eyepatch", res.misc_eyepatch))
+	res.misc_hook     = bool(misc.get("hook",     res.misc_hook))
+	res.misc_peg_leg  = bool(misc.get("peg_leg",  res.misc_peg_leg))
+
+	# apply composite texture to the shader
+	var tex = res.generate_lookup_texture()
+	if tex:
+		appearance.material = appearance.material.duplicate()
+		appearance.material.set_shader_parameter("map_texture", tex)
+
+	# update player-name variable for UI needs
+	name_input = char.get("name", name_input)
+

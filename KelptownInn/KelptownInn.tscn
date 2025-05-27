@@ -1,7 +1,7 @@
 [gd_scene load_steps=57 format=3 uid="uid://ci36078u3htw1"]
 
 [ext_resource type="Script" path="res://KelptownInn/KelptownInn.gd" id="1_8g3rb"]
-[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="2_iwfcd"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="2_iwfcd"]
 [ext_resource type="Resource" uid="uid://dloukc748ca08" path="res://Dialogue/dialogues/bartender.dialogue" id="3_43j7b"]
 [ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/Player.tscn" id="3_v7aqn"]
 [ext_resource type="Resource" uid="uid://cswlnoh68rgyw" path="res://Dialogue/dialogues/PaidActor.dialogue" id="3_vvvut"]
@@ -108,6 +108,7 @@ paid_actor_dialogue_resource = ExtResource("3_vvvut")
 position = Vector2(270, 68)
 collision_layer = 2
 script = ExtResource("3_yne2m")
+health = 10
 
 [node name="Player" parent="." instance=ExtResource("3_v7aqn")]
 position = Vector2(268, 226)
@@ -121,10 +122,9 @@ position = Vector2(269, 135)
 texture = ExtResource("4_ketps")
 
 [node name="Exit" type="Area2D" parent="."]
-position = Vector2(266, 255)
+position = Vector2(269, 247)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
-position = Vector2(3, -8)
 shape = SubResource("RectangleShape2D_5j50s")
 
 [node name="Collisions" type="Node2D" parent="."]
@@ -534,11 +534,17 @@ shape = SubResource("RectangleShape2D_ru76x")
 [node name="PaidActor1" parent="." instance=ExtResource("2_iwfcd")]
 position = Vector2(235, 133)
 script = ExtResource("35_nlb7u")
+editor_npc_name = "Crewmate1"
+editor_hirability = true
 state = "one"
 npc_texture_index = 1
+health = 10
 
 [node name="PaidActor2" parent="." instance=ExtResource("2_iwfcd")]
 position = Vector2(310, 222)
 script = ExtResource("35_nlb7u")
+editor_npc_name = ""
+editor_hirability = false
 state = "two"
 npc_texture_index = 2
+health = 10

@@ -9,7 +9,7 @@ class_name CharacterCreator
 @onready var player:        Node2D           = $Player
 @onready var appearance:    AnimatedSprite2D = $Player/Appearance
 @onready var finish_button: TextureButton    = $Window/FinishButton
-@onready var header_node:   Node2D           = $Window/Header
+@onready var header:   Node2D           = $Window/Header
 @onready var cat_buttons:   Node             = $Window/CategoryButtons
 @onready var item_buttons:  Node             = $Window/ItemButtons
 @onready var slider:        Node             = $Window/Slider
@@ -21,6 +21,8 @@ const CUSTOM_RES_PATH  := "res://Character/Player/PlayerCustomization.tres"
 const OPTIONS_JSON     := "res://CharacterCreator/AssetIndex.json"
 const PAGE_SIZE        := 6
 const CATEGORIES       := ["skin", "top", "bottom", "hat", "misc", "hair"]
+const HEADER_MOVE_Y       := 17.0
+const HEADER_TWEEN_TIME   := 0.3
 
 # ─────────────────────────────────────────────────────────────────────
 #  STATE
@@ -57,7 +59,7 @@ func _ready() -> void:
 #  INITIALISATION
 # ─────────────────────────────────────────────────────────────────────
 func _init_customization_resource() -> void:
-	customization = load(CUSTOM_RES_PATH) as CharacterCustomizationResource
+	customization = (load(CUSTOM_RES_PATH) as CharacterCustomizationResource).duplicate()
 	if not customization or not appearance:
 		push_error("Failed to load CharacterCustomizationResource or Appearance node.")
 		return
@@ -144,13 +146,14 @@ func _update_player_texture() -> void:
 # ─────────────────────────────────────────────────────────────────────
 #  HEADER ANIMATION  (called from TitleScreen)
 # ─────────────────────────────────────────────────────────────────────
-func animate_header(up: bool) -> Tween:
-	var delta := 17 * (1 if up else -1)
+func animate_header(down: bool) -> Tween:
+	var delta := HEADER_MOVE_Y * (1 if down else -1)
 	var tw := create_tween()
-	tw.tween_property(header_node, "global_position:y",
-		header_node.global_position.y + delta, 0.3
+	tw.tween_property(header, "global_position:y",
+		header.global_position.y + delta, HEADER_TWEEN_TIME
 	)
 	return tw
+
 
 # ─────────────────────────────────────────────────────────────────────
 #  FINISH / SAVE
@@ -180,6 +183,22 @@ func _build_character_data() -> void:
 func _save_data() -> void:
 	var slot := Global.active_save_slot
 	var path := "user://saveslot%d.json" % slot
-	var file := FileAccess.open(path, FileAccess.WRITE)
-	file.store_string(JSON.stringify({ "character": character_data }))
-	file.close()
+
+	# start with an empty dict
+	var full_data: Dictionary = {}
+
+	# if there’s already a file, try to load it as a Dictionary
+	if FileAccess.file_exists(path):
+		var text := FileAccess.get_file_as_string(path)
+		var parsed = JSON.parse_string(text)     # no inference, parsed is a Variant
+		if parsed is Dictionary:
+			full_data = parsed
+
+	# overwrite only the character sub-key
+	full_data["character"] = character_data
+
+	var fw := FileAccess.open(path, FileAccess.WRITE)
+	fw.store_string(JSON.stringify(full_data))
+	fw.close()
+
+

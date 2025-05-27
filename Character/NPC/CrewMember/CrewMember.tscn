@@ -15,9 +15,6 @@ radius = 30.0
 
 [node name="CrewMember" instance=ExtResource("1_bh1s7")]
 script = ExtResource("2_oe6pe")
-npc_texture_index = null
-health = null
-speed = null
 
 [node name="Appearance" parent="." index="0"]
 material = SubResource("ShaderMaterial_70x73")

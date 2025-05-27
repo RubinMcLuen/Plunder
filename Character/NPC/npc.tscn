@@ -13,7 +13,7 @@ script = ExtResource("2_y21gt")
 
 [node name="Appearance" parent="." index="0"]
 material = ExtResource("3_rc5ww")
-animation = &"Walk"
+animation = &"IdleStand"
 
 [node name="Area2D" type="Area2D" parent="." index="3"]
 position = Vector2(0, -10)

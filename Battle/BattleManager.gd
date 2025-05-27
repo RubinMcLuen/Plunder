@@ -22,7 +22,13 @@ func spawn_crews() -> void:
 		c.global_position = plank.global_position + CREW_SPAWN_OFFSET
 		c.board_target    = plank.global_position + BOARD_TARGET_OFFSET
 		c.battle_manager  = self
+
+		#–– start them in battle mode ––
+		c.fighting = true
+		c.set_idle_with_sword_mode(true)
+
 		crew_container.add_child(c)
+
 
 func spawn_enemies() -> void:
 	var scene := preload("res://Character/NPC/Enemy/Enemy.tscn")

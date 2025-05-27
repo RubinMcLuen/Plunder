@@ -128,11 +128,11 @@ script = ExtResource("1_d6u5a")
 
 [node name="CharacterCreator" parent="." instance=ExtResource("6_ppw85")]
 visible = false
-z_index = 1
+z_index = 2
 position = Vector2(240, -135)
 
 [node name="SaveMenu" parent="." instance=ExtResource("7_vnvxv")]
-z_index = 2
+z_index = 3
 position = Vector2(0, -270)
 
 [node name="Camera2D" type="Camera2D" parent="."]

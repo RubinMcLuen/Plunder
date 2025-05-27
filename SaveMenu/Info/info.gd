@@ -7,7 +7,7 @@ class_name SaveInfo
 @onready var lbl_name:   RichTextLabel  = $Name
 @onready var player:     Node   = $Control/Player
 
-const DEFAULT_SCENE     := "res://Tavern/tavern.tscn"
+const DEFAULT_SCENE     := "res://CharacterCreator/CharacterCreator.tscn"
 const SAVE_PATH_FORMAT  := "user://saveslot%d.json"
 const SAVE_DATA_PATH    := "user://save_data.json"
 

@@ -16,7 +16,7 @@ texture = ExtResource("2_c5k41")
 
 [node name="Header" type="Sprite2D" parent="."]
 z_index = -1
-position = Vector2(163, 46)
+position = Vector2(168, 46)
 texture = ExtResource("3_bqaqe")
 centered = false
 

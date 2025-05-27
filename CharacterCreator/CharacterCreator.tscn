@@ -42,7 +42,7 @@ centered = false
 
 [node name="Header" type="Sprite2D" parent="Window"]
 z_index = -1
-position = Vector2(-77, -89)
+position = Vector2(-72, -89)
 texture = ExtResource("5_s3v7b")
 centered = false
 
