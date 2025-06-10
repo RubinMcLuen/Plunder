@@ -1,24 +1,40 @@
+# Island.gd
 extends Node2D
 
-@onready var player: CharacterBody2D = $Player
+@onready var player: CharacterBody2D    = $Player
 @onready var monte_coral: CharacterBody2D = $MonteCoral
-@onready var first_mate: NPC = $FirstMate2
-var skip_fade: bool = false
-@export var location_name: String = "Kelptown"
+@onready var first_mate: NPC             = $FirstMate2
+var skip_fade: bool                      = false
+
+@export var location_name: String        = "Kelptown"
 @export var monte_coral_dialogue: Resource
 @export var first_mate_dialogue: Resource
-@export var dialogue_scene: PackedScene = preload("res://Dialogue/balloon.tscn")
+@export var dialogue_scene: PackedScene  = preload("res://Dialogue/balloon.tscn")
 
 var scene_state: String = "pre_shiptutorial"
 
 func _ready() -> void:
+	# 1) Spawn crew for this scene
+	CrewManager.populate_scene(self)
+
+	# 2) Immediately apply saved spawn_position (if any)
+	if Global.spawn_position != Vector2.ZERO:
+		player.global_position = Global.spawn_position
+		Global.spawn_position = Vector2.ZERO
+
+	# 3) Connect the exit trigger
 	$Exit.body_entered.connect(_on_exit_body_entered)
+
+	# 4) Wait one frame so UIManager has hidden everything
+	await get_tree().process_frame
+
+	# 5) Show the location banner
 	UIManager.show_location_notification(location_name)
-	# Connect dialogue signals.
+
+	# 6) Hook up Monte Coral’s dialogue signal
 	if monte_coral.has_method("dialogue_requested"):
 		monte_coral.dialogue_requested.connect(_on_monte_coral_dialogue_requested)
-	
-	apply_scene_state()
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
@@ -26,14 +42,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func apply_scene_state() -> void:
-	# Determine scene state based on the ShipTutorial quest's step.
+	# Determine scene_state based on the ShipTutorial quest
 	if QuestManager.quests.has("ShipTutorial"):
 		var step = QuestManager.quests["ShipTutorial"]["current_step"]
 		if step >= 1:
 			scene_state = "shiptutorial_started"
-			# Place First Mate at the ship coordinates.
+			# Place First Mate by the ship
 			first_mate.position = Vector2(-173, 600)
-			# Check if the TutorialQuest is complete.
+			# Advance his state once tutorial quest is done
 			if QuestManager.is_quest_finished("TutorialQuest"):
 				first_mate.state = "OnShipReady"
 			else:
@@ -43,60 +59,73 @@ func apply_scene_state() -> void:
 	else:
 		scene_state = "pre_shiptutorial"
 
-
-func _on_exit_body_entered(body):
+func _on_exit_body_entered(body: Node) -> void:
 	if body == player:
-		SceneSwitcher.switch_scene("res://KelptownInn/KelptownInn.tscn", Vector2(269, 220), "fade")
+		SceneSwitcher.switch_scene(
+			"res://KelptownInn/KelptownInn.tscn",
+			Vector2(269, 220),
+			"fade",
+			Vector2.ONE,
+			Vector2.ZERO,
+			Vector2(1.5, 1.5)   # ← Kelptown Inn’s zoom
+		)
+
+
 
 func load_player_position() -> void:
 	var slot = Global.active_save_slot
-	var save_file_path = "user://saveslot" + str(slot) + ".json"
+	var save_file_path = "user://saveslot%d.json" % slot
 	if FileAccess.file_exists(save_file_path):
 		var file = FileAccess.open(save_file_path, FileAccess.READ)
 		var json = JSON.new()
-		var parse_result = json.parse(file.get_as_text())
-		file.close()
-		if parse_result == OK:
+		if json.parse(file.get_as_text()) == OK:
 			var save_data = json.data
 			if save_data.has("scene") and save_data["scene"].has("position"):
 				var pos = save_data["scene"]["position"]
-				if player:
-					player.position = Vector2(pos["x"], pos["y"])
-					print("Loaded player position:", player.position)
-				else:
-					print("Player node not found in scene.")
-		else:
-			print("Failed to parse save file for loading position.")
+				player.global_position = Vector2(pos["x"], pos["y"])
+				print("Loaded player position:", player.global_position)
+		file.close()
 	else:
 		print("No save file found, using default position.")
 
+
 func _on_monte_coral_dialogue_requested(dialogue_section: String) -> void:
 	player.disable_user_input = true
-	var balloon = DialogueManager.show_dialogue_balloon(monte_coral_dialogue, dialogue_section, [monte_coral])
+	var balloon = DialogueManager.show_dialogue_balloon(
+		monte_coral_dialogue,
+		dialogue_section,
+		[monte_coral]
+	)
 	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
-	# Advance TutorialQuest if needed.
+	# Advance tutorial quest if appropriate
 	if QuestManager.quests.has("TutorialQuest") and QuestManager.quests["TutorialQuest"]["current_step"] == 4:
 		QuestManager.advance_quest_step("TutorialQuest")
-		if first_mate.get_state() == "OnShipNotReady":
+		if first_mate.state == "OnShipNotReady":
 			first_mate.state = "OnShipReady"
-		
+
 
 func _on_first_mate_dialogue_requested(dialogue_section: String) -> void:
 	player.disable_user_input = true
-	var balloon = DialogueManager.show_dialogue_balloon(first_mate_dialogue, dialogue_section, [first_mate])
-	# Let the First Mate handle his own state change when dialogue finishes.
+	var balloon = DialogueManager.show_dialogue_balloon(
+		first_mate_dialogue,
+		dialogue_section,
+		[first_mate]
+	)
 	balloon.connect("dialogue_finished", Callable(first_mate, "_on_dialogue_finished"))
-	# Also re-enable player input after dialogue completes.
 	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
+
+
+func _on_first_mate_2_dialogue_requested(dialogue_section: String) -> void:
+	# Alternate hook (if used)
+	player.disable_user_input = true
+	var balloon = DialogueManager.show_dialogue_balloon(
+		first_mate_dialogue,
+		dialogue_section,
+		[first_mate]
+	)
+	balloon.connect("dialogue_finished", Callable(first_mate, "_on_dialogue_finished"))
+	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
+
 
 func _on_dialogue_finished() -> void:
 	player.disable_user_input = false
-
-
-func _on_first_mate_2_dialogue_requested(dialogue_section):
-	player.disable_user_input = true
-	var balloon = DialogueManager.show_dialogue_balloon(first_mate_dialogue, dialogue_section, [first_mate])
-	# Let the First Mate handle his own state change when dialogue finishes.
-	balloon.connect("dialogue_finished", Callable(first_mate, "_on_dialogue_finished"))
-	# Also re-enable player input after dialogue completes.
-	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))

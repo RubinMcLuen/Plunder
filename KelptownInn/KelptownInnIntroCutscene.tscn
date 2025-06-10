@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://b3xx1r1h6gki5"]
+[gd_scene load_steps=15 format=3 uid="uid://b3xx1r1h6gki5"]
 
 [ext_resource type="PackedScene" uid="uid://ci36078u3htw1" path="res://KelptownInn/KelptownInn.tscn" id="1_b3fmw"]
 [ext_resource type="Script" path="res://KelptownInn/KelptownInnIntroCutscene.gd" id="2_uqa76"]
 [ext_resource type="PackedScene" uid="uid://4klyn0h8t7vm" path="res://Cutscene/CutsceneManager.tscn" id="2_xaxja"]
+[ext_resource type="PackedScene" uid="uid://tt5acos0n34b" path="res://Dialogue/balloon.tscn" id="3_fvyt3"]
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="4_updwp"]
 [ext_resource type="PackedScene" uid="uid://cjn8sut1cl3vw" path="res://SwordFight/SwordFightTutorial.tscn" id="4_vnlhx"]
 [ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="6_34htp"]
@@ -52,8 +53,9 @@ _data = {
 [node name="KelptownInn" instance=ExtResource("1_b3fmw")]
 script = ExtResource("2_uqa76")
 dialogue_resource = null
+dialogue_scene = ExtResource("3_fvyt3")
 
-[node name="CutsceneManager" parent="." index="0" node_paths=PackedStringArray("player", "camera", "npcs") instance=ExtResource("2_xaxja")]
+[node name="CutsceneManager2" parent="." index="0" node_paths=PackedStringArray("player", "camera", "npcs") instance=ExtResource("2_xaxja")]
 player = NodePath("../Player")
 camera = NodePath("../Player/Camera2D")
 npcs = [NodePath("../Pirate"), NodePath("../Patron"), NodePath("../Bartender")]
@@ -76,7 +78,6 @@ position = Vector2(259, 132)
 motion_mode = 0
 script = ExtResource("9_uvxy1")
 npc_texture_index = 1
-health = 3
 
 [node name="Patron" parent="." index="4" instance=ExtResource("4_updwp")]
 position = Vector2(295, 132)
@@ -143,11 +144,3 @@ text = "[center]
 
 
 Tap the bartender to talk[/center]"
-
-[node name="PaidActor1" parent="." index="10"]
-visible = false
-health = 3
-
-[node name="PaidActor2" parent="." index="11"]
-visible = false
-health = 3

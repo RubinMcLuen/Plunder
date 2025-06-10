@@ -4,6 +4,8 @@ extends Node
 var active_save_slot: int = -1
 var spawn_position: Vector2 = Vector2.ZERO
 var crew: Array[String] = []
+var ship_state: Dictionary = {}   # holds extra data just for PlayerShip
+
 
 func add_crew(npc_name: String) -> void:
 	if npc_name in crew:
@@ -18,44 +20,61 @@ func _notification(what):
 		save_game_state()
 		get_tree().quit()
 
-func save_game_state():
+func save_game_state() -> void:
 	var slot = active_save_slot
 	var save_file_path = "user://saveslot" + str(slot) + ".json"
 
 	var current_scene_node = get_tree().current_scene
-	var current_scene = current_scene_node.scene_file_path
-	if current_scene.ends_with("title_screen.tscn"):
-		print("Not saving game state on title screen.")
-		return
-	if current_scene.ends_with("save_menu.tscn"):
-		print("Not saving game state on save menu screen.")
+	var current_scene      = current_scene_node.scene_file_path
+
+	# Don’t save on title or save-menu screens
+	if current_scene.ends_with("title_screen.tscn") \
+		or current_scene.ends_with("save_menu.tscn"):
+		print("Not saving on title / save-menu screen.")
 		return
 
-	var player = current_scene_node.get_node_or_null("Player")
-	var position = {"x": 0, "y": 0}
-	if player:
-		position = {"x": player.position.x, "y": player.position.y}
+	# ------------------------------------------------------------------
+	# 1)  Gather position + optional ship data
+	# ------------------------------------------------------------------
+	var pos_dict = {"x": 0, "y": 0}
+	ship_state   = {}                         # clear every save
 
-	var save_data = {}
+	if current_scene_node.has_node("Player"):
+		var p = current_scene_node.get_node("Player")
+		pos_dict = {"x": p.position.x, "y": p.position.y}
+
+	elif current_scene_node.has_node("PlayerShip"):
+		var ship = current_scene_node.get_node("PlayerShip")
+		pos_dict = {"x": ship.global_position.x, "y": ship.global_position.y}
+
+		# Extra data worth keeping
+		ship_state = {
+			"frame":   ship.current_frame,
+			"moving":  ship.moving_forward,
+			"health":  ship.health
+		}
+
+	# ------------------------------------------------------------------
+	# 2)  Merge with any existing save-file contents
+	# ------------------------------------------------------------------
+	var save_data: Dictionary = {}
 	if FileAccess.file_exists(save_file_path):
-		var file_read = FileAccess.open(save_file_path, FileAccess.READ)
-		var json = JSON.new()
-		if json.parse(file_read.get_as_text()) == OK:
-			save_data = json.data
-		file_read.close()
+		var r = FileAccess.open(save_file_path, FileAccess.READ)
+		var j = JSON.new()
+		if j.parse(r.get_as_text()) == OK:
+			save_data = j.data
+		r.close()
 
-	save_data["scene"] = {
-		"name": current_scene,
-		"position": position
-	}
-	save_data["quests"] = get_quest_manager().quests
-	save_data["crew"]   = crew
+	save_data["scene"]      = {"name": current_scene, "position": pos_dict}
+	save_data["ship_state"] = ship_state
+	save_data["quests"]     = get_quest_manager().quests
+	save_data["crew"]       = crew
 
-	var file_write = FileAccess.open(save_file_path, FileAccess.WRITE)
-	file_write.store_string(JSON.stringify(save_data))
-	file_write.close()
+	var w = FileAccess.open(save_file_path, FileAccess.WRITE)
+	w.store_string(JSON.stringify(save_data))
+	w.close()
 
-	print("Game saved! Scene =", current_scene, "Position =", position)
+	print("Game saved →", current_scene, " | pos:", pos_dict, " | ship:", ship_state)
 
 func load_quest_data_from_save():
 	var slot = active_save_slot
@@ -95,3 +114,41 @@ func load_crew_from_save() -> void:
 		for entry in raw_crew:
 			crew.append(str(entry))
 
+func load_game_state() -> void:
+	var slot = active_save_slot
+	var fname = "user://saveslot%d.json" % slot
+	if not FileAccess.file_exists(fname):
+		print("No save file for slot", slot)
+		return
+
+	# 1) Read & parse
+	var f = FileAccess.open(fname, FileAccess.READ)
+	var j = JSON.new()
+	if j.parse(f.get_as_text()) != OK:
+		push_error("Failed to parse save file.")
+		return
+	var data: Dictionary = j.data
+	f.close()
+
+	# 2) Restore quests, crew
+	if "quests" in data:
+		get_quest_manager().quests = data["quests"]
+	if "crew" in data:
+		crew = []
+		for c in data["crew"]:
+			crew.append(str(c))
+
+	# 3) Scene + spawn + ship_state
+	var scene_info = data.get("scene", {})
+	var pos_dict   = scene_info.get("position", {})
+	ship_state     = data.get("ship_state", {})
+
+	spawn_position = Vector2(pos_dict.get("x", 0), pos_dict.get("y", 0))
+
+	var scene_path = scene_info.get("name", "")
+	if scene_path != "":
+		get_tree().change_scene_to_file(scene_path)
+
+	print("Game loaded →", scene_path,
+		"| spawn:", spawn_position,
+		"| ship_state:", ship_state)

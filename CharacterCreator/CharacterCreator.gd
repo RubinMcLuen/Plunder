@@ -9,7 +9,7 @@ class_name CharacterCreator
 @onready var player:        Node2D           = $Player
 @onready var appearance:    AnimatedSprite2D = $Player/Appearance
 @onready var finish_button: TextureButton    = $Window/FinishButton
-@onready var header:   Node2D           = $Window/Header
+@onready var header:        Node2D           = $Window/Header
 @onready var cat_buttons:   Node             = $Window/CategoryButtons
 @onready var item_buttons:  Node             = $Window/ItemButtons
 @onready var slider:        Node             = $Window/Slider
@@ -17,43 +17,53 @@ class_name CharacterCreator
 # ─────────────────────────────────────────────────────────────────────
 #  CONSTANTS
 # ─────────────────────────────────────────────────────────────────────
-const CUSTOM_RES_PATH  := "res://Character/Player/PlayerCustomization.tres"
-const OPTIONS_JSON     := "res://CharacterCreator/AssetIndex.json"
-const PAGE_SIZE        := 6
-const CATEGORIES       := ["skin", "top", "bottom", "hat", "misc", "hair"]
-const HEADER_MOVE_Y       := 17.0
-const HEADER_TWEEN_TIME   := 0.3
+const CUSTOM_RES_PATH    := "res://Character/Player/PlayerCustomization.tres"
+const OPTIONS_JSON       := "res://CharacterCreator/AssetIndex.json"
+const PAGE_SIZE          := 6
+const CATEGORIES         := ["skin", "top", "bottom", "hat", "misc", "hair"]
+const HEADER_MOVE_Y      := 17.0
+const HEADER_TWEEN_TIME  := 0.3
 
 # ─────────────────────────────────────────────────────────────────────
 #  STATE
 # ─────────────────────────────────────────────────────────────────────
-var current_category: String = "skin"
-var current_page:     int    = 0
+var current_category: String     = "skin"
+var current_page:     int        = 0
 var options:          Dictionary = {}
-
-var customization: CharacterCustomizationResource
-var character_data: Dictionary = {
-	"name": "",
-	"skin": "",
-	"top": "",
+var customization:    CharacterCustomizationResource
+var character_data:   Dictionary = {
+	"name":   "",
+	"skin":   "",
+	"top":    "",
 	"bottom": "",
-	"hat": "",
-	"hair": "",
+	"hat":    "",
+	"hair":   "",
 	"misc": {
 		"eyepatch": false,
-		"hook":      false,
-		"peg_leg":   false,
+		"hook":     false,
+		"peg_leg":  false,
 	},
 }
 
 # ─────────────────────────────────────────────────────────────────────
-#  READY
+#  HEADER POSITION CACHE
 # ─────────────────────────────────────────────────────────────────────
+var _header_shown_y:  float
+var _header_hidden_y: float
+
+# ─────────────────────────────────────────────────────────────────────
+#  READY                                ← only the shown lines changed
+# ─────────────────────────────────────────────────────────────────────
+# CharacterCreator.gd  ───────────────────────────────────────────────
+# 1)  Hide the header at start (same as before, but keep no cache)
 func _ready() -> void:
 	_init_customization_resource()
 	_load_all_options()
 	_connect_ui()
 	_refresh_ui()
+
+	header.position.y += HEADER_MOVE_Y   # start just out of view
+
 
 # ─────────────────────────────────────────────────────────────────────
 #  INITIALISATION
@@ -63,7 +73,6 @@ func _init_customization_resource() -> void:
 	if not customization or not appearance:
 		push_error("Failed to load CharacterCustomizationResource or Appearance node.")
 		return
-
 	appearance.material = appearance.material.duplicate()
 	_update_player_texture()
 
@@ -78,8 +87,6 @@ func _load_all_options() -> void:
 	var data_dict: Dictionary = json.get_data() as Dictionary
 	for cat in CATEGORIES:
 		options[cat] = data_dict.get(cat, [])
-
-
 
 # ─────────────────────────────────────────────────────────────────────
 #  UI WIRING
@@ -102,10 +109,9 @@ func _populate_items() -> void:
 
 func _update_slider() -> void:
 	var total: int = options[current_category].size()
-	var pages: int = clampi((total + PAGE_SIZE - 1) / PAGE_SIZE, 1, 5)  # ceiling-divide
+	var pages: int = clampi((total + PAGE_SIZE - 1) / PAGE_SIZE, 1, 5)
 	slider.set_page_count(pages)
 	slider.reset_to_first_page()
-
 
 # ─────────────────────────────────────────────────────────────────────
 #  SIGNAL CALLBACKS
@@ -144,15 +150,20 @@ func _update_player_texture() -> void:
 		appearance.material.set_shader_parameter("map_texture", tex)
 
 # ─────────────────────────────────────────────────────────────────────
-#  HEADER ANIMATION  (called from TitleScreen)
+#  HEADER ANIMATION                     ← fully rewritten function
 # ─────────────────────────────────────────────────────────────────────
+# 2)  Relative animation, camera-proof
 func animate_header(down: bool) -> Tween:
 	var delta := HEADER_MOVE_Y * (1 if down else -1)
-	var tw := create_tween()
-	tw.tween_property(header, "global_position:y",
-		header.global_position.y + delta, HEADER_TWEEN_TIME
-	)
+	var tw := create_tween()\
+		.set_trans(Tween.TRANS_SINE)\
+		.set_ease(Tween.EASE_IN_OUT)
+
+	tw.tween_property(header, "position:y",
+		header.position.y + delta, HEADER_TWEEN_TIME)
+
 	return tw
+
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -174,7 +185,7 @@ func _build_character_data() -> void:
 	character_data["bottom"] = str(customization.bottom_option)
 	character_data["hat"]    = str(customization.hat_option)
 	character_data["hair"]   = str(customization.hair_option)
-	character_data["misc"] = {
+	character_data["misc"]   = {
 		"eyepatch": customization.misc_eyepatch,
 		"hook":     customization.misc_hook,
 		"peg_leg":  customization.misc_peg_leg,
@@ -183,22 +194,13 @@ func _build_character_data() -> void:
 func _save_data() -> void:
 	var slot := Global.active_save_slot
 	var path := "user://saveslot%d.json" % slot
-
-	# start with an empty dict
 	var full_data: Dictionary = {}
-
-	# if there’s already a file, try to load it as a Dictionary
 	if FileAccess.file_exists(path):
 		var text := FileAccess.get_file_as_string(path)
-		var parsed = JSON.parse_string(text)     # no inference, parsed is a Variant
+		var parsed = JSON.parse_string(text)
 		if parsed is Dictionary:
 			full_data = parsed
-
-	# overwrite only the character sub-key
 	full_data["character"] = character_data
-
 	var fw := FileAccess.open(path, FileAccess.WRITE)
 	fw.store_string(JSON.stringify(full_data))
 	fw.close()
-
-

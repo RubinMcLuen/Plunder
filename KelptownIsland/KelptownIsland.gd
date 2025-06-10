@@ -13,8 +13,10 @@ var collision_shape_node: CollisionShape2D
 
 
 # Set the specific target position
-@export var target_position: Vector2 = Vector2(-2, 41)
+@export var target_position: Vector2 = Vector2(-2, 38)
 @export var location_name: String = "Kelptown"
+
+var _awaiting_island_dock : bool = false    # set true when we steer toward Kelptown
 
 func _ready():
 	# Get the reference to the Sprite2D node
@@ -62,19 +64,19 @@ func is_point_in_collision(point: Vector2) -> bool:
 	return collision_found
 
 func move_player_to_target(target_pos: Vector2):
-	# Get the player node
 	var player = get_node(player_node_path)
 	if player:
-		print("Driving player to target position: ", target_pos)
 		player.call("drive_to_target_position", target_pos)
-	else:
-		print("Player node not found.")
+		_awaiting_island_dock = true			# we expect the very next dock to be ours
+
 
 func _on_player_docked():
+	if not _awaiting_island_dock:
+		return					# not our dock – probably an enemy-boarding
+	_awaiting_island_dock = false
+
 	UIManager.show_dock_ship_menu()
 	UIManager.show_location_notification(location_name)
-	print("Sprite made visible due to player docking.")
-
 func _on_player_movement_started():
 	UIManager.hide_dock_ship_menu()
 	print("Sprite made invisible due to player starting to move.")

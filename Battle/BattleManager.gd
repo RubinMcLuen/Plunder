@@ -15,19 +15,55 @@ func _ready() -> void:
 	spawn_crews()
 	spawn_enemies()
 
+# ─────────────────────────────────────────────
+# Replace the old spawn_crews() with this one
+# ─────────────────────────────────────────────
+const NPC_FOLDER := "res://Character/NPC/NPCs"
+const GENERIC_CREW_SCENE := "res://Character/NPC/CrewMember/CrewMember.tscn"
 func spawn_crews() -> void:
-	var scene := preload("res://Character/NPC/CrewMember/CrewMember.tscn")
-	for plank in plank_container.get_children():
-		var c : CrewMemberNPC = scene.instantiate()
+	# ── TEST OVERRIDE: force-add Barnaby to crew for this run ──
+	if "Barnaby" not in Global.crew:
+		Global.crew.append("Barnaby")
+
+	# 1) Copy the now-guaranteed non-empty crew list
+	var crew_names: Array[String] = Global.crew.duplicate()
+	# 2) Grab all the planks
+	var planks: Array = plank_container.get_children()
+	if planks.is_empty():
+		push_error("[BattleManager] No planks found – cannot place crew.")
+		return
+
+	# 3) Only spawn as many as both crew and planks allow
+	var crew_to_spawn = min(crew_names.size(), planks.size())
+	for i in range(crew_to_spawn):
+		var name  := crew_names[i]
+		var plank := planks[i] as Node2D
+
+		var crew_scene: PackedScene = _get_crew_scene(name)
+		var c: CrewMemberNPC       = crew_scene.instantiate()
+
 		c.global_position = plank.global_position + CREW_SPAWN_OFFSET
 		c.board_target    = plank.global_position + BOARD_TARGET_OFFSET
 		c.battle_manager  = self
-
-		#–– start them in battle mode ––
-		c.fighting = true
-		c.set_idle_with_sword_mode(true)
+		c.fighting        = true
+		c.idle_with_sword = true   # its own _ready() will play IdleSword
 
 		crew_container.add_child(c)
+
+
+
+# ─────────────────────────────────────────────
+# Helper: choose the right PackedScene for a given crew name
+# ─────────────────────────────────────────────
+func _get_crew_scene(npc_name: String) -> PackedScene:
+	if npc_name != "":
+		var path := "%s/%s_Crew.tscn" % [NPC_FOLDER, npc_name]
+		if ResourceLoader.exists(path):
+			return load(path)
+		print("[BattleManager] No crew scene for", npc_name, "→ using generic")
+	return load(GENERIC_CREW_SCENE)
+
+
 
 
 func spawn_enemies() -> void:

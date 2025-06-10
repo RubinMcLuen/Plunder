@@ -1,8 +1,9 @@
-res://Character/NPC/Enemy
+res://
+res://Character/NPC/NPCs
 res://Character/NPC
+res://Character/NPC/Enemy
 res://Character/NPC/CrewMember
 res://KelptownIsland
-res://Character/NPC/NPCs
 res://Ships
 res://UI
 C:/Users/Rubin/Desktop
@@ -11,7 +12,6 @@ res://SwordFight2/moves
 res://Character/Player
 res://SwordFight2
 res://Character
-res://
 C:/Users/Rubin/Desktop/Game/Cutscene
 res://Ocean
 res://EnemyCrew

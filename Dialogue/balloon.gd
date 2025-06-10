@@ -93,30 +93,6 @@ func _ready() -> void:
 	for i in range(option_buttons.size()):
 		option_buttons[i].connect("pressed", Callable(self, "_on_response_button_pressed").bind(i))
 
-func _on_next_button_pressed() -> void:
-	if dialogue_label.is_typing:
-		dialogue_label.skip_typing()
-		return
-
-	if not is_waiting_for_input:
-		return
-
-	if dialogue_line.responses.size() > 0 and selected_response_index == -1:
-		is_waiting_for_input = false
-		balloon.focus_mode = Control.FOCUS_NONE
-		responses_menu.show()
-		margin_container.hide()
-		return
-
-	if selected_response_index != -1:
-		is_waiting_for_input = false
-		var response = dialogue_line.responses[selected_response_index]
-		margin_container.show()
-		responses_menu.hide()
-		next(response.next_id)
-	else:
-		next(dialogue_line.next_id)
-
 func _unhandled_input(_event: InputEvent) -> void:
 	get_viewport().set_input_as_handled()
 
@@ -175,42 +151,75 @@ func _on_responses_menu_visibility_changed() -> void:
 		margin_container.show()
 
 func _update_responses_menu(responses: Array) -> void:
-	var buttons = [
-		option_button_1,
-		option_button_2,
-		option_button_3,
-		option_button_4
-	]
-	var labels = [
+	# Clear any previous selection and make sure Next is enabled by default
+	selected_response_index = -1
+	next_button.disabled = false
+
+	var labels: Array = [
 		option_label_1,
 		option_label_2,
 		option_label_3,
 		option_label_4
 	]
-	
-	for i in range(4):
-		var button = buttons[i]
-		var label = labels[i]
-		if i < responses.size():
-			label.text = responses[i].text
-			label.show()
-			button.disabled = false
-		else:
-			label.text = ""
-			label.hide()
-			button.disabled = true
 
-	selected_response_index = -1
+	for i in range(option_buttons.size()):
+		var btn: TextureButton = option_buttons[i]
+		var lbl: RichTextLabel = labels[i]
+
+		# Allow toggle mode and clear any pressed state
+		btn.toggle_mode = true
+		btn.set_pressed(false)
+
+		if i < responses.size():
+			lbl.text = responses[i].text
+			lbl.visible = true
+			btn.disabled = false
+		else:
+			lbl.visible = false
+			btn.disabled = true
+
+
+func _on_next_button_pressed() -> void:
+	# 1. If text is still typing, skip to the end
+	if dialogue_label.is_typing:
+		dialogue_label.skip_typing()
+		return
+
+	# 2. If we're not waiting for player choice, ignore
+	if not is_waiting_for_input:
+		return
+
+	# 3. If this line has responses and user hasn't selected one yet,
+	#    reveal the options and disable Next until selection
+	if dialogue_line.responses.size() > 0 and selected_response_index == -1:
+		is_waiting_for_input = false
+		responses_menu.visible = true
+		margin_container.visible = false
+		next_button.disabled = true
+		return
+	# 4. If the user selected an option, follow that branch
+	elif selected_response_index != -1:
+		is_waiting_for_input = false
+		var response = dialogue_line.responses[selected_response_index]
+		margin_container.visible = true
+		responses_menu.visible = false
+		next(response.next_id)
+	# 5. Otherwise (no responses at all), just advance
+	else:
+		next(dialogue_line.next_id)
+
 
 func _on_response_button_pressed(index: int) -> void:
-	selected_response_index = index
-	print("Option button ", index, " pressed.")
+	# Only keep the clicked button toggled on
+	for i in range(option_buttons.size()):
+		option_buttons[i].set_pressed(i == index)
 
-	if selected_response_index != -1:
-		var response = dialogue_line.responses[selected_response_index]
-		is_waiting_for_input = true
-	else:
-		print("No response selected.")
+	# Record which option was chosen and re-enable Next
+	selected_response_index = index
+	next_button.disabled = false
+	is_waiting_for_input = true
+
+
 
 func update_portrait(character_node: Node) -> void:
 	await ready  # Ensure _ready() has run

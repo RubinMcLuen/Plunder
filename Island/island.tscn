@@ -1,20 +1,20 @@
 [gd_scene load_steps=29 format=3 uid="uid://cfibpjveqehsp"]
 
-[ext_resource type="Script" path="res://Island/island.gd" id="1_eaqko"]
-[ext_resource type="Texture2D" uid="uid://c01pfxvgxpa2i" path="res://Island/shipsand.png" id="2_2gr7v"]
-[ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_d82p3"]
-[ext_resource type="Resource" uid="uid://cuv7qfb43qg7d" path="res://Dialogue/dialogues/FirstMate.dialogue" id="3_hfcdw"]
-[ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/Player.tscn" id="3_xihff"]
-[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="4_w8pbf"]
-[ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/PlayerIsland.png" id="5_t2dlh"]
-[ext_resource type="Script" path="res://Island/ShipControlArea.gd" id="6_182vu"]
-[ext_resource type="Texture2D" uid="uid://bw35wphcy4ysm" path="res://Island/shipship.png" id="6_o8764"]
-[ext_resource type="Texture2D" uid="uid://dv5286v4rgav7" path="res://Island/island.png" id="7_ryrh7"]
-[ext_resource type="PackedScene" uid="uid://7iti6gihoxcn" path="res://Ships/PlayerShipClose.tscn" id="10_mm3n7"]
-[ext_resource type="Texture2D" uid="uid://docbhg71ou20u" path="res://Island/rail1.png" id="10_nq04j"]
-[ext_resource type="Texture2D" uid="uid://d13iw7rwft51w" path="res://Island/rail2.png" id="11_8di88"]
-[ext_resource type="Script" path="res://Character/NPC/npcs/MonteCoral.gd" id="13_dfdk6"]
-[ext_resource type="Script" path="res://Character/NPC/npcs/FirstMate.gd" id="15_4oxlv"]
+[ext_resource type="Script" path="res://Island/Island.gd" id="1_n8rp0"]
+[ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_vaviu"]
+[ext_resource type="Resource" uid="uid://cuv7qfb43qg7d" path="res://Dialogue/dialogues/FirstMate.dialogue" id="3_ju8cp"]
+[ext_resource type="Texture2D" uid="uid://c01pfxvgxpa2i" path="res://Island/shipsand.png" id="4_0rnn0"]
+[ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/PlayerIsland.png" id="5_3hvgk"]
+[ext_resource type="PackedScene" uid="uid://7iti6gihoxcn" path="res://Ships/PlayerShipClose.tscn" id="6_0jtng"]
+[ext_resource type="Texture2D" uid="uid://dv5286v4rgav7" path="res://Island/island.png" id="7_spt4l"]
+[ext_resource type="Texture2D" uid="uid://bw35wphcy4ysm" path="res://Island/shipship.png" id="8_335cy"]
+[ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/Player.tscn" id="9_l87hv"]
+[ext_resource type="Script" path="res://Island/ShipControlArea.gd" id="10_07xlk"]
+[ext_resource type="Texture2D" uid="uid://docbhg71ou20u" path="res://Island/rail1.png" id="11_bqfu2"]
+[ext_resource type="Texture2D" uid="uid://d13iw7rwft51w" path="res://Island/rail2.png" id="12_nc36f"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="13_cts8x"]
+[ext_resource type="Script" path="res://Character/NPC/npcs/MonteCoral.gd" id="14_clwk4"]
+[ext_resource type="Script" path="res://Character/NPC/npcs/FirstMate.gd" id="15_75dku"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxd76"]
 size = Vector2(26, 6)
@@ -56,14 +56,14 @@ size = Vector2(0, 20)
 size = Vector2(26, 0)
 
 [node name="Island" type="Node2D"]
-script = ExtResource("1_eaqko")
-monte_coral_dialogue = ExtResource("2_d82p3")
-first_mate_dialogue = ExtResource("3_hfcdw")
+script = ExtResource("1_n8rp0")
+monte_coral_dialogue = ExtResource("2_vaviu")
+first_mate_dialogue = ExtResource("3_ju8cp")
 
 [node name="SandSprite" type="Sprite2D" parent="."]
 position = Vector2(480, -1440)
 scale = Vector2(16, 16)
-texture = ExtResource("2_2gr7v")
+texture = ExtResource("4_0rnn0")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_left = -15004.0
@@ -75,23 +75,23 @@ color = Color(0.223529, 0.262745, 0.596078, 0.8)
 
 [node name="IslandSprite" type="Sprite2D" parent="."]
 position = Vector2(266, -1472)
-texture = ExtResource("5_t2dlh")
+texture = ExtResource("5_3hvgk")
 
-[node name="PlayerShipClose" parent="." instance=ExtResource("10_mm3n7")]
+[node name="PlayerShipClose" parent="." instance=ExtResource("6_0jtng")]
 position = Vector2(-324, 460)
 
 [node name="MixSprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
 position = Vector2(266, -1473)
 scale = Vector2(16, 16)
-texture = ExtResource("7_ryrh7")
+texture = ExtResource("7_spt4l")
 
 [node name="Ship" type="Sprite2D" parent="MixSprite"]
 position = Vector2(-33, 122)
-texture = ExtResource("6_o8764")
+texture = ExtResource("8_335cy")
 centered = false
 
-[node name="Player" parent="." instance=ExtResource("3_xihff")]
+[node name="Player" parent="." instance=ExtResource("9_l87hv")]
 position = Vector2(-22, 704)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
@@ -106,7 +106,7 @@ shape = SubResource("RectangleShape2D_jxd76")
 
 [node name="ShipControlArea" type="Area2D" parent="."]
 position = Vector2(-170, 635)
-script = ExtResource("6_182vu")
+script = ExtResource("10_07xlk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ShipControlArea"]
 position = Vector2(-38, 5)
@@ -119,15 +119,15 @@ position = Vector2(-23, -74)
 
 [node name="Sprite2D" type="Sprite2D" parent="Collisions/StaticBody2D"]
 position = Vector2(98, 58)
-texture = ExtResource("10_nq04j")
+texture = ExtResource("11_bqfu2")
 
 [node name="Sprite2D2" type="Sprite2D" parent="Collisions/StaticBody2D"]
 position = Vector2(20, 64)
-texture = ExtResource("11_8di88")
+texture = ExtResource("12_nc36f")
 
 [node name="Sprite2D3" type="Sprite2D" parent="Collisions/StaticBody2D"]
 position = Vector2(-38, 64)
-texture = ExtResource("11_8di88")
+texture = ExtResource("12_nc36f")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
 position = Vector2(16.5, 11)
@@ -175,29 +175,29 @@ shape = SubResource("RectangleShape2D_etuke")
 
 [node name="Sprite2D4" type="Sprite2D" parent="Collisions/StaticBody2D"]
 
-[node name="MonteCoral" parent="." instance=ExtResource("4_w8pbf")]
+[node name="MonteCoral" parent="." instance=ExtResource("13_cts8x")]
 visible = false
 position = Vector2(-345, 65)
-script = ExtResource("13_dfdk6")
+script = ExtResource("14_clwk4")
 npc_name = "MonteCoral"
-dialogue_resource = ExtResource("2_d82p3")
+dialogue_resource = ExtResource("2_vaviu")
 npc_texture_index = 3
 
-[node name="FirstMate" parent="." instance=ExtResource("4_w8pbf")]
+[node name="FirstMate" parent="." instance=ExtResource("13_cts8x")]
 visible = false
 position = Vector2(297, 112)
-script = ExtResource("15_4oxlv")
+script = ExtResource("15_75dku")
 state = "default"
 npc_name = "FirstMate"
-dialogue_resource = ExtResource("3_hfcdw")
+dialogue_resource = ExtResource("3_ju8cp")
 npc_texture_index = 4
 
-[node name="FirstMate2" parent="." instance=ExtResource("4_w8pbf")]
+[node name="FirstMate2" parent="." instance=ExtResource("13_cts8x")]
 position = Vector2(-66, 697)
-script = ExtResource("15_4oxlv")
+script = ExtResource("15_75dku")
 state = "default"
 npc_name = "FirstMate"
-dialogue_resource = ExtResource("3_hfcdw")
+dialogue_resource = ExtResource("3_ju8cp")
 npc_texture_index = 4
 
 [connection signal="dialogue_requested" from="MonteCoral" to="." method="_on_monte_coral_dialogue_requested"]

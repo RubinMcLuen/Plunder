@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://buqn7luanaqgo"]
+
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="1_ov7nb"]
+[ext_resource type="Script" path="res://Character/NPC/NPCs/Barnaby.gd" id="2_jlfk8"]
+[ext_resource type="Shader" path="res://Character/Player/UVLookupShader.gdshader" id="3_fhqmt"]
+[ext_resource type="Resource" uid="uid://gn57b144poty" path="res://Dialogue/dialogues/Barnaby.dialogue" id="3_m378i"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1dc57"]
+resource_local_to_scene = true
+shader = ExtResource("3_fhqmt")
+shader_parameter/hurt_mode = false
+shader_parameter/hurt_color = Color(0.678, 0.196, 0.196, 0.6)
+
+[node name="Barnaby" instance=ExtResource("1_ov7nb")]
+script = ExtResource("2_jlfk8")
+scene_pre_hire = "res://KelptownInn/KelptownInn.tscn"
+position_pre_hire = Vector2(235, 133)
+scene_post_hire = "res://Island/Island.tscn"
+position_post_hire = Vector2(75, 700)
+state = "Hirable"
+npc_name = "Barnaby"
+dialogue_resource = ExtResource("3_m378i")
+npc_texture_index = 1
+hirable = true
+
+[node name="Appearance" parent="." index="0"]
+material = SubResource("ShaderMaterial_1dc57")
+
+[node name="CollisionShape2D" parent="." index="1"]
+visible = true

@@ -7,10 +7,28 @@ var player_ship     : Node2D = null
 var _enemy_to_board : Node2D = null
 
 func _ready() -> void:
+	if Global.spawn_position != Vector2.ZERO:
+		if player_ship == null:
+			player_ship = get_node(player_ship_path) as Node2D
+		if player_ship:
+			player_ship.global_position = Global.spawn_position
+		Global.spawn_position = Vector2.ZERO          # consume it
+
+	if Global.ship_state:
+		if player_ship == null:
+			player_ship = get_node(player_ship_path) as Area2D
+		if player_ship:
+			if "frame"  in Global.ship_state:
+				player_ship.current_frame = int(Global.ship_state["frame"])
+				player_ship.update_frame()              # refresh sprite
+			if "moving" in Global.ship_state:
+				player_ship.moving_forward = bool(Global.ship_state["moving"])
+			if "health" in Global.ship_state:
+				player_ship.health = int(Global.ship_state["health"])
+		Global.ship_state = {}                         # clear after use
 	# Fade in the water
 	$Waves.modulate.a = 0.0
 	get_tree().create_tween().tween_property($Waves, "modulate:a", 1.0, 1.0)
-
 	# Cache the player ship
 	player_ship = get_node(player_ship_path) as Node2D
 

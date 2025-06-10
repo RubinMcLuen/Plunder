@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_13"
+type="Resource"
+uid="uid://gn57b144poty"
+path="res://.godot/imported/Barnaby.dialogue-a3c2408ae5d34016f869a6bc83e9e800.tres"
+
+[deps]
+
+source_file="res://Dialogue/dialogues/Barnaby.dialogue"
+dest_files=["res://.godot/imported/Barnaby.dialogue-a3c2408ae5d34016f869a6bc83e9e800.tres"]
+
+[params]
+
+defaults=true

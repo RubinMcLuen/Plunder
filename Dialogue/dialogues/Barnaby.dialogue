@@ -1,0 +1,34 @@
+~ Hirable
+Barnaby: [[Ahoy!|Well look who washed ashore!]]
+Barnaby: What d’ye want with ol’ Barnaby?
+- Ask him to join your crew
+	 Barnaby: Ha! You want me on your crew, eh? Alright — guess which finger I’m holding behind my back.
+	 - You don’t have any fingers.
+		 Barnaby: Ha! You’re sharper than you look, Captain. You’re right — no fingers at all! Alright, I’m in.
+		 do call("hire")
+		 => END
+	 - One.
+		 Barnaby: Hah! You're sharp. Fine, I’ll join you.
+		 do call("hire")
+		 => END
+	 - Two.
+		 Barnaby: Wrong, but I need the gold. I’m coming aboard anyway.
+		 do call("hire")
+		 => END
+	 - Three.
+		 Barnaby: Missed it, but I've got nothing better to do. Count me in.
+		 do call("hire")
+		 => END
+	 - End the conversation
+		 => END
+- Ask him a question
+	 Barnaby: What’s burnin’ in that skull o’ yers?
+	 - Why do they call you Barnaby?
+		 Barnaby: Hah! Because “King Barnabus the Third” didn’t fit on me hat, savvy?
+		 => END
+	 - Are you any good in a fight?
+		 Barnaby: Put a weapon in my hand, and I’ll show you.
+		 => END
+- Say goodbye
+	 Barnaby: Fair winds, sailor! Don’t sink without me.
+	 => END
