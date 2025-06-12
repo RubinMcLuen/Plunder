@@ -148,7 +148,7 @@ script = ExtResource("3_yne2m")
 health = 10
 
 [node name="Player" parent="." instance=ExtResource("3_v7aqn")]
-position = Vector2(268, 226)
+position = Vector2(382, 25)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(1.5, 1.5)
@@ -588,6 +588,7 @@ color = Color(0, 0, 0, 1)
 anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
+mouse_filter = 2
 
 [node name="HintMoveKeys" type="RichTextLabel" parent="CanvasLayer" index="1"]
 visible = false
@@ -597,9 +598,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -240.0
-offset_top = -135.0
+offset_top = -115.0
 offset_right = 240.0
-offset_bottom = 135.0
+offset_bottom = 155.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -616,9 +617,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -240.0
-offset_top = -95.0
+offset_top = -105.0
 offset_right = 240.0
-offset_bottom = 175.0
+offset_bottom = 165.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
