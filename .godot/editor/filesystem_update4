@@ -1,4 +1,4 @@
-res://Ocean/ocean.tscn
+res://KelptownInn/KelptownInnTutorial.tscn
 res://SaveMenu/SaveMenu.gd
 res://Character/assets/UVmap.tres
 res://Character/Player/UVLookupShader.gdshader
@@ -6,10 +6,14 @@ res://Character/Player/UVLookupMaterial.tres
 res://SwordFight/swordfight.gd
 res://Ships/Assets/Shaders/RippleShader.tres
 res://Ships/Assets/Shaders/WaterTrailSpriteMaterial.tres
+res://KelptownInn/KelptownInnTutorial.gd
+res://Respawn/respawn.gd
 res://Main.tscn
 res://Battle/BoardingBattle.tscn
-res://Character/NPC/npc.tscn
 res://Character/NPC/NPCs/Barnaby.tscn
 res://Character/NPC/Enemy/Enemy.tscn
+res://Ocean/ocean.tscn
 res://Character/NPC/NPCs/Barnaby_Crew.tscn
 res://Character/NPC/CrewMember/CrewMember.tscn
+res://KelptownInn/KelptownInn.tscn
+res://Character/NPC/npcs/Barnaby.gd

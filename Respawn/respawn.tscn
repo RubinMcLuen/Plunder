@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://dn31sa4egq1u7"]
 
 [ext_resource type="Texture2D" uid="uid://cndwugipto5xl" path="res://Respawn/deathskull.png" id="1_5yj1l"]
-[ext_resource type="Script" path="res://Respawn/respawn.gd" id="1_ob8iv"]
+[ext_resource type="Script" path="res://Respawn/Respawn.gd" id="1_ob8iv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8orux"]
 atlas = ExtResource("1_5yj1l")
