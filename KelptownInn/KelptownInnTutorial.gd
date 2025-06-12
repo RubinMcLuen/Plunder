@@ -11,6 +11,7 @@ var moved_keys: bool = false
 var moved_mouse: bool = false
 var stage_two_started: bool = false
 var _orig_speed: float = 0.0
+var tutorial_complete: bool = false
 
 func _ready() -> void:
     super._ready()
@@ -21,7 +22,7 @@ func _ready() -> void:
     hint_mouse.visible = true
     # Fade in from black
     var tween = get_tree().create_tween()
-    tween.tween_property(fade_rect, "modulate:a", 0.0, 1.0)
+    tween.tween_property(fade_rect, "modulate:a", 0.0, 2.0)
 
     # Move the player down the stairs slowly
     _orig_speed = player.speed
@@ -70,3 +71,9 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 func _on_dialogue_finished_tutorial() -> void:
     hint_bartender.visible = false
     player.disable_user_input = false
+    tutorial_complete = true
+
+func _on_exit_body_entered(body: Node) -> void:
+    if not tutorial_complete:
+        return
+    super._on_exit_body_entered(body)
