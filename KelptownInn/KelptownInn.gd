@@ -6,7 +6,7 @@ class_name KelptownInn
 @export var bartender_dialogue_resource  : Resource
 @export var barnaby_dialogue_resource    : Resource
 
-@onready var bartender : Bartender = $Bartender
+@onready var bartender : NPC = $Bartender
 
 func _ready() -> void:
 	# ───────────────────────────────────── 0) Spawn position if loading from a save
