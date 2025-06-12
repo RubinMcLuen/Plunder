@@ -18,7 +18,7 @@ func _ready() -> void:
 # ─────────────────────────────────────────────
 # Replace the old spawn_crews() with this one
 # ─────────────────────────────────────────────
-const NPC_FOLDER := "res://Character/NPC/NPCs"
+const NPC_FOLDER := "res://Character/NPC/npcs"
 const GENERIC_CREW_SCENE := "res://Character/NPC/CrewMember/CrewMember.tscn"
 func spawn_crews() -> void:
 	# ── TEST OVERRIDE: force-add Barnaby to crew for this run ──
