@@ -2,9 +2,8 @@
 # Barnaby.gd
 # ─────────────────────────────────────────────
 extends NPC
-class_name Barnaby
 
-signal dialogue_requested(dialogue_section: String, caller: Barnaby)
+signal dialogue_requested(dialogue_section: String, caller: NPC)
 
 @export var scene_pre_hire    : String  = "res://KelptownInn/KelptownInn.tscn"
 @export var position_pre_hire : Vector2 = Vector2(235,  133)
