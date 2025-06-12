@@ -1,0 +1,648 @@
+[gd_scene load_steps=56 format=3 uid="uid://ci36078u3htw1"]
+
+[ext_resource type="Script" path="res://KelptownInn/KelptownInnTutorial.gd" id="1_8g3rb"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="2_iwfcd"]
+[ext_resource type="Resource" uid="uid://dloukc748ca08" path="res://Dialogue/dialogues/bartender.dialogue" id="3_43j7b"]
+[ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/Player.tscn" id="3_v7aqn"]
+[ext_resource type="Script" path="res://Character/NPC/NPCs/Bartender.gd" id="3_yne2m"]
+[ext_resource type="Texture2D" uid="uid://dtl865k56rp5b" path="res://KelptownInn/assets/taverninterior2.png" id="4_ketps"]
+[ext_resource type="Texture2D" uid="uid://b0an8k1ojomxd" path="res://KelptownInn/assets/1.png" id="5_ip47w"]
+[ext_resource type="Texture2D" uid="uid://cxriu4ggtgh5a" path="res://KelptownInn/assets/3.png" id="6_7haqx"]
+[ext_resource type="Texture2D" uid="uid://cnrkygmkm1vnj" path="res://KelptownInn/assets/6.png" id="7_dlpkk"]
+[ext_resource type="Texture2D" uid="uid://bbtinyu68crr8" path="res://KelptownInn/assets/12.png" id="8_3bfsv"]
+[ext_resource type="Texture2D" uid="uid://ci57eoplr72nk" path="res://KelptownInn/assets/19.png" id="9_mgbth"]
+[ext_resource type="Texture2D" uid="uid://cl37dxegmmo2c" path="res://KelptownInn/assets/22.png" id="10_lqwnu"]
+[ext_resource type="Texture2D" uid="uid://c6hb81oobd11l" path="res://KelptownInn/assets/4.png" id="11_popof"]
+[ext_resource type="Texture2D" uid="uid://bucu8u1pyulne" path="res://KelptownInn/assets/2.png" id="12_dq8mm"]
+[ext_resource type="Texture2D" uid="uid://brodly2dirtk8" path="res://KelptownInn/assets/5.png" id="13_la8i2"]
+[ext_resource type="Texture2D" uid="uid://b7wnwukubyevy" path="res://KelptownInn/assets/7.png" id="14_w04ji"]
+[ext_resource type="Texture2D" uid="uid://6lk7bdbims4s" path="res://KelptownInn/assets/8.png" id="15_xxy4n"]
+[ext_resource type="Texture2D" uid="uid://bb7tbgttc706k" path="res://KelptownInn/assets/9.png" id="16_cdl7m"]
+[ext_resource type="Texture2D" uid="uid://c2lnemmy7rsgo" path="res://KelptownInn/assets/10.png" id="17_0ndt1"]
+[ext_resource type="Texture2D" uid="uid://pxejptwub70b" path="res://KelptownInn/assets/11.png" id="18_fe5ab"]
+[ext_resource type="Texture2D" uid="uid://chlsccmqsk2fd" path="res://KelptownInn/assets/13.png" id="19_d80p0"]
+[ext_resource type="Texture2D" uid="uid://bept4ck0yqplj" path="res://KelptownInn/assets/14.png" id="20_a8tne"]
+[ext_resource type="Texture2D" uid="uid://bhe32vnjtfp8t" path="res://KelptownInn/assets/15.png" id="21_0b4k2"]
+[ext_resource type="Texture2D" uid="uid://b517x1nd2drms" path="res://KelptownInn/assets/16.png" id="22_8pru8"]
+[ext_resource type="Texture2D" uid="uid://btvc5dmcyecpv" path="res://KelptownInn/assets/17.png" id="23_pnete"]
+[ext_resource type="Texture2D" uid="uid://34u2c70fx2xi" path="res://KelptownInn/assets/18.png" id="24_01m44"]
+[ext_resource type="Texture2D" uid="uid://bbyylfcs0cy8m" path="res://KelptownInn/assets/20.png" id="25_mm05i"]
+[ext_resource type="Texture2D" uid="uid://ckujdqy7k2xhl" path="res://KelptownInn/assets/21.png" id="26_5kt8t"]
+[ext_resource type="Texture2D" uid="uid://crigct5tc3mx0" path="res://KelptownInn/assets/23.png" id="27_n4pb0"]
+[ext_resource type="Texture2D" uid="uid://boaswpskyfsht" path="res://KelptownInn/assets/24.png" id="28_gxrfc"]
+[ext_resource type="Texture2D" uid="uid://ugjd5ls5sf8k" path="res://KelptownInn/assets/25.png" id="29_t1tbb"]
+[ext_resource type="Texture2D" uid="uid://u2o1ep1ov5d5" path="res://KelptownInn/assets/26.png" id="30_ct7yg"]
+[ext_resource type="Texture2D" uid="uid://cspyynoayouwp" path="res://KelptownInn/assets/27.png" id="31_2413o"]
+[ext_resource type="Texture2D" uid="uid://t8g5otoebhr7" path="res://KelptownInn/assets/28.png" id="32_5vnuh"]
+[ext_resource type="PackedScene" uid="uid://4klyn0h8t7vm" path="res://Cutscene/CutsceneManager.tscn" id="37_qygh1"]
+[ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="38_arrow"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="39_font"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5j50s"]
+size = Vector2(26, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_au3fy"]
+size = Vector2(0, 224)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dveij"]
+size = Vector2(220, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_glf74"]
+size = Vector2(32, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lnveo"]
+size = Vector2(115.5, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eh1jv"]
+size = Vector2(26, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_05sn2"]
+size = Vector2(0, 224)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jjoao"]
+size = Vector2(144, 22)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f17m2"]
+size = Vector2(12, 28)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vejx4"]
+size = Vector2(148, 13)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bbrvj"]
+size = Vector2(25, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gweus"]
+size = Vector2(25, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3r2hi"]
+size = Vector2(25, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rwp4b"]
+size = Vector2(50, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q8ifc"]
+size = Vector2(25, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0da4m"]
+size = Vector2(11, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b088e"]
+size = Vector2(11, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tco2u"]
+size = Vector2(6, 69)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bltdw"]
+size = Vector2(32, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ru76x"]
+size = Vector2(48, 20)
+
+[sub_resource type="Animation" id="Animation_unt7p"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(254, 94)]
+}
+
+[sub_resource type="Animation" id="Animation_j1k64"]
+resource_name = "new_animation"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(254, 93), Vector2(254, 95), Vector2(254, 93)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bmm82"]
+_data = {
+"RESET": SubResource("Animation_unt7p"),
+"new_animation": SubResource("Animation_j1k64")
+}
+[node name="KelptownInn" type="Node2D" node_paths=PackedStringArray("player")]
+y_sort_enabled = true
+script = ExtResource("1_8g3rb")
+player = NodePath("Player")
+bartender_dialogue_resource = ExtResource("3_43j7b")
+
+[node name="Bartender" parent="." instance=ExtResource("2_iwfcd")]
+position = Vector2(270, 68)
+collision_layer = 2
+script = ExtResource("3_yne2m")
+health = 10
+
+[node name="Player" parent="." instance=ExtResource("3_v7aqn")]
+position = Vector2(382, 25)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(1.5, 1.5)
+
+[node name="Background" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(269, 135)
+texture = ExtResource("4_ketps")
+
+[node name="Exit" type="Area2D" parent="."]
+position = Vector2(269, 247)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Exit"]
+shape = SubResource("RectangleShape2D_5j50s")
+
+[node name="Collisions" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="LeftBorder" type="StaticBody2D" parent="Collisions"]
+position = Vector2(141, 135)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/LeftBorder"]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_au3fy")
+
+[node name="BorderTop" type="StaticBody2D" parent="Collisions"]
+position = Vector2(151, 44)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/BorderTop"]
+position = Vector2(100, 10)
+shape = SubResource("RectangleShape2D_dveij")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/BorderTop"]
+position = Vector2(230, -23)
+shape = SubResource("RectangleShape2D_glf74")
+
+[node name="BorderBottom" type="StaticBody2D" parent="Collisions"]
+position = Vector2(151, 235)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/BorderBottom"]
+position = Vector2(47.5, 10)
+shape = SubResource("RectangleShape2D_lnveo")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/BorderBottom"]
+position = Vector2(188.75, 10)
+shape = SubResource("RectangleShape2D_lnveo")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Collisions/BorderBottom"]
+position = Vector2(118, 14)
+shape = SubResource("RectangleShape2D_eh1jv")
+
+[node name="BorderRight" type="StaticBody2D" parent="Collisions"]
+position = Vector2(398, 94)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/BorderRight"]
+position = Vector2(-1, 39)
+shape = SubResource("RectangleShape2D_05sn2")
+
+[node name="Bar" type="StaticBody2D" parent="Collisions"]
+position = Vector2(260, 75)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Bar"]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_jjoao")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Bar"]
+position = Vector2(0, -6)
+texture = ExtResource("5_ip47w")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/Bar"]
+position = Vector2(-66, -14)
+shape = SubResource("RectangleShape2D_f17m2")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Collisions/Bar"]
+position = Vector2(14, -21.5)
+shape = SubResource("RectangleShape2D_vejx4")
+
+[node name="Table" type="StaticBody2D" parent="Collisions"]
+position = Vector2(364, 117)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Table"]
+position = Vector2(0.5, 13)
+shape = SubResource("RectangleShape2D_bbrvj")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Table"]
+position = Vector2(-12, -10)
+texture = ExtResource("6_7haqx")
+centered = false
+
+[node name="Table2" type="StaticBody2D" parent="Collisions"]
+position = Vector2(195, 130)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Table2"]
+position = Vector2(0.5, 13)
+shape = SubResource("RectangleShape2D_gweus")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Table2"]
+position = Vector2(-12, -10)
+texture = ExtResource("7_dlpkk")
+centered = false
+
+[node name="Table3" type="StaticBody2D" parent="Collisions"]
+position = Vector2(303, 162)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/Table3"]
+position = Vector2(0.5, 13)
+shape = SubResource("RectangleShape2D_3r2hi")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Table3"]
+position = Vector2(-12, -10)
+texture = ExtResource("8_3bfsv")
+centered = false
+
+[node name="Table4" type="StaticBody2D" parent="Collisions"]
+position = Vector2(174, 191)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/Table4"]
+position = Vector2(13, 14)
+shape = SubResource("RectangleShape2D_rwp4b")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Table4"]
+position = Vector2(-12, -10)
+texture = ExtResource("9_mgbth")
+centered = false
+
+[node name="Table5" type="StaticBody2D" parent="Collisions"]
+position = Vector2(358, 195)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/Table5"]
+position = Vector2(0.5, 13)
+shape = SubResource("RectangleShape2D_q8ifc")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Table5"]
+position = Vector2(-12, -10)
+texture = ExtResource("10_lqwnu")
+centered = false
+
+[node name="Chair" type="StaticBody2D" parent="Collisions"]
+position = Vector2(342, 112)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair"]
+position = Vector2(0.5, 5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair"]
+position = Vector2(-5, -4)
+texture = ExtResource("11_popof")
+centered = false
+
+[node name="Chair2" type="StaticBody2D" parent="Collisions"]
+position = Vector2(194, 120)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair2"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair2"]
+position = Vector2(-5, -4)
+texture = ExtResource("12_dq8mm")
+centered = false
+
+[node name="Chair3" type="StaticBody2D" parent="Collisions"]
+position = Vector2(383, 117)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair3"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair3"]
+position = Vector2(-5, -4)
+texture = ExtResource("13_la8i2")
+centered = false
+
+[node name="Chair4" type="StaticBody2D" parent="Collisions"]
+position = Vector2(213, 131)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair4"]
+position = Vector2(-2.5, 5)
+shape = SubResource("RectangleShape2D_b088e")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair4"]
+position = Vector2(-5, -4)
+texture = ExtResource("14_w04ji")
+centered = false
+
+[node name="Chair5" type="StaticBody2D" parent="Collisions"]
+position = Vector2(383, 132)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair5"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair5"]
+position = Vector2(-5, -4)
+texture = ExtResource("15_xxy4n")
+centered = false
+
+[node name="Chair6" type="StaticBody2D" parent="Collisions"]
+position = Vector2(215, 144)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair6"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair6"]
+position = Vector2(-5, -4)
+texture = ExtResource("16_cdl7m")
+centered = false
+
+[node name="Chair7" type="StaticBody2D" parent="Collisions"]
+position = Vector2(175, 145)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair7"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair7"]
+position = Vector2(-5, -4)
+texture = ExtResource("17_0ndt1")
+centered = false
+
+[node name="Chair8" type="StaticBody2D" parent="Collisions"]
+position = Vector2(310, 147)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair8"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair8"]
+position = Vector2(-5, -4)
+texture = ExtResource("18_fe5ab")
+centered = false
+
+[node name="Chair9" type="StaticBody2D" parent="Collisions"]
+position = Vector2(283, 158)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair9"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair9"]
+position = Vector2(-5, -4)
+texture = ExtResource("19_d80p0")
+centered = false
+
+[node name="Chair10" type="StaticBody2D" parent="Collisions"]
+position = Vector2(323, 159)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair10"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair10"]
+position = Vector2(-5, -4)
+texture = ExtResource("20_a8tne")
+centered = false
+
+[node name="Chair11" type="StaticBody2D" parent="Collisions"]
+position = Vector2(389, 167)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair11"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair11"]
+position = Vector2(-5, -4)
+texture = ExtResource("21_0b4k2")
+centered = false
+
+[node name="Chair12" type="StaticBody2D" parent="Collisions"]
+position = Vector2(175, 176)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair12"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair12"]
+position = Vector2(-5, -4)
+texture = ExtResource("22_8pru8")
+centered = false
+
+[node name="Chair13" type="StaticBody2D" parent="Collisions"]
+position = Vector2(283, 178)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair13"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair13"]
+position = Vector2(-5, -4)
+texture = ExtResource("23_pnete")
+centered = false
+
+[node name="Chair14" type="StaticBody2D" parent="Collisions"]
+position = Vector2(323, 178)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair14"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair14"]
+position = Vector2(-5, -4)
+texture = ExtResource("24_01m44")
+centered = false
+
+[node name="Chair15" type="StaticBody2D" parent="Collisions"]
+position = Vector2(153, 190)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair15"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair15"]
+position = Vector2(-5, -4)
+texture = ExtResource("25_mm05i")
+centered = false
+
+[node name="Chair16" type="StaticBody2D" parent="Collisions"]
+position = Vector2(217, 190)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair16"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair16"]
+position = Vector2(-5, -4)
+texture = ExtResource("26_5kt8t")
+centered = false
+
+[node name="Chair17" type="StaticBody2D" parent="Collisions"]
+position = Vector2(340, 198)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair17"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair17"]
+position = Vector2(-5, -4)
+texture = ExtResource("27_n4pb0")
+centered = false
+
+[node name="Chair18" type="StaticBody2D" parent="Collisions"]
+position = Vector2(376, 203)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair18"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair18"]
+position = Vector2(-5, -4)
+texture = ExtResource("28_gxrfc")
+centered = false
+
+[node name="Chair19" type="StaticBody2D" parent="Collisions"]
+position = Vector2(218, 205)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair19"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair19"]
+position = Vector2(-5, -4)
+texture = ExtResource("29_t1tbb")
+centered = false
+
+[node name="Chair20" type="StaticBody2D" parent="Collisions"]
+position = Vector2(153, 205)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair20"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair20"]
+position = Vector2(-5, -4)
+texture = ExtResource("30_ct7yg")
+centered = false
+
+[node name="Chair21" type="StaticBody2D" parent="Collisions"]
+position = Vector2(175, 217)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair21"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair21"]
+position = Vector2(-5, -4)
+texture = ExtResource("31_2413o")
+centered = false
+
+[node name="Chair22" type="StaticBody2D" parent="Collisions"]
+position = Vector2(200, 217)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/Chair22"]
+position = Vector2(0.5, 4.5)
+shape = SubResource("RectangleShape2D_0da4m")
+
+[node name="Sprite2D" type="Sprite2D" parent="Collisions/Chair22"]
+position = Vector2(-5, -4)
+texture = ExtResource("32_5vnuh")
+centered = false
+
+[node name="StairRailing" type="StaticBody2D" parent="Collisions"]
+position = Vector2(360, 65)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/StairRailing"]
+position = Vector2(3, -9.5)
+shape = SubResource("RectangleShape2D_tco2u")
+
+[node name="BarStools" type="StaticBody2D" parent="Collisions"]
+position = Vector2(214, 88)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/BarStools"]
+position = Vector2(6, 1)
+shape = SubResource("RectangleShape2D_bltdw")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Collisions/BarStools"]
+position = Vector2(73, 0)
+shape = SubResource("RectangleShape2D_ru76x")
+
+[node name="CutsceneManager" parent="." instance=ExtResource("37_qygh1")]
+[node name="Arrow" type="Sprite2D" parent="." index="572"]
+visible = false
+position = Vector2(254, 94)
+texture = ExtResource("38_arrow")
+centered = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Arrow" index="0"]
+libraries = {
+"": SubResource("AnimationLibrary_bmm82")
+}
+autoplay = "new_animation"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." index="573"]
+
+[node name="FadeRect" type="ColorRect" parent="CanvasLayer" index="0"]
+color = Color(0, 0, 0, 1)
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="HintMoveKeys" type="RichTextLabel" parent="CanvasLayer" index="1"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -115.0
+offset_right = 240.0
+offset_bottom = 155.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("39_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "[center]Use WASD or arrow keys to move around[/center]"
+
+[node name="HintMoveMouse" type="RichTextLabel" parent="CanvasLayer" index="2"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -105.0
+offset_right = 240.0
+offset_bottom = 165.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("39_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "[center]Hold left mouse button anywhere to move around[/center]"
+
+[node name="HintBartender" type="RichTextLabel" parent="CanvasLayer" index="3"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -135.0
+offset_right = 240.0
+offset_bottom = 135.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("39_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "[center]Click on the bartender to speak to him[/center]"
