@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="2_iwfcd"]
 [ext_resource type="Resource" uid="uid://dloukc748ca08" path="res://Dialogue/dialogues/bartender.dialogue" id="3_43j7b"]
 [ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/Player.tscn" id="3_v7aqn"]
-[ext_resource type="Script" path="res://Character/NPC/NPCs/Bartender.gd" id="3_yne2m"]
+[ext_resource type="Script" path="res://Character/NPC/npcs/Bartender.gd" id="3_yne2m"]
 [ext_resource type="Texture2D" uid="uid://dtl865k56rp5b" path="res://KelptownInn/assets/taverninterior2.png" id="4_ketps"]
 [ext_resource type="Texture2D" uid="uid://b0an8k1ojomxd" path="res://KelptownInn/assets/1.png" id="5_ip47w"]
 [ext_resource type="Texture2D" uid="uid://cxriu4ggtgh5a" path="res://KelptownInn/assets/3.png" id="6_7haqx"]

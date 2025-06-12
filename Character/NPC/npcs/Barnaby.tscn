@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://buqn7luanaqgo"]
 
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="1_ov7nb"]
-[ext_resource type="Script" path="res://Character/NPC/NPCs/Barnaby.gd" id="2_jlfk8"]
+[ext_resource type="Script" path="res://Character/NPC/npcs/Barnaby.gd" id="2_jlfk8"]
 [ext_resource type="Shader" path="res://Character/Player/UVLookupShader.gdshader" id="3_fhqmt"]
 [ext_resource type="Resource" uid="uid://gn57b144poty" path="res://Dialogue/dialogues/Barnaby.dialogue" id="3_m378i"]
 
