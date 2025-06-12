@@ -2,6 +2,7 @@
 # Barnaby.gd
 # ─────────────────────────────────────────────
 extends NPC
+class_name Barnaby
 
 signal dialogue_requested(dialogue_section: String, caller: Barnaby)
 

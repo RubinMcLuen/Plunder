@@ -21,7 +21,6 @@ func _ready() -> void:
 		# Replace base bartender connection to avoid duplicate dialogue
 		if bartender.dialogue_requested.is_connected(_on_bartender_dialogue_requested):
 				bartender.dialogue_requested.disconnect(_on_bartender_dialogue_requested)
-		bartender.dialogue_requested.connect(_on_bartender_dialogue_requested_tutorial)
 		
 		barnaby.npc_hired.connect(_on_barnaby_hired_tutorial)
 		fade_rect.modulate.a = 1.0
@@ -79,10 +78,12 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 		balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished_tutorial"))
 
 func _on_dialogue_finished_tutorial() -> void:
-		hint_bartender.visible = false
-		player.disable_user_input = false
-		stage_three_started = true
-		hint_hire.visible = true
+                hint_bartender.visible = false
+                player.disable_user_input = false
+                stage_three_started = true
+               arrow.target = barnaby
+               arrow.visible = true
+                hint_hire.visible = true
 
 func _on_exit_body_entered(body: Node) -> void:
 		if not tutorial_complete:
@@ -90,6 +91,7 @@ func _on_exit_body_entered(body: Node) -> void:
 		super._on_exit_body_entered(body)
 
 func _on_barnaby_hired_tutorial(b: Barnaby) -> void:
-		hint_hire.add_theme_color_override("default_color", Color.GREEN)
-		hint_hire.visible = false
-		tutorial_complete = true
+                hint_hire.add_theme_color_override("default_color", Color.GREEN)
+                hint_hire.visible = false
+               arrow.visible = false
+                tutorial_complete = true
