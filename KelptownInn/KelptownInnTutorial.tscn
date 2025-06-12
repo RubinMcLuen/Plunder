@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://ci36078u3htw1"]
+[gd_scene load_steps=63 format=3 uid="uid://ci36078u3htw1"]
 
 [ext_resource type="Script" path="res://KelptownInn/KelptownInnTutorial.gd" id="1_8g3rb"]
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="2_iwfcd"]
@@ -38,6 +38,7 @@
 [ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="38_arrow"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="39_font"]
 [ext_resource type="Script" path="res://KelptownInn/ArrowPointer.gd" id="40_arrowptr"]
+[ext_resource type="PackedScene" path="res://Character/NPC/npcs/Barnaby.tscn" id="41_barnaby"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5j50s"]
 size = Vector2(26, 4)
@@ -148,6 +149,10 @@ position = Vector2(270, 68)
 collision_layer = 2
 script = ExtResource("3_yne2m")
 health = 10
+
+[node name="Barnaby" parent="." instance=ExtResource("41_barnaby")]
+position = Vector2(235, 133)
+scene_pre_hire = "res://KelptownInn/KelptownInnTutorial.tscn"
 
 [node name="Player" parent="." instance=ExtResource("3_v7aqn")]
 position = Vector2(382, 25)
@@ -651,3 +656,22 @@ theme_override_fonts/normal_font = ExtResource("39_font")
 theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
 text = "[center]Click on the bartender to speak to him[/center]"
+
+[node name="HintHireBarnaby" type="RichTextLabel" parent="CanvasLayer"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -75.0
+offset_right = 240.0
+offset_bottom = 195.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("39_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "[center]Hire Barnaby to finish the tutorial[/center]"
