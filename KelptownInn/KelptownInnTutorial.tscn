@@ -37,6 +37,7 @@
 [ext_resource type="PackedScene" uid="uid://4klyn0h8t7vm" path="res://Cutscene/CutsceneManager.tscn" id="37_qygh1"]
 [ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="38_arrow"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="39_font"]
+[ext_resource type="Script" path="res://KelptownInn/ArrowPointer.gd" id="40_arrowptr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5j50s"]
 size = Vector2(26, 4)
@@ -574,6 +575,8 @@ visible = false
 position = Vector2(254, 94)
 texture = ExtResource("38_arrow")
 centered = false
+script = ExtResource("40_arrowptr")
+target = NodePath("Bartender")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Arrow" index="0"]
 libraries = {
@@ -636,9 +639,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -240.0
-offset_top = -135.0
+offset_top = -95.0
 offset_right = 240.0
-offset_bottom = 135.0
+offset_bottom = 175.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
