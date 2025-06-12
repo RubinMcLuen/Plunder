@@ -1,18 +1,18 @@
 [gd_scene load_steps=5 format=3 uid="uid://ffn8w5p8euu4"]
 
-[ext_resource type="PackedScene" uid="uid://cup2getx61mv4" path="res://Character/Character.tscn" id="1_4fpb3"]
-[ext_resource type="Script" path="res://Character/NPC/NPC.gd" id="2_y21gt"]
-[ext_resource type="Material" uid="uid://cuyioujxk4e8s" path="res://Character/Player/UVLookupMaterial.tres" id="3_rc5ww"]
+[ext_resource type="PackedScene" uid="uid://cup2getx61mv4" path="res://Character/character.tscn" id="1_8yhm4"]
+[ext_resource type="Script" path="res://Character/NPC/NPC.gd" id="2_r3kof"]
+[ext_resource type="Material" uid="uid://cuyioujxk4e8s" path="res://Character/Player/UVLookupMaterial.tres" id="3_m1nrs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dtxe3"]
 size = Vector2(17, 22)
 
-[node name="NPC" instance=ExtResource("1_4fpb3")]
+[node name="NPC" instance=ExtResource("1_8yhm4")]
 position = Vector2(67, 58)
-script = ExtResource("2_y21gt")
+script = ExtResource("2_r3kof")
 
 [node name="Appearance" parent="." index="0"]
-material = ExtResource("3_rc5ww")
+material = ExtResource("3_m1nrs")
 animation = &"Walk"
 
 [node name="Area2D" type="Area2D" parent="." index="3"]

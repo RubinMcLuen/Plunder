@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://btgkhbnjlabm"]
 
-[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="1_8o7wt"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="1_xly3g"]
 [ext_resource type="Script" path="res://Character/NPC/Enemy/Enemy.gd" id="2_0ie86"]
 [ext_resource type="Shader" path="res://Character/Player/UVLookupShader.gdshader" id="3_bc7l2"]
 
@@ -13,7 +13,7 @@ shader_parameter/hurt_color = Color(0.678, 0.196, 0.196, 0.6)
 [sub_resource type="CircleShape2D" id="CircleShape2D_t3tbr"]
 radius = 30.0
 
-[node name="Enemy" instance=ExtResource("1_8o7wt")]
+[node name="Enemy" instance=ExtResource("1_xly3g")]
 script = ExtResource("2_0ie86")
 
 [node name="Appearance" parent="." index="0"]
