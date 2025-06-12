@@ -21,11 +21,11 @@ func _ready() -> void:
 	# 2) Hook up the bartender
 	bartender.dialogue_requested.connect(_on_bartender_dialogue_requested)
 
-        # 3) Hook up every dynamically-spawned Barnaby
-        for b in get_children():
-                if b is NPC and b.npc_name == "Barnaby":
-                        b.dialogue_requested.connect(_on_barnaby_dialogue_requested)
-                        b.npc_hired.connect(_on_barnaby_hired)
+		# 3) Hook up every dynamically-spawned Barnaby
+	for b in get_children():
+				if b is NPC and b.npc_name == "Barnaby":
+						b.dialogue_requested.connect(_on_barnaby_dialogue_requested)
+						b.npc_hired.connect(_on_barnaby_hired)
 
 	# 4) UI, camera & exit
 	UIManager.show_location_notification(location_name)

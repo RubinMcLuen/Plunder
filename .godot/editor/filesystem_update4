@@ -6,8 +6,8 @@ res://Character/Player/UVLookupMaterial.tres
 res://SwordFight/swordfight.gd
 res://Ships/Assets/Shaders/RippleShader.tres
 res://Ships/Assets/Shaders/WaterTrailSpriteMaterial.tres
+res://KelptownInn/KelptownInn.gd
 res://KelptownInn/KelptownInnTutorial.gd
-res://Respawn/respawn.gd
 res://Main.tscn
 res://Battle/BoardingBattle.tscn
 res://Character/NPC/NPCs/Barnaby.tscn
@@ -16,4 +16,3 @@ res://Ocean/ocean.tscn
 res://Character/NPC/NPCs/Barnaby_Crew.tscn
 res://Character/NPC/CrewMember/CrewMember.tscn
 res://KelptownInn/KelptownInn.tscn
-res://Character/NPC/npcs/Barnaby.gd
