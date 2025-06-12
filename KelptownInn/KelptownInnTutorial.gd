@@ -61,14 +61,15 @@ func _process(_delta: float) -> void:
 				_check_movement_complete()
 
 func _check_movement_complete() -> void:
-		if moved_keys and moved_mouse and not stage_two_started:
-				stage_two_started = true
-				await get_tree().create_timer(1.0).timeout
-				hint_keys.visible = false
-				hint_mouse.visible = false
-				arrow.target = bartender
-				arrow.visible = true
-				hint_bartender.visible = true
+               if moved_keys and moved_mouse and not stage_two_started:
+                               stage_two_started = true
+                               await get_tree().create_timer(1.0).timeout
+                               hint_keys.visible = false
+                               hint_mouse.visible = false
+                               arrow.target = bartender
+                               arrow.y_offset = -10.0
+                               arrow.visible = true
+                               hint_bartender.visible = true
 
 func _on_intro_move_completed() -> void:
 		player.speed = _orig_speed
@@ -83,12 +84,13 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 		balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished_tutorial"))
 
 func _on_dialogue_finished_tutorial() -> void:
-		hint_bartender.visible = false
-		player.disable_user_input = false
-		stage_three_started = true
-		arrow.target = barnaby
-		arrow.visible = true
-		hint_hire.visible = true
+                hint_bartender.visible = false
+                player.disable_user_input = false
+                stage_three_started = true
+                arrow.target = barnaby
+                arrow.y_offset = -58.0
+                arrow.visible = true
+                hint_hire.visible = true
 
 func _on_exit_body_entered(body: Node) -> void:
 		if not tutorial_complete:
