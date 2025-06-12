@@ -25,7 +25,6 @@ func _ready() -> void:
     tween.tween_property(fade_rect, "modulate:a", 0.0, 1.0)
     player.auto_move_to_position(player.position + Vector2(0, 100))
 
-    bartender.dialogue_requested.connect(_on_bartender_dialogue_requested_tutorial)
 
 func _process(_delta: float) -> void:
     if not moved_keys and (
@@ -51,7 +50,7 @@ func _check_movement_complete() -> void:
         arrow.visible = true
         hint_bartender.visible = true
 
-func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
+func _on_bartender_dialogue_requested(section: String) -> void:
     arrow.visible = false
     hint_bartender.add_theme_color_override("default_color", Color.GREEN)
     player.disable_user_input = true
