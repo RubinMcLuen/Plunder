@@ -21,11 +21,11 @@ func _ready() -> void:
 	# 2) Hook up the bartender
 	bartender.dialogue_requested.connect(_on_bartender_dialogue_requested)
 
-	# 3) Hook up every dynamically-spawned Barnaby
-	for b in get_children():
-		if b is Barnaby:
-			b.dialogue_requested.connect(_on_barnaby_dialogue_requested)
-			b.npc_hired.connect(_on_barnaby_hired)
+        # 3) Hook up every dynamically-spawned Barnaby
+        for b in get_children():
+                if b is NPC and b.npc_name == "Barnaby":
+                        b.dialogue_requested.connect(_on_barnaby_dialogue_requested)
+                        b.npc_hired.connect(_on_barnaby_hired)
 
 	# 4) UI, camera & exit
 	UIManager.show_location_notification(location_name)
@@ -46,7 +46,7 @@ func _on_dialogue_finished() -> void:
 
 
 # ───────────────────────── Barnaby
-func _on_barnaby_dialogue_requested(section: String, b: Barnaby) -> void:
+func _on_barnaby_dialogue_requested(section: String, b: NPC) -> void:
 	player.disable_user_input = true
 	var balloon = b.show_dialogue(section)
 	balloon.connect(
@@ -54,12 +54,12 @@ func _on_barnaby_dialogue_requested(section: String, b: Barnaby) -> void:
 		Callable(self, "_on_dialogue_finished_barnaby").bind(b)
 	)
 
-func _on_dialogue_finished_barnaby(b: Barnaby) -> void:
+func _on_dialogue_finished_barnaby(b: NPC) -> void:
 	player.disable_user_input = false   # no call to b.hire() here
 
 
 # Walk Barnaby out once hired
-func _on_barnaby_hired(b: Barnaby) -> void:
+func _on_barnaby_hired(b: NPC) -> void:
 	var exit_target = $Exit.global_position
 	b.auto_move_to_position(exit_target)
 	b.npc_move_completed.connect(Callable(b, "queue_free"))
