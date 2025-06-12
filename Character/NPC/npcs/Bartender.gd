@@ -1,5 +1,4 @@
 extends NPC
-class_name Bartender
 
 signal dialogue_requested(dialogue_section: String)
 
