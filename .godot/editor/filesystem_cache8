@@ -122,7 +122,6 @@ Barnaby.gd::GDScript::-1::1748433927::0::1::::Barnaby<>NPC<>::
 Barnaby.tscn::PackedScene::3824074675499956842::1749507980::0::1::::<><>::uid://ffn8w5p8euu4::::res://Character/NPC/npc.tscn<>res://Character/NPC/NPCs/Barnaby.gd<>res://Character/Player/UVLookupShader.gdshader<>uid://gn57b144poty::::res://Dialogue/dialogues/Barnaby.dialogue
 Barnaby_Crew.gd::GDScript::-1::1748628058::0::1::::BarnabyCrew<>CrewMemberNPC<>::
 Barnaby_Crew.tscn::PackedScene::5864433104393207293::1749507981::0::1::::<><>::uid://ffn8w5p8euu4::::res://Character/NPC/npc.tscn<>res://Character/NPC/NPCs/Barnaby_Crew.gd<>res://Character/Player/UVLookupShader.gdshader
-Bartender.gd::GDScript::-1::1744326488::0::1::::Bartender<>NPC<>::
 BartenderTutorial.gd::GDScript::-1::1744326488::0::1::::BartenderTutorial<>NPC<>::
 buster.gd::GDScript::-1::1741037696::0::1::::<>NPC<>::
 EnemyStats.tres::Resource/Resource::9090477371390250509::1747826123::0::1::::<><>::uid://3n1p1wl2ev4s::::res://SwordFight2/moves/Slash.tres<>res://SwordFight2/CharacterStats.gd
