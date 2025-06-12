@@ -10,6 +10,7 @@ class_name KelptownInnTutorial
 var moved_keys: bool = false
 var moved_mouse: bool = false
 var stage_two_started: bool = false
+var _orig_speed: float = 0.0
 
 func _ready() -> void:
     super._ready()
@@ -18,12 +19,15 @@ func _ready() -> void:
     hint_bartender.visible = false
     hint_keys.visible = true
     hint_mouse.visible = true
-    # Start player slightly up the stairs
-    player.position += Vector2(0, -100)
-    # Fade in
+    # Fade in from black
     var tween = get_tree().create_tween()
     tween.tween_property(fade_rect, "modulate:a", 0.0, 1.0)
-    player.auto_move_to_position(player.position + Vector2(0, 100))
+
+    # Move the player down the stairs slowly
+    _orig_speed = player.speed
+    player.speed *= 0.5
+    player.connect("auto_move_completed", Callable(self, "_on_intro_move_completed"), CONNECT_ONE_SHOT)
+    player.auto_move_to_position(Vector2(382, 88))
 
     bartender.dialogue_requested.connect(_on_bartender_dialogue_requested_tutorial)
 
@@ -50,6 +54,9 @@ func _check_movement_complete() -> void:
         hint_mouse.visible = false
         arrow.visible = true
         hint_bartender.visible = true
+
+func _on_intro_move_completed() -> void:
+    player.speed = _orig_speed
 
 func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
     arrow.visible = false
