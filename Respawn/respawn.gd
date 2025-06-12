@@ -24,6 +24,6 @@ func _ready():
 	tween.tween_callback(Callable(self, "_change_scene"))
 
 func _change_scene():
-	# Change to the scene "Tavern/tavern.tscn"
-	SceneSwitcher.switch_scene("res://KelptownInn/KelptownInnIntroCutscene.tscn", Vector2(100, 100))
+        # Start the updated tutorial in the inn
+        SceneSwitcher.switch_scene("res://KelptownInn/KelptownInnTutorial.tscn", Vector2(100, 100))
 
