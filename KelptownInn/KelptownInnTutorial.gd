@@ -29,7 +29,7 @@ func _ready() -> void:
     player.connect("auto_move_completed", Callable(self, "_on_intro_move_completed"), CONNECT_ONE_SHOT)
     player.auto_move_to_position(Vector2(382, 88))
 
-    bartender.dialogue_requested.connect(_on_bartender_dialogue_requested_tutorial)
+    bartender.get_node("Area2D").input_event.connect(_on_bartender_input_event_tutorial)
 
 func _process(_delta: float) -> void:
     if not moved_keys and (
@@ -57,6 +57,10 @@ func _check_movement_complete() -> void:
 
 func _on_intro_move_completed() -> void:
     player.speed = _orig_speed
+
+func _on_bartender_input_event_tutorial(_vp, event, _shape_idx) -> void:
+    if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+        _on_bartender_dialogue_requested_tutorial("introduction")
 
 func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
     arrow.visible = false

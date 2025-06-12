@@ -6,7 +6,7 @@ class_name KelptownInn
 @export var bartender_dialogue_resource  : Resource
 @export var barnaby_dialogue_resource    : Resource
 
-@onready var bartender : Bartender = $Bartender
+@onready var bartender : NPC = $Bartender
 
 func _ready() -> void:
 	# ───────────────────────────────────── 0) Spawn position if loading from a save
@@ -18,8 +18,8 @@ func _ready() -> void:
 	CrewManager.populate_scene(self)
 	await get_tree().process_frame
 
-	# 2) Hook up the bartender
-	bartender.dialogue_requested.connect(_on_bartender_dialogue_requested)
+        # 2) Hook up the bartender
+        bartender.get_node("Area2D").input_event.connect(_on_bartender_input_event)
 
 	# 3) Hook up every dynamically-spawned Barnaby
 	for b in get_children():
@@ -35,11 +35,15 @@ func _ready() -> void:
 
 # ───────────────────────── Bartender
 func _on_bartender_dialogue_requested(section: String) -> void:
-	player.disable_user_input = true
-	var balloon = DialogueManager.show_dialogue_balloon(
-		bartender_dialogue_resource, section, [bartender]
-	)
-	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
+        player.disable_user_input = true
+        var balloon = DialogueManager.show_dialogue_balloon(
+                bartender_dialogue_resource, section, [bartender]
+        )
+        balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
+
+func _on_bartender_input_event(_vp, event, _shape_idx) -> void:
+        if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+                _on_bartender_dialogue_requested("introduction")
 
 func _on_dialogue_finished() -> void:
 	player.disable_user_input = false
