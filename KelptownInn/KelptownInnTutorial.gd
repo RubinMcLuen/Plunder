@@ -29,9 +29,10 @@ func _ready() -> void:
 
 	barnaby.npc_hired.connect(_on_barnaby_hired_tutorial)
 
-	fade_rect.modulate.a = 1.0
-	arrow.visible       = false
-	hint_bartender.visible = false
+        fade_rect.modulate.a = 1.0
+        arrow.visible       = false
+        arrow.target        = null
+        hint_bartender.visible = false
 	hint_hire.visible      = false
 	hint_keys.visible      = true
 	hint_mouse.visible     = true
@@ -71,17 +72,17 @@ func _check_movement_complete() -> void:
 		hint_keys.visible  = false
 		hint_mouse.visible = false
 
-		# Manually position arrow above the bartender
-		arrow.global_position = bartender.global_position + Vector2(0, -10)
-		arrow.visible = true
-		hint_bartender.visible = true
+                arrow.target = bartender
+                arrow.visible = true
+                hint_bartender.visible = true
 
 func _on_intro_move_completed() -> void:
 	player.speed = _orig_speed
 
 func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
-	arrow.visible = false
-	hint_bartender.add_theme_color_override("default_color", Color.GREEN)
+        arrow.visible = false
+        arrow.target = null
+        hint_bartender.add_theme_color_override("default_color", Color.GREEN)
 	player.disable_user_input = true
 
 	var balloon = DialogueManager.show_dialogue_balloon(
@@ -97,16 +98,16 @@ func _on_dialogue_finished_tutorial() -> void:
 	player.disable_user_input = false
 	stage_three_started = true
 
-	# Manually position arrow above Barnaby
-	arrow.global_position = barnaby.global_position + Vector2(0, -58)
-	arrow.visible = true
-	hint_hire.visible = true
+        arrow.target = barnaby
+        arrow.visible = true
+        hint_hire.visible = true
 
 func _on_barnaby_hired_tutorial(_b: NPC) -> void:
-	hint_hire.add_theme_color_override("default_color", Color.GREEN)
-	hint_hire.visible = false
-	arrow.visible = false
-	tutorial_complete = true
+        hint_hire.add_theme_color_override("default_color", Color.GREEN)
+        hint_hire.visible = false
+        arrow.visible = false
+        arrow.target = null
+        tutorial_complete = true
 
 func _on_exit_body_entered(body: Node) -> void:
 	if not tutorial_complete:
