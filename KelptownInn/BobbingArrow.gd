@@ -8,7 +8,7 @@ extends Sprite2D
 var _time := 0.0
 
 func _process(delta: float) -> void:
-    if not target:
+    if not is_instance_valid(target):
         return
     _time += delta
     var bob_y = sin(_time * TAU * bob_speed) * bob_amplitude
