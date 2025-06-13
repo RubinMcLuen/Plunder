@@ -94,10 +94,12 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 		Callable(self, "_on_dialogue_finished_tutorial"))
 
 func _on_dialogue_finished_tutorial() -> void:
-	hint_bartender.visible = false
-	await get_tree().create_timer(0.1).timeout
-	player.disable_user_input = false
-	stage_three_started       = true
+        hint_bartender.visible = false
+        # Prevent the click that closed the balloon from immediately
+        # reopening the dialogue by waiting a short moment.
+        await get_tree().create_timer(0.1).timeout
+        player.disable_user_input = false
+        stage_three_started       = true
 
 	arrow.target  = barnaby
 	arrow.visible = true
