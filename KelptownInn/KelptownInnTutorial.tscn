@@ -37,7 +37,6 @@
 [ext_resource type="PackedScene" uid="uid://4klyn0h8t7vm" path="res://Cutscene/CutsceneManager.tscn" id="37_qygh1"]
 [ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="38_arrow"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="39_font"]
-[ext_resource type="Script" path="res://KelptownInn/ArrowPointer.gd" id="40_arrowptr"]
 [ext_resource type="PackedScene" uid="uid://buqn7luanaqgo" path="res://Character/NPC/NPCs/Barnaby.tscn" id="41_barnaby"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5j50s"]
@@ -100,43 +99,6 @@ size = Vector2(32, 18)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ru76x"]
 size = Vector2(48, 20)
 
-[sub_resource type="Animation" id="Animation_unt7p"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(254, 94)]
-}
-
-[sub_resource type="Animation" id="Animation_j1k64"]
-resource_name = "new_animation"
-length = 0.7
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.3, 0.7),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 0,
-"values": [Vector2(254, 93), Vector2(254, 95), Vector2(254, 93)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_bmm82"]
-_data = {
-"RESET": SubResource("Animation_unt7p"),
-"new_animation": SubResource("Animation_j1k64")
-}
 
 [node name="KelptownInn" type="Node2D" node_paths=PackedStringArray("player")]
 y_sort_enabled = true
@@ -662,13 +624,13 @@ theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
 text = "[center]Hire Barnaby to finish the tutorial[/center]"
 
-[node name="Arrow" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(254, 94)
+[node name="ArrowBartender" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(270, 58)
 texture = ExtResource("38_arrow")
-script = ExtResource("40_arrowptr")
+visible = false
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Arrow"]
-libraries = {
-"": SubResource("AnimationLibrary_bmm82")
-}
-autoplay = "new_animation"
+[node name="ArrowBarnaby" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(235, 75)
+texture = ExtResource("38_arrow")
+visible = false
+

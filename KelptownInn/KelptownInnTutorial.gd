@@ -8,7 +8,8 @@ class_name KelptownInnTutorial
 @onready var hint_bartender : RichTextLabel = $CanvasLayer/HintBartender
 @onready var hint_hire      : RichTextLabel = $CanvasLayer/HintHireBarnaby
 @onready var barnaby        : NPC           = $Barnaby
-@onready var arrow          : Sprite2D      = $CanvasLayer/Arrow
+@onready var arrow_bartender: Sprite2D      = $CanvasLayer/ArrowBartender
+@onready var arrow_barnaby  : Sprite2D      = $CanvasLayer/ArrowBarnaby
 
 var moved_keys: bool       = false
 var moved_mouse: bool      = false
@@ -29,12 +30,13 @@ func _ready() -> void:
 
 	barnaby.npc_hired.connect(_on_barnaby_hired_tutorial)
 
-	fade_rect.modulate.a = 1.0
-	arrow.visible       = false
-	hint_bartender.visible = false
-	hint_hire.visible      = false
-	hint_keys.visible      = true
-	hint_mouse.visible     = true
+	fade_rect.modulate.a     = 1.0
+	arrow_bartender.visible  = false
+	arrow_barnaby.visible    = false
+	hint_bartender.visible   = false
+	hint_hire.visible        = false
+	hint_keys.visible        = true
+	hint_mouse.visible       = true
 
 	# Fade in from black
 	var tween = get_tree().create_tween()
@@ -71,16 +73,15 @@ func _check_movement_complete() -> void:
 		hint_keys.visible  = false
 		hint_mouse.visible = false
 
-		# Manually position arrow above the bartender
-		arrow.global_position = bartender.global_position + Vector2(0, -10)
-		arrow.visible = true
-		hint_bartender.visible = true
+			arrow_bartender.visible = true
+			hint_bartender.visible = true
 
 func _on_intro_move_completed() -> void:
 	player.speed = _orig_speed
 
+
 func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
-	arrow.visible = false
+	arrow_bartender.visible = false
 	hint_bartender.add_theme_color_override("default_color", Color.GREEN)
 	player.disable_user_input = true
 
@@ -97,15 +98,13 @@ func _on_dialogue_finished_tutorial() -> void:
 	player.disable_user_input = false
 	stage_three_started = true
 
-	# Manually position arrow above Barnaby
-	arrow.global_position = barnaby.global_position + Vector2(0, -58)
-	arrow.visible = true
+	arrow_barnaby.visible = true
 	hint_hire.visible = true
 
 func _on_barnaby_hired_tutorial(_b: NPC) -> void:
 	hint_hire.add_theme_color_override("default_color", Color.GREEN)
 	hint_hire.visible = false
-	arrow.visible = false
+	arrow_barnaby.visible = false
 	tutorial_complete = true
 
 func _on_exit_body_entered(body: Node) -> void:
