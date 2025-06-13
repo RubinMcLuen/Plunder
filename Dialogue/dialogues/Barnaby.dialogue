@@ -1,3 +1,7 @@
+~ wait_bartender
+Barnaby: The barkeep wants a word with you first, captain.
+=> END
+
 ~ Hirable
 Barnaby: [[Ahoy!|Well look who washed ashore!]]
 Barnaby: What d’ye want with ol’ Barnaby?
