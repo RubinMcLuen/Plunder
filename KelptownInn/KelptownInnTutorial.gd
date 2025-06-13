@@ -90,8 +90,8 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 	)
 	# You can await the balloon closing or use its own signal; for simplicity we
 	# assume it emits "dialogue_finished" on the manager and connect accordingly:
-	balloon.connect("balloon_closed",
-		Callable(self, "_on_dialogue_finished_tutorial"))
+        balloon.connect("dialogue_finished",
+                Callable(self, "_on_dialogue_finished_tutorial"))
 
 func _on_dialogue_finished_tutorial() -> void:
 	hint_bartender.visible = false
