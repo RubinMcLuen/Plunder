@@ -8,7 +8,7 @@ class_name KelptownInnTutorial
 @onready var hint_bartender : RichTextLabel = $CanvasLayer/HintBartender
 @onready var hint_hire      : RichTextLabel = $CanvasLayer/HintHireBarnaby
 @onready var barnaby        : NPC           = $Barnaby
-@onready var arrow          : Sprite2D      = $CanvasLayer/Arrow
+@onready var arrow          : Sprite2D      = $Arrow
 
 var moved_keys: bool       = false
 var moved_mouse: bool      = false
