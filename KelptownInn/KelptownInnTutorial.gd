@@ -21,7 +21,7 @@ func _ready() -> void:
 	# ───────────────────────────────────── 0) Spawn position if loading from a save
 	if Global.spawn_position != Vector2.ZERO:
 		player.global_position = Global.spawn_position
-		Global.spawn_position  = Vector2.ZERO                # ← clear for later scenes
+		Global.spawn_position  = Vector2.ZERO
 
 	# 1) Spawn crew for this scene
 	CrewManager.populate_scene(self)
@@ -32,9 +32,9 @@ func _ready() -> void:
 		bartender.dialogue_requested.disconnect(_on_bartender_dialogue_requested)
 	if bartender.dialogue_requested.is_connected(_on_bartender_dialogue_requested_tutorial):
 		bartender.dialogue_requested.disconnect(_on_bartender_dialogue_requested_tutorial)
-bartender.dialogue_requested.connect(_on_bartender_dialogue_requested_tutorial)
-bartender.state = "move_first"
-barnaby.state = "wait_bartender"
+	bartender.dialogue_requested.connect(_on_bartender_dialogue_requested_tutorial)
+	bartender.state = "move_first"
+	barnaby.state = "wait_bartender"
 
 	# 3) Hook up Barnaby for dialogue and hiring
 	barnaby.dialogue_requested.connect(_on_barnaby_dialogue_requested_tutorial)
@@ -45,17 +45,17 @@ barnaby.state = "wait_bartender"
 	$Player/Camera2D.zoom = Vector2(1.5, 1.5)
 	$Exit.body_entered.connect(_on_exit_body_entered)
 
-	fade_rect.modulate.a    = 1.0
-	arrow.visible           = false
-	arrow.target            = null
-	hint_bartender.visible  = false
-	hint_hire.visible       = false
-	hint_keys.visible       = false
-	hint_mouse.visible      = false
-	hint_keys.modulate.a    = 0.0
-	hint_mouse.modulate.a   = 0.0
-	hint_bartender.modulate.a = 0.0
-	hint_hire.modulate.a    = 0.0
+	fade_rect.modulate.a       = 1.0
+	arrow.visible              = false
+	arrow.target               = null
+	hint_bartender.visible     = false
+	hint_hire.visible          = false
+	hint_keys.visible          = false
+	hint_mouse.visible         = false
+	hint_keys.modulate.a       = 0.0
+	hint_mouse.modulate.a      = 0.0
+	hint_bartender.modulate.a  = 0.0
+	hint_hire.modulate.a       = 0.0
 
 	# fade in
 	get_tree().create_tween().tween_property(fade_rect, "modulate:a", 0.0, 2.0)
@@ -89,17 +89,17 @@ func _process(_delta: float) -> void:
 
 func _check_movement_complete() -> void:
 	if moved_keys and moved_mouse and not stage_two_started:
-	stage_two_started = true
-	await get_tree().create_timer(1.0).timeout
-	_fade_out_hint(hint_keys)
-	_fade_out_hint(hint_mouse)
-	await get_tree().create_timer(0.5).timeout
-	
-	arrow.target = bartender
-	arrow.global_position = bartender.global_position + Vector2(arrow.x_offset, arrow.y_offset)
-	arrow.visible = true
-	_fade_in_hint(hint_bartender)
-	bartender.state = "introduction"
+		stage_two_started = true
+		await get_tree().create_timer(1.0).timeout
+		_fade_out_hint(hint_keys)
+		_fade_out_hint(hint_mouse)
+		await get_tree().create_timer(0.5).timeout
+
+		arrow.target = bartender
+		arrow.global_position = bartender.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+		arrow.visible = true
+		_fade_in_hint(hint_bartender)
+		bartender.state = "introduction"
 
 func _on_intro_move_completed() -> void:
 	player.speed = _orig_speed
@@ -119,13 +119,13 @@ func _fade_out_hint(label: CanvasItem, duration: float = 0.5) -> void:
 	tw.tween_callback(Callable(label, "hide"))
 
 func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
-        if not stage_three_started:
-                arrow.visible = false
-                arrow.target  = null
-        if stage_two_started:
-                hint_bartender.add_theme_color_override("default_color", Color.GREEN)
-                _fade_out_hint(hint_bartender)
-        player.disable_user_input = true
+	if not stage_three_started:
+		arrow.visible = false
+		arrow.target  = null
+	if stage_two_started:
+		hint_bartender.add_theme_color_override("default_color", Color.GREEN)
+		_fade_out_hint(hint_bartender)
+	player.disable_user_input = true
 
 	var balloon := DialogueManager.show_dialogue_balloon(
 		bartender_dialogue_resource, section, [bartender]
@@ -133,24 +133,24 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished_tutorial"))
 
 func _on_dialogue_finished_tutorial() -> void:
-        await get_tree().create_timer(0.1).timeout
-        player.disable_user_input = false
-        if stage_two_started:
-                stage_three_started = true
-                await get_tree().create_timer(0.5).timeout
-                barnaby.state = "Hirable"
+	await get_tree().create_timer(0.1).timeout
+	player.disable_user_input = false
+	if stage_two_started:
+		stage_three_started = true
+		await get_tree().create_timer(0.5).timeout
+		barnaby.state = "Hirable"
 
-                arrow.target = barnaby
-                arrow.global_position = barnaby.global_position + Vector2(arrow.x_offset, arrow.y_offset)
-                arrow.visible = true
-                _fade_in_hint(hint_hire)
+		arrow.target = barnaby
+		arrow.global_position = barnaby.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+		arrow.visible = true
+		_fade_in_hint(hint_hire)
 
 func _on_barnaby_dialogue_requested_tutorial(section: String, b: NPC) -> void:
-        arrow.visible = false
-        arrow.target  = null
-        if stage_three_started:
-                _fade_out_hint(hint_hire)
-        player.disable_user_input = true
+	arrow.visible = false
+	arrow.target  = null
+	if stage_three_started:
+		_fade_out_hint(hint_hire)
+	player.disable_user_input = true
 
 	var balloon := b.show_dialogue(section)
 	balloon.connect(
@@ -181,4 +181,3 @@ func _on_exit_body_entered(body: Node) -> void:
 	if not tutorial_complete:
 		return
 	super._on_exit_body_entered(body)
-

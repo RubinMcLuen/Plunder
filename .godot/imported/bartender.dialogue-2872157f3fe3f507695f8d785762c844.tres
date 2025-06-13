@@ -1,14 +1,15 @@
 [gd_resource type="Resource" script_class="DialogueResource" load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_46qd5"]
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_yo14v"]
 
 [resource]
-script = ExtResource("1_46qd5")
+script = ExtResource("1_yo14v")
 using_states = PackedStringArray()
 titles = {
-"introduction": "2",
-"introduction_repeat": "8",
-"normal": "12"
+"introduction": "6",
+"introduction_repeat": "12",
+"move_first": "2",
+"normal": "16"
 }
 character_names = PackedStringArray("Bartender")
 first_title = "2"
@@ -16,32 +17,56 @@ lines = {
 "1": {
 "id": "1",
 "next_id": "2",
-"text": "introduction",
+"text": "move_first",
 "type": &"title"
 },
 "11": {
 "id": "11",
 "next_id": "12",
-"text": "normal",
+"text": "introduction_repeat",
 "type": &"title"
 },
 "12": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
 "id": "12",
-"next_id": "15",
+"next_id": "13",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Still here, captain? Hire yourself a crew before you head for open water.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Still here, captain? Hire yourself a crew before you head for open water.",
+"type": &"dialogue"
+},
+"13": {
+"id": "13",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"15": {
+"id": "15",
+"next_id": "16",
+"text": "normal",
+"type": &"title"
+},
+"16": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "16",
+"next_id": "19",
 "notes": "",
 "siblings": [{
 "condition": {},
-"id": "12",
+"id": "16",
 "weight": 1.0
 }, {
 "condition": {},
-"id": "13",
+"id": "17",
 "weight": 1.0
 }, {
 "condition": {},
-"id": "14",
+"id": "18",
 "weight": 1.0
 }],
 "tags": PackedStringArray(),
@@ -50,11 +75,11 @@ lines = {
 "translation_key": "Welcome back, captain.",
 "type": &"dialogue"
 },
-"13": {
+"17": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
-"id": "13",
-"next_id": "15",
+"id": "17",
+"next_id": "19",
 "notes": "",
 "tags": PackedStringArray(),
 "text": "The ale’s cold and the gossip’s hot.",
@@ -62,11 +87,11 @@ lines = {
 "translation_key": "The ale’s cold and the gossip’s hot.",
 "type": &"dialogue"
 },
-"14": {
+"18": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
-"id": "14",
-"next_id": "15",
+"id": "18",
+"next_id": "19",
 "notes": "",
 "tags": PackedStringArray(),
 "text": "What’ll it be — grog or tales of the sea?",
@@ -74,8 +99,8 @@ lines = {
 "translation_key": "What’ll it be — grog or tales of the sea?",
 "type": &"dialogue"
 },
-"15": {
-"id": "15",
+"19": {
+"id": "19",
 "is_snippet": false,
 "next_id": "end",
 "type": &"goto"
@@ -87,46 +112,46 @@ lines = {
 "next_id": "3",
 "notes": "",
 "tags": PackedStringArray(),
+"text": "Let's see you stretch those legs a bit before we chat.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Let's see you stretch those legs a bit before we chat.",
+"type": &"dialogue"
+},
+"3": {
+"id": "3",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"5": {
+"id": "5",
+"next_id": "6",
+"text": "introduction",
+"type": &"title"
+},
+"6": {
+"character": "Bartender",
+"character_replacements": Array[Dictionary]([]),
+"id": "6",
+"next_id": "7",
+"notes": "",
+"tags": PackedStringArray(),
 "text": "Finally got your sea legs back, aye?",
 "text_replacements": Array[Dictionary]([]),
 "translation_key": "Finally got your sea legs back, aye?",
 "type": &"dialogue"
 },
-"3": {
+"7": {
 "character": "Bartender",
 "character_replacements": Array[Dictionary]([]),
-"id": "3",
-"next_id": "4",
+"id": "7",
+"next_id": "8",
 "notes": "",
 "tags": PackedStringArray(),
 "text": "That scurvy is no joke—spend less time on the poopdeck.",
 "text_replacements": Array[Dictionary]([]),
 "translation_key": "That scurvy is no joke—spend less time on the poopdeck.",
 "type": &"dialogue"
-},
-"4": {
-"character": "Bartender",
-"character_replacements": Array[Dictionary]([]),
-"id": "4",
-"next_id": "5",
-"notes": "",
-"tags": PackedStringArray(),
-"text": "Before you set sail, you’ll need a loyal crew. Start by hiring that salty dog over there.",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Before you set sail, you’ll need a loyal crew. Start by hiring that salty dog over there.",
-"type": &"dialogue"
-},
-"5": {
-"id": "5",
-"is_snippet": false,
-"next_id": "end",
-"type": &"goto"
-},
-"7": {
-"id": "7",
-"next_id": "8",
-"text": "introduction_repeat",
-"type": &"title"
 },
 "8": {
 "character": "Bartender",
@@ -135,9 +160,9 @@ lines = {
 "next_id": "9",
 "notes": "",
 "tags": PackedStringArray(),
-"text": "Still here, captain? Hire yourself a crew before you head for open water.",
+"text": "Before you set sail, you’ll need a loyal crew. Start by hiring that salty dog over there.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "Still here, captain? Hire yourself a crew before you head for open water.",
+"translation_key": "Before you set sail, you’ll need a loyal crew. Start by hiring that salty dog over there.",
 "type": &"dialogue"
 },
 "9": {
@@ -147,7 +172,11 @@ lines = {
 "type": &"goto"
 }
 }
-raw_text = "~ introduction
+raw_text = "~ move_first
+Bartender: Let's see you stretch those legs a bit before we chat.
+=> END
+
+~ introduction
 Bartender: Finally got your sea legs back, aye?
 Bartender: That scurvy is no joke—spend less time on the poopdeck.
 Bartender: Before you set sail, you’ll need a loyal crew. Start by hiring that salty dog over there.

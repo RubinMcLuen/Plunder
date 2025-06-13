@@ -1,3 +1,5 @@
+# Bartender script
+
 extends NPC
 class_name Bartender
 
@@ -12,14 +14,14 @@ func _on_area_input_event(_viewport, event, _shape_idx) -> void:
 
 func _get_dialogue_section_and_update_state() -> String:
 	var current := state
-       match state:
-               "introduction":
-                       state = "introduction_repeat"
-               "introduction_repeat":
-                       pass # stay on introduction_repeat
-               _:
-                       pass
-       return current
+	match state:
+		"introduction":
+			state = "introduction_repeat"
+		"introduction_repeat":
+			pass # stay on introduction_repeat
+		_:
+			pass
+	return current
 
 # Used by your save system
 func get_state() -> String:
