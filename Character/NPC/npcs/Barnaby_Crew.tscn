@@ -1,20 +1,20 @@
 [gd_scene load_steps=6 format=3 uid="uid://cps1mea6rba1r"]
 
-[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="1_e7xxb"]
-[ext_resource type="Script" path="res://Character/NPC/npcs/Barnaby_Crew.gd" id="2_7sqws"]
-[ext_resource type="Shader" path="res://Character/Player/UVLookupShader.gdshader" id="4_s0inh"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="1_xl2kw"]
+[ext_resource type="Script" path="res://Character/NPC/npcs/Barnaby_Crew.gd" id="2_10ldj"]
+[ext_resource type="Shader" path="res://Character/Player/UVLookupShader.gdshader" id="3_nsjwm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1dc57"]
 resource_local_to_scene = true
-shader = ExtResource("4_s0inh")
+shader = ExtResource("3_nsjwm")
 shader_parameter/hurt_mode = false
 shader_parameter/hurt_color = Color(0.678, 0.196, 0.196, 0.6)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rxj7i"]
 radius = 30.0
 
-[node name="Barnaby" instance=ExtResource("1_e7xxb")]
-script = ExtResource("2_7sqws")
+[node name="Barnaby" instance=ExtResource("1_xl2kw")]
+script = ExtResource("2_10ldj")
 npc_texture_index = 1
 
 [node name="Appearance" parent="." index="0"]
