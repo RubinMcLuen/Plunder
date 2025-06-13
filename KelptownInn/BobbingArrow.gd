@@ -2,7 +2,7 @@ extends Sprite2D
 
 @export var target: Node2D
 @export var x_offset: float = 1.0
-@export var y_offset: float = -35.0
+@export var y_offset: float = -33.0
 @export var bob_amplitude: float = 3.0
 @export var bob_speed: float = 1.0
 
