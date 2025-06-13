@@ -16,3 +16,5 @@ res://Ocean/ocean.tscn
 res://Character/NPC/NPCs/Barnaby_Crew.tscn
 res://Character/NPC/CrewMember/CrewMember.tscn
 res://KelptownInn/KelptownInn.tscn
+res://KelptownInn/ArrowPointer.gd
+res://Character/NPC/npcs/Bartender.gd

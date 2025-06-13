@@ -141,8 +141,8 @@ _data = {
 [node name="KelptownInn" type="Node2D" node_paths=PackedStringArray("player")]
 y_sort_enabled = true
 script = ExtResource("1_8g3rb")
-bartender_dialogue_resource = ExtResource("3_43j7b")
 player = NodePath("Player")
+bartender_dialogue_resource = ExtResource("3_43j7b")
 
 [node name="Bartender" parent="." instance=ExtResource("2_iwfcd")]
 position = Vector2(270, 68)
@@ -577,20 +577,6 @@ shape = SubResource("RectangleShape2D_ru76x")
 
 [node name="CutsceneManager" parent="." instance=ExtResource("37_qygh1")]
 
-[node name="Arrow" type="Sprite2D" parent="."]
-visible = false
-position = Vector2(254, 94)
-texture = ExtResource("38_arrow")
-centered = false
-script = ExtResource("40_arrowptr")
-target = NodePath("Bartender")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Arrow"]
-libraries = {
-"": SubResource("AnimationLibrary_bmm82")
-}
-autoplay = "new_animation"
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="FadeRect" type="ColorRect" parent="CanvasLayer"]
@@ -675,3 +661,14 @@ theme_override_fonts/normal_font = ExtResource("39_font")
 theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
 text = "[center]Hire Barnaby to finish the tutorial[/center]"
+
+[node name="Arrow" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(254, 94)
+texture = ExtResource("38_arrow")
+script = ExtResource("40_arrowptr")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/Arrow"]
+libraries = {
+"": SubResource("AnimationLibrary_bmm82")
+}
+autoplay = "new_animation"
