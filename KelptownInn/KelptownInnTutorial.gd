@@ -18,35 +18,48 @@ var _orig_speed: float        = 0.0
 var tutorial_complete: bool   = false
 
 func _ready() -> void:
-	super._ready()
+    # ───────────────────────────────────── 0) Spawn position if loading from a save
+    if Global.spawn_position != Vector2.ZERO:
+        player.global_position = Global.spawn_position
+        Global.spawn_position  = Vector2.ZERO                # ← clear for later scenes
 
-	# make sure we never double-connect
-	if bartender.dialogue_requested.is_connected(_on_bartender_dialogue_requested):
-		bartender.dialogue_requested.disconnect(_on_bartender_dialogue_requested)
-	if bartender.dialogue_requested.is_connected(_on_bartender_dialogue_requested_tutorial):
-		bartender.dialogue_requested.disconnect(_on_bartender_dialogue_requested_tutorial)
-	bartender.dialogue_requested.connect(_on_bartender_dialogue_requested_tutorial)
+    # 1) Spawn crew for this scene
+    CrewManager.populate_scene(self)
+    await get_tree().process_frame
 
-	barnaby.npc_hired.connect(_on_barnaby_hired_tutorial)
+    # 2) Hook up the bartender (tutorial variant)
+    if bartender.dialogue_requested.is_connected(_on_bartender_dialogue_requested):
+        bartender.dialogue_requested.disconnect(_on_bartender_dialogue_requested)
+    if bartender.dialogue_requested.is_connected(_on_bartender_dialogue_requested_tutorial):
+        bartender.dialogue_requested.disconnect(_on_bartender_dialogue_requested_tutorial)
+    bartender.dialogue_requested.connect(_on_bartender_dialogue_requested_tutorial)
 
-	fade_rect.modulate.a = 1.0
-	arrow.visible       = false
-	arrow.target        = null
-	hint_bartender.visible = false
-	hint_hire.visible      = false
-	hint_keys.visible      = false
-	hint_mouse.visible     = false
+    # 3) Hook up Barnaby for hiring
+    barnaby.npc_hired.connect(_on_barnaby_hired_tutorial)
 
-	# fade in
-	get_tree().create_tween().tween_property(fade_rect, "modulate:a", 0.0, 2.0)
+    # 4) UI, camera & exit
+    UIManager.show_location_notification(location_name)
+    $Player/Camera2D.zoom = Vector2(1.5, 1.5)
+    $Exit.body_entered.connect(_on_exit_body_entered)
 
-	# slow intro stroll
-	_orig_speed      = player.speed
-	player.speed    *= 0.5
-	player.connect("auto_move_completed",
-		Callable(self, "_on_intro_move_completed"),
-		CONNECT_ONE_SHOT)
-	player.auto_move_to_position(Vector2(382, 88))
+    fade_rect.modulate.a = 1.0
+    arrow.visible       = false
+    arrow.target        = null
+    hint_bartender.visible = false
+    hint_hire.visible      = false
+    hint_keys.visible      = false
+    hint_mouse.visible     = false
+
+    # fade in
+    get_tree().create_tween().tween_property(fade_rect, "modulate:a", 0.0, 2.0)
+
+    # slow intro stroll
+    _orig_speed      = player.speed
+    player.speed    *= 0.5
+    player.connect("auto_move_completed",
+            Callable(self, "_on_intro_move_completed"),
+            CONNECT_ONE_SHOT)
+    player.auto_move_to_position(Vector2(382, 88))
 
 func _process(_delta: float) -> void:
 	if intro_walk_finished:
