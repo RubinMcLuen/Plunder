@@ -37,7 +37,6 @@
 [ext_resource type="PackedScene" uid="uid://4klyn0h8t7vm" path="res://Cutscene/CutsceneManager.tscn" id="37_qygh1"]
 [ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="38_arrow"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="39_font"]
-[ext_resource type="Script" path="res://KelptownInn/ArrowPointer.gd" id="40_arrowptr"]
 [ext_resource type="PackedScene" uid="uid://buqn7luanaqgo" path="res://Character/NPC/NPCs/Barnaby.tscn" id="41_barnaby"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5j50s"]
@@ -625,8 +624,13 @@ theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
 text = "[center]Hire Barnaby to finish the tutorial[/center]"
 
-[node name="Arrow" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(254, 94)
+[node name="ArrowBartender" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(270, 58)
 texture = ExtResource("38_arrow")
-script = ExtResource("40_arrowptr")
+visible = false
+
+[node name="ArrowBarnaby" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(235, 75)
+texture = ExtResource("38_arrow")
+visible = false
 
