@@ -1,12 +1,13 @@
 [gd_resource type="Resource" script_class="DialogueResource" load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_bv87r"]
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_lqean"]
 
 [resource]
-script = ExtResource("1_bv87r")
+script = ExtResource("1_lqean")
 using_states = PackedStringArray()
 titles = {
-"Hirable": "2"
+"Hirable": "6",
+"wait_bartender": "2"
 }
 character_names = PackedStringArray("Barnaby")
 first_title = "2"
@@ -14,7 +15,7 @@ lines = {
 "1": {
 "id": "1",
 "next_id": "2",
-"text": "Hirable",
+"text": "wait_bartender",
 "type": &"title"
 },
 "10": {
@@ -24,11 +25,12 @@ lines = {
 "next_id": "11",
 "next_id_after": "end",
 "notes": "",
-"parent_id": "4",
+"parent_id": "8",
+"responses": PackedStringArray("10", "14", "18", "22", "26"),
 "tags": PackedStringArray(),
-"text": "One.",
+"text": "You don’t have any fingers.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "One.",
+"translation_key": "You don’t have any fingers.",
 "type": &"response"
 },
 "11": {
@@ -39,9 +41,9 @@ lines = {
 "notes": "",
 "parent_id": "10",
 "tags": PackedStringArray(),
-"text": "Hah! You're sharp. Fine, I’ll join you.",
+"text": "Ha! You’re sharper than you look, Captain. You’re right — no fingers at all! Alright, I’m in.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "Hah! You're sharp. Fine, I’ll join you.",
+"translation_key": "Ha! You’re sharper than you look, Captain. You’re right — no fingers at all! Alright, I’m in.",
 "type": &"dialogue"
 },
 "12": {
@@ -75,11 +77,11 @@ lines = {
 "next_id": "15",
 "next_id_after": "end",
 "notes": "",
-"parent_id": "4",
+"parent_id": "8",
 "tags": PackedStringArray(),
-"text": "Two.",
+"text": "One.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "Two.",
+"translation_key": "One.",
 "type": &"response"
 },
 "15": {
@@ -90,9 +92,9 @@ lines = {
 "notes": "",
 "parent_id": "14",
 "tags": PackedStringArray(),
-"text": "Wrong, but I need the gold. I’m coming aboard anyway.",
+"text": "Hah! You're sharp. Fine, I’ll join you.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "Wrong, but I need the gold. I’m coming aboard anyway.",
+"translation_key": "Hah! You're sharp. Fine, I’ll join you.",
 "type": &"dialogue"
 },
 "16": {
@@ -126,11 +128,11 @@ lines = {
 "next_id": "19",
 "next_id_after": "end",
 "notes": "",
-"parent_id": "4",
+"parent_id": "8",
 "tags": PackedStringArray(),
-"text": "Three.",
+"text": "Two.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "Three.",
+"translation_key": "Two.",
 "type": &"response"
 },
 "19": {
@@ -141,9 +143,9 @@ lines = {
 "notes": "",
 "parent_id": "18",
 "tags": PackedStringArray(),
-"text": "Missed it, but I've got nothing better to do. Count me in.",
+"text": "Wrong, but I need the gold. I’m coming aboard anyway.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "Missed it, but I've got nothing better to do. Count me in.",
+"translation_key": "Wrong, but I need the gold. I’m coming aboard anyway.",
 "type": &"dialogue"
 },
 "2": {
@@ -153,9 +155,9 @@ lines = {
 "next_id": "3",
 "notes": "",
 "tags": PackedStringArray(),
-"text": "[[Ahoy!|Well look who washed ashore!]]",
+"text": "The barkeep wants a word with you first, captain.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "[[Ahoy!|Well look who washed ashore!]]",
+"translation_key": "The barkeep wants a word with you first, captain.",
 "type": &"dialogue"
 },
 "20": {
@@ -189,217 +191,28 @@ lines = {
 "next_id": "23",
 "next_id_after": "end",
 "notes": "",
-"parent_id": "4",
+"parent_id": "8",
 "tags": PackedStringArray(),
-"text": "End the conversation",
+"text": "Three.",
 "text_replacements": Array[Dictionary]([]),
-"translation_key": "End the conversation",
+"translation_key": "Three.",
 "type": &"response"
 },
 "23": {
+"character": "Barnaby",
+"character_replacements": Array[Dictionary]([]),
 "id": "23",
-"is_snippet": false,
-"next_id": "end",
+"next_id": "24",
+"notes": "",
 "parent_id": "22",
-"type": &"goto"
+"tags": PackedStringArray(),
+"text": "Missed it, but I've got nothing better to do. Count me in.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Missed it, but I've got nothing better to do. Count me in.",
+"type": &"dialogue"
 },
 "24": {
-"character": "",
-"character_replacements": Array[Dictionary]([]),
 "id": "24",
-"next_id": "25",
-"next_id_after": "end",
-"notes": "",
-"tags": PackedStringArray(),
-"text": "Ask him a question",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Ask him a question",
-"type": &"response"
-},
-"25": {
-"character": "Barnaby",
-"character_replacements": Array[Dictionary]([]),
-"id": "25",
-"next_id": "26",
-"notes": "",
-"parent_id": "24",
-"tags": PackedStringArray(),
-"text": "What’s burnin’ in that skull o’ yers?",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "What’s burnin’ in that skull o’ yers?",
-"type": &"dialogue"
-},
-"26": {
-"character": "",
-"character_replacements": Array[Dictionary]([]),
-"id": "26",
-"next_id": "27",
-"next_id_after": "end",
-"notes": "",
-"parent_id": "24",
-"responses": PackedStringArray("26", "29"),
-"tags": PackedStringArray(),
-"text": "Why do they call you Barnaby?",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Why do they call you Barnaby?",
-"type": &"response"
-},
-"27": {
-"character": "Barnaby",
-"character_replacements": Array[Dictionary]([]),
-"id": "27",
-"next_id": "28",
-"notes": "",
-"parent_id": "26",
-"tags": PackedStringArray(),
-"text": "Hah! Because “King Barnabus the Third” didn’t fit on me hat, savvy?",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Hah! Because “King Barnabus the Third” didn’t fit on me hat, savvy?",
-"type": &"dialogue"
-},
-"28": {
-"id": "28",
-"is_snippet": false,
-"next_id": "end",
-"parent_id": "26",
-"type": &"goto"
-},
-"29": {
-"character": "",
-"character_replacements": Array[Dictionary]([]),
-"id": "29",
-"next_id": "30",
-"next_id_after": "end",
-"notes": "",
-"parent_id": "24",
-"tags": PackedStringArray(),
-"text": "Are you any good in a fight?",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Are you any good in a fight?",
-"type": &"response"
-},
-"3": {
-"character": "Barnaby",
-"character_replacements": Array[Dictionary]([]),
-"id": "3",
-"next_id": "4",
-"notes": "",
-"tags": PackedStringArray(),
-"text": "What d’ye want with ol’ Barnaby?",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "What d’ye want with ol’ Barnaby?",
-"type": &"dialogue"
-},
-"30": {
-"character": "Barnaby",
-"character_replacements": Array[Dictionary]([]),
-"id": "30",
-"next_id": "31",
-"notes": "",
-"parent_id": "29",
-"tags": PackedStringArray(),
-"text": "Put a weapon in my hand, and I’ll show you.",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Put a weapon in my hand, and I’ll show you.",
-"type": &"dialogue"
-},
-"31": {
-"id": "31",
-"is_snippet": false,
-"next_id": "end",
-"parent_id": "29",
-"type": &"goto"
-},
-"32": {
-"character": "",
-"character_replacements": Array[Dictionary]([]),
-"id": "32",
-"next_id": "33",
-"next_id_after": "end",
-"notes": "",
-"tags": PackedStringArray(),
-"text": "Say goodbye",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Say goodbye",
-"type": &"response"
-},
-"33": {
-"character": "Barnaby",
-"character_replacements": Array[Dictionary]([]),
-"id": "33",
-"next_id": "34",
-"notes": "",
-"parent_id": "32",
-"tags": PackedStringArray(),
-"text": "Fair winds, sailor! Don’t sink without me.",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Fair winds, sailor! Don’t sink without me.",
-"type": &"dialogue"
-},
-"34": {
-"id": "34",
-"is_snippet": false,
-"next_id": "end",
-"parent_id": "32",
-"type": &"goto"
-},
-"4": {
-"character": "",
-"character_replacements": Array[Dictionary]([]),
-"id": "4",
-"next_id": "5",
-"next_id_after": "end",
-"notes": "",
-"responses": PackedStringArray("4", "24", "32"),
-"tags": PackedStringArray(),
-"text": "Ask him to join your crew",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Ask him to join your crew",
-"type": &"response"
-},
-"5": {
-"character": "Barnaby",
-"character_replacements": Array[Dictionary]([]),
-"id": "5",
-"next_id": "6",
-"notes": "",
-"parent_id": "4",
-"tags": PackedStringArray(),
-"text": "Ha! You want me on your crew, eh? Alright — guess which finger I’m holding behind my back.",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Ha! You want me on your crew, eh? Alright — guess which finger I’m holding behind my back.",
-"type": &"dialogue"
-},
-"6": {
-"character": "",
-"character_replacements": Array[Dictionary]([]),
-"id": "6",
-"next_id": "7",
-"next_id_after": "end",
-"notes": "",
-"parent_id": "4",
-"responses": PackedStringArray("6", "10", "14", "18", "22"),
-"tags": PackedStringArray(),
-"text": "You don’t have any fingers.",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "You don’t have any fingers.",
-"type": &"response"
-},
-"7": {
-"character": "Barnaby",
-"character_replacements": Array[Dictionary]([]),
-"id": "7",
-"next_id": "8",
-"notes": "",
-"parent_id": "6",
-"tags": PackedStringArray(),
-"text": "Ha! You’re sharper than you look, Captain. You’re right — no fingers at all! Alright, I’m in.",
-"text_replacements": Array[Dictionary]([]),
-"translation_key": "Ha! You’re sharper than you look, Captain. You’re right — no fingers at all! Alright, I’m in.",
-"type": &"dialogue"
-},
-"8": {
-"id": "8",
 "mutation": {
 "expression": Array[Dictionary]([{
 "function": "call",
@@ -411,19 +224,235 @@ lines = {
 }]),
 "is_blocking": true
 },
-"next_id": "9",
-"parent_id": "6",
+"next_id": "25",
+"parent_id": "22",
 "type": &"mutation"
 },
-"9": {
-"id": "9",
+"25": {
+"id": "25",
 "is_snippet": false,
 "next_id": "end",
-"parent_id": "6",
+"parent_id": "22",
 "type": &"goto"
+},
+"26": {
+"character": "",
+"character_replacements": Array[Dictionary]([]),
+"id": "26",
+"next_id": "27",
+"next_id_after": "end",
+"notes": "",
+"parent_id": "8",
+"tags": PackedStringArray(),
+"text": "End the conversation",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "End the conversation",
+"type": &"response"
+},
+"27": {
+"id": "27",
+"is_snippet": false,
+"next_id": "end",
+"parent_id": "26",
+"type": &"goto"
+},
+"28": {
+"character": "",
+"character_replacements": Array[Dictionary]([]),
+"id": "28",
+"next_id": "29",
+"next_id_after": "end",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Ask him a question",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Ask him a question",
+"type": &"response"
+},
+"29": {
+"character": "Barnaby",
+"character_replacements": Array[Dictionary]([]),
+"id": "29",
+"next_id": "30",
+"notes": "",
+"parent_id": "28",
+"tags": PackedStringArray(),
+"text": "What’s burnin’ in that skull o’ yers?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "What’s burnin’ in that skull o’ yers?",
+"type": &"dialogue"
+},
+"3": {
+"id": "3",
+"is_snippet": false,
+"next_id": "end",
+"type": &"goto"
+},
+"30": {
+"character": "",
+"character_replacements": Array[Dictionary]([]),
+"id": "30",
+"next_id": "31",
+"next_id_after": "end",
+"notes": "",
+"parent_id": "28",
+"responses": PackedStringArray("30", "33"),
+"tags": PackedStringArray(),
+"text": "Why do they call you Barnaby?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Why do they call you Barnaby?",
+"type": &"response"
+},
+"31": {
+"character": "Barnaby",
+"character_replacements": Array[Dictionary]([]),
+"id": "31",
+"next_id": "32",
+"notes": "",
+"parent_id": "30",
+"tags": PackedStringArray(),
+"text": "Hah! Because “King Barnabus the Third” didn’t fit on me hat, savvy?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Hah! Because “King Barnabus the Third” didn’t fit on me hat, savvy?",
+"type": &"dialogue"
+},
+"32": {
+"id": "32",
+"is_snippet": false,
+"next_id": "end",
+"parent_id": "30",
+"type": &"goto"
+},
+"33": {
+"character": "",
+"character_replacements": Array[Dictionary]([]),
+"id": "33",
+"next_id": "34",
+"next_id_after": "end",
+"notes": "",
+"parent_id": "28",
+"tags": PackedStringArray(),
+"text": "Are you any good in a fight?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Are you any good in a fight?",
+"type": &"response"
+},
+"34": {
+"character": "Barnaby",
+"character_replacements": Array[Dictionary]([]),
+"id": "34",
+"next_id": "35",
+"notes": "",
+"parent_id": "33",
+"tags": PackedStringArray(),
+"text": "Put a weapon in my hand, and I’ll show you.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Put a weapon in my hand, and I’ll show you.",
+"type": &"dialogue"
+},
+"35": {
+"id": "35",
+"is_snippet": false,
+"next_id": "end",
+"parent_id": "33",
+"type": &"goto"
+},
+"36": {
+"character": "",
+"character_replacements": Array[Dictionary]([]),
+"id": "36",
+"next_id": "37",
+"next_id_after": "end",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "Say goodbye",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Say goodbye",
+"type": &"response"
+},
+"37": {
+"character": "Barnaby",
+"character_replacements": Array[Dictionary]([]),
+"id": "37",
+"next_id": "38",
+"notes": "",
+"parent_id": "36",
+"tags": PackedStringArray(),
+"text": "Fair winds, sailor! Don’t sink without me.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Fair winds, sailor! Don’t sink without me.",
+"type": &"dialogue"
+},
+"38": {
+"id": "38",
+"is_snippet": false,
+"next_id": "end",
+"parent_id": "36",
+"type": &"goto"
+},
+"5": {
+"id": "5",
+"next_id": "6",
+"text": "Hirable",
+"type": &"title"
+},
+"6": {
+"character": "Barnaby",
+"character_replacements": Array[Dictionary]([]),
+"id": "6",
+"next_id": "7",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "[[Ahoy!|Well look who washed ashore!]]",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "[[Ahoy!|Well look who washed ashore!]]",
+"type": &"dialogue"
+},
+"7": {
+"character": "Barnaby",
+"character_replacements": Array[Dictionary]([]),
+"id": "7",
+"next_id": "8",
+"notes": "",
+"tags": PackedStringArray(),
+"text": "What d’ye want with ol’ Barnaby?",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "What d’ye want with ol’ Barnaby?",
+"type": &"dialogue"
+},
+"8": {
+"character": "",
+"character_replacements": Array[Dictionary]([]),
+"id": "8",
+"next_id": "9",
+"next_id_after": "end",
+"notes": "",
+"responses": PackedStringArray("8", "28", "36"),
+"tags": PackedStringArray(),
+"text": "Ask him to join your crew",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Ask him to join your crew",
+"type": &"response"
+},
+"9": {
+"character": "Barnaby",
+"character_replacements": Array[Dictionary]([]),
+"id": "9",
+"next_id": "10",
+"notes": "",
+"parent_id": "8",
+"tags": PackedStringArray(),
+"text": "Ha! You want me on your crew, eh? Alright — guess which finger I’m holding behind my back.",
+"text_replacements": Array[Dictionary]([]),
+"translation_key": "Ha! You want me on your crew, eh? Alright — guess which finger I’m holding behind my back.",
+"type": &"dialogue"
 }
 }
-raw_text = "~ Hirable
+raw_text = "~ wait_bartender
+Barnaby: The barkeep wants a word with you first, captain.
+=> END
+
+~ Hirable
 Barnaby: [[Ahoy!|Well look who washed ashore!]]
 Barnaby: What d’ye want with ol’ Barnaby?
 - Ask him to join your crew
