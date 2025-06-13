@@ -119,13 +119,12 @@ func _fade_out_hint(label: CanvasItem, duration: float = 0.5) -> void:
 	tw.tween_callback(Callable(label, "hide"))
 
 func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
-	if not stage_three_started:
-		arrow.visible = false
-		arrow.target  = null
-	if stage_two_started:
-		hint_bartender.add_theme_color_override("default_color", Color.GREEN)
-		_fade_out_hint(hint_bartender)
-	player.disable_user_input = true
+        if stage_two_started and not stage_three_started:
+                arrow.visible = false
+                arrow.target  = null
+                hint_bartender.add_theme_color_override("default_color", Color.GREEN)
+                _fade_out_hint(hint_bartender)
+        player.disable_user_input = true
 
 	var balloon := DialogueManager.show_dialogue_balloon(
 		bartender_dialogue_resource, section, [bartender]
@@ -133,12 +132,12 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished_tutorial"))
 
 func _on_dialogue_finished_tutorial() -> void:
-	await get_tree().create_timer(0.1).timeout
-	player.disable_user_input = false
-	if stage_two_started:
-		stage_three_started = true
-		await get_tree().create_timer(0.5).timeout
-		barnaby.state = "Hirable"
+        await get_tree().create_timer(0.1).timeout
+        player.disable_user_input = false
+        if stage_two_started and not stage_three_started:
+                stage_three_started = true
+                await get_tree().create_timer(0.5).timeout
+                barnaby.state = "Hirable"
 
 		arrow.target = barnaby
 		arrow.global_position = barnaby.global_position + Vector2(arrow.x_offset, arrow.y_offset)
@@ -146,25 +145,21 @@ func _on_dialogue_finished_tutorial() -> void:
 		_fade_in_hint(hint_hire)
 
 func _on_barnaby_dialogue_requested_tutorial(section: String, b: NPC) -> void:
-	arrow.visible = false
-	arrow.target  = null
-	if stage_three_started:
-		_fade_out_hint(hint_hire)
-	player.disable_user_input = true
-
-	var balloon := b.show_dialogue(section)
-	balloon.connect(
-		"dialogue_finished",
-		Callable(self, "_on_dialogue_finished_barnaby_tutorial").bind(b)
-	)
+        # Do not hide the hire hint until Barnaby actually joins the crew
+        player.disable_user_input = true
+        var balloon := b.show_dialogue(section)
+        balloon.connect(
+                "dialogue_finished",
+                Callable(self, "_on_dialogue_finished_barnaby_tutorial").bind(b)
+        )
 
 func _on_dialogue_finished_barnaby_tutorial(b: NPC) -> void:
-	player.disable_user_input = false
-	if not b.hired:
-		arrow.target = b
-		arrow.global_position = b.global_position + Vector2(arrow.x_offset, arrow.y_offset)
-		arrow.visible = true
-		_fade_in_hint(hint_hire)
+        player.disable_user_input = false
+        if stage_three_started and not b.hired:
+                arrow.target = b
+                arrow.global_position = b.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+                arrow.visible = true
+                _fade_in_hint(hint_hire)
 
 func _on_barnaby_hired_tutorial(_b: NPC) -> void:
 	hint_hire.add_theme_color_override("default_color", Color.GREEN)
