@@ -85,10 +85,11 @@ func _on_intro_move_completed() -> void:
         intro_walk_finished = true
 
 func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
-        arrow.visible = false
-        arrow.target = null
-        hint_bartender.add_theme_color_override("default_color", Color.GREEN)
-	player.disable_user_input = true
+       print_debug("Bartender dialogue requested: %s" % section)
+       arrow.visible = false
+       arrow.target = null
+       hint_bartender.add_theme_color_override("default_color", Color.GREEN)
+       player.disable_user_input = true
 
 	var balloon = DialogueManager.show_dialogue_balloon(
 		bartender_dialogue_resource, section, [bartender]
@@ -99,9 +100,11 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
                 Callable(self, "_on_dialogue_finished_tutorial"))
 
 func _on_dialogue_finished_tutorial() -> void:
-	hint_bartender.visible = false
-	player.disable_user_input = false
-	stage_three_started = true
+       print_debug("Bartender dialogue finished")
+       hint_bartender.visible = false
+       await get_tree().create_timer(0.1).timeout
+       player.disable_user_input = false
+       stage_three_started = true
 
         arrow.target = barnaby
         arrow.visible = true
