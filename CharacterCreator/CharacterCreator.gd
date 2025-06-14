@@ -172,11 +172,11 @@ func animate_header(down: bool) -> Tween:
 func _on_finish() -> void:
 	_build_character_data()
 	_save_data()
-        SceneSwitcher.switch_scene(
-                "res://KelptownInn/KelptownInnTutorial.tscn",
-                Vector2(381, 23),
-                "fade"
-        )
+		SceneSwitcher.switch_scene(
+				"res://KelptownInn/KelptownInnTutorial.tscn",
+				Vector2(381, 23),
+				"fade"
+		)
 
 func _build_character_data() -> void:
 	character_data["name"]   = name_input.text.strip_edges()
