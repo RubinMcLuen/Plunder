@@ -47,22 +47,26 @@ func get_tutorial_state() -> Dictionary:
 		"arrow_visible": arrow.visible if is_instance_valid(arrow) else false,
 		"arrow_target": target,
 		"fade_alpha": fade_rect.modulate.a,
-				"hint_keys": {
-						"visible": hint_keys.visible,
-						"color": hint_keys.get_theme_color("default_color").to_html(true)
-				},
-				"hint_mouse": {
-						"visible": hint_mouse.visible,
-						"color": hint_mouse.get_theme_color("default_color").to_html(true)
-				},
-				"hint_bartender": {
-						"visible": hint_bartender.visible,
-						"color": hint_bartender.get_theme_color("default_color").to_html(true)
-				},
-				"hint_hire": {
-						"visible": hint_hire.visible,
-						"color": hint_hire.get_theme_color("default_color").to_html(true)
-				}
+                "hint_keys": {
+                                "visible": hint_keys.visible,
+                                "color": hint_keys.get_theme_color("default_color").to_html(true),
+                                "alpha": hint_keys.modulate.a
+                },
+                "hint_mouse": {
+                                "visible": hint_mouse.visible,
+                                "color": hint_mouse.get_theme_color("default_color").to_html(true),
+                                "alpha": hint_mouse.modulate.a
+                },
+                "hint_bartender": {
+                                "visible": hint_bartender.visible,
+                                "color": hint_bartender.get_theme_color("default_color").to_html(true),
+                                "alpha": hint_bartender.modulate.a
+                },
+                "hint_hire": {
+                                "visible": hint_hire.visible,
+                                "color": hint_hire.get_theme_color("default_color").to_html(true),
+                                "alpha": hint_hire.modulate.a
+                }
 	}
 
 func apply_tutorial_state(state: Dictionary) -> void:
@@ -130,33 +134,37 @@ func apply_tutorial_state(state: Dictionary) -> void:
 
 		fade_rect.modulate.a = state.get("fade_alpha", fade_rect.modulate.a)
 
-		var hk = state.get("hint_keys", {})
-		hint_keys.visible = hk.get("visible", false)
-		var hk_col = hk.get("color", hint_keys.get_theme_color("default_color"))
-		if typeof(hk_col) == TYPE_STRING:
-						hk_col = Color(hk_col)
-		hint_keys.add_theme_color_override("default_color", hk_col)
+                var hk = state.get("hint_keys", {})
+                hint_keys.visible = hk.get("visible", false)
+                var hk_col = hk.get("color", hint_keys.get_theme_color("default_color"))
+                if typeof(hk_col) == TYPE_STRING:
+                                                hk_col = Color(hk_col)
+                hint_keys.add_theme_color_override("default_color", hk_col)
+                hint_keys.modulate.a = hk.get("alpha", 1.0 if hint_keys.visible else 0.0)
 
-		var hm = state.get("hint_mouse", {})
-		hint_mouse.visible = hm.get("visible", false)
-		var hm_col = hm.get("color", hint_mouse.get_theme_color("default_color"))
-		if typeof(hm_col) == TYPE_STRING:
-						hm_col = Color(hm_col)
-		hint_mouse.add_theme_color_override("default_color", hm_col)
+                var hm = state.get("hint_mouse", {})
+                hint_mouse.visible = hm.get("visible", false)
+                var hm_col = hm.get("color", hint_mouse.get_theme_color("default_color"))
+                if typeof(hm_col) == TYPE_STRING:
+                                                hm_col = Color(hm_col)
+                hint_mouse.add_theme_color_override("default_color", hm_col)
+                hint_mouse.modulate.a = hm.get("alpha", 1.0 if hint_mouse.visible else 0.0)
 
-		var hb = state.get("hint_bartender", {})
-		hint_bartender.visible = hb.get("visible", false)
-		var hb_col = hb.get("color", hint_bartender.get_theme_color("default_color"))
-		if typeof(hb_col) == TYPE_STRING:
-						hb_col = Color(hb_col)
-		hint_bartender.add_theme_color_override("default_color", hb_col)
+                var hb = state.get("hint_bartender", {})
+                hint_bartender.visible = hb.get("visible", false)
+                var hb_col = hb.get("color", hint_bartender.get_theme_color("default_color"))
+                if typeof(hb_col) == TYPE_STRING:
+                                                hb_col = Color(hb_col)
+                hint_bartender.add_theme_color_override("default_color", hb_col)
+                hint_bartender.modulate.a = hb.get("alpha", 1.0 if hint_bartender.visible else 0.0)
 
-		var hh = state.get("hint_hire", {})
-		hint_hire.visible = hh.get("visible", false)
-		var hh_col = hh.get("color", hint_hire.get_theme_color("default_color"))
-		if typeof(hh_col) == TYPE_STRING:
-						hh_col = Color(hh_col)
-		hint_hire.add_theme_color_override("default_color", hh_col)
+                var hh = state.get("hint_hire", {})
+                hint_hire.visible = hh.get("visible", false)
+                var hh_col = hh.get("color", hint_hire.get_theme_color("default_color"))
+                if typeof(hh_col) == TYPE_STRING:
+                                                hh_col = Color(hh_col)
+                hint_hire.add_theme_color_override("default_color", hh_col)
+                hint_hire.modulate.a = hh.get("alpha", 1.0 if hint_hire.visible else 0.0)
 
 func _ready() -> void:
 	if player == null and has_node("Player"):
