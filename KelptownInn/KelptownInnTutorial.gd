@@ -47,22 +47,22 @@ func get_tutorial_state() -> Dictionary:
 		"arrow_visible": arrow.visible if is_instance_valid(arrow) else false,
 		"arrow_target": target,
 		"fade_alpha": fade_rect.modulate.a,
-		"hint_keys": {
-			"visible": hint_keys.visible,
-			"color": hint_keys.get_theme_color("default_color")
-		},
-		"hint_mouse": {
-			"visible": hint_mouse.visible,
-			"color": hint_mouse.get_theme_color("default_color")
-		},
-		"hint_bartender": {
-			"visible": hint_bartender.visible,
-			"color": hint_bartender.get_theme_color("default_color")
-		},
-		"hint_hire": {
-			"visible": hint_hire.visible,
-			"color": hint_hire.get_theme_color("default_color")
-		}
+                "hint_keys": {
+                        "visible": hint_keys.visible,
+                        "color": hint_keys.get_theme_color("default_color").to_html(true)
+                },
+                "hint_mouse": {
+                        "visible": hint_mouse.visible,
+                        "color": hint_mouse.get_theme_color("default_color").to_html(true)
+                },
+                "hint_bartender": {
+                        "visible": hint_bartender.visible,
+                        "color": hint_bartender.get_theme_color("default_color").to_html(true)
+                },
+                "hint_hire": {
+                        "visible": hint_hire.visible,
+                        "color": hint_hire.get_theme_color("default_color").to_html(true)
+                }
 	}
 
 func apply_tutorial_state(state: Dictionary) -> void:
@@ -130,21 +130,33 @@ func apply_tutorial_state(state: Dictionary) -> void:
 
 		fade_rect.modulate.a = state.get("fade_alpha", fade_rect.modulate.a)
 
-		var hk = state.get("hint_keys", {})
-		hint_keys.visible = hk.get("visible", false)
-		hint_keys.add_theme_color_override("default_color", hk.get("color", hint_keys.get_theme_color("default_color")))
+                var hk = state.get("hint_keys", {})
+                hint_keys.visible = hk.get("visible", false)
+                var hk_col = hk.get("color", hint_keys.get_theme_color("default_color"))
+                if typeof(hk_col) == TYPE_STRING:
+                                hk_col = Color(hk_col)
+                hint_keys.add_theme_color_override("default_color", hk_col)
 
-		var hm = state.get("hint_mouse", {})
-		hint_mouse.visible = hm.get("visible", false)
-		hint_mouse.add_theme_color_override("default_color", hm.get("color", hint_mouse.get_theme_color("default_color")))
+                var hm = state.get("hint_mouse", {})
+                hint_mouse.visible = hm.get("visible", false)
+                var hm_col = hm.get("color", hint_mouse.get_theme_color("default_color"))
+                if typeof(hm_col) == TYPE_STRING:
+                                hm_col = Color(hm_col)
+                hint_mouse.add_theme_color_override("default_color", hm_col)
 
-		var hb = state.get("hint_bartender", {})
-		hint_bartender.visible = hb.get("visible", false)
-		hint_bartender.add_theme_color_override("default_color", hb.get("color", hint_bartender.get_theme_color("default_color")))
+                var hb = state.get("hint_bartender", {})
+                hint_bartender.visible = hb.get("visible", false)
+                var hb_col = hb.get("color", hint_bartender.get_theme_color("default_color"))
+                if typeof(hb_col) == TYPE_STRING:
+                                hb_col = Color(hb_col)
+                hint_bartender.add_theme_color_override("default_color", hb_col)
 
-		var hh = state.get("hint_hire", {})
-		hint_hire.visible = hh.get("visible", false)
-		hint_hire.add_theme_color_override("default_color", hh.get("color", hint_hire.get_theme_color("default_color")))
+                var hh = state.get("hint_hire", {})
+                hint_hire.visible = hh.get("visible", false)
+                var hh_col = hh.get("color", hint_hire.get_theme_color("default_color"))
+                if typeof(hh_col) == TYPE_STRING:
+                                hh_col = Color(hh_col)
+                hint_hire.add_theme_color_override("default_color", hh_col)
 
 func _ready() -> void:
 	if player == null and has_node("Player"):
@@ -177,34 +189,35 @@ func _ready() -> void:
 	$Player/Camera2D.zoom = Vector2(1.5, 1.5)
 	$Exit.body_entered.connect(_on_exit_body_entered)
 
-	fade_rect.modulate.a       = 1.0
-	arrow.visible              = false
-	arrow.target               = null
-	hint_bartender.visible     = false
-	hint_hire.visible          = false
-	hint_keys.visible          = false
-	hint_mouse.visible         = false
-	hint_keys.modulate.a       = 0.0
-	hint_mouse.modulate.a      = 0.0
-	hint_bartender.modulate.a  = 0.0
-	hint_hire.modulate.a       = 0.0
+        fade_rect.modulate.a       = 1.0
+        arrow.visible              = false
+        arrow.target               = null
+        hint_bartender.visible     = false
+        hint_hire.visible          = false
+        hint_keys.visible          = false
+        hint_mouse.visible         = false
+        hint_keys.modulate.a       = 0.0
+        hint_mouse.modulate.a      = 0.0
+        hint_bartender.modulate.a  = 0.0
+        hint_hire.modulate.a       = 0.0
 
-		# fade in
-	get_tree().create_tween().tween_property(fade_rect, "modulate:a", 0.0, 2.0)
+        var loaded_state := false
+        if Global.kelptown_tutorial_state and Global.kelptown_tutorial_state.size() > 0:
+                apply_tutorial_state(Global.kelptown_tutorial_state)
+                Global.kelptown_tutorial_state = {}
+                loaded_state = true
 
-	# slow intro stroll
-	_orig_speed = player.speed
-	player.speed *= 0.5
-	player.connect(
-				"auto_move_completed",
-				Callable(self, "_on_intro_move_completed"),
-				CONNECT_ONE_SHOT
-		)
-	player.auto_move_to_position(Vector2(382, 88))
+        get_tree().create_tween().tween_property(fade_rect, "modulate:a", 0.0, 2.0)
 
-	if Global.kelptown_tutorial_state and Global.kelptown_tutorial_state.size() > 0:
-				apply_tutorial_state(Global.kelptown_tutorial_state)
-				Global.kelptown_tutorial_state = {}
+        if not loaded_state:
+                _orig_speed = player.speed
+                player.speed *= 0.5
+                player.connect(
+                        "auto_move_completed",
+                        Callable(self, "_on_intro_move_completed"),
+                        CONNECT_ONE_SHOT
+                )
+                player.auto_move_to_position(Vector2(382, 88))
 
 func _process(_delta: float) -> void:
 	if intro_walk_finished:
