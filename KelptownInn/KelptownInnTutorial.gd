@@ -258,14 +258,15 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 		hint_bartender.add_theme_color_override("default_color", Color.GREEN)
 		_fade_out_hint(hint_bartender)
 
-		player.disable_user_input = true
-		var balloon := DialogueManager.show_dialogue_balloon(
-				bartender_dialogue_resource, section, [bartender]
-		)
-		balloon.connect(
-				"dialogue_finished",
-				Callable(self, "_on_dialogue_finished_tutorial")
-		)
+                player.disable_user_input = true
+                var balloon := bartender.show_dialogue(section)
+                if balloon:
+                                balloon.connect(
+                                                "dialogue_finished",
+                                                Callable(self, "_on_dialogue_finished_tutorial")
+                                )
+                else:
+                                player.disable_user_input = false
 
 func _on_dialogue_finished_tutorial() -> void:
 		await get_tree().create_timer(0.1).timeout
