@@ -9,13 +9,13 @@ class_name KelptownInn
 @onready var bartender : NPC = $Bartender
 
 func _ready() -> void:
-        if player == null and has_node("Player"):
-                player = get_node("Player") as CharacterBody2D
+	if player == null and has_node("Player"):
+				player = get_node("Player") as CharacterBody2D
 
-        # ───────────────────────────────────── 0) Spawn position if loading from a save
-        if Global.spawn_position != Vector2.ZERO:
-                player.global_position = Global.spawn_position
-                Global.spawn_position  = Vector2.ZERO                # ← clear for later scenes
+		# ───────────────────────────────────── 0) Spawn position if loading from a save
+	if Global.spawn_position != Vector2.ZERO:
+				player.global_position = Global.spawn_position
+				Global.spawn_position  = Vector2.ZERO                # ← clear for later scenes
 
 	# 1) Spawn crew for this scene
 	CrewManager.populate_scene(self)

@@ -14,3 +14,4 @@ res://Character/NPC/Enemy/Enemy.tscn
 res://Ocean/ocean.tscn
 res://Character/NPC/CrewMember/CrewMember.tscn
 res://KelptownInn/KelptownInn.tscn
+res://KelptownInn/KelptownInn.gd
