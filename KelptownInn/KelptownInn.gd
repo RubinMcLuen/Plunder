@@ -38,11 +38,12 @@ func _ready() -> void:
 
 # ───────────────────────── Bartender
 func _on_bartender_dialogue_requested(section: String) -> void:
-	player.disable_user_input = true
-	var balloon = DialogueManager.show_dialogue_balloon(
-		bartender_dialogue_resource, section, [bartender]
-	)
-	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
+        player.disable_user_input = true
+        var balloon = bartender.show_dialogue(section)
+        if balloon:
+                balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
+        else:
+                player.disable_user_input = false
 
 func _on_dialogue_finished() -> void:
 	player.disable_user_input = false
