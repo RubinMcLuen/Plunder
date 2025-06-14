@@ -18,41 +18,41 @@ var _orig_speed: float = 0.0
 var tutorial_complete: bool = false
 
 func get_tutorial_state() -> Dictionary:
-		var target := ""
-		if arrow.target == bartender:
-				target = "bartender"
-		elif arrow.target == barnaby:
-				target = "barnaby"
+                var target := ""
+                if is_instance_valid(arrow) and arrow.target == bartender:
+                                target = "bartender"
+                elif is_instance_valid(arrow) and arrow.target == barnaby:
+                                target = "barnaby"
 
-		return {
-				"moved_keys": moved_keys,
-				"moved_mouse": moved_mouse,
-				"stage_two_started": stage_two_started,
-				"stage_three_started": stage_three_started,
-				"intro_walk_finished": intro_walk_finished,
-				"orig_speed": _orig_speed,
-				"player_speed": player.speed,
-				"player_auto_move": player.auto_move,
-				"player_auto_target": player.auto_target_position,
-				"tutorial_complete": tutorial_complete,
-				"bartender_state": bartender.state,
-				"barnaby_state": barnaby.state,
-				"barnaby_hired": barnaby.hired,
-				"barnaby_pos": barnaby.global_position,
-				"barnaby_auto_move": barnaby.auto_move,
-				"barnaby_auto_target": barnaby.auto_target_position,
-				"arrow_visible": arrow.visible,
-				"arrow_target": target,
-				"fade_alpha": fade_rect.modulate.a,
-				"hint_keys": {"visible": hint_keys.visible,
-							   "color": hint_keys.get_theme_color("default_color")},
-				"hint_mouse": {"visible": hint_mouse.visible,
-								"color": hint_mouse.get_theme_color("default_color")},
-				"hint_bartender": {"visible": hint_bartender.visible,
-									"color": hint_bartender.get_theme_color("default_color")},
-				"hint_hire": {"visible": hint_hire.visible,
-							   "color": hint_hire.get_theme_color("default_color")},
-		}
+                return {
+                                "moved_keys": moved_keys,
+                                "moved_mouse": moved_mouse,
+                                "stage_two_started": stage_two_started,
+                                "stage_three_started": stage_three_started,
+                                "intro_walk_finished": intro_walk_finished,
+                                "orig_speed": _orig_speed,
+                                "player_speed": player.speed,
+                                "player_auto_move": player.auto_move,
+                                "player_auto_target": player.auto_target_position,
+                                "tutorial_complete": tutorial_complete,
+                                "bartender_state": is_instance_valid(bartender) ? bartender.state : "",
+                                "barnaby_state": is_instance_valid(barnaby) ? barnaby.state : "",
+                                "barnaby_hired": is_instance_valid(barnaby) ? barnaby.hired : false,
+                                "barnaby_pos": is_instance_valid(barnaby) ? {"x": barnaby.global_position.x, "y": barnaby.global_position.y} : {},
+                                "barnaby_auto_move": is_instance_valid(barnaby) ? barnaby.auto_move : false,
+                                "barnaby_auto_target": is_instance_valid(barnaby) ? barnaby.auto_target_position : Vector2.ZERO,
+                                "arrow_visible": is_instance_valid(arrow) ? arrow.visible : false,
+                                "arrow_target": target,
+                                "fade_alpha": fade_rect.modulate.a,
+                                "hint_keys": {"visible": hint_keys.visible,
+                                                           "color": hint_keys.get_theme_color("default_color")},
+                                "hint_mouse": {"visible": hint_mouse.visible,
+                                                                "color": hint_mouse.get_theme_color("default_color")},
+                                "hint_bartender": {"visible": hint_bartender.visible,
+                                                                        "color": hint_bartender.get_theme_color("default_color")},
+                                "hint_hire": {"visible": hint_hire.visible,
+                                                           "color": hint_hire.get_theme_color("default_color")},
+                }
 
 func apply_tutorial_state(state: Dictionary) -> void:
 		moved_keys = state.get("moved_keys", false)
@@ -71,11 +71,19 @@ func apply_tutorial_state(state: Dictionary) -> void:
 
 		bartender.state = state.get("bartender_state", bartender.state)
 
-		barnaby.state = state.get("barnaby_state", barnaby.state)
-		barnaby.hired = state.get("barnaby_hired", barnaby.hired)
-		barnaby.global_position = state.get("barnaby_pos", barnaby.global_position)
-		barnaby.auto_move = state.get("barnaby_auto_move", false)
-		barnaby.auto_target_position = state.get("barnaby_auto_target", barnaby.auto_target_position)
+                barnaby.state = state.get("barnaby_state", barnaby.state)
+                barnaby.hired = state.get("barnaby_hired", barnaby.hired)
+                var bpos = state.get("barnaby_pos", null)
+                if typeof(bpos) == TYPE_DICTIONARY and bpos.has("x") and bpos.has("y"):
+                                barnaby.global_position = Vector2(bpos["x"], bpos["y"])
+                elif typeof(bpos) == TYPE_VECTOR2:
+                                barnaby.global_position = bpos
+                elif typeof(bpos) == TYPE_STRING:
+                                var tmp = str_to_var(bpos)
+                                if typeof(tmp) == TYPE_VECTOR2:
+                                                barnaby.global_position = tmp
+                barnaby.auto_move = state.get("barnaby_auto_move", false)
+                barnaby.auto_target_position = state.get("barnaby_auto_target", barnaby.auto_target_position)
 
 		var target_str = state.get("arrow_target", "")
 		match target_str:
