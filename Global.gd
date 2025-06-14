@@ -1,10 +1,13 @@
 # Global.gd (autoload)
 extends Node
 
+const KelptownInnTutorial = preload("res://KelptownInn/KelptownInnTutorial.gd")
+
 var active_save_slot: int = -1
 var spawn_position: Vector2 = Vector2.ZERO
 var crew: Array[String] = []
 var ship_state: Dictionary = {}   # holds extra data just for PlayerShip
+var kelptown_tutorial_state: Dictionary = {}
 
 
 func add_crew(npc_name: String) -> void:
@@ -58,21 +61,24 @@ func save_game_state() -> void:
 	# 2)  Merge with any existing save-file contents
 	# ------------------------------------------------------------------
 	var save_data: Dictionary = {}
-	if FileAccess.file_exists(save_file_path):
-		var r = FileAccess.open(save_file_path, FileAccess.READ)
-		var j = JSON.new()
-		if j.parse(r.get_as_text()) == OK:
-			save_data = j.data
-		r.close()
+        if FileAccess.file_exists(save_file_path):
+                var r = FileAccess.open(save_file_path, FileAccess.READ)
+                var j = JSON.new()
+                if j.parse(r.get_as_text()) == OK:
+                        save_data = j.data
+                r.close()
 
-	save_data["scene"]      = {"name": current_scene, "position": pos_dict}
-	save_data["ship_state"] = ship_state
-	save_data["quests"]     = get_quest_manager().quests
-	save_data["crew"]       = crew
+        save_data["scene"]      = {"name": current_scene, "position": pos_dict}
+        save_data["ship_state"] = ship_state
+        save_data["quests"]     = get_quest_manager().quests
+        save_data["crew"]       = crew
 
-	var w = FileAccess.open(save_file_path, FileAccess.WRITE)
-	w.store_string(JSON.stringify(save_data))
-	w.close()
+        if current_scene_node is KelptownInnTutorial:
+                save_data["kelptown_tutorial"] = current_scene_node.get_tutorial_state()
+
+        var w = FileAccess.open(save_file_path, FileAccess.WRITE)
+        w.store_string(JSON.stringify(save_data))
+        w.close()
 
 	print("Game saved →", current_scene, " | pos:", pos_dict, " | ship:", ship_state)
 
@@ -133,12 +139,17 @@ func load_game_state() -> void:
 	# 2) Restore quests, crew
 	if "quests" in data:
 		get_quest_manager().quests = data["quests"]
-	if "crew" in data:
-		crew = []
-		for c in data["crew"]:
-			crew.append(str(c))
+        if "crew" in data:
+                crew = []
+                for c in data["crew"]:
+                        crew.append(str(c))
 
-	# 3) Scene + spawn + ship_state
+        if "kelptown_tutorial" in data:
+                kelptown_tutorial_state = data["kelptown_tutorial"]
+        else:
+                kelptown_tutorial_state = {}
+
+        # 3) Scene + spawn + ship_state
 	var scene_info = data.get("scene", {})
 	var pos_dict   = scene_info.get("position", {})
 	ship_state     = data.get("ship_state", {})
