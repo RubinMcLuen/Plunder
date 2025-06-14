@@ -119,17 +119,37 @@ func _fade_out_hint(label: CanvasItem, duration: float = 0.5) -> void:
 	tw.tween_callback(Callable(label, "hide"))
 
 func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
-        if stage_two_started and not stage_three_started:
-                arrow.visible = false
-                arrow.target  = null
-                hint_bartender.add_theme_color_override("default_color", Color.GREEN)
-                _fade_out_hint(hint_bartender)
-        player.disable_user_input = true
+        # Tutorial completed → fallback to the normal bartender handler
+        if tutorial_complete:
+                super._on_bartender_dialogue_requested(section)
+                return
 
-	var balloon := DialogueManager.show_dialogue_balloon(
-		bartender_dialogue_resource, section, [bartender]
-	)
-	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished_tutorial"))
+        # Step 1: still teaching movement.  Simply show the line without
+        # advancing the tutorial.
+        if not stage_two_started:
+                super._on_bartender_dialogue_requested(section)
+                return
+
+        # Step 3 already active → talking to the bartender shouldn't change
+        # anything.
+        if stage_three_started:
+                super._on_bartender_dialogue_requested(section)
+                return
+
+        # Transition from step 2 (talk to bartender) to step 3 (hire Barnaby)
+        arrow.visible = false
+        arrow.target  = null
+        hint_bartender.add_theme_color_override("default_color", Color.GREEN)
+        _fade_out_hint(hint_bartender)
+
+        player.disable_user_input = true
+        var balloon := DialogueManager.show_dialogue_balloon(
+                bartender_dialogue_resource, section, [bartender]
+        )
+        balloon.connect(
+                "dialogue_finished",
+                Callable(self, "_on_dialogue_finished_tutorial")
+        )
 
 func _on_dialogue_finished_tutorial() -> void:
         await get_tree().create_timer(0.1).timeout
@@ -145,7 +165,10 @@ func _on_dialogue_finished_tutorial() -> void:
 		_fade_in_hint(hint_hire)
 
 func _on_barnaby_dialogue_requested_tutorial(section: String, b: NPC) -> void:
-        # Do not hide the hire hint until Barnaby actually joins the crew
+        # Hide the arrow while talking, but keep the hint visible as a reminder
+        arrow.visible = false
+        arrow.target  = null
+
         player.disable_user_input = true
         var balloon := b.show_dialogue(section)
         balloon.connect(
@@ -159,18 +182,19 @@ func _on_dialogue_finished_barnaby_tutorial(b: NPC) -> void:
                 arrow.target = b
                 arrow.global_position = b.global_position + Vector2(arrow.x_offset, arrow.y_offset)
                 arrow.visible = true
-                _fade_in_hint(hint_hire)
+                # Hint remains visible; simply restore the arrow
 
 func _on_barnaby_hired_tutorial(_b: NPC) -> void:
-	hint_hire.add_theme_color_override("default_color", Color.GREEN)
-	await get_tree().create_timer(1.0).timeout
-	_fade_out_hint(hint_hire)
-	arrow.visible = false
-	arrow.target  = null
-	var exit_target = $Exit.global_position
-	_b.auto_move_to_position(exit_target)
-	_b.npc_move_completed.connect(Callable(_b, "queue_free"))
-	tutorial_complete = true
+        hint_hire.add_theme_color_override("default_color", Color.GREEN)
+        await get_tree().create_timer(1.0).timeout
+        _fade_out_hint(hint_hire)
+        arrow.visible = false
+        arrow.target  = null
+        var exit_target = $Exit.global_position
+        _b.auto_move_to_position(exit_target)
+        _b.npc_move_completed.connect(Callable(_b, "queue_free"))
+        bartender.state = "normal"
+        tutorial_complete = true
 
 func _on_exit_body_entered(body: Node) -> void:
 	if not tutorial_complete:
