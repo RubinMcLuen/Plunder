@@ -73,10 +73,19 @@ func apply_tutorial_state(state: Dictionary) -> void:
 		intro_walk_finished = state.get("intro_walk_finished", false)
 		_orig_speed = state.get("orig_speed", player.speed)
 		player.speed = state.get("player_speed", player.speed)
-		if state.get("player_auto_move", false):
-				player.connect("auto_move_completed", Callable(self, "_on_intro_move_completed"), CONNECT_ONE_SHOT)
-				player.auto_target_position = state.get("player_auto_target", player.auto_target_position)
-				player.auto_move = true
+                if state.get("player_auto_move", false):
+                                player.connect("auto_move_completed", Callable(self, "_on_intro_move_completed"), CONNECT_ONE_SHOT)
+
+                                var pat = state.get("player_auto_target", null)
+                                if typeof(pat) == TYPE_DICTIONARY and pat.has("x") and pat.has("y"):
+                                                player.auto_target_position = Vector2(pat["x"], pat["y"])
+                                elif typeof(pat) == TYPE_VECTOR2:
+                                                player.auto_target_position = pat
+                                elif typeof(pat) == TYPE_STRING:
+                                                var tmp = str_to_var(pat)
+                                                if typeof(tmp) == TYPE_VECTOR2:
+                                                                player.auto_target_position = tmp
+                                player.auto_move = true
 
 		tutorial_complete = state.get("tutorial_complete", false)
 
@@ -93,8 +102,19 @@ func apply_tutorial_state(state: Dictionary) -> void:
 						var tmp = str_to_var(bpos)
 						if typeof(tmp) == TYPE_VECTOR2:
 										barnaby.global_position = tmp
-		barnaby.auto_move = state.get("barnaby_auto_move", false)
-		barnaby.auto_target_position = state.get("barnaby_auto_target", barnaby.auto_target_position)
+                barnaby.auto_move = state.get("barnaby_auto_move", false)
+
+                var bat = state.get("barnaby_auto_target", null)
+                if typeof(bat) == TYPE_DICTIONARY and bat.has("x") and bat.has("y"):
+                                barnaby.auto_target_position = Vector2(bat["x"], bat["y"])
+                elif typeof(bat) == TYPE_VECTOR2:
+                                barnaby.auto_target_position = bat
+                elif typeof(bat) == TYPE_STRING:
+                                var tmp2 = str_to_var(bat)
+                                if typeof(tmp2) == TYPE_VECTOR2:
+                                                barnaby.auto_target_position = tmp2
+                else:
+                                barnaby.auto_target_position = barnaby.auto_target_position
 
 		var target_str = state.get("arrow_target", "")
 		match target_str:
