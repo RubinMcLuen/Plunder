@@ -449,13 +449,8 @@ func normalize_angle(deg: float) -> float:
 	return fposmod(deg, 360)
 
 func _choose_final_dock_angle():
-	var current_angle_deg = normalize_angle(current_frame * ANGLE_PER_FRAME)
-	var diff_east = abs(signed_angleDifference(0, current_angle_deg))
-	var diff_west = abs(signed_angleDifference(180, current_angle_deg))
-	if diff_east < diff_west:
-		target_angle = 0
-	else:
-		target_angle = 180
+       # Always snap the ship to face east after docking
+       target_angle = 0
 
 func rotate_to_target_angle(delta):
 	var current_angle_deg = normalize_angle(current_frame * ANGLE_PER_FRAME)
