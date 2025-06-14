@@ -127,10 +127,13 @@ func apply_tutorial_state(state: Dictionary) -> void:
 		hint_hire.add_theme_color_override("default_color", hh.get("color", hint_hire.get_theme_color("default_color")))
 
 func _ready() -> void:
-	# ───────────────────────────────────── 0) Spawn position if loading from a save
-	if Global.spawn_position != Vector2.ZERO:
-		player.global_position = Global.spawn_position
-		Global.spawn_position  = Vector2.ZERO
+        if player == null and has_node("Player"):
+                player = get_node("Player") as CharacterBody2D
+
+        # ───────────────────────────────────── 0) Spawn position if loading from a save
+        if Global.spawn_position != Vector2.ZERO:
+                player.global_position = Global.spawn_position
+                Global.spawn_position  = Vector2.ZERO
 
 	# 1) Spawn crew for this scene
 	CrewManager.populate_scene(self)
