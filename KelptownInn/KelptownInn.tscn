@@ -106,6 +106,7 @@ bartender_dialogue_resource = ExtResource("3_43j7b")
 position = Vector2(270, 68)
 collision_layer = 2
 script = ExtResource("3_yne2m")
+dialogue_resource = ExtResource("3_43j7b")
 
 [node name="Player" parent="." instance=ExtResource("3_v7aqn")]
 position = Vector2(268, 226)
