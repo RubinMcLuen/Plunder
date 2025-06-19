@@ -275,7 +275,7 @@ mouse_filter = 2
 color = Color(0.223529, 0.262745, 0.596078, 0.8)
 
 [node name="Waves" type="TileMap" parent="."]
-modulate = Color(1, 1, 1, 0)
+modulate = Color(1, 1, 1, 1)
 z_index = -2
 position = Vector2(30, -68)
 tile_set = SubResource("TileSet_u7cg3")
