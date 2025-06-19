@@ -8,6 +8,10 @@ extends Sprite2D
 
 var _time := 0.0
 
+func _ready() -> void:
+    # Ensure bobbing animation runs even if process mode was disabled in the scene
+    set_process(true)
+
 func _process(delta: float) -> void:
     if not is_instance_valid(target):
         return
