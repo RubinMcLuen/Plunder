@@ -197,24 +197,24 @@ func handle_bot_input(delta):
 		shoot_right()
 
 func handle_player_input(delta):
-		var key_impulse = 0.0
-		if _action_allowed("ui_right") and Input.is_action_pressed("ui_right"):
-				key_impulse += 1.0
-				emit_signal("manual_rotation_started")
-		if _action_allowed("ui_left") and Input.is_action_pressed("ui_left"):
-				key_impulse -= 1.0
-				emit_signal("manual_rotation_started")
-		if key_impulse != 0:
-			var keyboard_impulse_multiplier = 10.0
-			steering_velocity += key_impulse * keyboard_impulse_multiplier
+                var key_impulse = 0.0
+                if _action_allowed("ui_right") and Input.is_action_pressed("ui_right"):
+                                key_impulse += 1.0
+                                emit_signal("manual_rotation_started")
+                if _action_allowed("ui_left") and Input.is_action_pressed("ui_left"):
+                                key_impulse -= 1.0
+                                emit_signal("manual_rotation_started")
+                if key_impulse != 0:
+                        var keyboard_impulse_multiplier = 10.0
+                        steering_velocity += key_impulse * keyboard_impulse_multiplier
 
-			if _action_allowed("ui_select") and Input.is_action_just_pressed("ui_select"):
-					toggle_forward_movement()
+                if _action_allowed("ui_select") and Input.is_action_just_pressed("ui_select"):
+                                toggle_forward_movement()
 
-			if _action_allowed("shoot_left") and Input.is_action_just_pressed("shoot_left"):
-					shoot_left()
-			if _action_allowed("shoot_right") and Input.is_action_just_pressed("shoot_right"):
-					shoot_right()
+                if _action_allowed("shoot_left") and Input.is_action_just_pressed("shoot_left"):
+                                shoot_left()
+                if _action_allowed("shoot_right") and Input.is_action_just_pressed("shoot_right"):
+                                shoot_right()
 
 func reset_bot_input():
 	bot_input["rotate_right"] = false
