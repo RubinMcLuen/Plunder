@@ -12,8 +12,11 @@ func _ready() -> void:
 
         ship_area.body_entered.connect(_on_ship_area_entered)
         var btn = UIManager.get_node("UIManager/SetSailMenu/SetSailButton")
-        if btn and not btn.is_connected("pressed", Callable(self, "_on_set_sail_pressed")):
-                btn.pressed.connect(_on_set_sail_pressed)
+        if btn:
+                if btn.pressed.is_connected(UIManager._on_set_sail_button_pressed):
+                        btn.pressed.disconnect(UIManager._on_set_sail_button_pressed)
+                if not btn.pressed.is_connected(_on_set_sail_pressed):
+                        btn.pressed.connect(_on_set_sail_pressed)
 
         _show_step()
 
@@ -53,6 +56,18 @@ func _on_ship_area_entered(body: Node) -> void:
 func _on_set_sail_pressed() -> void:
         if step == 1 and not _advancing:
                 _advance_step(2)
+                var tw = get_tree().create_tween()
+                tw.tween_interval(1.0)
+                tw.connect("finished", Callable(self, "start_leave_island_transition").bind(1.0))
+                Global.restore_sails_next = true
+                SceneSwitcher.switch_scene(
+                        "res://Ocean/oceantutorial.tscn",
+                        Vector2(-2, 41),
+                        "zoom",
+                        Vector2(0.0625, 0.0625), Vector2(-32, 656),
+                        Vector2(1, 1), true
+                )
+                UIManager.hide_set_sail_menu()
 
 func _advance_step(next_step: int) -> void:
         _advancing = true
