@@ -5,29 +5,35 @@ class_name KelptownInnTutorial
 @onready var hint_keys      : RichTextLabel = $CanvasLayer/HintMoveKeys
 @onready var hint_bartender : RichTextLabel = $CanvasLayer/HintBartender
 @onready var hint_hire      : RichTextLabel = $CanvasLayer/HintHireBarnaby
+@onready var hint_exit      : RichTextLabel = $CanvasLayer/HintExit
+@onready var exit_area      : Area2D        = $Exit
 @onready var barnaby        : NPC           = $Barnaby
 @onready var arrow          : Sprite2D      = $Arrow
 
 var moved_keys: bool = false
 var stage_two_started: bool = false
 var stage_three_started: bool = false
+var stage_exit_started: bool = false
 var intro_walk_finished: bool = false
 var _orig_speed: float = 0.0
 var tutorial_complete: bool = false
 
 func get_tutorial_state() -> Dictionary:
 	var target := ""
-	if is_instance_valid(arrow) and arrow.target == bartender:
-		target = "bartender"
-	elif is_instance_valid(arrow) and arrow.target == barnaby:
-		target = "barnaby"
+        if is_instance_valid(arrow) and arrow.target == bartender:
+                target = "bartender"
+        elif is_instance_valid(arrow) and arrow.target == barnaby:
+                target = "barnaby"
+        elif is_instance_valid(arrow) and arrow.target == exit_area:
+                target = "exit"
 
 	return {
 		"moved_keys": moved_keys,
 		"stage_two_started": stage_two_started,
 		"stage_three_started": stage_three_started,
-		"intro_walk_finished": intro_walk_finished,
-		"orig_speed": _orig_speed,
+                "intro_walk_finished": intro_walk_finished,
+                "stage_exit_started": stage_exit_started,
+                "orig_speed": _orig_speed,
 		"player_speed": player.speed,
 		"player_auto_move": player.auto_move,
 		"player_auto_target": player.auto_target_position,
@@ -54,12 +60,17 @@ func get_tutorial_state() -> Dictionary:
 								"color": hint_bartender.get_theme_color("default_color").to_html(true),
 								"alpha": hint_bartender.modulate.a
 				},
-				"hint_hire": {
-								"visible": hint_hire.visible,
-								"color": hint_hire.get_theme_color("default_color").to_html(true),
-								"alpha": hint_hire.modulate.a
-				}
-	}
+                                "hint_hire": {
+                                                                "visible": hint_hire.visible,
+                                                                "color": hint_hire.get_theme_color("default_color").to_html(true),
+                                                                "alpha": hint_hire.modulate.a
+                                },
+                                "hint_exit": {
+                                                                "visible": hint_exit.visible,
+                                                                "color": hint_exit.get_theme_color("default_color").to_html(true),
+                                                                "alpha": hint_exit.modulate.a
+                                }
+        }
 
 func apply_tutorial_state(state: Dictionary) -> void:
 		moved_keys = state.get("moved_keys", false)
@@ -111,14 +122,17 @@ func apply_tutorial_state(state: Dictionary) -> void:
 		else:
 						barnaby.auto_target_position = barnaby.auto_target_position
 
-		var target_str = state.get("arrow_target", "")
-		match target_str:
-				"bartender":
-						arrow.target = bartender
-				"barnaby":
-						arrow.target = barnaby
-				_:
-						arrow.target = null
+                stage_exit_started = state.get("stage_exit_started", false)
+                var target_str = state.get("arrow_target", "")
+                match target_str:
+                                "bartender":
+                                                arrow.target = bartender
+                                "barnaby":
+                                                arrow.target = barnaby
+                                "exit":
+                                                arrow.target = exit_area
+                                _:
+                                                arrow.target = null
 		arrow.visible = state.get("arrow_visible", false)
 		if arrow.target:
 				arrow.global_position = arrow.target.global_position + Vector2(arrow.x_offset, arrow.y_offset)
@@ -142,13 +156,21 @@ func apply_tutorial_state(state: Dictionary) -> void:
 		hint_bartender.add_theme_color_override("default_color", hb_col)
 		hint_bartender.modulate.a = hb.get("alpha", 1.0 if hint_bartender.visible else 0.0)
 
-		var hh = state.get("hint_hire", {})
-		hint_hire.visible = hh.get("visible", false)
-		var hh_col = hh.get("color", hint_hire.get_theme_color("default_color"))
-		if typeof(hh_col) == TYPE_STRING:
-										hh_col = Color(hh_col)
-		hint_hire.add_theme_color_override("default_color", hh_col)
-		hint_hire.modulate.a = hh.get("alpha", 1.0 if hint_hire.visible else 0.0)
+                var hh = state.get("hint_hire", {})
+                hint_hire.visible = hh.get("visible", false)
+                var hh_col = hh.get("color", hint_hire.get_theme_color("default_color"))
+                if typeof(hh_col) == TYPE_STRING:
+                                        hh_col = Color(hh_col)
+                hint_hire.add_theme_color_override("default_color", hh_col)
+                hint_hire.modulate.a = hh.get("alpha", 1.0 if hint_hire.visible else 0.0)
+
+                var he = state.get("hint_exit", {})
+                hint_exit.visible = he.get("visible", false)
+                var he_col = he.get("color", hint_exit.get_theme_color("default_color"))
+                if typeof(he_col) == TYPE_STRING:
+                                        he_col = Color(he_col)
+                hint_exit.add_theme_color_override("default_color", he_col)
+                hint_exit.modulate.a = he.get("alpha", 1.0 if hint_exit.visible else 0.0)
 
 func _ready() -> void:
 	if player == null and has_node("Player"):
@@ -181,15 +203,17 @@ func _ready() -> void:
 	$Player/Camera2D.zoom = Vector2(1.5, 1.5)
 	$Exit.body_entered.connect(_on_exit_body_entered)
 
-	fade_rect.modulate.a       = 1.0
-	arrow.visible              = false
-	arrow.target               = null
-	hint_bartender.visible     = false
-	hint_hire.visible          = false
-	hint_keys.visible          = false
-	hint_keys.modulate.a       = 0.0
-	hint_bartender.modulate.a  = 0.0
-	hint_hire.modulate.a       = 0.0
+        fade_rect.modulate.a       = 1.0
+        arrow.visible              = false
+        arrow.target               = null
+        hint_bartender.visible     = false
+        hint_hire.visible          = false
+        hint_exit.visible          = false
+        hint_keys.visible          = false
+        hint_keys.modulate.a       = 0.0
+        hint_bartender.modulate.a  = 0.0
+        hint_hire.modulate.a       = 0.0
+        hint_exit.modulate.a       = 0.0
 
 	var loaded_state := false
 	if Global.kelptown_tutorial_state and Global.kelptown_tutorial_state.size() > 0:
@@ -321,26 +345,35 @@ func _on_dialogue_finished_barnaby_tutorial(b: NPC) -> void:
 				# Hint remains visible; simply restore the arrow
 
 func _on_barnaby_hired_tutorial(_b: NPC) -> void:
-		hint_hire.add_theme_color_override("default_color", Color.GREEN)
-		await get_tree().create_timer(1.0).timeout
-		_fade_out_hint(hint_hire)
-		arrow.visible = false
-		arrow.target  = null
-		var exit_target = $Exit.global_position
-		_b.auto_move_to_position(exit_target)
-		_b.npc_move_completed.connect(Callable(_b, "queue_free"))
-		bartender.state = "normal"
-		tutorial_complete = true
+                hint_hire.add_theme_color_override("default_color", Color.GREEN)
+                await get_tree().create_timer(1.0).timeout
+                _fade_out_hint(hint_hire)
+                arrow.visible = false
+                arrow.target  = null
+                var exit_target = $Exit.global_position
+                _b.auto_move_to_position(exit_target)
+                _b.npc_move_completed.connect(Callable(_b, "queue_free"))
+                bartender.state = "normal"
+                tutorial_complete = true
+                stage_exit_started = true
+                arrow.target = exit_area
+                arrow.global_position = exit_area.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+                arrow.visible = true
+                _fade_in_hint(hint_exit)
 
 func _on_exit_body_entered(body: Node) -> void:
-	if not tutorial_complete:
-			return
-	if body == player:
-			SceneSwitcher.switch_scene(
-					"res://Island/islandtutorial.tscn",
-					Vector2( 64, -42),
-					"fade",
-					Vector2.ONE,
+        if not tutorial_complete:
+                        return
+        if body == player:
+                        arrow.visible = false
+                        arrow.target  = null
+                        if hint_exit.visible:
+                                        _fade_out_hint(hint_exit)
+                        SceneSwitcher.switch_scene(
+                                        "res://Island/islandtutorial.tscn",
+                                        Vector2( 64, -42),
+                                        "fade",
+                                        Vector2.ONE,
 					Vector2.ZERO,
 					Vector2(1.5, 1.5)
 			   )
