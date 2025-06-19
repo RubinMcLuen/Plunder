@@ -207,7 +207,10 @@ func _on_set_sail_button_pressed() -> void:
 func _on_dock_ship_button_pressed() -> void:
        var ocean = get_tree().current_scene
        if ocean and ocean.has_method("start_dock_transition"):
-               ocean.start_dock_transition(1.0)
+               # Delay the sail fade until the camera begins zooming
+               var tw = get_tree().create_tween()
+               tw.tween_interval(1.0)
+               tw.connect("finished", Callable(ocean, "start_dock_transition").bind(1.0))
 
        SceneSwitcher.switch_scene(
                        "res://Island/island.tscn",
