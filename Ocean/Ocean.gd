@@ -14,49 +14,49 @@ func _enter_tree() -> void:
 			$"KelptownIsland/Foam".modulate.a = 0.0
 
 func _ready() -> void:
-       player_ship = get_node(player_ship_path) as Node2D
+	player_ship = get_node(player_ship_path) as Node2D
 
-       if Global.spawn_position != Vector2.ZERO:
-               if player_ship == null:
-                       player_ship = get_node(player_ship_path) as Node2D
-               if player_ship:
-                       player_ship.global_position = Global.spawn_position
-               Global.spawn_position = Vector2.ZERO          # consume it
+	if Global.spawn_position != Vector2.ZERO:
+		if player_ship == null:
+			player_ship = get_node(player_ship_path) as Node2D
+		if player_ship:
+			player_ship.global_position = Global.spawn_position
+		Global.spawn_position = Vector2.ZERO          # consume it
 
-               if Global.ship_state:
-                               if player_ship == null:
-                                               player_ship = get_node(player_ship_path) as Area2D
-                               if player_ship:
-                                               if "frame"  in Global.ship_state:
-                                                               player_ship.current_frame = int(Global.ship_state["frame"])
-                                                               player_ship.update_frame()              # refresh sprite
-                                               if "moving" in Global.ship_state:
-                                                               player_ship.moving_forward = bool(Global.ship_state["moving"])
-                                               if "health" in Global.ship_state:
-                                                               player_ship.health = int(Global.ship_state["health"])
-                               Global.ship_state = {}                         # clear after use
+		if Global.ship_state:
+					if player_ship == null:
+									player_ship = get_node(player_ship_path) as Area2D
+					if player_ship:
+									if "frame"  in Global.ship_state:
+													player_ship.current_frame = int(Global.ship_state["frame"])
+													player_ship.update_frame()              # refresh sprite
+									if "moving" in Global.ship_state:
+													player_ship.moving_forward = bool(Global.ship_state["moving"])
+									if "health" in Global.ship_state:
+													player_ship.health = int(Global.ship_state["health"])
+					Global.ship_state = {}                         # clear after use
 
-       # Fade in the waves/foam if we just left the island
-       if Global.restore_sails_next:
-               Global.restore_sails_next = false
-               if player_ship == null and has_node(player_ship_path):
-                       player_ship = get_node(player_ship_path) as Node2D
-               if player_ship:
-                       _restore_ship_sails(player_ship, 1.0)
+	   # Fade in the waves/foam if we just left the island
+		if Global.restore_sails_next:
+			Global.restore_sails_next = false
+			if player_ship == null and has_node(player_ship_path):
+				player_ship = get_node(player_ship_path) as Node2D
+			if player_ship:
+				_restore_ship_sails(player_ship, 1.0)
 
-               var tw = get_tree().create_tween().set_parallel(true)
-               if has_node("Waves"):
-                       $Waves.modulate.a = 0.0
-                       tw.tween_property($Waves, "modulate:a", 1.0, 1.0)
-               if has_node("KelptownIsland/Foam"):
-                       $"KelptownIsland/Foam".modulate.a = 0.0
-                       tw.tween_property($"KelptownIsland/Foam", "modulate:a", 1.0, 1.0)
-               await get_tree().process_frame
-       else:
-               if has_node("Waves"):
-                       $Waves.modulate.a = 1.0
-               if has_node("KelptownIsland/Foam"):
-                       $"KelptownIsland/Foam".modulate.a = 1.0
+			var tw = get_tree().create_tween().set_parallel(true)
+			if has_node("Waves"):
+				$Waves.modulate.a = 0.0
+				tw.tween_property($Waves, "modulate:a", 1.0, 1.0)
+			if has_node("KelptownIsland/Foam"):
+				$"KelptownIsland/Foam".modulate.a = 0.0
+				tw.tween_property($"KelptownIsland/Foam", "modulate:a", 1.0, 1.0)
+			await get_tree().process_frame
+		else:
+			if has_node("Waves"):
+				$Waves.modulate.a = 1.0
+			if has_node("KelptownIsland/Foam"):
+				$"KelptownIsland/Foam".modulate.a = 1.0
 
 
 	# Listen for boarding requests
