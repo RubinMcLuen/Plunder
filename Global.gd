@@ -74,12 +74,12 @@ func save_game_state() -> void:
 	save_data["scene"]      = {"name": current_scene, "position": pos_dict}
 	save_data["ship_state"] = ship_state
 	save_data["quests"]     = get_quest_manager().quests
-        save_data["crew"]       = crew
+	save_data["crew"]       = crew
 
-        if current_scene_node is KelptownInnTutorial:
-                                save_data["kelptown_tutorial"] = current_scene_node.get_tutorial_state()
-        elif current_scene_node is IslandTutorial:
-                                save_data["island_tutorial"] = current_scene_node.get_tutorial_state()
+	if current_scene_node is KelptownInnTutorial:
+							save_data["kelptown_tutorial"] = current_scene_node.get_tutorial_state()
+	elif current_scene_node is IslandTutorial:
+							save_data["island_tutorial"] = current_scene_node.get_tutorial_state()
 
 	var w = FileAccess.open(save_file_path, FileAccess.WRITE)
 	w.store_string(JSON.stringify(save_data))
@@ -149,14 +149,14 @@ func load_game_state() -> void:
 				for c in data["crew"]:
 						crew.append(str(c))
 
-                if "kelptown_tutorial" in data:
-                                kelptown_tutorial_state = data["kelptown_tutorial"]
-                else:
-                                kelptown_tutorial_state = {}
-                if "island_tutorial" in data:
-                                island_tutorial_state = data["island_tutorial"]
-                else:
-                                island_tutorial_state = {}
+				if "kelptown_tutorial" in data:
+								kelptown_tutorial_state = data["kelptown_tutorial"]
+				else:
+								kelptown_tutorial_state = {}
+				if "island_tutorial" in data:
+								island_tutorial_state = data["island_tutorial"]
+				else:
+								island_tutorial_state = {}
 
 		# 3) Scene + spawn + ship_state
 	var scene_info = data.get("scene", {})

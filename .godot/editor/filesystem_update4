@@ -32,3 +32,4 @@ res://Character/Player/Player.gd
 res://Island/IslandTutorial.gd
 res://Island/islandtutorial.tscn
 res://Island/ShipControlAreaTutorial.gd
+res://Global.gd
