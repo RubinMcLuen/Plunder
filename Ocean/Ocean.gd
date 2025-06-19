@@ -6,6 +6,10 @@ signal board_enemy_request(enemy: Node2D)
 var player_ship     : Node2D = null
 var _enemy_to_board : Node2D = null
 
+func _enter_tree() -> void:
+       if Global.restore_sails_next and has_node("Waves"):
+               $Waves.modulate.a = 0.0
+
 func _ready() -> void:
 	if Global.spawn_position != Vector2.ZERO:
 		if player_ship == null:
