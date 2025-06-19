@@ -7,11 +7,16 @@ var player_ship     : Node2D = null
 var _enemy_to_board : Node2D = null
 
 func _enter_tree() -> void:
-	if Global.restore_sails_next:
-		if has_node("Waves"):
-			$Waves.modulate.a = 0.0
-		if has_node("KelptownIsland/Foam"):
-			$"KelptownIsland/Foam".modulate.a = 0.0
+        if Global.restore_sails_next:
+                if has_node("Waves"):
+                        $Waves.modulate.a = 0.0
+                if has_node("KelptownIsland/Foam"):
+                        $"KelptownIsland/Foam".modulate.a = 0.0
+        else:
+                if has_node("Waves"):
+                        $Waves.modulate.a = 1.0
+                if has_node("KelptownIsland/Foam"):
+                        $"KelptownIsland/Foam".modulate.a = 1.0
 
 func _ready() -> void:
 	player_ship = get_node(player_ship_path) as Node2D
@@ -36,27 +41,17 @@ func _ready() -> void:
 													player_ship.health = int(Global.ship_state["health"])
 					Global.ship_state = {}                         # clear after use
 
-	   # Fade in the waves/foam if we just left the island
-		if Global.restore_sails_next:
-			Global.restore_sails_next = false
-			if player_ship == null and has_node(player_ship_path):
-				player_ship = get_node(player_ship_path) as Node2D
-			if player_ship:
-				_restore_ship_sails(player_ship, 1.0)
+        if Global.restore_sails_next:
+                Global.restore_sails_next = false
+                        if player_ship == null and has_node(player_ship_path):
+                                player_ship = get_node(player_ship_path) as Node2D
+                        if player_ship:
+                                _restore_ship_sails(player_ship, 1.0)
 
-			var tw = get_tree().create_tween().set_parallel(true)
-			if has_node("Waves"):
-				$Waves.modulate.a = 0.0
-				tw.tween_property($Waves, "modulate:a", 1.0, 1.0)
-			if has_node("KelptownIsland/Foam"):
-				$"KelptownIsland/Foam".modulate.a = 0.0
-				tw.tween_property($"KelptownIsland/Foam", "modulate:a", 1.0, 1.0)
-			await get_tree().process_frame
-		else:
-			if has_node("Waves"):
-				$Waves.modulate.a = 1.0
-			if has_node("KelptownIsland/Foam"):
-				$"KelptownIsland/Foam".modulate.a = 1.0
+                        await get_tree().process_frame
+                        _fade_environment_in(1.0)
+                else:
+                        _show_environment()
 
 
 	# Listen for boarding requests
@@ -77,16 +72,12 @@ func start_boarding_transition(fade_time: float = 1.5) -> void:
 
 
 func start_dock_transition(fade_time: float = 1.0) -> void:
-								if player_ship == null:
-												if has_node(player_ship_path):
-																		player_ship = get_node(player_ship_path) as Node2D
-								if player_ship:
-												_fade_ship_sails(player_ship, fade_time)
-								var tw = get_tree().create_tween().set_parallel(true)
-								if has_node("Waves"):
-												tw.tween_property($Waves, "modulate:a", 0.0, fade_time)
-								if has_node("KelptownIsland/Foam"):
-												tw.tween_property($"KelptownIsland/Foam", "modulate:a", 0.0, fade_time)
+        if player_ship == null:
+                if has_node(player_ship_path):
+                        player_ship = get_node(player_ship_path) as Node2D
+        if player_ship:
+                _fade_ship_sails(player_ship, fade_time)
+        _fade_environment_out(fade_time)
 
 func start_restore_sails(fade_time: float = 1.0) -> void:
 		if player_ship == null:
@@ -115,9 +106,9 @@ func _fade_ship_sails(ship: Node2D, t: float) -> void:
 				get_tree().create_tween().tween_property(sail, "modulate:a", 0.0, t)
 
 func _restore_ship_sails(ship: Node2D, t: float) -> void:
-		if ship.has_node("NoSails"):
-				var hull := ship.get_node("NoSails") as CanvasItem
-				hull.visible = false
+                if ship.has_node("NoSails"):
+                                var hull := ship.get_node("NoSails") as CanvasItem
+                                hull.visible = false
 
 		var sail : CanvasItem = null
 		if ship.has_node("Boat"):
@@ -125,6 +116,26 @@ func _restore_ship_sails(ship: Node2D, t: float) -> void:
 		elif ship.has_node("ShipSprite"):
 				sail = ship.get_node("ShipSprite") as CanvasItem
 
-		if sail:
-				sail.modulate.a = 0.0
-				get_tree().create_tween().tween_property(sail, "modulate:a", 1.0, t)
+                if sail:
+                                sail.modulate.a = 0.0
+                                get_tree().create_tween().tween_property(sail, "modulate:a", 1.0, t)
+
+func _fade_environment_in(t: float) -> void:
+        var tw = get_tree().create_tween().set_parallel(true)
+        if has_node("Waves"):
+                tw.tween_property($Waves, "modulate:a", 1.0, t)
+        if has_node("KelptownIsland/Foam"):
+                tw.tween_property($"KelptownIsland/Foam", "modulate:a", 1.0, t)
+
+func _fade_environment_out(t: float) -> void:
+        var tw = get_tree().create_tween().set_parallel(true)
+        if has_node("Waves"):
+                tw.tween_property($Waves, "modulate:a", 0.0, t)
+        if has_node("KelptownIsland/Foam"):
+                tw.tween_property($"KelptownIsland/Foam", "modulate:a", 0.0, t)
+
+func _show_environment() -> void:
+        if has_node("Waves"):
+                $Waves.modulate.a = 1.0
+        if has_node("KelptownIsland/Foam"):
+                $"KelptownIsland/Foam".modulate.a = 1.0
