@@ -1,4 +1,5 @@
 extends "res://Battle/BattleManager.gd"
+class_name BattleManagerTutorial
 
 var spawned_enemy : EnemyNPC = null
 
