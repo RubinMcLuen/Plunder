@@ -26,6 +26,9 @@ const MOUSE_BUTTON_LEFT = 1
 @export var deceleration_factor = 100
 @export var swipe_sensitivity: float = 1.0
 
+@export var max_speed: float = 60.0
+@export var acceleration_rate: float = 40.0
+
 @export var health: int = 100
 
 # --- Steering simulation variables ---
@@ -93,13 +96,14 @@ func _ready():
 	connect("area_entered", Callable(self, "_on_area_entered"))
 
 func _process(delta):
-	if sprite:
-		handle_input(delta)
-		update_movement(delta)
-		var new_position = global_position + velocity * delta
-		if not is_colliding_with_land(new_position):
-			global_position = new_position
-			emit_signal("position_updated", global_position)
+        if sprite:
+                handle_input(delta)
+                if not is_bot_controlled:
+                        update_movement(delta)
+                var new_position = global_position + velocity * delta
+                if not is_colliding_with_land(new_position):
+                        global_position = new_position
+                        emit_signal("position_updated", global_position)
 		
 		if is_bot_controlled:
 			if target_angle >= 0:
@@ -156,16 +160,12 @@ func update_frame():
 		trail_sprite.rotation_degrees = current_frame * ANGLE_PER_FRAME
 
 func toggle_forward_movement():
-	moving_forward = not moving_forward
-	if moving_forward:
-		emit_signal("movement_started")
+        moving_forward = not moving_forward
+        if moving_forward:
+                emit_signal("movement_started")
 
 func update_movement(delta):
-	if moving_forward:
-		current_speed = lerp(current_speed, target_speed, acceleration_factor * delta)
-	else:
-		current_speed *= damping_factor
-	velocity = calculate_direction() * current_speed
+        velocity = calculate_direction() * current_speed
 
 
 func calculate_direction():
@@ -197,24 +197,31 @@ func handle_bot_input(delta):
 		shoot_right()
 
 func handle_player_input(delta):
-				var key_impulse = 0.0
-				if _action_allowed("ui_right") and Input.is_action_pressed("ui_right"):
-								key_impulse += 1.0
-								emit_signal("manual_rotation_started")
-				if _action_allowed("ui_left") and Input.is_action_pressed("ui_left"):
-								key_impulse -= 1.0
-								emit_signal("manual_rotation_started")
-				if key_impulse != 0:
-						var keyboard_impulse_multiplier = 10.0
-						steering_velocity += key_impulse * keyboard_impulse_multiplier
+                                var key_impulse = 0.0
+                                if _action_allowed("ui_right") and Input.is_action_pressed("ui_right"):
+                                                                key_impulse += 1.0
+                                                                emit_signal("manual_rotation_started")
+                                if _action_allowed("ui_left") and Input.is_action_pressed("ui_left"):
+                                                                key_impulse -= 1.0
+                                                                emit_signal("manual_rotation_started")
+                                if key_impulse != 0:
+                                                var keyboard_impulse_multiplier = 10.0
+                                                steering_velocity += key_impulse * keyboard_impulse_multiplier
 
-				if _action_allowed("ui_select") and Input.is_action_just_pressed("ui_select"):
-								toggle_forward_movement()
+                                if _action_allowed("ui_up") and Input.is_action_pressed("ui_up"):
+                                                current_speed += acceleration_rate * delta
+                                if _action_allowed("ui_down") and Input.is_action_pressed("ui_down"):
+                                                current_speed -= acceleration_rate * delta
+                                current_speed = clamp(current_speed, 0.0, max_speed)
 
-				if _action_allowed("shoot_left") and Input.is_action_just_pressed("shoot_left"):
-								shoot_left()
-				if _action_allowed("shoot_right") and Input.is_action_just_pressed("shoot_right"):
-								shoot_right()
+                                if _action_allowed("ui_select") and Input.is_action_just_pressed("ui_select"):
+                                                # Interaction placeholder
+                                                pass
+
+                                if _action_allowed("shoot_left") and Input.is_action_just_pressed("shoot_left"):
+                                                                shoot_left()
+                                if _action_allowed("shoot_right") and Input.is_action_just_pressed("shoot_right"):
+                                                                shoot_right()
 
 func reset_bot_input():
 	bot_input["rotate_right"] = false
