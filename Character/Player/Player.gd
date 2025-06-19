@@ -14,13 +14,10 @@ signal end_fight  # Emitted when player's health reaches 0
 var health: int = 3
 var fighting: bool = false
 var disable_user_input: bool = false:
-	set(new_value):
-		disable_user_input = new_value
-		# Whenever we turn user input back on, reset the mouse drag state.
-		if not new_value:
-			mouse_move_active = false
-	get:
-		return disable_user_input
+        set(new_value):
+                disable_user_input = new_value
+        get:
+                return disable_user_input
 
 
 # Use one AnimatedSprite2D node named "Appearance"
@@ -38,9 +35,7 @@ var custom_velocity := Vector2.ZERO
 var auto_move: bool = false
 var auto_target_position: Vector2 = Vector2.ZERO
 
-# Drag-to-move Variables
-var mouse_move_active: bool = false
-const MOUSE_STOP_THRESHOLD := 1.0  # Distance below which velocity = 0
+# Drag-to-move Variables (removed drag to move feature)
 
 # Animation Override (for slash, hurt, lunge, block)
 var anim_override: bool = false
@@ -108,21 +103,13 @@ func handle_player_input() -> void:
 
 	custom_velocity = Vector2.ZERO
 
-	if mouse_move_active:
-		var diff_mouse = get_global_mouse_position() - global_position
-		if diff_mouse.length() > MOUSE_STOP_THRESHOLD:
-			custom_velocity = diff_mouse.normalized() * speed
-			direction = (Vector2.LEFT if diff_mouse.x < 0 else Vector2.RIGHT)
-		else:
-			custom_velocity = Vector2.ZERO
-	else:
-		if Input.is_action_pressed("ui_up"):
-			custom_velocity.y -= 1
-		if Input.is_action_pressed("ui_down"):
-			custom_velocity.y += 1
-		if Input.is_action_pressed("ui_left"):
-			custom_velocity.x -= 1
-			direction = Vector2.LEFT
+       if Input.is_action_pressed("ui_up"):
+                       custom_velocity.y -= 1
+               if Input.is_action_pressed("ui_down"):
+                       custom_velocity.y += 1
+               if Input.is_action_pressed("ui_left"):
+                       custom_velocity.x -= 1
+                       direction = Vector2.LEFT
 		if Input.is_action_pressed("ui_right"):
 			custom_velocity.x += 1
 			direction = Vector2.RIGHT
@@ -145,11 +132,8 @@ func set_facing_direction(is_left: bool) -> void:
 	sword.flip_h = is_left
 
 func _unhandled_input(event: InputEvent) -> void:
-	if fighting or auto_move:
-		return
-
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
-		mouse_move_active = event.pressed
+       if fighting or auto_move:
+               return
 
 
 # ---------------------------
