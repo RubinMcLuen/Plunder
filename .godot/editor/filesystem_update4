@@ -27,3 +27,5 @@ res://KelptownIsland/KelptownIsland.tscn
 res://Ocean/OceanTutorial.gd
 res://Ocean/oceantutorial.tscn
 res://Ships/PlayerShip.gd
+res://KelptownInn/KelptownInnTutorial.gd
+res://Character/Player/Player.gd

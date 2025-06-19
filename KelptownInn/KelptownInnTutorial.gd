@@ -187,7 +187,7 @@ func _ready() -> void:
 	hint_bartender.visible     = false
 	hint_hire.visible          = false
 	hint_keys.visible          = false
-       hint_keys.modulate.a       = 0.0
+	hint_keys.modulate.a       = 0.0
 	hint_bartender.modulate.a  = 0.0
 	hint_hire.modulate.a       = 0.0
 
@@ -224,23 +224,23 @@ func _process(_delta: float) -> void:
 
 
 func _check_movement_complete() -> void:
-       if moved_keys and not stage_two_started:
-               stage_two_started = true
-               await get_tree().create_timer(1.0).timeout
-               _fade_out_hint(hint_keys)
-               await get_tree().create_timer(0.5).timeout
+	if moved_keys and not stage_two_started:
+			stage_two_started = true
+			await get_tree().create_timer(1.0).timeout
+			_fade_out_hint(hint_keys)
+			await get_tree().create_timer(0.5).timeout
 
-		arrow.target = bartender
-		arrow.global_position = bartender.global_position + Vector2(arrow.x_offset, arrow.y_offset)
-		arrow.visible = true
-		_fade_in_hint(hint_bartender)
-		bartender.state = "introduction"
+	arrow.target = bartender
+	arrow.global_position = bartender.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+	arrow.visible = true
+	_fade_in_hint(hint_bartender)
+	bartender.state = "introduction"
 
 func _on_intro_move_completed() -> void:
 	player.speed = _orig_speed
 	await get_tree().create_timer(1.0).timeout
-       _fade_in_hint(hint_keys)
-       intro_walk_finished = true
+	_fade_in_hint(hint_keys)
+	intro_walk_finished = true
 
 func _fade_in_hint(label: CanvasItem, duration: float = 0.5) -> void:
 	label.visible = true
@@ -333,14 +333,14 @@ func _on_barnaby_hired_tutorial(_b: NPC) -> void:
 		tutorial_complete = true
 
 func _on_exit_body_entered(body: Node) -> void:
-       if not tutorial_complete:
-               return
-       if body == player:
-               SceneSwitcher.switch_scene(
-                       "res://Island/islandtutorial.tscn",
-                       Vector2( 64, -42),
-                       "fade",
-                       Vector2.ONE,
-                       Vector2.ZERO,
-                       Vector2(1.5, 1.5)
-               )
+	if not tutorial_complete:
+			return
+	if body == player:
+			SceneSwitcher.switch_scene(
+					"res://Island/islandtutorial.tscn",
+					Vector2( 64, -42),
+					"fade",
+					Vector2.ONE,
+					Vector2.ZERO,
+					Vector2(1.5, 1.5)
+			   )

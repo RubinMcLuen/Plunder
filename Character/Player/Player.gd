@@ -14,10 +14,10 @@ signal end_fight  # Emitted when player's health reaches 0
 var health: int = 3
 var fighting: bool = false
 var disable_user_input: bool = false:
-        set(new_value):
-                disable_user_input = new_value
-        get:
-                return disable_user_input
+		set(new_value):
+				disable_user_input = new_value
+		get:
+				return disable_user_input
 
 
 # Use one AnimatedSprite2D node named "Appearance"
@@ -103,19 +103,19 @@ func handle_player_input() -> void:
 
 	custom_velocity = Vector2.ZERO
 
-       if Input.is_action_pressed("ui_up"):
-                       custom_velocity.y -= 1
-               if Input.is_action_pressed("ui_down"):
-                       custom_velocity.y += 1
-               if Input.is_action_pressed("ui_left"):
-                       custom_velocity.x -= 1
-                       direction = Vector2.LEFT
-		if Input.is_action_pressed("ui_right"):
-			custom_velocity.x += 1
-			direction = Vector2.RIGHT
+	if Input.is_action_pressed("ui_up"):
+				custom_velocity.y -= 1
+	if Input.is_action_pressed("ui_down"):
+			custom_velocity.y += 1
+	if Input.is_action_pressed("ui_left"):
+			custom_velocity.x -= 1
+			direction = Vector2.LEFT
+	if Input.is_action_pressed("ui_right"):
+		custom_velocity.x += 1
+		direction = Vector2.RIGHT
 
-		if custom_velocity != Vector2.ZERO:
-			custom_velocity = custom_velocity.normalized() * speed
+	if custom_velocity != Vector2.ZERO:
+		custom_velocity = custom_velocity.normalized() * speed
 
 	velocity = custom_velocity
 
@@ -132,8 +132,8 @@ func set_facing_direction(is_left: bool) -> void:
 	sword.flip_h = is_left
 
 func _unhandled_input(event: InputEvent) -> void:
-       if fighting or auto_move:
-               return
+	if fighting or auto_move:
+			return
 
 
 # ---------------------------
