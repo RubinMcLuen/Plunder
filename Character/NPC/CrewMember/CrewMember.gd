@@ -152,20 +152,22 @@ func update_animation() -> void:
 
 
 func _walk_plank(_delta: float) -> void:
-	var dir = board_target - global_position
-	if dir.length() < 4.0:
-		has_boarded       = true
-		fighting          = true
-		idle_with_sword   = true
-		appearance.play("IdleSword")
-		if sword:
-			sword.visible = true
-			sword.play("IdleSword")
-			sword.frame = appearance.frame
-		velocity = Vector2.ZERO
-	else:
-		velocity = dir.normalized() * BOARD_SPEED
-	set_facing_direction(dir.x < 0)
+        var dir = board_target - global_position
+        if dir.length() < 4.0:
+                has_boarded       = true
+                fighting          = true
+                idle_with_sword   = true
+                appearance.play("IdleSword")
+                if sword:
+                        sword.visible = true
+                        sword.play("IdleSword")
+                        sword.frame = appearance.frame
+                velocity = Vector2.ZERO
+                dragging     = false
+                is_boarding  = false
+        else:
+                velocity = dir.normalized() * BOARD_SPEED
+        set_facing_direction(dir.x < 0)
 
 func _drag(_delta: float) -> void:
 	var hit_center = select_hitbox.global_transform.origin
