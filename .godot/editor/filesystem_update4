@@ -19,3 +19,5 @@ res://Island/island.tscn
 res://KelptownIsland/KelptownIsland.gd
 res://UI/UIManager.gd
 res://Ocean/Ocean.gd
+res://Island/island.gd
+res://Island/Island.gd
