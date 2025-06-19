@@ -37,3 +37,4 @@ res://Battle/BoardingBattleTutorial.tscn
 res://Battle/BoardingBattleTutorial.gd
 res://Battle/BattleManagerTutorial.gd
 res://Character/NPC/CrewMember/CrewMember.gd
+res://Battle/RangeCircle.gd
