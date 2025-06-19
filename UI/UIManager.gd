@@ -196,9 +196,11 @@ func hide_begin_raid_menu() -> void:
 # Editor-wired buttons (if any)
 # ──────────────────────────
 func _on_set_sail_button_pressed() -> void:
-		var island = get_tree().current_scene
-		if island and island.has_method("start_leave_island_transition"):
-				island.start_leave_island_transition(1.0)
+                var island = get_tree().current_scene
+                if island and island.has_method("start_leave_island_transition"):
+                                var tw = get_tree().create_tween()
+                                tw.tween_interval(1.0)
+                                tw.connect("finished", Callable(island, "start_leave_island_transition").bind(1.0))
 
 		SceneSwitcher.switch_scene(
 				"res://Ocean/ocean.tscn",

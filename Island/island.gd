@@ -13,9 +13,17 @@ var skip_fade: bool                      = false
 
 var scene_state: String = "pre_shiptutorial"
 
+func _set_characters_alpha(a: float) -> void:
+    var chars = [player, monte_coral, first_mate]
+    for c in chars:
+        if c and c is CanvasItem:
+            c.modulate.a = a
+
 func _ready() -> void:
-	# 1) Spawn crew for this scene
-	CrewManager.populate_scene(self)
+        # 1) Spawn crew for this scene
+        CrewManager.populate_scene(self)
+
+        _set_characters_alpha(0.0)
 
 	# 2) Immediately apply saved spawn_position (if any)
 	if Global.spawn_position != Vector2.ZERO:
@@ -35,7 +43,7 @@ func _ready() -> void:
 	if monte_coral.has_method("dialogue_requested"):
 		monte_coral.dialogue_requested.connect(_on_monte_coral_dialogue_requested)
 
-	_fade_in_characters(0.5)
+        _fade_in_characters(1.5)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -149,5 +157,11 @@ func _fade_out_characters(t: float = 1.0) -> void:
 						tw.tween_property(c, "modulate:a", 0.0, t)
 
 func start_leave_island_transition(t: float = 1.0) -> void:
-		_fade_out_characters(t)
-		Global.restore_sails_next = true
+                _fade_out_characters(t)
+                Global.restore_sails_next = true
+
+                if has_node("PlayerShipClose/Sails"):
+                                var sails := get_node("PlayerShipClose/Sails") as CanvasItem
+                                sails.visible = true
+                                sails.modulate.a = 0.0
+                                create_tween().tween_property(sails, "modulate:a", 1.0, t)
