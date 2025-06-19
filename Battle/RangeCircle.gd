@@ -6,7 +6,7 @@ var outline_color: Color = Color(1,1,1,1)
 var outline_width: float = 2.0
 
 func _ready() -> void:
-	update()
+	queue_redraw()
 
 func _draw() -> void:
 	draw_circle(Vector2.ZERO, radius, fill_color)
