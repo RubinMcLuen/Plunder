@@ -14,13 +14,18 @@ var skip_fade: bool                      = false
 var scene_state: String = "pre_shiptutorial"
 
 func _ready() -> void:
-	# 1) Spawn crew for this scene
-	CrewManager.populate_scene(self)
+        # 1) Spawn crew for this scene
+        CrewManager.populate_scene(self)
 
-	# 2) Immediately apply saved spawn_position (if any)
-	if Global.spawn_position != Vector2.ZERO:
-		player.global_position = Global.spawn_position
-		Global.spawn_position = Vector2.ZERO
+        # 2) Immediately apply saved spawn_position (if any)
+        if Global.spawn_position != Vector2.ZERO:
+                player.global_position = Global.spawn_position
+                Global.spawn_position = Vector2.ZERO
+
+        # 2b) Start characters invisible so they can fade in
+        for c in [player, monte_coral, first_mate]:
+                if c and c is CanvasItem:
+                        c.modulate.a = 0.0
 
 	# 3) Connect the exit trigger
 	$Exit.body_entered.connect(_on_exit_body_entered)
@@ -35,7 +40,7 @@ func _ready() -> void:
         if monte_coral.has_method("dialogue_requested"):
                 monte_coral.dialogue_requested.connect(_on_monte_coral_dialogue_requested)
 
-        _fade_in_characters(0.5)
+        _fade_in_characters(1.0)
 
 
 func _unhandled_input(event: InputEvent) -> void:
