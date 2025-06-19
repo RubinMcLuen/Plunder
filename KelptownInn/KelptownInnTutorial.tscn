@@ -564,25 +564,6 @@ theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
 text = "[center]Use WASD or arrow keys to move around[/center]"
 
-[node name="HintMoveMouse" type="RichTextLabel" parent="CanvasLayer"]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -240.0
-offset_top = -70.0
-offset_right = 240.0
-offset_bottom = 200.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_fonts/normal_font = ExtResource("39_font")
-theme_override_font_sizes/normal_font_size = 11
-bbcode_enabled = true
-text = "[center]Hold left mouse button anywhere to move around[/center]"
-
 [node name="HintBartender" type="RichTextLabel" parent="CanvasLayer"]
 visible = false
 anchors_preset = 8
