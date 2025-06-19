@@ -9,6 +9,7 @@ var step : int = 0
 var _advancing : bool = false
 var barnaby : CrewMemberNPC = null
 var enemy   : EnemyNPC = null
+var _range_texture : Texture2D = preload("res://Ships/Assets/Shaders/CircleBlur64x64.png")
 
 func _ready() -> void:
 		await super._ready()
@@ -36,9 +37,10 @@ func _process(_delta: float) -> void:
 				_advance_step(4)
 
 func _show_step() -> void:
-		arrow.visible = false
-		arrow.target = null
-		arrow.self_modulate = Color.WHITE
+    hint_label.add_theme_color_override("default_color", Color.WHITE)
+    arrow.visible = false
+    arrow.target = null
+    arrow.self_modulate = Color.WHITE
 		match step:
 				0:
 						if barnaby:
@@ -67,10 +69,32 @@ func _show_step() -> void:
 					_fade_in_hint(hint_label)
 
 func _toggle_ranges(on: bool) -> void:
-	if barnaby and barnaby.has_node("MeleeRange/CollisionShape2D"):
-		barnaby.get_node("MeleeRange/CollisionShape2D").visible = on
-	if enemy and is_instance_valid(enemy) and enemy.has_node("MeleeRange/CollisionShape2D"):
-		enemy.get_node("MeleeRange/CollisionShape2D").visible = on
+    _set_range_visible(barnaby, on, Color.CYAN)
+    if enemy and is_instance_valid(enemy):
+            _set_range_visible(enemy, on, Color.RED)
+
+func _set_range_visible(ch, on: bool, color: Color) -> void:
+    if not ch or not ch.has_node("MeleeRange/CollisionShape2D"):
+            return
+    var shape := ch.get_node("MeleeRange/CollisionShape2D") as CollisionShape2D
+    shape.visible = on
+    var sprite_path := "MeleeRange/RangeSprite"
+    var sprite : Sprite2D
+    if ch.has_node(sprite_path):
+            sprite = ch.get_node(sprite_path)
+    else:
+            sprite = Sprite2D.new()
+            sprite.name = "RangeSprite"
+            sprite.texture = _range_texture
+            sprite.centered = true
+            sprite.z_index = -1
+            var radius := 30.0
+            if shape.shape is CircleShape2D:
+                    radius = shape.shape.radius
+            sprite.scale = Vector2.ONE * (radius / (_range_texture.get_width() / 2.0))
+            ch.get_node("MeleeRange").add_child(sprite)
+    sprite.modulate = color.with_alpha(0.6)
+    sprite.visible = on
 
 func _advance_step(next_step: int) -> void:
 	_advancing = true
