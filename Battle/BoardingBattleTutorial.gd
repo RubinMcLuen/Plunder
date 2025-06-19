@@ -97,7 +97,7 @@ func _set_range_visible(ch, on: bool, color: Color) -> void:
 		sprite.fill_color = Color(color.r, color.g, color.b, 0.4)
 		sprite.outline_color = color
 		sprite.visible = on
-		sprite.update()
+		sprite.queue_redraw()
 
 
 func _advance_step(next_step: int) -> void:
