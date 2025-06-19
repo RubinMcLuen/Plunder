@@ -100,17 +100,17 @@ func _on_dock_button_pressed():
 
 	# Set specific coordinates for switching to the character scene
 	print("pressed")
-	var specific_position = Vector2(-11.875, 40.5)  # Camera translation position
-	var player_position = Vector2(-190, 648)  # Position in the new scene
+       var specific_position = Vector2(-34, 647)  # Camera translation position
+       var player_position = Vector2(-190, 648)  # Position in the new scene
 
 	SceneSwitcher.switch_scene(
 		"res://Island/island.tscn",
 		Vector2(-190, 648),      # Where Player spawns in new scene
 		"zoom",                  # Tells SceneSwitcher to tween the *old* camera from current -> old_camera_zoom
-		Vector2(16,16),         # old_camera_zoom = 16×
-		Vector2(-11.875, 40.5), # If you want the old camera to move to this position first (optional)
-		Vector2(1,1)            # The *new* scene's camera will be forced to 1×
-	)
+               Vector2(16,16),         # old_camera_zoom = 16×
+               Vector2(-34, 647), # If you want the old camera to move to this position first (optional)
+               Vector2(1,1)            # The *new* scene's camera will be forced to 1×
+       )
 	print("Dock button pressed, switching to character scene.")
 
 

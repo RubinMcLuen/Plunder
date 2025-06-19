@@ -205,10 +205,10 @@ func _on_set_sail_button_pressed() -> void:
 	hide_set_sail_menu()
 
 func _on_dock_ship_button_pressed() -> void:
-	SceneSwitcher.switch_scene(
-		"res://Island/island.tscn",
-		Vector2(-190, 648), "zoom",
-		Vector2(16, 16), Vector2(-11.875, 40.5),
-		Vector2(1, 1), true
-	)
-	hide_dock_ship_menu()
+        SceneSwitcher.switch_scene(
+                "res://Island/island.tscn",
+                Vector2(-190, 648), "zoom",
+                Vector2(16, 16), Vector2(-34, 647),
+                Vector2(1, 1), true
+        )
+        hide_dock_ship_menu()
