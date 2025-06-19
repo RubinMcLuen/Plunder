@@ -4,6 +4,7 @@ extends Node2D
 @onready var player: CharacterBody2D    = $Player
 @onready var monte_coral: CharacterBody2D = $MonteCoral
 @onready var first_mate: NPC             = $FirstMate2
+@onready var island_sprite_simple: CanvasItem = $islandspritesimple
 var skip_fade: bool                      = false
 
 @export var location_name: String        = "Kelptown"
@@ -157,11 +158,16 @@ func _fade_out_characters(t: float = 1.0) -> void:
 						tw.tween_property(c, "modulate:a", 0.0, t)
 
 func start_leave_island_transition(t: float = 1.0) -> void:
-				_fade_out_characters(t)
-				Global.restore_sails_next = true
+                                _fade_out_characters(t)
+                                Global.restore_sails_next = true
 
-				if has_node("PlayerShipClose/Sails"):
-								var sails := get_node("PlayerShipClose/Sails") as CanvasItem
-								sails.visible = true
-								sails.modulate.a = 0.0
-								create_tween().tween_property(sails, "modulate:a", 1.0, t)
+                                if has_node("PlayerShipClose/Sails"):
+                                                                var sails := get_node("PlayerShipClose/Sails") as CanvasItem
+                                                                sails.visible = true
+                                                                sails.modulate.a = 0.0
+                                                                create_tween().tween_property(sails, "modulate:a", 1.0, t)
+
+                                if island_sprite_simple:
+                                                                island_sprite_simple.modulate.a = 0.0
+                                                                island_sprite_simple.visible = true
+                                                                create_tween().tween_property(island_sprite_simple, "modulate:a", 1.0, t)
