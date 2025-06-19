@@ -14,6 +14,8 @@ var enemy_hit: bool = false
 var _advancing: bool = false
 var _orig_max_speed: float = 0.0
 var _orig_target_speed: float = 0.0
+var _enemy_layer: int = 0
+var _enemy_mask: int = 0
 
 func _allowed_actions_for_step(s: int) -> Array[String]:
 		match s:
@@ -42,12 +44,18 @@ func _ready() -> void:
 				if player_ship.has_signal("player_docked"):
 						player_ship.connect("player_docked", _on_player_docked)
 
-				if enemy_ship:
-						enemy_ship.visible = false
-						enemy_ship.ready_for_boarding = false
-						enemy_ship.input_pickable = false
-						if enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")) == false:
-								enemy_ship.connect("area_entered", _on_enemy_area_entered)
+        if enemy_ship:
+                        _enemy_layer = enemy_ship.collision_layer
+                        _enemy_mask  = enemy_ship.collision_mask
+                        enemy_ship.visible = false
+                        enemy_ship.ready_for_boarding = false
+                        enemy_ship.input_pickable = false
+                        enemy_ship.collision_layer = 0
+                        enemy_ship.collision_mask = 0
+                        enemy_ship.set_process(false)
+                        enemy_ship.set_physics_process(false)
+                        if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
+                                        enemy_ship.connect("area_entered", _on_enemy_area_entered)
 
 				arrow.visible = false
 				arrow.target  = null
@@ -154,14 +162,20 @@ func _advance_step(next_step: int) -> void:
 		shoot_left_done = false
 		shoot_right_done = false
 
-		if step == 4:
-				if enemy_ship and player_ship:
-						enemy_ship.global_position = player_ship.global_position + Vector2(100, 0)
-						enemy_ship.visible = true
-						enemy_ship.ready_for_boarding = false
-						enemy_ship.input_pickable = false
-				arrow.visible = false
-				arrow.target = null
+                if step == 4:
+                                if enemy_ship and player_ship:
+                                                enemy_ship.global_position = player_ship.global_position + Vector2(100, 0)
+                                                enemy_ship.visible = true
+                                                enemy_ship.ready_for_boarding = false
+                                                enemy_ship.input_pickable = false
+                                                enemy_ship.collision_layer = _enemy_layer
+                                                enemy_ship.collision_mask  = _enemy_mask
+                                                enemy_ship.set_process(true)
+                                                enemy_ship.set_physics_process(true)
+                                                if enemy_ship.has_node("Trail/SubViewport/Line2D"):
+                                                        enemy_ship.get_node("Trail/SubViewport/Line2D").reset_line()
+                                arrow.visible = false
+                                arrow.target = null
 		elif step == 5:
 				arrow.target = enemy_ship
 				arrow.global_position = enemy_ship.global_position + Vector2(arrow.x_offset, arrow.y_offset)

@@ -218,9 +218,12 @@ func _load_new_scene() -> void:
 			new_scene.get_node("Player").global_position = target_position
 
 	# set the NEW scene's camera zoom to load_camera_zoom
-	var nc = _find_camera_for_scene(new_scene)
-	if nc:
-		nc.zoom = load_camera_zoom
+        var nc = _find_camera_for_scene(new_scene)
+        if nc:
+                var target_zoom = load_camera_zoom
+                if target_zoom.x == 0 or target_zoom.y == 0:
+                        target_zoom = Vector2.ONE
+                nc.zoom = target_zoom
 
 	# attach it
 	get_tree().root.add_child(new_scene)
