@@ -349,5 +349,6 @@ bbcode_enabled = true
 
 [node name="Arrow" type="Sprite2D" parent="."]
 visible = false
+z_index = 100
 texture = ExtResource("9_arrow")
 script = ExtResource("10_arrowptr")
