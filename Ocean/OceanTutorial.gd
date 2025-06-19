@@ -119,12 +119,12 @@ func _fade_out_hint(label: CanvasItem, duration: float = 0.5) -> void:
 		tw.tween_callback(Callable(label, "hide"))
 
 func _advance_step(next_step: int) -> void:
-		_advancing = true
-		hint_label.add_theme_color_override("default_color", Color.GREEN)
-		await get_tree().create_timer(1.0).timeout
-		_fade_out_hint(hint_label)
-		await get_tree().create_timer(0.5).timeout
-		step = next_step
+                _advancing = true
+                hint_label.add_theme_color_override("default_color", Color.GREEN)
+                await get_tree().create_timer(1.0).timeout
+                _fade_out_hint(hint_label)
+                await get_tree().create_timer(0.5).timeout
+                step = next_step
 		left_done = false
 		right_done = false
 		shoot_left_done = false
@@ -136,6 +136,9 @@ func _advance_step(next_step: int) -> void:
 		elif step == 5:
 				arrow.visible = false
 				arrow.target = null
-		_show_step_text()
-		_apply_allowed_actions()
-		_advancing = false
+                _show_step_text()
+                _apply_allowed_actions()
+                _advancing = false
+                if step == 5:
+                                await get_tree().create_timer(3.0).timeout
+                                _fade_out_hint(hint_label)
