@@ -26,3 +26,4 @@ res://SceneSwitcher.gd
 res://KelptownIsland/KelptownIsland.tscn
 res://Ocean/OceanTutorial.gd
 res://Ocean/oceantutorial.tscn
+res://Ships/PlayerShip.gd
