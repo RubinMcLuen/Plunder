@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://cfibpjveqehsp"]
+[gd_scene load_steps=29 format=3 uid="uid://cfibpjveqehsp"]
 
 [ext_resource type="Script" path="res://Island/Island.gd" id="1_n8rp0"]
 [ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_vaviu"]
@@ -15,7 +15,6 @@
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="13_cts8x"]
 [ext_resource type="Script" path="res://Character/NPC/npcs/MonteCoral.gd" id="14_clwk4"]
 [ext_resource type="Script" path="res://Character/NPC/npcs/FirstMate.gd" id="15_75dku"]
-[ext_resource type="Texture2D" uid="uid://b5ddreq732vo1" path="res://Island/shipisland.png" id="16_sispr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxd76"]
 size = Vector2(26, 6)
@@ -87,16 +86,16 @@ position = Vector2(266, -1473)
 scale = Vector2(16, 16)
 texture = ExtResource("7_spt4l")
 
-[node name="islandspritesimple" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0)
-position = Vector2(266, -1472)
-scale = Vector2(16, 16)
-texture = ExtResource("16_sispr")
-
 [node name="Ship" type="Sprite2D" parent="MixSprite"]
 position = Vector2(-33, 122)
 texture = ExtResource("8_335cy")
 centered = false
+
+[node name="islandspritesimple" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(266, -1472)
+scale = Vector2(16, 16)
+texture = ExtResource("7_spt4l")
 
 [node name="Player" parent="." instance=ExtResource("9_l87hv")]
 position = Vector2(-32, 624)
