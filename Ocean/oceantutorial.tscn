@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://bbecueeouc3gh" path="res://Ships/detailedboat.png" id="6_fpc3e"]
 [ext_resource type="PackedScene" uid="uid://cnxn3imjbuqru" path="res://Ships/EnemyShip.tscn" id="7_6y6ch"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="8_font"]
+[ext_resource type="Texture2D" path="res://KelptownInn/assets/arrow.png" id="9_arrow"]
+[ext_resource type="Script" path="res://KelptownInn/BobbingArrow.gd" id="10_arrowptr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8clfk"]
 texture = ExtResource("1_xs5hd")
@@ -344,3 +346,8 @@ mouse_filter = 2
 theme_override_fonts/normal_font = ExtResource("8_font")
 theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
+
+[node name="Arrow" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("9_arrow")
+script = ExtResource("10_arrowptr")
