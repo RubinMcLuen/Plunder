@@ -35,16 +35,21 @@ func _ready():
 	set_process_input(true)
 
 func _input(event):
-	# Check if the "move" action is pressed
-	if Input.is_action_pressed("move"):
-		var click_position_global = get_global_mouse_position()
-		print("Click position (global): ", click_position_global)
-		if is_point_in_collision(click_position_global):
-			print("Click is within the collision box.")
-			print("Moving player to predefined target position: ", target_position)
-			move_player_to_target(target_position)
-		else:
-			print("Click is outside the collision box.")
+        # Check if the "move" action is pressed and allowed
+        if Input.is_action_pressed("move"):
+                var player = get_node(player_node_path)
+                if player and player.has_method("_action_allowed"):
+                        if not player._action_allowed("move"):
+                                return
+
+                var click_position_global = get_global_mouse_position()
+                print("Click position (global): ", click_position_global)
+                if is_point_in_collision(click_position_global):
+                        print("Click is within the collision box.")
+                        print("Moving player to predefined target position: ", target_position)
+                        move_player_to_target(target_position)
+                else:
+                        print("Click is outside the collision box.")
 
 func is_point_in_collision(point: Vector2) -> bool:
 	# Create a query parameter for the point

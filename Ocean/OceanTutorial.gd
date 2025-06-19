@@ -21,6 +21,8 @@ func _allowed_actions_for_step(s: int) -> Array[String]:
             return ["ui_left", "ui_right"]
         3:
             return ["shoot_left", "shoot_right"]
+        4:
+            return ["move"]
         _:
             return []
 
