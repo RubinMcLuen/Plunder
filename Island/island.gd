@@ -39,11 +39,11 @@ func _ready() -> void:
 	# 5) Show the location banner
 	UIManager.show_location_notification(location_name)
 
-	# 6) Hook up Monte Coral’s dialogue signal
-	if monte_coral.has_method("dialogue_requested"):
-		monte_coral.dialogue_requested.connect(_on_monte_coral_dialogue_requested)
+        # 6) Hook up Monte Coral’s dialogue signal (if available)
+        if monte_coral and monte_coral.has_signal("dialogue_requested"):
+                monte_coral.dialogue_requested.connect(_on_monte_coral_dialogue_requested)
 
-		_fade_in_characters(1.5)
+        _fade_in_characters(1.5)
 
 
 func _unhandled_input(event: InputEvent) -> void:
