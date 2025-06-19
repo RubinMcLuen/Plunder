@@ -3,14 +3,12 @@ class_name KelptownInnTutorial
 
 @onready var fade_rect      : ColorRect     = $CanvasLayer/FadeRect
 @onready var hint_keys      : RichTextLabel = $CanvasLayer/HintMoveKeys
-@onready var hint_mouse     : RichTextLabel = $CanvasLayer/HintMoveMouse
 @onready var hint_bartender : RichTextLabel = $CanvasLayer/HintBartender
 @onready var hint_hire      : RichTextLabel = $CanvasLayer/HintHireBarnaby
 @onready var barnaby        : NPC           = $Barnaby
 @onready var arrow          : Sprite2D      = $Arrow
 
 var moved_keys: bool = false
-var moved_mouse: bool = false
 var stage_two_started: bool = false
 var stage_three_started: bool = false
 var intro_walk_finished: bool = false
@@ -26,7 +24,6 @@ func get_tutorial_state() -> Dictionary:
 
 	return {
 		"moved_keys": moved_keys,
-		"moved_mouse": moved_mouse,
 		"stage_two_started": stage_two_started,
 		"stage_three_started": stage_three_started,
 		"intro_walk_finished": intro_walk_finished,
@@ -52,11 +49,6 @@ func get_tutorial_state() -> Dictionary:
 								"color": hint_keys.get_theme_color("default_color").to_html(true),
 								"alpha": hint_keys.modulate.a
 				},
-				"hint_mouse": {
-								"visible": hint_mouse.visible,
-								"color": hint_mouse.get_theme_color("default_color").to_html(true),
-								"alpha": hint_mouse.modulate.a
-				},
 				"hint_bartender": {
 								"visible": hint_bartender.visible,
 								"color": hint_bartender.get_theme_color("default_color").to_html(true),
@@ -71,7 +63,6 @@ func get_tutorial_state() -> Dictionary:
 
 func apply_tutorial_state(state: Dictionary) -> void:
 		moved_keys = state.get("moved_keys", false)
-		moved_mouse = state.get("moved_mouse", false)
 		stage_two_started = state.get("stage_two_started", false)
 		stage_three_started = state.get("stage_three_started", false)
 		intro_walk_finished = state.get("intro_walk_finished", false)
@@ -142,13 +133,6 @@ func apply_tutorial_state(state: Dictionary) -> void:
 		hint_keys.add_theme_color_override("default_color", hk_col)
 		hint_keys.modulate.a = hk.get("alpha", 1.0 if hint_keys.visible else 0.0)
 
-		var hm = state.get("hint_mouse", {})
-		hint_mouse.visible = hm.get("visible", false)
-		var hm_col = hm.get("color", hint_mouse.get_theme_color("default_color"))
-		if typeof(hm_col) == TYPE_STRING:
-										hm_col = Color(hm_col)
-		hint_mouse.add_theme_color_override("default_color", hm_col)
-		hint_mouse.modulate.a = hm.get("alpha", 1.0 if hint_mouse.visible else 0.0)
 
 		var hb = state.get("hint_bartender", {})
 		hint_bartender.visible = hb.get("visible", false)
@@ -203,9 +187,7 @@ func _ready() -> void:
 	hint_bartender.visible     = false
 	hint_hire.visible          = false
 	hint_keys.visible          = false
-	hint_mouse.visible         = false
-	hint_keys.modulate.a       = 0.0
-	hint_mouse.modulate.a      = 0.0
+       hint_keys.modulate.a       = 0.0
 	hint_bartender.modulate.a  = 0.0
 	hint_hire.modulate.a       = 0.0
 
@@ -239,18 +221,14 @@ func _process(_delta: float) -> void:
 			hint_keys.add_theme_color_override("default_color", Color.GREEN)
 			_check_movement_complete()
 
-		if not moved_mouse and player.mouse_move_active:
-			moved_mouse = true
-			hint_mouse.add_theme_color_override("default_color", Color.GREEN)
-			_check_movement_complete()
+
 
 func _check_movement_complete() -> void:
-	if moved_keys and moved_mouse and not stage_two_started:
-		stage_two_started = true
-		await get_tree().create_timer(1.0).timeout
-		_fade_out_hint(hint_keys)
-		_fade_out_hint(hint_mouse)
-		await get_tree().create_timer(0.5).timeout
+       if moved_keys and not stage_two_started:
+               stage_two_started = true
+               await get_tree().create_timer(1.0).timeout
+               _fade_out_hint(hint_keys)
+               await get_tree().create_timer(0.5).timeout
 
 		arrow.target = bartender
 		arrow.global_position = bartender.global_position + Vector2(arrow.x_offset, arrow.y_offset)
@@ -261,9 +239,8 @@ func _check_movement_complete() -> void:
 func _on_intro_move_completed() -> void:
 	player.speed = _orig_speed
 	await get_tree().create_timer(1.0).timeout
-	_fade_in_hint(hint_keys)
-	_fade_in_hint(hint_mouse)
-	intro_walk_finished = true
+       _fade_in_hint(hint_keys)
+       intro_walk_finished = true
 
 func _fade_in_hint(label: CanvasItem, duration: float = 0.5) -> void:
 	label.visible = true
@@ -356,6 +333,14 @@ func _on_barnaby_hired_tutorial(_b: NPC) -> void:
 		tutorial_complete = true
 
 func _on_exit_body_entered(body: Node) -> void:
-	if not tutorial_complete:
-		return
-	super._on_exit_body_entered(body)
+       if not tutorial_complete:
+               return
+       if body == player:
+               SceneSwitcher.switch_scene(
+                       "res://Island/islandtutorial.tscn",
+                       Vector2( 64, -42),
+                       "fade",
+                       Vector2.ONE,
+                       Vector2.ZERO,
+                       Vector2(1.5, 1.5)
+               )
