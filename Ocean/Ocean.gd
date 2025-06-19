@@ -26,9 +26,16 @@ func _ready() -> void:
 			if "health" in Global.ship_state:
 				player_ship.health = int(Global.ship_state["health"])
 		Global.ship_state = {}                         # clear after use
-	# Fade in the water
-	$Waves.modulate.a = 0.0
-	get_tree().create_tween().tween_property($Waves, "modulate:a", 1.0, 1.0)
+        # Fade in the water
+        $Waves.modulate.a = 0.0
+        get_tree().create_tween().tween_property($Waves, "modulate:a", 1.0, 1.0)
+
+        if Global.restore_sails_next:
+                Global.restore_sails_next = false
+                if player_ship == null:
+                        player_ship = get_node(player_ship_path) as Node2D
+                if player_ship:
+                        _restore_ship_sails(player_ship, 1.0)
 	# Cache the player ship
 	player_ship = get_node(player_ship_path) as Node2D
 
@@ -50,11 +57,20 @@ func start_boarding_transition(fade_time: float = 1.5) -> void:
 
 
 func start_dock_transition(fade_time: float = 1.0) -> void:
-		if player_ship == null:
-			if has_node(player_ship_path):
-					player_ship = get_node(player_ship_path) as Node2D
-		if player_ship:
-			_fade_ship_sails(player_ship, fade_time)
+                if player_ship == null:
+                        if has_node(player_ship_path):
+                                        player_ship = get_node(player_ship_path) as Node2D
+                if player_ship:
+                        _fade_ship_sails(player_ship, fade_time)
+        if has_node("Waves"):
+                get_tree().create_tween().tween_property($Waves, "modulate:a", 0.0, fade_time)
+
+func start_restore_sails(fade_time: float = 1.0) -> void:
+        if player_ship == null:
+                if has_node(player_ship_path):
+                        player_ship = get_node(player_ship_path) as Node2D
+        if player_ship:
+                _restore_ship_sails(player_ship, fade_time)
 
 
 func _fade_ship_sails(ship: Node2D, t: float) -> void:
@@ -71,6 +87,21 @@ func _fade_ship_sails(ship: Node2D, t: float) -> void:
 	elif ship.has_node("ShipSprite"):
 		sail = ship.get_node("ShipSprite") as CanvasItem
 
-	if sail:
-		sail.modulate.a = 1.0
-		get_tree().create_tween().tween_property(sail, "modulate:a", 0.0, t)
+        if sail:
+                sail.modulate.a = 1.0
+                get_tree().create_tween().tween_property(sail, "modulate:a", 0.0, t)
+
+func _restore_ship_sails(ship: Node2D, t: float) -> void:
+        if ship.has_node("NoSails"):
+                var hull := ship.get_node("NoSails") as CanvasItem
+                hull.visible = false
+
+        var sail : CanvasItem = null
+        if ship.has_node("Boat"):
+                sail = ship.get_node("Boat") as CanvasItem
+        elif ship.has_node("ShipSprite"):
+                sail = ship.get_node("ShipSprite") as CanvasItem
+
+        if sail:
+                sail.modulate.a = 0.0
+                get_tree().create_tween().tween_property(sail, "modulate:a", 1.0, t)
