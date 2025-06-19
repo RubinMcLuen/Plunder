@@ -196,17 +196,17 @@ func hide_begin_raid_menu() -> void:
 # Editor-wired buttons (if any)
 # ──────────────────────────
 func _on_set_sail_button_pressed() -> void:
-        var island = get_tree().current_scene
-        if island and island.has_method("start_leave_island_transition"):
-                island.start_leave_island_transition(1.0)
+		var island = get_tree().current_scene
+		if island and island.has_method("start_leave_island_transition"):
+				island.start_leave_island_transition(1.0)
 
-        SceneSwitcher.switch_scene(
-                "res://Ocean/ocean.tscn",
-                Vector2(-2, 39), "zoom",
-                Vector2(0.0625, 0.0625), Vector2(-34, 647),
-                Vector2(1, 1), true
-        )
-        hide_set_sail_menu()
+		SceneSwitcher.switch_scene(
+				"res://Ocean/ocean.tscn",
+				Vector2(-2, 39), "zoom",
+				Vector2(0.0625, 0.0625), Vector2(-34, 647),
+				Vector2(1, 1), true
+		)
+		hide_set_sail_menu()
 
 func _on_dock_ship_button_pressed() -> void:
 	var ocean = get_tree().current_scene

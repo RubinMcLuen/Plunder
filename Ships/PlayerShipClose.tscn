@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://7iti6gihoxcn"]
+[gd_scene load_steps=8 format=3 uid="uid://7iti6gihoxcn"]
 
 [ext_resource type="Texture2D" uid="uid://cc1klfhtqilyc" path="res://Battle/ZoomedInNewShip.png" id="1_y6s63"]
+[ext_resource type="Texture2D" uid="uid://bw8dlgauf5bsa" path="res://Ships/sailszoomedin.png" id="2_nu1by"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fv5an"]
 size = Vector2(66, 0)
@@ -47,3 +48,8 @@ shape = SubResource("RectangleShape2D_qhdj1")
 [node name="CollisionShape2D5" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
 position = Vector2(162, 172)
 shape = SubResource("RectangleShape2D_q2bl5")
+
+[node name="Sails" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(384, 112)
+texture = ExtResource("2_nu1by")
