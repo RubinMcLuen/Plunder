@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://7iti6gihoxcn"]
+[gd_scene load_steps=7 format=3 uid="uid://7iti6gihoxcn"]
 
-[ext_resource type="Texture2D" uid="uid://bbecueeouc3gh" path="res://Ships/detailedboat.png" id="1_8k8p6"]
-[ext_resource type="Texture2D" uid="uid://7nceltgvxgoi" path="res://Ships/Sail1.png" id="2_varon"]
+[ext_resource type="Texture2D" uid="uid://cc1klfhtqilyc" path="res://Battle/ZoomedInNewShip.png" id="1_y6s63"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fv5an"]
 size = Vector2(66, 0)
@@ -16,23 +15,18 @@ size = Vector2(0, 17)
 size = Vector2(0, 20)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q2bl5"]
-size = Vector2(4, 144)
+size = Vector2(4, 113)
 
 [node name="PlayerShipClose" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_8k8p6")
+texture = ExtResource("1_y6s63")
 centered = false
 
 [node name="Collisions" type="Node2D" parent="."]
+position = Vector2(60, -37)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="Collisions"]
-
-[node name="Sprite2D" type="Sprite2D" parent="Collisions/StaticBody2D"]
-z_index = 100
-position = Vector2(191, 20)
-texture = ExtResource("2_varon")
-centered = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
 position = Vector2(229, 101)
@@ -51,5 +45,5 @@ position = Vector2(326, 91)
 shape = SubResource("RectangleShape2D_qhdj1")
 
 [node name="CollisionShape2D5" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
-position = Vector2(162, 188)
+position = Vector2(162, 172)
 shape = SubResource("RectangleShape2D_q2bl5")

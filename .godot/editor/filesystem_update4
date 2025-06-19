@@ -1,4 +1,4 @@
-res://KelptownInn/KelptownInnTutorial.tscn
+res://Main.tscn
 res://Character/NPC/npcs/Bartender.gd
 res://SaveMenu/SaveMenu.gd
 res://Character/assets/UVmap.tres
@@ -7,11 +7,12 @@ res://Character/Player/UVLookupMaterial.tres
 res://SwordFight/swordfight.gd
 res://Ships/Assets/Shaders/RippleShader.tres
 res://Ships/Assets/Shaders/WaterTrailSpriteMaterial.tres
-res://KelptownInn/KelptownInnTutorial.gd
-res://Main.tscn
 res://Battle/BoardingBattle.tscn
 res://Character/NPC/Enemy/Enemy.tscn
 res://Ocean/ocean.tscn
 res://Character/NPC/CrewMember/CrewMember.tscn
+res://KelptownInn/KelptownInnTutorial.tscn
 res://KelptownInn/KelptownInn.tscn
-res://KelptownInn/KelptownInn.gd
+res://Character/Player/player.tscn
+res://Ships/PlayerShipClose.tscn
+res://Island/island.tscn

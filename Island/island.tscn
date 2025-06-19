@@ -4,15 +4,15 @@
 [ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_vaviu"]
 [ext_resource type="Resource" uid="uid://cuv7qfb43qg7d" path="res://Dialogue/dialogues/FirstMate.dialogue" id="3_ju8cp"]
 [ext_resource type="Texture2D" uid="uid://c01pfxvgxpa2i" path="res://Island/shipsand.png" id="4_0rnn0"]
-[ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/PlayerIsland.png" id="5_3hvgk"]
+[ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/playerisland.png" id="5_3hvgk"]
 [ext_resource type="PackedScene" uid="uid://7iti6gihoxcn" path="res://Ships/PlayerShipClose.tscn" id="6_0jtng"]
 [ext_resource type="Texture2D" uid="uid://dv5286v4rgav7" path="res://Island/island.png" id="7_spt4l"]
 [ext_resource type="Texture2D" uid="uid://bw35wphcy4ysm" path="res://Island/shipship.png" id="8_335cy"]
-[ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/Player.tscn" id="9_l87hv"]
+[ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/player.tscn" id="9_l87hv"]
 [ext_resource type="Script" path="res://Island/ShipControlArea.gd" id="10_07xlk"]
 [ext_resource type="Texture2D" uid="uid://docbhg71ou20u" path="res://Island/rail1.png" id="11_bqfu2"]
 [ext_resource type="Texture2D" uid="uid://d13iw7rwft51w" path="res://Island/rail2.png" id="12_nc36f"]
-[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="13_cts8x"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="13_cts8x"]
 [ext_resource type="Script" path="res://Character/NPC/npcs/MonteCoral.gd" id="14_clwk4"]
 [ext_resource type="Script" path="res://Character/NPC/npcs/FirstMate.gd" id="15_75dku"]
 
@@ -78,7 +78,7 @@ position = Vector2(266, -1472)
 texture = ExtResource("5_3hvgk")
 
 [node name="PlayerShipClose" parent="." instance=ExtResource("6_0jtng")]
-position = Vector2(-324, 460)
+position = Vector2(-384, 496)
 
 [node name="MixSprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
