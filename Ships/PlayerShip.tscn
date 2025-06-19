@@ -35,7 +35,7 @@ hframes = 360
 frame = 180
 
 [node name="ShipHitbox" type="CollisionShape2D" parent="."]
-position = Vector2(-4.37114e-08, 1)
+position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_pwcr0")
 
 [node name="GunCooldown" type="Timer" parent="."]
