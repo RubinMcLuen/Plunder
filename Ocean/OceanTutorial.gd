@@ -114,15 +114,15 @@ func _fade_in_hint(label: CanvasItem, duration: float = 0.5) -> void:
 		get_tree().create_tween().tween_property(label, "modulate:a", 1.0, duration)
 
 func _fade_out_hint(label: CanvasItem, duration: float = 0.5) -> void:
-                var tw = get_tree().create_tween()
-                tw.tween_property(label, "modulate:a", 0.0, duration)
-                await tw.finished
-                label.hide()
+				var tw = get_tree().create_tween()
+				tw.tween_property(label, "modulate:a", 0.0, duration)
+				await tw.finished
+				label.hide()
 
 func _advance_step(next_step: int) -> void:
 				_advancing = true
 				hint_label.add_theme_color_override("default_color", Color.GREEN)
-                                await _fade_out_hint(hint_label)
+				await _fade_out_hint(hint_label)
 				step = next_step
 				left_done = false
 				right_done = false
@@ -138,6 +138,6 @@ func _advance_step(next_step: int) -> void:
 				_show_step_text()
 				_apply_allowed_actions()
 				_advancing = false
-                                if step == 5:
-                                                                await get_tree().create_timer(3.0).timeout
-                                                                await _fade_out_hint(hint_label)
+				if step == 5:
+																await get_tree().create_timer(3.0).timeout
+																await _fade_out_hint(hint_label)
