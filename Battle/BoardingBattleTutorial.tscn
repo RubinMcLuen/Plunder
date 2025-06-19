@@ -1,10 +1,13 @@
 [gd_scene load_steps=8 format=3 uid="uid://ghym7xfsxdrf"]
 
 [ext_resource type="Texture2D" uid="uid://cc1klfhtqilyc" path="res://Battle/ZoomedInNewShip.png" id="1_fy6vb"]
-[ext_resource type="Script" path="res://Battle/BoardingBattle.gd" id="1_offb7"]
+[ext_resource type="Script" path="res://Battle/BoardingBattleTutorial.gd" id="1_offb7"]
 [ext_resource type="Script" path="res://Battle/Camera.gd" id="2_rcx86"]
-[ext_resource type="Script" path="res://Battle/BattleManager.gd" id="3_5ftdp"]
+[ext_resource type="Script" path="res://Battle/BattleManagerTutorial.gd" id="3_5ftdp"]
 [ext_resource type="Texture2D" uid="uid://cfvbl5eyme6xx" path="res://Battle/Plank.png" id="4_qvk0i"]
+[ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="5_arrow"]
+[ext_resource type="Script" path="res://KelptownInn/BobbingArrow.gd" id="6_arrowptr"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="7_font"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_87wue"]
 size = Vector2(624, 544)
@@ -89,3 +92,28 @@ z_index = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySpawnArea"]
 position = Vector2(240.5, 88)
 shape = SubResource("RectangleShape2D_h0xrr")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HintLabel" type="RichTextLabel" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -95.0
+offset_right = 240.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("7_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+
+[node name="Arrow" type="Sprite2D" parent="."]
+visible = false
+z_index = 100
+texture = ExtResource("5_arrow")
+script = ExtResource("6_arrowptr")
