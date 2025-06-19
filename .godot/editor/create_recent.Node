@@ -1,5 +1,5 @@
-ColorRect
 Sprite2D
+ColorRect
 Timer
 CollisionShape2D
 Area2D
