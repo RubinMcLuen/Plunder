@@ -62,14 +62,14 @@ func _show_step() -> void:
 										hint_label.text = "[center]Move Barnaby next to the enemy[/center]"
 										_fade_in_hint(hint_label)
 								3:
-									_toggle_ranges(false)
-									hint_label.text = "[center]Defeat the enemy[/center]"
-									_fade_in_hint(hint_label)
-								4:
-										hint_label.text = "[center]Tutorial complete![/center]"
-										_fade_in_hint(hint_label)
-										await get_tree().create_timer(2.0).timeout
-										await _fade_out_hint(hint_label)
+hint_label.text = "[center]Defeat the enemy[/center]"
+_fade_in_hint(hint_label)
+4:
+_toggle_ranges(false)
+hint_label.text = "[center]Tutorial complete![/center]"
+_fade_in_hint(hint_label)
+await get_tree().create_timer(2.0).timeout
+await _fade_out_hint(hint_label)
 
 func _toggle_ranges(on: bool) -> void:
 	_set_range_visible(barnaby, on, Color.CYAN)
@@ -94,8 +94,9 @@ func _set_range_visible(ch, on: bool, color: Color) -> void:
 						radius = shape.shape.radius
 				sprite.radius = radius
 				ch.get_node("MeleeRange").add_child(sprite)
-		sprite.fill_color = Color(color.r, color.g, color.b, 0.4)
-		sprite.outline_color = color
+               sprite.fill_color = Color(color.r, color.g, color.b, 0.25)
+               sprite.outline_color = color
+               sprite.outline_width = 0.5
 		sprite.visible = on
 		sprite.queue_redraw()
 
