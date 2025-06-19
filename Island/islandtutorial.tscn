@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://b0to0ax8d5b2f"]
+[gd_scene load_steps=32 format=3 uid="uid://b0to0ax8d5b2f"]
 
 [ext_resource type="Script" path="res://Island/IslandTutorial.gd" id="1_n8rp0"]
 [ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_vaviu"]
@@ -210,8 +210,6 @@ npc_name = "FirstMate"
 dialogue_resource = ExtResource("3_ju8cp")
 npc_texture_index = 4
 
-[connection signal="dialogue_requested" from="MonteCoral" to="." method="_on_monte_coral_dialogue_requested"]
-[connection signal="dialogue_requested" from="FirstMate2" to="." method="_on_first_mate_2_dialogue_requested"]
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HintLabel" type="RichTextLabel" parent="CanvasLayer"]
@@ -236,3 +234,6 @@ visible = false
 z_index = 100
 texture = ExtResource("16_arrow")
 script = ExtResource("17_arrowptr")
+
+[connection signal="dialogue_requested" from="MonteCoral" to="." method="_on_monte_coral_dialogue_requested"]
+[connection signal="dialogue_requested" from="FirstMate2" to="." method="_on_first_mate_2_dialogue_requested"]
