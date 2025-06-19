@@ -128,15 +128,15 @@ func _switch_to_boarding() -> void:
 	var player_ship = ocean.get_node("PlayerShip") as Node2D
 	var pos = player_ship.global_position
 
-        var scene_path = "res://Battle/BoardingBattle.tscn"
-        if ocean.scene_file_path.ends_with("oceantutorial.tscn"):
-                scene_path = "res://Battle/BoardingBattleTutorial.tscn"
+	var scene_path = "res://Battle/BoardingBattle.tscn"
+	if ocean.scene_file_path.ends_with("oceantutorial.tscn"):
+			scene_path = "res://Battle/BoardingBattleTutorial.tscn"
 
-        SceneSwitcher.switch_scene(
-                scene_path,
-                pos, "none",
-                Vector2(), Vector2(), Vector2(), false
-        )
+	SceneSwitcher.switch_scene(
+			scene_path,
+			pos, "none",
+			Vector2(), Vector2(), Vector2(), false
+	)
 
 # ──────────────────────────
 # Location notification

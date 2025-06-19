@@ -170,15 +170,15 @@ func apply_tutorial_state(state: Dictionary) -> void:
 		if typeof(he_col) == TYPE_STRING:
 								he_col = Color(he_col)
 		hint_exit.add_theme_color_override("default_color", he_col)
-               hint_exit.modulate.a = he.get("alpha", 1.0 if hint_exit.visible else 0.0)
+		hint_exit.modulate.a = he.get("alpha", 1.0 if hint_exit.visible else 0.0)
 
-               # If Barnaby has already been hired, he should no longer be
-               # present in the inn when reloading the tutorial scene.
-               if barnaby.hired:
-                               if arrow.target == barnaby:
-                                               arrow.visible = false
-                                               arrow.target = null
-                               barnaby.queue_free()
+		   # If Barnaby has already been hired, he should no longer be
+		   # present in the inn when reloading the tutorial scene.
+		if barnaby.hired:
+						if arrow.target == barnaby:
+										arrow.visible = false
+										arrow.target = null
+						barnaby.queue_free()
 
 func _ready() -> void:
 	if player == null and has_node("Player"):
