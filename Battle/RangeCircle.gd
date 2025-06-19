@@ -1,9 +1,9 @@
 extends Node2D
 
 var radius: float = 20.0
-var fill_color: Color = Color(1,1,1,0.4)
+var fill_color: Color = Color(1,1,1,0.25)
 var outline_color: Color = Color(1,1,1,1)
-var outline_width: float = 2.0
+var outline_width: float = 0.5
 
 func _ready() -> void:
 	queue_redraw()
