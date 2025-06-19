@@ -8,27 +8,27 @@ var step: int = 0
 var _advancing: bool = false
 
 func get_tutorial_state() -> Dictionary:
-                return {"step": step}
+				return {"step": step}
 
 func apply_tutorial_state(state: Dictionary) -> void:
-                step = int(state.get("step", step))
+				step = int(state.get("step", step))
 
 func _ready() -> void:
-                await super._ready()
+				await super._ready()
 
-                ship_area.body_entered.connect(_on_ship_area_entered)
-                var btn = UIManager.get_node("UIManager/SetSailMenu/SetSailButton")
-                if btn:
-                                if btn.pressed.is_connected(UIManager._on_set_sail_button_pressed):
-                                                btn.pressed.disconnect(UIManager._on_set_sail_button_pressed)
-                                if not btn.pressed.is_connected(_on_set_sail_pressed):
-                                                btn.pressed.connect(_on_set_sail_pressed)
+				ship_area.body_entered.connect(_on_ship_area_entered)
+				var btn = UIManager.get_node("UIManager/SetSailMenu/SetSailButton")
+				if btn:
+								if btn.pressed.is_connected(UIManager._on_set_sail_button_pressed):
+												btn.pressed.disconnect(UIManager._on_set_sail_button_pressed)
+								if not btn.pressed.is_connected(_on_set_sail_pressed):
+												btn.pressed.connect(_on_set_sail_pressed)
 
-                if Global.island_tutorial_state and Global.island_tutorial_state.size() > 0:
-                                apply_tutorial_state(Global.island_tutorial_state)
-                                Global.island_tutorial_state = {}
+				if Global.island_tutorial_state and Global.island_tutorial_state.size() > 0:
+								apply_tutorial_state(Global.island_tutorial_state)
+								Global.island_tutorial_state = {}
 
-                _show_step()
+				_show_step()
 
 func _show_step() -> void:
 		arrow.visible = false
@@ -88,17 +88,17 @@ func _advance_step(next_step: int) -> void:
 		_advancing = false
 
 func _on_exit_body_entered(body: Node) -> void:
-                if body == player:
-                                Global.island_tutorial_state = get_tutorial_state()
-                                SceneSwitcher.switch_scene(
-                                                "res://KelptownInn/KelptownInnTutorial.tscn",
-                                                Vector2(269, 220),
-                                                "fade",
-                                                Vector2.ONE,
-                                                Vector2.ZERO,
-                                                Vector2(1.5, 1.5)
-                                )
+				if body == player:
+								Global.island_tutorial_state = get_tutorial_state()
+								SceneSwitcher.switch_scene(
+												"res://KelptownInn/KelptownInnTutorial.tscn",
+												Vector2(269, 220),
+												"fade",
+												Vector2.ONE,
+												Vector2.ZERO,
+												Vector2(1.5, 1.5)
+								)
 
 func _exit_tree() -> void:
-                Global.island_tutorial_state = get_tutorial_state()
+				Global.island_tutorial_state = get_tutorial_state()
 

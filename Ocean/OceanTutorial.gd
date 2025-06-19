@@ -33,12 +33,12 @@ func _apply_allowed_actions():
 		player_ship.set_allowed_actions(_allowed_actions_for_step(step))
 
 func _ready() -> void:
-                await super._ready()
-                if player_ship:
-                                                _orig_max_speed = player_ship.max_speed
-                                                _orig_target_speed = player_ship.target_speed
-                                                player_ship.max_speed *= 0.25
-                                                player_ship.target_speed *= 0.25
+				await super._ready()
+				if player_ship:
+												_orig_max_speed = player_ship.max_speed
+												_orig_target_speed = player_ship.target_speed
+												player_ship.max_speed *= 0.25
+												player_ship.target_speed *= 0.25
 		if player_ship.has_signal("player_docked"):
 						player_ship.connect("player_docked", _on_player_docked)
 		arrow.visible = false
@@ -139,15 +139,15 @@ func _advance_step(next_step: int) -> void:
 						arrow.target = island
 						arrow.global_position = island.global_position + Vector2(arrow.x_offset, arrow.y_offset)
 						arrow.visible = true
-                                elif step == 5:
-                                                arrow.visible = false
-                                                arrow.target = null
-                                                if player_ship:
-                                                                player_ship.max_speed = _orig_max_speed
-                                                                player_ship.target_speed = _orig_target_speed
-                                _show_step_text()
-                                _apply_allowed_actions()
-                                _advancing = false
-                                if step == 5:
+								elif step == 5:
+												arrow.visible = false
+												arrow.target = null
+												if player_ship:
+																player_ship.max_speed = _orig_max_speed
+																player_ship.target_speed = _orig_target_speed
+								_show_step_text()
+								_apply_allowed_actions()
+								_advancing = false
+								if step == 5:
 																await get_tree().create_timer(3.0).timeout
 																await _fade_out_hint(hint_label)
