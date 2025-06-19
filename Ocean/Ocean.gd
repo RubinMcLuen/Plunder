@@ -43,10 +43,18 @@ func _on_board_enemy_request(enemy: Node2D) -> void:
 
 
 func start_boarding_transition(fade_time: float = 1.5) -> void:
-	if player_ship == null or _enemy_to_board == null:
-		return
-	_fade_ship_sails(player_ship, fade_time)
-	_fade_ship_sails(_enemy_to_board, fade_time)
+        if player_ship == null or _enemy_to_board == null:
+                return
+        _fade_ship_sails(player_ship, fade_time)
+        _fade_ship_sails(_enemy_to_board, fade_time)
+
+
+func start_dock_transition(fade_time: float = 1.0) -> void:
+       if player_ship == null:
+               if has_node(player_ship_path):
+                       player_ship = get_node(player_ship_path) as Node2D
+       if player_ship:
+               _fade_ship_sails(player_ship, fade_time)
 
 
 func _fade_ship_sails(ship: Node2D, t: float) -> void:
