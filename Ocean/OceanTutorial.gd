@@ -119,25 +119,25 @@ func _fade_out_hint(label: CanvasItem, duration: float = 0.5) -> void:
 		tw.tween_callback(Callable(label, "hide"))
 
 func _advance_step(next_step: int) -> void:
-                _advancing = true
-                hint_label.add_theme_color_override("default_color", Color.GREEN)
-                _fade_out_hint(hint_label)
-                await get_tree().create_timer(0.5).timeout
-                step = next_step
-                left_done = false
-                right_done = false
-                shoot_left_done = false
-		shoot_right_done = false
-		if step == 4:
-				arrow.target = island
-				arrow.global_position = island.global_position + Vector2(arrow.x_offset, arrow.y_offset)
-				arrow.visible = true
-		elif step == 5:
-				arrow.visible = false
-				arrow.target = null
-                _show_step_text()
-                _apply_allowed_actions()
-                _advancing = false
-                if step == 5:
-                                await get_tree().create_timer(3.0).timeout
-                                _fade_out_hint(hint_label)
+				_advancing = true
+				hint_label.add_theme_color_override("default_color", Color.GREEN)
+				_fade_out_hint(hint_label)
+				await get_tree().create_timer(0.5).timeout
+				step = next_step
+				left_done = false
+				right_done = false
+				shoot_left_done = false
+				shoot_right_done = false
+				if step == 4:
+						arrow.target = island
+						arrow.global_position = island.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+						arrow.visible = true
+				elif step == 5:
+						arrow.visible = false
+						arrow.target = null
+						_show_step_text()
+						_apply_allowed_actions()
+						_advancing = false
+						if step == 5:
+										await get_tree().create_timer(3.0).timeout
+										_fade_out_hint(hint_label)
