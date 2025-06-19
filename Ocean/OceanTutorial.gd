@@ -135,9 +135,9 @@ func _advance_step(next_step: int) -> void:
 				elif step == 5:
 						arrow.visible = false
 						arrow.target = null
-						_show_step_text()
-						_apply_allowed_actions()
-						_advancing = false
-						if step == 5:
-										await get_tree().create_timer(3.0).timeout
-										_fade_out_hint(hint_label)
+				_show_step_text()
+				_apply_allowed_actions()
+				_advancing = false
+				if step == 5:
+								await get_tree().create_timer(3.0).timeout
+								_fade_out_hint(hint_label)
