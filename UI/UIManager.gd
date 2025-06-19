@@ -205,7 +205,7 @@ func _on_set_sail_button_pressed() -> void:
 				SceneSwitcher.switch_scene(
 						"res://Ocean/ocean.tscn",
 						Vector2(-2, 39), "zoom",
-						Vector2(0.0625, 0.0625), Vector2(-34, 647),
+						Vector2(0.0625, 0.0625), Vector2(-32, 624),
 						Vector2(1, 1), true
 				)
 				hide_set_sail_menu()
