@@ -97,13 +97,13 @@ func _ready():
 
 func _process(delta):
 		if sprite:
-                                handle_input(delta)
-                                if not is_bot_controlled:
-                                                update_movement(delta)
-                                                var new_position = global_position + velocity * delta
-                                                if not is_colliding_with_land(new_position):
-                                                                global_position = new_position
-                                                                emit_signal("position_updated", global_position)
+								handle_input(delta)
+								if not is_bot_controlled:
+												update_movement(delta)
+												var new_position = global_position + velocity * delta
+												if not is_colliding_with_land(new_position):
+																global_position = new_position
+																emit_signal("position_updated", global_position)
 		
 		if is_bot_controlled:
 			if target_angle >= 0:
