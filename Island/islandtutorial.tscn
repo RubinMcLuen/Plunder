@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://cfibpjveqehsp"]
+[gd_scene load_steps=29 format=3 uid="uid://b0to0ax8d5b2f"]
 
 [ext_resource type="Script" path="res://Island/IslandTutorial.gd" id="1_n8rp0"]
 [ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_vaviu"]
