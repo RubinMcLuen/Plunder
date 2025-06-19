@@ -27,19 +27,21 @@ func _ready() -> void:
 								player_ship.health = int(Global.ship_state["health"])
 				Global.ship_state = {}                         # clear after use
 
-		# Restore sails and fade in the water if we just left the island
-		if Global.restore_sails_next:
-				Global.restore_sails_next = false
-				if player_ship == null:
-						player_ship = get_node(player_ship_path) as Node2D
-				if player_ship:
-						_restore_ship_sails(player_ship, 1.0)
-				if has_node("Waves"):
-						$Waves.modulate.a = 0.0
-						get_tree().create_tween().tween_property($Waves, "modulate:a", 1.0, 1.0)
-		elif has_node("Waves"):
-				# Waves should normally start fully visible
-				$Waves.modulate.a = 1.0
+                # Restore sails and fade in the water if we just left the island
+                if Global.restore_sails_next:
+                                Global.restore_sails_next = false
+                                if player_ship == null:
+                                                player_ship = get_node(player_ship_path) as Node2D
+                                if player_ship:
+                                                _restore_ship_sails(player_ship, 1.0)
+
+                                if has_node("Waves"):
+                                                $Waves.modulate.a = 0.0
+                                                await get_tree().process_frame
+                                                get_tree().create_tween().tween_property($Waves, "modulate:a", 1.0, 1.0)
+                elif has_node("Waves"):
+                                # Waves should normally start fully visible
+                                $Waves.modulate.a = 1.0
 	# Cache the player ship
 	player_ship = get_node(player_ship_path) as Node2D
 
