@@ -76,6 +76,16 @@ signal movement_started()
 signal player_docked()
 signal manual_rotation_started()
 
+# List of input action names that are allowed while tutorial or other
+# systems restrict player control. When empty, all controls are allowed.
+var allowed_actions: Array[String] = []
+
+func set_allowed_actions(actions: Array[String]) -> void:
+    allowed_actions = actions
+
+func _action_allowed(action: String) -> bool:
+    return allowed_actions.is_empty() or action in allowed_actions
+
 func _ready():
 	sprite = $ShipSprite
 	collision_shape = $ShipHitbox
@@ -129,11 +139,13 @@ func update_swipe_steering(delta):
 		steering_wheel.rotation_degrees = steering_angle * steering_wheel_multiplier
 
 func _input(event):
-	if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
-		var dx = event.relative.x
-		if dx != 0:
-			steering_velocity += dx * swipe_sensitivity
-			swipe_input_active = true
+        if not _action_allowed("mouse_turn"):
+                return
+        if event is InputEventMouseMotion and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
+                var dx = event.relative.x
+                if dx != 0:
+                        steering_velocity += dx * swipe_sensitivity
+                        swipe_input_active = true
 
 func update_frame():
 	if sprite:
@@ -185,24 +197,24 @@ func handle_bot_input(delta):
 		shoot_right()
 
 func handle_player_input(delta):
-	var key_impulse = 0.0
-	if Input.is_action_pressed("ui_right"):
-		key_impulse += 1.0
-		emit_signal("manual_rotation_started")
-	if Input.is_action_pressed("ui_left"):
-		key_impulse -= 1.0
-		emit_signal("manual_rotation_started")
+        var key_impulse = 0.0
+        if _action_allowed("ui_right") and Input.is_action_pressed("ui_right"):
+                key_impulse += 1.0
+                emit_signal("manual_rotation_started")
+        if _action_allowed("ui_left") and Input.is_action_pressed("ui_left"):
+                key_impulse -= 1.0
+                emit_signal("manual_rotation_started")
 	if key_impulse != 0:
 		var keyboard_impulse_multiplier = 10.0
 		steering_velocity += key_impulse * keyboard_impulse_multiplier
 
-	if Input.is_action_just_pressed("ui_select"):
-		toggle_forward_movement()
-	
-	if Input.is_action_just_pressed("shoot_left"):
-		shoot_left()
-	if Input.is_action_just_pressed("shoot_right"):
-		shoot_right()
+        if _action_allowed("ui_select") and Input.is_action_just_pressed("ui_select"):
+                toggle_forward_movement()
+
+        if _action_allowed("shoot_left") and Input.is_action_just_pressed("shoot_left"):
+                shoot_left()
+        if _action_allowed("shoot_right") and Input.is_action_just_pressed("shoot_right"):
+                shoot_right()
 
 func reset_bot_input():
 	bot_input["rotate_right"] = false
@@ -486,9 +498,11 @@ func rotate_to_target_angle(delta):
 		" target_angle_norm:", target_angle_norm, " diff:", diff)
 
 func _input_event(viewport, event, shape_idx):
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
-		print("Ship clicked!")
-		toggle_forward_movement()
+        if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
+                if not _action_allowed("click_ship"):
+                        return
+                print("Ship clicked!")
+                toggle_forward_movement()
 
 # --- Sound-Playing Helpers ---
 func request_splash_sound():
