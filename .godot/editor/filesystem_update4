@@ -22,3 +22,4 @@ res://Ocean/Ocean.gd
 res://Island/island.gd
 res://Island/Island.gd
 res://Ships/PlayerShip.tscn
+res://SceneSwitcher.gd

@@ -171,10 +171,10 @@ func _start_zoom_transition() -> void:
 		_on_zoom_done()
 
 func _on_zoom_done() -> void:
-        # Ensure the final zoom frame is rendered before swapping scenes
-        var tw = create_tween()
-        tw.tween_interval(0.1)
-        tw.connect("finished", Callable(self, "_load_scene_zoom"))
+		# Ensure the final zoom frame is rendered before swapping scenes
+		var tw = create_tween()
+		tw.tween_interval(0.1)
+		tw.connect("finished", Callable(self, "_load_scene_zoom"))
 
 func _load_scene_zoom() -> void:
 	_remove_old_scene()
