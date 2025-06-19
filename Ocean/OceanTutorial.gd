@@ -13,10 +13,10 @@ var _advancing: bool = false
 
 func _allowed_actions_for_step(s: int) -> Array[String]:
 	match s:
-               0:
-                       return ["ui_up"]
-               1:
-                       return ["ui_down"]
+		0:
+			return ["ui_up"]
+		1:
+			return ["ui_down"]
 		2:
 			return ["ui_left", "ui_right"]
 		3:
@@ -31,12 +31,12 @@ func _apply_allowed_actions():
 		player_ship.set_allowed_actions(_allowed_actions_for_step(step))
 
 func _ready() -> void:
-               await super._ready()
-               if player_ship:
-                               player_ship.max_speed *= 0.25
-                               player_ship.target_speed *= 0.25
-               if player_ship.has_signal("player_docked"):
-                               player_ship.connect("player_docked", _on_player_docked)
+		await super._ready()
+		if player_ship:
+						player_ship.max_speed *= 0.25
+						player_ship.target_speed *= 0.25
+		if player_ship.has_signal("player_docked"):
+						player_ship.connect("player_docked", _on_player_docked)
 		arrow.visible = false
 		arrow.target  = null
 		_show_step_text()
@@ -44,12 +44,12 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 		match step:
-                               0:
-                                               if Input.is_action_just_pressed("ui_up") and not _advancing:
-                                                                _advance_step(1)
-                               1:
-                                               if Input.is_action_just_pressed("ui_down") and not _advancing:
-                                                                _advance_step(2)
+				0:
+								if Input.is_action_just_pressed("ui_up") and not _advancing:
+										_advance_step(1)
+				1:
+								if Input.is_action_just_pressed("ui_down") and not _advancing:
+										_advance_step(2)
 				2:
 						if Input.is_action_just_pressed("ui_left"):
 								left_done = true
@@ -85,10 +85,10 @@ func _show_step_text() -> void:
 func _update_hint_text() -> void:
 		var text := ""
 		match step:
-                               0:
-                                               text = "Press W to increase speed"
-                               1:
-                                               text = "Press S to slow and stop the ship"
+				0:
+								text = "Press W to increase speed"
+				1:
+								text = "Press S to slow and stop the ship"
 				2:
 						var l1 = "Press A or Left Arrow to turn to port"
 						var l2 = "Press D or Right Arrow to turn starboard"
@@ -97,14 +97,14 @@ func _update_hint_text() -> void:
 						if right_done:
 								l2 = "[color=green]%s[/color]" % l2
 						text = "%s\n%s" % [l1, l2]
-                               3:
-                                               var sl = "Press Q to shoot port side"
-                                               var sr = "Press E to shoot starboard side"
-						if shoot_left_done:
-								sl = "[color=green]%s[/color]" % sl
-						if shoot_right_done:
-								sr = "[color=green]%s[/color]" % sr
-						text = "%s\n%s" % [sl, sr]
+				3:
+								var sl = "Press Q to shoot port side"
+								var sr = "Press E to shoot starboard side"
+								if shoot_left_done:
+										sl = "[color=green]%s[/color]" % sl
+								if shoot_right_done:
+										sr = "[color=green]%s[/color]" % sr
+								text = "%s\n%s" % [sl, sr]
 				4:
 						text = "Click on the island to automatically dock your ship"
 				5:
