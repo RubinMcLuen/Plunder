@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://gyqf4ti7nmw5"]
+[gd_scene load_steps=8 format=3 uid="uid://ghym7xfsxdrf"]
 
 [ext_resource type="Texture2D" uid="uid://cc1klfhtqilyc" path="res://Battle/ZoomedInNewShip.png" id="1_fy6vb"]
 [ext_resource type="Script" path="res://Battle/BoardingBattle.gd" id="1_offb7"]
