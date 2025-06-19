@@ -105,19 +105,22 @@ func _fade_ship_sails(ship: Node2D, t: float) -> void:
 				get_tree().create_tween().tween_property(sail, "modulate:a", 0.0, t)
 
 func _restore_ship_sails(ship: Node2D, t: float) -> void:
-				if ship.has_node("NoSails"):
-								var hull := ship.get_node("NoSails") as CanvasItem
-								hull.visible = false
+        if ship.has_node("NoSails"):
+                var hull := ship.get_node("NoSails") as CanvasItem
+                hull.visible = false
 
-				var sail : CanvasItem = null
-				if ship.has_node("Boat"):
-						sail = ship.get_node("Boat") as CanvasItem
-				elif ship.has_node("ShipSprite"):
-						sail = ship.get_node("ShipSprite") as CanvasItem
+        var sail: CanvasItem = null
+        if ship.has_node("Boat"):
+                sail = ship.get_node("Boat") as CanvasItem
+        elif ship.has_node("ShipSprite"):
+                sail = ship.get_node("ShipSprite") as CanvasItem
 
-						if sail:
-										sail.modulate.a = 0.0
-										get_tree().create_tween().tween_property(sail, "modulate:a", 1.0, t)
+        if sail:
+                if t <= 0.0:
+                        sail.modulate.a = 1.0
+                else:
+                        sail.modulate.a = 0.0
+                        get_tree().create_tween().tween_property(sail, "modulate:a", 1.0, t)
 
 func _fade_environment_in(t: float) -> void:
 		var tw = get_tree().create_tween().set_parallel(true)
