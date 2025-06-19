@@ -205,17 +205,17 @@ func _on_set_sail_button_pressed() -> void:
 	hide_set_sail_menu()
 
 func _on_dock_ship_button_pressed() -> void:
-       var ocean = get_tree().current_scene
-       if ocean and ocean.has_method("start_dock_transition"):
-               # Delay the sail fade until the camera begins zooming
-               var tw = get_tree().create_tween()
-               tw.tween_interval(1.0)
-               tw.connect("finished", Callable(ocean, "start_dock_transition").bind(1.0))
+	var ocean = get_tree().current_scene
+	if ocean and ocean.has_method("start_dock_transition"):
+		# Delay the sail fade until the camera begins zooming
+		var tw = get_tree().create_tween()
+		tw.tween_interval(1.0)
+		tw.connect("finished", Callable(ocean, "start_dock_transition").bind(1.0))
 
-       SceneSwitcher.switch_scene(
-                       "res://Island/island.tscn",
-                       Vector2(-190, 648), "zoom",
-                       Vector2(16, 16), Vector2(-11.875, 40.5),
-                       Vector2(1, 1), true
-       )
-       hide_dock_ship_menu()
+	SceneSwitcher.switch_scene(
+				   "res://Island/island.tscn",
+				   Vector2(-190, 648), "zoom",
+				   Vector2(16, 16), Vector2(-11.875, 40.5),
+				   Vector2(1, 1), true
+	)
+	hide_dock_ship_menu()

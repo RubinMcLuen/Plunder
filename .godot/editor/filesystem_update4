@@ -18,3 +18,4 @@ res://Ships/PlayerShipClose.tscn
 res://Island/island.tscn
 res://KelptownIsland/KelptownIsland.gd
 res://UI/UIManager.gd
+res://Ocean/Ocean.gd
