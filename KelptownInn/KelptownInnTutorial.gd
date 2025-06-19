@@ -369,11 +369,15 @@ func _on_exit_body_entered(body: Node) -> void:
                         arrow.target  = null
                         if hint_exit.visible:
                                         _fade_out_hint(hint_exit)
+                        Global.kelptown_tutorial_state = get_tutorial_state()
                         SceneSwitcher.switch_scene(
                                         "res://Island/islandtutorial.tscn",
                                         Vector2( 64, -42),
                                         "fade",
                                         Vector2.ONE,
-					Vector2.ZERO,
-					Vector2(1.5, 1.5)
-			   )
+                                        Vector2.ZERO,
+                                        Vector2(1.5, 1.5)
+                           )
+
+func _exit_tree() -> void:
+        Global.kelptown_tutorial_state = get_tutorial_state()
