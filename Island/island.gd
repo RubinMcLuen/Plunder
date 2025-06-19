@@ -32,8 +32,10 @@ func _ready() -> void:
 	UIManager.show_location_notification(location_name)
 
 	# 6) Hook up Monte Coral’s dialogue signal
-	if monte_coral.has_method("dialogue_requested"):
-		monte_coral.dialogue_requested.connect(_on_monte_coral_dialogue_requested)
+        if monte_coral.has_method("dialogue_requested"):
+                monte_coral.dialogue_requested.connect(_on_monte_coral_dialogue_requested)
+
+        _fade_in_characters(0.5)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -128,4 +130,24 @@ func _on_first_mate_2_dialogue_requested(dialogue_section: String) -> void:
 
 
 func _on_dialogue_finished() -> void:
-	player.disable_user_input = false
+        player.disable_user_input = false
+
+
+func _fade_in_characters(t: float = 0.5) -> void:
+        var chars = [player, monte_coral, first_mate]
+        var tw = create_tween().set_parallel(true)
+        for c in chars:
+                if c and c is CanvasItem:
+                        c.modulate.a = 0.0
+                        tw.tween_property(c, "modulate:a", 1.0, t)
+
+func _fade_out_characters(t: float = 1.0) -> void:
+        var chars = [player, monte_coral, first_mate]
+        var tw = create_tween().set_parallel(true)
+        for c in chars:
+                if c and c is CanvasItem:
+                        tw.tween_property(c, "modulate:a", 0.0, t)
+
+func start_leave_island_transition(t: float = 1.0) -> void:
+        _fade_out_characters(t)
+        Global.restore_sails_next = true

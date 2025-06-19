@@ -8,6 +8,7 @@ var spawn_position: Vector2 = Vector2.ZERO
 var crew: Array[String] = []
 var ship_state: Dictionary = {}   # holds extra data just for PlayerShip
 var kelptown_tutorial_state: Dictionary = {}
+var restore_sails_next: bool = false
 
 
 func add_crew(npc_name: String) -> void:
