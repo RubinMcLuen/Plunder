@@ -15,6 +15,9 @@
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="13_cts8x"]
 [ext_resource type="Script" path="res://Character/NPC/npcs/MonteCoral.gd" id="14_clwk4"]
 [ext_resource type="Script" path="res://Character/NPC/npcs/FirstMate.gd" id="15_75dku"]
+[ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="16_arrow"]
+[ext_resource type="Script" path="res://KelptownInn/BobbingArrow.gd" id="17_arrowptr"]
+[ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="18_font"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jxd76"]
 size = Vector2(26, 6)
@@ -209,3 +212,27 @@ npc_texture_index = 4
 
 [connection signal="dialogue_requested" from="MonteCoral" to="." method="_on_monte_coral_dialogue_requested"]
 [connection signal="dialogue_requested" from="FirstMate2" to="." method="_on_first_mate_2_dialogue_requested"]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HintLabel" type="RichTextLabel" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -240.0
+offset_top = -95.0
+offset_right = 240.0
+offset_bottom = 175.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_fonts/normal_font = ExtResource("18_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+
+[node name="Arrow" type="Sprite2D" parent="."]
+visible = false
+z_index = 100
+texture = ExtResource("16_arrow")
+script = ExtResource("17_arrowptr")
