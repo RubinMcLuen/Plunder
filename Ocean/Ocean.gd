@@ -46,7 +46,7 @@ func _ready() -> void:
 		if player_ship == null and has_node(player_ship_path):
 			player_ship = get_node(player_ship_path) as Node2D
 		if player_ship:
-			_restore_ship_sails(player_ship, 1.0)
+			_restore_ship_sails(player_ship, 0.0)
 
 		await get_tree().process_frame
 		_fade_environment_in(1.0)
