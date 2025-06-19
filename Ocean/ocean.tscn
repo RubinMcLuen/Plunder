@@ -285,11 +285,11 @@ layer_0/tile_data = PackedInt32Array(-851991, 0, 0, -786455, 0, 0, -720919, 0, 0
 z_index = -3
 position = Vector2(30, -68)
 player_node_path = NodePath("../PlayerShip")
-target_position = Vector2(-2, 38)
+target_position = Vector2(-2, 39)
 
 [node name="PlayerShip" parent="." instance=ExtResource("3_qc67i")]
 z_index = 4
-position = Vector2(-2, 38)
+position = Vector2(-2, 39)
 disable_mode = 2
 
 [node name="NoSails" type="Sprite2D" parent="PlayerShip"]
