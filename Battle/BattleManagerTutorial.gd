@@ -20,11 +20,14 @@ func spawn_single_enemy() -> EnemyNPC:
 		var rect := cs.shape as RectangleShape2D
 		var center : Vector2 = cs.global_position
 		var ext    : Vector2 = rect.extents
-		var e : EnemyNPC = scene.instantiate()
-		var off := Vector2(ext.x * 0.8, 0)
-		e.global_position = center + off
-		e.health = 5
-		enemy_container.add_child(e)
-		spawned_enemy = e
-		return e
+                var e : EnemyNPC = scene.instantiate()
+                var off := Vector2(ext.x * 0.8, 0)
+                e.global_position = center + off
+                e.health = 5
+                e.z_index += 1
+                if e.has_node("MeleeRange"):
+                        e.get_node("MeleeRange").z_index += 1
+                enemy_container.add_child(e)
+                spawned_enemy = e
+                return e
 
