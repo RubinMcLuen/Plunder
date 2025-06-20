@@ -24,3 +24,4 @@ res://Ocean/oceantutorial.tscn
 res://Island/islandtutorial.tscn
 res://Character/NPC/CrewMember/CrewMember.gd
 res://Character/NPC/Enemy/Enemy.gd
+res://Character/Player/Player.gd

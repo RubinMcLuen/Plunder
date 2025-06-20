@@ -10,4 +10,4 @@ override_map_texture = true
 
 [node name="Appearance" parent="." index="0"]
 material = ExtResource("3_updfa")
-animation = &"IdleStand"
+animation = &"AttackSlash"
