@@ -1,6 +1,6 @@
 [gd_scene load_steps=29 format=3 uid="uid://cfibpjveqehsp"]
 
-[ext_resource type="Script" path="res://Island/Island.gd" id="1_n8rp0"]
+[ext_resource type="Script" path="res://Island/island.gd" id="1_n8rp0"]
 [ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_vaviu"]
 [ext_resource type="Resource" uid="uid://cuv7qfb43qg7d" path="res://Dialogue/dialogues/FirstMate.dialogue" id="3_ju8cp"]
 [ext_resource type="Texture2D" uid="uid://c01pfxvgxpa2i" path="res://Island/shipsand.png" id="4_0rnn0"]
@@ -100,6 +100,8 @@ texture = ExtResource("7_spt4l")
 
 [node name="Player" parent="." instance=ExtResource("9_l87hv")]
 position = Vector2(-32, 624)
+speed = 100
+customization_only = false
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(1.5, 1.5)
@@ -187,7 +189,6 @@ visible = false
 position = Vector2(-345, 65)
 script = ExtResource("14_clwk4")
 npc_name = "MonteCoral"
-stats = null
 dialogue_resource = ExtResource("2_vaviu")
 npc_texture_index = 3
 
@@ -197,7 +198,6 @@ position = Vector2(297, 112)
 script = ExtResource("15_75dku")
 state = "default"
 npc_name = "FirstMate"
-stats = null
 dialogue_resource = ExtResource("3_ju8cp")
 npc_texture_index = 4
 
@@ -206,7 +206,6 @@ position = Vector2(-66, 697)
 script = ExtResource("15_75dku")
 state = "default"
 npc_name = "FirstMate"
-stats = null
 dialogue_resource = ExtResource("3_ju8cp")
 npc_texture_index = 4
 
