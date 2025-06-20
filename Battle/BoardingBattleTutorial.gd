@@ -4,6 +4,9 @@ extends "res://Battle/BoardingBattle.gd"
 @onready var arrow      : Sprite2D      = $Arrow
 @onready var manager    : BattleManagerTutorial = $BattleManager
 @onready var crew_container : Node2D = $CrewContainer
+@onready var cam : Camera2D = $Camera2D
+
+var _orig_cam_y: float = 0.0
 
 var step : int = 0
 var _advancing : bool = false
@@ -11,11 +14,12 @@ var barnaby : CrewMemberNPC = null
 var enemy   : EnemyNPC = null
 
 func _ready() -> void:
-		await super._ready()
-		for c in crew_container.get_children():
-				if c is BarnabyCrew:
-						barnaby = c
-						break
+                await super._ready()
+                _orig_cam_y = cam.global_position.y
+                for c in crew_container.get_children():
+                                if c is BarnabyCrew:
+                                                barnaby = c
+                                                break
 		await get_tree().create_timer(2.0).timeout
 		_show_step()
 		set_process(true)
@@ -65,11 +69,12 @@ func _show_step() -> void:
 									hint_label.text = "[center]Defeat the enemy[/center]"
 									_fade_in_hint(hint_label)
 								4:
-									_toggle_ranges(false)
-									hint_label.text = "[center]Tutorial complete![/center]"
-									_fade_in_hint(hint_label)
-									await get_tree().create_timer(2.0).timeout
-									await _fade_out_hint(hint_label)
+_toggle_ranges(false)
+hint_label.text = "[center]Tutorial complete![/center]"
+_fade_in_hint(hint_label)
+await get_tree().create_timer(2.0).timeout
+await _fade_out_hint(hint_label)
+await _finish_tutorial()
 
 func _toggle_ranges(on: bool) -> void:
 	_set_range_visible(barnaby, on, Color.CYAN)
@@ -83,13 +88,16 @@ func _set_range_visible(ch, on: bool, color: Color) -> void:
 		shape.visible = on
 		var sprite_path := "MeleeRange/RangeSprite"
 		var sprite : Node2D
-		if ch.has_node(sprite_path):
-														sprite = ch.get_node(sprite_path)
-														sprite.z_index = ch.z_index - 1
-		else:
-														sprite = load("res://Battle/RangeCircle.gd").new()
-														sprite.name = "RangeSprite"
-														sprite.z_index = ch.z_index - 1
+                if ch.has_node(sprite_path):
+                                       sprite = ch.get_node(sprite_path)
+                                       sprite.z_index = ch.z_index - 1
+                                       sprite.z_as_relative = false
+                else:
+                                       sprite = load("res://Battle/RangeCircle.gd").new()
+                                       sprite.name = "RangeSprite"
+                                       sprite.z_index = ch.z_index - 1
+                                       # Ensure the range sprite ignores parent z_index
+                                       sprite.z_as_relative = false
 		var radius := 30.0
 		if shape.shape is CircleShape2D:
 				radius = shape.shape.radius
@@ -116,8 +124,18 @@ func _fade_in_hint(label: CanvasItem, duration: float = 0.5) -> void:
 	get_tree().create_tween().tween_property(label, "modulate:a", 1.0, duration)
 
 func _fade_out_hint(label: CanvasItem, duration: float = 0.5) -> void:
-	var tw = get_tree().create_tween()
-	tw.tween_property(label, "modulate:a", 0.0, duration)
-	await tw.finished
-	label.hide()
+        var tw = get_tree().create_tween()
+        tw.tween_property(label, "modulate:a", 0.0, duration)
+        await tw.finished
+        label.hide()
+
+func _finish_tutorial() -> void:
+        var tw := fade_out_all(2.0)
+        var cam_tw = create_tween()
+        cam_tw.tween_property(cam, "global_position:y", _orig_cam_y, 2.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+        await tw.finished
+        await cam_tw.finished
+        Global.board_zoom_out_next = true
+        var scene = Global.return_scene_path if Global.return_scene_path != "" else "res://Ocean/oceantutorial.tscn"
+        SceneSwitcher.switch_scene(scene, Global.spawn_position, "none", Vector2(), Vector2(), Vector2(16,16), true)
 
