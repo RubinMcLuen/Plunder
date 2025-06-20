@@ -265,10 +265,10 @@ func _process(_delta: float) -> void:
 			or Input.is_action_pressed("ui_left")
 			or Input.is_action_pressed("ui_right")
 		):
-                moved_keys = true
-                        hint_keys.add_theme_color_override("default_color", Color.GREEN)
-                        SoundManager.play_success()
-                        _check_movement_complete()
+				moved_keys = true
+				hint_keys.add_theme_color_override("default_color", Color.GREEN)
+				SoundManager.play_success()
+				_check_movement_complete()
 
 
 
@@ -319,11 +319,11 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 				return
 
 		# Transition from step 2 (talk to bartender) to step 3 (hire Barnaby)
-                arrow.visible = false
-                arrow.target  = null
-                hint_bartender.add_theme_color_override("default_color", Color.GREEN)
-                SoundManager.play_success()
-                _fade_out_hint(hint_bartender)
+				arrow.visible = false
+				arrow.target  = null
+				hint_bartender.add_theme_color_override("default_color", Color.GREEN)
+				SoundManager.play_success()
+				_fade_out_hint(hint_bartender)
 
 		player.disable_user_input = true
 		var balloon := bartender.show_dialogue(section)
@@ -368,21 +368,21 @@ func _on_dialogue_finished_barnaby_tutorial(b: NPC) -> void:
 				# Hint remains visible; simply restore the arrow
 
 func _on_barnaby_hired_tutorial(_b: NPC) -> void:
-                                hint_hire.add_theme_color_override("default_color", Color.GREEN)
-                                SoundManager.play_success()
-                                await get_tree().create_timer(1.0).timeout
-				_fade_out_hint(hint_hire)
-				arrow.visible = false
-				arrow.target  = null
-				var exit_target = $Exit.global_position
-				_b.auto_move_to_position(exit_target)
-				_b.npc_move_completed.connect(Callable(_b, "queue_free"))
-				bartender.state = "normal"
-				tutorial_complete = true
-				stage_exit_started = true
-				_set_arrow_target(exit_area, true)
-				arrow.visible = true
-				_fade_in_hint(hint_exit)
+								hint_hire.add_theme_color_override("default_color", Color.GREEN)
+								SoundManager.play_success()
+								await get_tree().create_timer(1.0).timeout
+								_fade_out_hint(hint_hire)
+								arrow.visible = false
+								arrow.target  = null
+								var exit_target = $Exit.global_position
+								_b.auto_move_to_position(exit_target)
+								_b.npc_move_completed.connect(Callable(_b, "queue_free"))
+								bartender.state = "normal"
+								tutorial_complete = true
+								stage_exit_started = true
+								_set_arrow_target(exit_area, true)
+								arrow.visible = true
+								_fade_in_hint(hint_exit)
 
 func _on_exit_body_entered(body: Node) -> void:
 		if not tutorial_complete:

@@ -60,8 +60,10 @@ size = Vector2(26, 0)
 
 [node name="Island2" type="Node2D"]
 script = ExtResource("1_n8rp0")
+location_name = null
 monte_coral_dialogue = ExtResource("2_vaviu")
 first_mate_dialogue = ExtResource("3_ju8cp")
+dialogue_scene = null
 
 [node name="SandSprite" type="Sprite2D" parent="."]
 position = Vector2(480, -1440)
