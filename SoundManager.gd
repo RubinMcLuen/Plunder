@@ -14,12 +14,11 @@ func _ready() -> void:
 	add_child(music_player)
 	add_child(sfx_player)
 	music_player.finished.connect(_on_music_finished)
-	   # Godot's SceneTree signal name changed in some versions.
-	   # Connect to whichever one exists for maximum compatibility.
-	if get_tree().has_signal("current_scene_changed"):
-			get_tree().connect("current_scene_changed", Callable(self, "_on_scene_changed"))
-	else:
-			get_tree().connect("scene_changed", Callable(self, "_on_scene_changed"))
+	# Connect to the appropriate SceneTree signal. Some Godot versions
+	# provide `scene_changed` while others use `current_scene_changed`.
+	var err := get_tree().connect("current_scene_changed", Callable(self, "_on_scene_changed"))
+	if err != OK:
+		get_tree().connect("scene_changed", Callable(self, "_on_scene_changed"))
 
 func _on_scene_changed(scene: Node) -> void:
 	var path := scene.scene_file_path if scene else ""
