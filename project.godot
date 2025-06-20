@@ -30,6 +30,7 @@ NPCStateManager="*res://NPCStateManager.gd"
 QuestManager="*res://QuestManager.gd"
 UIManager="*res://UI/UIManager.tscn"
 CrewManager="*res://CrewManager.gd"
+SoundManager="*res://SoundManager.gd"
 
 [debug]
 
