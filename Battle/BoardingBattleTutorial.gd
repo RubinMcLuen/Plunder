@@ -88,20 +88,20 @@ func _set_range_visible(ch, on: bool, color: Color) -> void:
 		shape.visible = on
 		var sprite_path := "MeleeRange/RangeSprite"
 		var sprite : Node2D
-                if ch.has_node(sprite_path):
-                                sprite = ch.get_node(sprite_path)
-                else:
-                                sprite = load("res://Battle/RangeCircle.gd").new()
-                                sprite.name = "RangeSprite"
-                                ch.get_node("MeleeRange").add_child(sprite)
+		if ch.has_node(sprite_path):
+						sprite = ch.get_node(sprite_path)
+		else:
+						sprite = load("res://Battle/RangeCircle.gd").new()
+						sprite.name = "RangeSprite"
+						ch.get_node("MeleeRange").add_child(sprite)
 
-                sprite.z_index = ch.z_index - 1
-                # Ensure the range sprite ignores parent z_index
-                sprite.z_as_relative = false
-                var radius := 30.0
-                if shape.shape is CircleShape2D:
-                                radius = shape.shape.radius
-                                sprite.radius = radius * 1.2
+		sprite.z_index = ch.z_index - 1
+		# Ensure the range sprite ignores parent z_index
+		sprite.z_as_relative = false
+		var radius := 30.0
+		if shape.shape is CircleShape2D:
+						radius = shape.shape.radius
+						sprite.radius = radius * 1.2
 		sprite.fill_color = Color(color.r, color.g, color.b, 0.25)
 		sprite.outline_color = color
 		sprite.outline_width = 0.5
@@ -134,9 +134,9 @@ func _finish_tutorial() -> void:
 		cam_tw.tween_property(cam, "global_position:y", _orig_cam_y, 2.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 		await tw.finished
 		await cam_tw.finished
-                Global.board_zoom_out_next = true
-                Global.ocean_tutorial_complete = true
-                var scene = Global.return_scene_path if Global.return_scene_path != "" else "res://Ocean/oceantutorial.tscn"
-                Global.return_scene_path = ""
-                SceneSwitcher.switch_scene(scene, Global.spawn_position, "none", Vector2(), Vector2(), Vector2(16,16), true)
+		Global.board_zoom_out_next = true
+		Global.ocean_tutorial_complete = true
+		var scene = Global.return_scene_path if Global.return_scene_path != "" else "res://Ocean/oceantutorial.tscn"
+		Global.return_scene_path = ""
+		SceneSwitcher.switch_scene(scene, Global.spawn_position, "none", Vector2(), Vector2(), Vector2(16,16), true)
 
