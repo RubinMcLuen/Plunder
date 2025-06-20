@@ -108,21 +108,21 @@ func update_animation() -> void:
 
 
 func _start_slash() -> void:
-        var tgt = targets[0]
-        if not is_instance_valid(tgt):
-                targets.pop_front()
-                return
+		var tgt = targets[0]
+		if not is_instance_valid(tgt):
+				targets.pop_front()
+				return
 
-        set_facing_direction(tgt.global_position.x < global_position.x)
-        play_slash_animation()
-        velocity      = Vector2.ZERO
-        cooldown      = ATTACK_COOLDOWN
-        cooldown_lock = ATTACK_COOLDOWN
-        attacking     = true
-        var delay = _hit_delay("AttackSlash", 5)
-        await get_tree().create_timer(delay).timeout
-        if is_instance_valid(tgt):
-                tgt.take_damage()
+		set_facing_direction(tgt.global_position.x < global_position.x)
+		play_slash_animation()
+		velocity      = Vector2.ZERO
+		cooldown      = ATTACK_COOLDOWN
+		cooldown_lock = ATTACK_COOLDOWN
+		attacking     = true
+		var delay = _hit_delay("AttackSlash", 5)
+		await get_tree().create_timer(delay).timeout
+		if is_instance_valid(tgt):
+				tgt.take_damage()
 
 
 func _end_slash() -> void:
@@ -148,24 +148,24 @@ func _on_exit(n: Node) -> void:
 
 
 func play_slash_animation() -> void:
-        anim_override            = true
-        current_anim             = "slash"
-        anim_override_start_time = Time.get_ticks_msec()
+		anim_override            = true
+		current_anim             = "slash"
+		anim_override_start_time = Time.get_ticks_msec()
 
-	# ─── Compute the real length of "AttackSlash" ───
-	var anim_name   = "AttackSlash"
-	var frame_count = appearance.sprite_frames.get_frame_count(anim_name)
-	var fps         = appearance.sprite_frames.get_animation_speed(anim_name)
-	if fps <= 0.001:
-		fps = 1.0
-	anim_override_duration = int((frame_count / fps) * 1000)
+		# ─── Compute the real length of "AttackSlash" ───
+		var anim_name   = "AttackSlash"
+		var frame_count = appearance.sprite_frames.get_frame_count(anim_name)
+		var fps         = appearance.sprite_frames.get_animation_speed(anim_name)
+		if fps <= 0.001:
+			fps = 1.0
+		anim_override_duration = int((frame_count / fps) * 1000)
 
-        # Keep sword in sync
-        if sword:
-                sword.speed_scale = appearance.speed_scale
+		# Keep sword in sync
+		if sword:
+				sword.speed_scale = appearance.speed_scale
 
 func _hit_delay(anim_name: String, frame: int) -> float:
-        var fps = appearance.sprite_frames.get_animation_speed(anim_name)
-        if fps <= 0.001:
-                fps = 1.0
-        return float(frame - 1) / fps
+		var fps = appearance.sprite_frames.get_animation_speed(anim_name)
+		if fps <= 0.001:
+				fps = 1.0
+		return float(frame - 1) / fps

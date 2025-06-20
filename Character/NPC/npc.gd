@@ -106,11 +106,11 @@ func _init_palette() -> void:
 # Hurt-flash shader timer
 # ─────────────────────────────────────────────
 func _init_hurt_timer() -> void:
-        hurt_tmr = Timer.new()
-        hurt_tmr.one_shot = true
-        hurt_tmr.wait_time = 0.016
-        add_child(hurt_tmr)
-        hurt_tmr.timeout.connect(_on_hurt_timeout)
+		hurt_tmr = Timer.new()
+		hurt_tmr.one_shot = true
+		hurt_tmr.wait_time = 0.016
+		add_child(hurt_tmr)
+		hurt_tmr.timeout.connect(_on_hurt_timeout)
 
 func _flash_red() -> void:
 	body_mat.set_shader_parameter("hurt_mode", true)

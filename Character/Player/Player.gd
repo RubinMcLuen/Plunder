@@ -54,14 +54,14 @@ var save_slot: int = -1
 # _ready & _physics_process
 # ---------------------------
 func _ready():
-        load_customization_from_save()   # use save-file if present
-        body_mat = appearance.material
-        _init_hurt_timer()
-        if customization_only:
-                set_physics_process(false)
-        else:
-                appearance.play("IdleStand")
-                set_physics_process(true)
+		load_customization_from_save()   # use save-file if present
+		body_mat = appearance.material
+		_init_hurt_timer()
+		if customization_only:
+				set_physics_process(false)
+		else:
+				appearance.play("IdleStand")
+				set_physics_process(true)
 
 
 func _physics_process(_delta: float) -> void:
@@ -213,33 +213,33 @@ func play_block_animation() -> void:
 	sword.play("AttackBlock")
 
 func play_hurt_animation() -> void:
-        anim_override = true
-        anim_override_start_time = Time.get_ticks_msec()
-        anim_override_duration = 300  # Duration in ms for Hurt
-        current_anim = "hurt"
+		anim_override = true
+		anim_override_start_time = Time.get_ticks_msec()
+		anim_override_duration = 300  # Duration in ms for Hurt
+		current_anim = "hurt"
 
 func take_damage() -> void:
-        play_hurt_animation()
-        health -= 1
-        _flash_red()
-        print("Player health is now: ", health)
-        if health <= 0:
-                print("Player health reached 0! Emitting end_fight signal.")
-                emit_signal("end_fight")
+		play_hurt_animation()
+		health -= 1
+		_flash_red()
+		print("Player health is now: ", health)
+		if health <= 0:
+				print("Player health reached 0! Emitting end_fight signal.")
+				emit_signal("end_fight")
 
 func _init_hurt_timer() -> void:
-        hurt_tmr = Timer.new()
-        hurt_tmr.one_shot = true
-        hurt_tmr.wait_time = 0.016
-        add_child(hurt_tmr)
-        hurt_tmr.timeout.connect(_on_hurt_timeout)
+		hurt_tmr = Timer.new()
+		hurt_tmr.one_shot = true
+		hurt_tmr.wait_time = 0.016
+		add_child(hurt_tmr)
+		hurt_tmr.timeout.connect(_on_hurt_timeout)
 
 func _flash_red() -> void:
-        body_mat.set_shader_parameter("hurt_mode", true)
-        hurt_tmr.start()
+		body_mat.set_shader_parameter("hurt_mode", true)
+		hurt_tmr.start()
 
 func _on_hurt_timeout() -> void:
-        body_mat.set_shader_parameter("hurt_mode", false)
+		body_mat.set_shader_parameter("hurt_mode", false)
 
 # ---------------------------
 # Customization Loading
