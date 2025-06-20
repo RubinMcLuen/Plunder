@@ -110,10 +110,10 @@ func _set_range_visible(ch, on: bool, color: Color) -> void:
 
 
 func _advance_step(next_step: int) -> void:
-		_advancing = true
-		hint_label.add_theme_color_override("default_color", Color.GREEN)
-		SoundManager.play_success()
-		await _fade_out_hint(hint_label)
+	_advancing = true
+	hint_label.add_theme_color_override("default_color", Color.GREEN)
+	SoundManager.play_success()
+	await _fade_out_hint(hint_label)
 	step = next_step
 	_show_step()
 	_advancing = false
