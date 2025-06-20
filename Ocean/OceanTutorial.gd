@@ -63,7 +63,9 @@ func _ready() -> void:
 										_apply_allowed_actions()
 
 func _process(_delta: float) -> void:
-		match step:
+    if enemy_ship:
+        enemy_ship.input_pickable = step >= 5
+    match step:
 				0:
 								if Input.is_action_just_pressed("ui_up") and not _advancing:
 										_advance_step(1)
@@ -162,8 +164,8 @@ func _advance_step(next_step: int) -> void:
 		shoot_left_done = false
 		shoot_right_done = false
 
-		if step == 4:
-			if enemy_ship and player_ship:
+                if step == 4:
+                        if enemy_ship and player_ship:
 				enemy_ship.global_position = player_ship.global_position + Vector2(100, 0)
 				enemy_ship.visible = true
 				enemy_ship.ready_for_boarding = false
@@ -178,11 +180,13 @@ func _advance_step(next_step: int) -> void:
 						arrow.target = enemy_ship
 						arrow.global_position = enemy_ship.global_position + Vector2(arrow.x_offset, arrow.y_offset)
 						arrow.visible = true
-		elif step == 5:
-										arrow.self_modulate = Color.WHITE
-										arrow.target = enemy_ship
-										arrow.global_position = enemy_ship.global_position + Vector2(arrow.x_offset, arrow.y_offset)
-										arrow.visible = true
+                elif step == 5:
+                                                               arrow.self_modulate = Color.WHITE
+                                                               arrow.target = enemy_ship
+                                                               arrow.global_position = enemy_ship.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+                                                               arrow.visible = true
+                                                               if enemy_ship:
+                                                                       enemy_ship.input_pickable = true
 		elif step == 6:
 						arrow.visible = false
 						arrow.target = null
