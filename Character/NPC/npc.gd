@@ -42,6 +42,25 @@ var anim_override_start_time: int  = 0
 var anim_override_duration  : int  = 0
 var current_anim            : String = "idle"
 
+# Sound effects
+const STEP_SOUNDS = [
+        preload("res://SFX/stepwood_1.wav"),
+        preload("res://SFX/stepwood_2.wav")
+]
+const SWORD_SOUNDS = [
+        preload("res://SFX/sword_clash.1.ogg"),
+        preload("res://SFX/sword_clash.2.ogg"),
+        preload("res://SFX/sword_clash.3.ogg"),
+        preload("res://SFX/sword_clash.4.ogg"),
+        preload("res://SFX/sword_clash.5.ogg"),
+        preload("res://SFX/sword_clash.6.ogg"),
+        preload("res://SFX/sword_clash.7.ogg"),
+        preload("res://SFX/sword_clash.8.ogg"),
+        preload("res://SFX/sword_clash.9.ogg"),
+        preload("res://SFX/sword_clash.10.ogg")
+]
+var _step_index: int = 0
+
 # Cool-down timer (for subclasses)
 var cooldown_lock: float = 0.0
 
@@ -67,10 +86,11 @@ var hurt_tmr: Timer
 # _ready()
 # ─────────────────────────────────────────────
 func _ready() -> void:
-	randomize()
-	add_to_group("npc")
-	_init_palette()
-	_init_hurt_timer()
+        randomize()
+        add_to_group("npc")
+        _init_palette()
+        _init_hurt_timer()
+        appearance.frame_changed.connect(_on_frame_changed)
 
 	idle_offset     = randi() % FRAMES_PER_ANIMATION
 	idle_start_time = Time.get_ticks_msec()
@@ -117,7 +137,38 @@ func _flash_red() -> void:
 	hurt_tmr.start()
 
 func _on_hurt_timeout() -> void:
-	body_mat.set_shader_parameter("hurt_mode", false)
+        body_mat.set_shader_parameter("hurt_mode", false)
+
+func _on_frame_changed() -> void:
+        if appearance.animation == "Walk" and (appearance.frame == 0 or appearance.frame == 4):
+                _play_step_sound()
+
+func _play_step_sound() -> void:
+        var snd = STEP_SOUNDS[_step_index % STEP_SOUNDS.size()]
+        _step_index = (_step_index + 1) % STEP_SOUNDS.size()
+        var p = AudioStreamPlayer2D.new()
+        p.stream = snd
+        add_child(p)
+        p.play()
+        var t = Timer.new()
+        t.one_shot = true
+        t.wait_time = snd.get_length()
+        p.add_child(t)
+        t.timeout.connect(p.queue_free)
+        t.start()
+
+func _play_sword_sound() -> void:
+        var snd = SWORD_SOUNDS[randi() % SWORD_SOUNDS.size()]
+        var p = AudioStreamPlayer2D.new()
+        p.stream = snd
+        add_child(p)
+        p.play()
+        var t = Timer.new()
+        t.one_shot = true
+        t.wait_time = snd.get_length()
+        p.add_child(t)
+        t.timeout.connect(p.queue_free)
+        t.start()
 
 # ─────────────────────────────────────────────
 # Damage + death
