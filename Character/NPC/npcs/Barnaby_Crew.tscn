@@ -16,6 +16,7 @@ radius = 30.0
 [node name="Barnaby" instance=ExtResource("1_xl2kw")]
 script = ExtResource("2_10ldj")
 npc_texture_index = 1
+z_index = 2
 
 [node name="Appearance" parent="." index="0"]
 material = SubResource("ShaderMaterial_1dc57")

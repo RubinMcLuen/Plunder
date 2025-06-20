@@ -10,6 +10,7 @@ var crew: Array[String] = []
 var ship_state: Dictionary = {}   # holds extra data just for PlayerShip
 var kelptown_tutorial_state: Dictionary = {}
 var island_tutorial_state: Dictionary = {}
+var ocean_tutorial_complete: bool = false
 var restore_sails_next: bool = false
 var skip_player_fade: bool = false
 var board_zoom_out_next: bool = false
