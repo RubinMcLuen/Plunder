@@ -121,11 +121,11 @@ func _update_slider() -> void:
 #  SIGNAL CALLBACKS
 # ─────────────────────────────────────────────────────────────────────
 func _on_category_selected(cat: String) -> void:
-        if sfx_category_button:
-                sfx_category_button.play()
-        current_category = cat
-        current_page = 0
-        _refresh_ui()
+		if sfx_category_button:
+				sfx_category_button.play()
+		current_category = cat
+		current_page = 0
+		_refresh_ui()
 
 func _on_page_changed(page: int) -> void:
 	current_page = page
@@ -162,8 +162,8 @@ func _update_player_texture() -> void:
 # ─────────────────────────────────────────────────────────────────────
 # 2)  Relative animation, camera-proof
 func animate_header(down: bool) -> Tween:
-                if sfx_header_slide and not down:
-                                sfx_header_slide.play()
+				if sfx_header_slide and not down:
+								sfx_header_slide.play()
 		var delta := HEADER_MOVE_Y * (1 if down else -1)
 		var tw := create_tween()\
 				.set_trans(Tween.TRANS_SINE)\

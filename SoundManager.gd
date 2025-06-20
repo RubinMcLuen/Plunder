@@ -12,43 +12,43 @@ const SUCCESS_SFX := preload("res://SFX/success.wav")
 var _island_index: int = 0
 
 func _ready() -> void:
-    add_child(music_player)
-    add_child(sfx_player)
-    music_player.finished.connect(_on_music_finished)
-    get_tree().connect("current_scene_changed", Callable(self, "_on_scene_changed"))
+	add_child(music_player)
+	add_child(sfx_player)
+	music_player.finished.connect(_on_music_finished)
+	get_tree().connect("current_scene_changed", Callable(self, "_on_scene_changed"))
 
 func _on_scene_changed(scene: Node) -> void:
-    var path := scene.scene_file_path if scene else ""
-    if path.ends_with("KelptownInnTutorial.tscn") or path.ends_with("islandtutorial.tscn"):
-        _start_island_music()
-    elif path.ends_with("BoardingBattleTutorial.tscn"):
-        _start_boarding_music()
-    else:
-        stop_music()
+	var path := scene.scene_file_path if scene else ""
+	if path.ends_with("KelptownInnTutorial.tscn") or path.ends_with("islandtutorial.tscn"):
+		_start_island_music()
+	elif path.ends_with("BoardingBattleTutorial.tscn"):
+		_start_boarding_music()
+	else:
+		stop_music()
 
 func _start_island_music() -> void:
-    if music_player.stream == ISLAND_SONG_1 or music_player.stream == ISLAND_SONG_2:
-        if music_player.playing:
-            return
-    _island_index = 0
-    music_player.stream = ISLAND_SONG_1
-    music_player.stream.loop = false
-    music_player.play()
+	if music_player.stream == ISLAND_SONG_1 or music_player.stream == ISLAND_SONG_2:
+		if music_player.playing:
+			return
+	_island_index = 0
+	music_player.stream = ISLAND_SONG_1
+	music_player.stream.loop = false
+	music_player.play()
 
 func _start_boarding_music() -> void:
-    music_player.stream = BOARDING_BATTLE
-    music_player.stream.loop = true
-    music_player.play()
+	music_player.stream = BOARDING_BATTLE
+	music_player.stream.loop = true
+	music_player.play()
 
 func _on_music_finished() -> void:
-    if music_player.stream == ISLAND_SONG_1 or music_player.stream == ISLAND_SONG_2:
-        _island_index = 1 - _island_index
-        music_player.stream = ISLAND_SONG_1 if _island_index == 0 else ISLAND_SONG_2
-        music_player.play()
+	if music_player.stream == ISLAND_SONG_1 or music_player.stream == ISLAND_SONG_2:
+		_island_index = 1 - _island_index
+		music_player.stream = ISLAND_SONG_1 if _island_index == 0 else ISLAND_SONG_2
+		music_player.play()
 
 func stop_music() -> void:
-    music_player.stop()
+	music_player.stop()
 
 func play_success() -> void:
-    sfx_player.stream = SUCCESS_SFX
-    sfx_player.play()
+	sfx_player.stream = SUCCESS_SFX
+	sfx_player.play()
