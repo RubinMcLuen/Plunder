@@ -209,21 +209,21 @@ func update_animation() -> void:
 		if sword:
 			sword.visible = true
 		match current_anim:
-                       "slash":
-                               if appearance.animation != "AttackSlash" or not appearance.is_playing():
-                                       appearance.play("AttackSlash")
-                                       if sword: sword.play("AttackSlash")
-                       "lunge":
-                               if appearance.animation != "AttackLunge" or not appearance.is_playing():
-                                       appearance.play("AttackLunge")
-                                       if sword: sword.play("AttackLunge")
-                       "block":
-                               if appearance.animation != "AttackBlock" or not appearance.is_playing():
-                                       appearance.play("AttackBlock")
-                                       if sword: sword.play("AttackBlock")
-                       "hurt":
-                               if appearance.animation != "Hurt" or not appearance.is_playing():
-                                       appearance.play("Hurt")
+					"slash":
+							if appearance.animation != "AttackSlash" or not appearance.is_playing():
+									appearance.play("AttackSlash")
+									if sword: sword.play("AttackSlash")
+					"lunge":
+							if appearance.animation != "AttackLunge" or not appearance.is_playing():
+									appearance.play("AttackLunge")
+									if sword: sword.play("AttackLunge")
+					"block":
+							if appearance.animation != "AttackBlock" or not appearance.is_playing():
+									appearance.play("AttackBlock")
+									if sword: sword.play("AttackBlock")
+					"hurt":
+							if appearance.animation != "Hurt" or not appearance.is_playing():
+									appearance.play("Hurt")
 		appearance.flip_h = (direction == Vector2.LEFT)
 		if sword: sword.flip_h = (direction == Vector2.LEFT)
 		if Time.get_ticks_msec() - anim_override_start_time >= anim_override_duration:

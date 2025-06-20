@@ -54,11 +54,11 @@ func update_animation() -> void:
 		if sword:
 			sword.visible = true
 
-               if current_anim == "slash":
-                       if appearance.animation != "AttackSlash" or not appearance.is_playing():
-                               appearance.play("AttackSlash")
-                       if sword and (sword.animation != "AttackSlash" or not sword.is_playing()):
-                               sword.play("AttackSlash")
+			if current_anim == "slash":
+					if appearance.animation != "AttackSlash" or not appearance.is_playing():
+							appearance.play("AttackSlash")
+					if sword and (sword.animation != "AttackSlash" or not sword.is_playing()):
+							sword.play("AttackSlash")
 
 		# Sync flip, speed, and frame for slash
 		appearance.flip_h = (direction == Vector2.LEFT)

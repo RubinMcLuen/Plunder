@@ -10,6 +10,14 @@ size = Vector2(17, 22)
 [node name="NPC" instance=ExtResource("1_4fpb3")]
 position = Vector2(67, 58)
 script = ExtResource("2_y21gt")
+npc_name = null
+fight_side_right = null
+customization_only = null
+fightable = null
+npc_texture_index = null
+health = null
+speed = null
+hirable = null
 
 [node name="Appearance" parent="." index="0"]
 material = ExtResource("3_rc5ww")
