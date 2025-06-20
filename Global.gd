@@ -11,6 +11,7 @@ var ship_state: Dictionary = {}   # holds extra data just for PlayerShip
 var kelptown_tutorial_state: Dictionary = {}
 var island_tutorial_state: Dictionary = {}
 var restore_sails_next: bool = false
+var skip_player_fade: bool = false
 
 
 func add_crew(npc_name: String) -> void:
