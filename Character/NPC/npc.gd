@@ -108,7 +108,7 @@ func _init_palette() -> void:
 func _init_hurt_timer() -> void:
 		hurt_tmr = Timer.new()
 		hurt_tmr.one_shot = true
-               hurt_tmr.wait_time = 0.25
+		hurt_tmr.wait_time = 0.25
 		add_child(hurt_tmr)
 		hurt_tmr.timeout.connect(_on_hurt_timeout)
 

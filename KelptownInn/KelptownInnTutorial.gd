@@ -39,12 +39,12 @@ func get_tutorial_state() -> Dictionary:
 		"player_auto_target": player.auto_target_position,
 		"tutorial_complete": tutorial_complete,
 		"bartender_state": bartender.state if is_instance_valid(bartender) else "",
-               "barnaby_state": barnaby.state if is_instance_valid(barnaby) else "",
-               # Preserve Barnaby's hired state even after he leaves the scene
-               "barnaby_hired": (
-                       barnaby.hired if is_instance_valid(barnaby)
-                       else "Barnaby" in Global.crew
-               ),
+			   "barnaby_state": barnaby.state if is_instance_valid(barnaby) else "",
+			   # Preserve Barnaby's hired state even after he leaves the scene
+			   "barnaby_hired": (
+					   barnaby.hired if is_instance_valid(barnaby)
+					   else "Barnaby" in Global.crew
+			   ),
 		"barnaby_pos": {
 			"x": barnaby.global_position.x,
 			"y": barnaby.global_position.y
@@ -381,9 +381,9 @@ func _on_exit_body_entered(body: Node) -> void:
 						arrow.target  = null
 						if hint_exit.visible:
 										_fade_out_hint(hint_exit)
-                        Global.kelptown_tutorial_state = get_tutorial_state()
-                        Global.skip_player_fade = true
-                        SceneSwitcher.switch_scene(
+						Global.kelptown_tutorial_state = get_tutorial_state()
+						Global.skip_player_fade = true
+						SceneSwitcher.switch_scene(
 										"res://Island/islandtutorial.tscn",
 										Vector2( 64, -42),
 										"fade",

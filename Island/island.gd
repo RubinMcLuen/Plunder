@@ -24,7 +24,7 @@ func _ready() -> void:
 		# 1) Spawn crew for this scene
 	CrewManager.populate_scene(self)
 
-        _set_characters_alpha(0.0)
+	_set_characters_alpha(0.0)
 
 	# 2) Immediately apply saved spawn_position (if any)
 	if Global.spawn_position != Vector2.ZERO:
@@ -37,14 +37,14 @@ func _ready() -> void:
 	# 4) Wait one frame so UIManager has hidden everything
 	await get_tree().process_frame
 
-        # 5) Show the location banner
-        UIManager.show_location_notification(location_name)
+		# 5) Show the location banner
+	UIManager.show_location_notification(location_name)
 
-        if Global.skip_player_fade:
-                _set_characters_alpha(1.0)
-                Global.skip_player_fade = false
-        else:
-                _fade_in_characters(1.5)
+	if Global.skip_player_fade:
+			_set_characters_alpha(1.0)
+			Global.skip_player_fade = false
+	else:
+			_fade_in_characters(1.5)
 
 
 func _unhandled_input(event: InputEvent) -> void:

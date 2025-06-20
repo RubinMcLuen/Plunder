@@ -25,3 +25,7 @@ res://Island/islandtutorial.tscn
 res://Character/NPC/CrewMember/CrewMember.gd
 res://Character/NPC/Enemy/Enemy.gd
 res://Character/Player/Player.gd
+res://Character/NPC/NPC.gd
+res://Ocean/OceanTutorial.gd
+res://Island/island.gd
+res://KelptownInn/KelptownInnTutorial.gd
