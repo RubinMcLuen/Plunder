@@ -148,7 +148,8 @@ func _on_exit(n: Node) -> void:
 
 
 func play_slash_animation() -> void:
-		anim_override            = true
+                _play_sword_sound()
+                anim_override            = true
 		current_anim             = "slash"
 		anim_override_start_time = Time.get_ticks_msec()
 
