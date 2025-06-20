@@ -265,9 +265,10 @@ func _process(_delta: float) -> void:
 			or Input.is_action_pressed("ui_left")
 			or Input.is_action_pressed("ui_right")
 		):
-			moved_keys = true
-			hint_keys.add_theme_color_override("default_color", Color.GREEN)
-			_check_movement_complete()
+                moved_keys = true
+                        hint_keys.add_theme_color_override("default_color", Color.GREEN)
+                        SoundManager.play_success()
+                        _check_movement_complete()
 
 
 
@@ -318,10 +319,11 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 				return
 
 		# Transition from step 2 (talk to bartender) to step 3 (hire Barnaby)
-		arrow.visible = false
-		arrow.target  = null
-		hint_bartender.add_theme_color_override("default_color", Color.GREEN)
-		_fade_out_hint(hint_bartender)
+                arrow.visible = false
+                arrow.target  = null
+                hint_bartender.add_theme_color_override("default_color", Color.GREEN)
+                SoundManager.play_success()
+                _fade_out_hint(hint_bartender)
 
 		player.disable_user_input = true
 		var balloon := bartender.show_dialogue(section)
@@ -366,8 +368,9 @@ func _on_dialogue_finished_barnaby_tutorial(b: NPC) -> void:
 				# Hint remains visible; simply restore the arrow
 
 func _on_barnaby_hired_tutorial(_b: NPC) -> void:
-				hint_hire.add_theme_color_override("default_color", Color.GREEN)
-				await get_tree().create_timer(1.0).timeout
+                                hint_hire.add_theme_color_override("default_color", Color.GREEN)
+                                SoundManager.play_success()
+                                await get_tree().create_timer(1.0).timeout
 				_fade_out_hint(hint_hire)
 				arrow.visible = false
 				arrow.target  = null
