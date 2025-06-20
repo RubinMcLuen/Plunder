@@ -83,13 +83,13 @@ func _set_range_visible(ch, on: bool, color: Color) -> void:
 		shape.visible = on
 		var sprite_path := "MeleeRange/RangeSprite"
 		var sprite : Node2D
-		if ch.has_node(sprite_path):
-								sprite = ch.get_node(sprite_path)
-								sprite.z_index = ch.z_index + 1
-		else:
-								sprite = load("res://Battle/RangeCircle.gd").new()
-								sprite.name = "RangeSprite"
-								sprite.z_index = ch.z_index + 1
+               if ch.has_node(sprite_path):
+                                                               sprite = ch.get_node(sprite_path)
+                                                               sprite.z_index = ch.z_index - 1
+               else:
+                                                               sprite = load("res://Battle/RangeCircle.gd").new()
+                                                               sprite.name = "RangeSprite"
+                                                               sprite.z_index = ch.z_index - 1
 								var radius := 30.0
 								if shape.shape is CircleShape2D:
 										radius = shape.shape.radius
