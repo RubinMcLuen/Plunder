@@ -177,8 +177,8 @@ func _drag(_delta: float) -> void:
 		set_facing_direction(dir.x < 0)
 
 func _auto_attack() -> void:
-	if targets.is_empty() or cooldown > 0.0:
-		return
+        if targets.is_empty() or cooldown > 0.0:
+                return
 
 	var tgt = targets[0]
 	if not is_instance_valid(tgt):
@@ -187,16 +187,19 @@ func _auto_attack() -> void:
 
 	set_facing_direction(tgt.global_position.x < global_position.x)
 
-	var anim = CREW_ATTACK_ANIMS[rng.randi() % CREW_ATTACK_ANIMS.size()]
-	if anim == "AttackSlash":
-		play_slash_animation()
-	else:
-		play_lunge_animation()
+        var anim = CREW_ATTACK_ANIMS[rng.randi() % CREW_ATTACK_ANIMS.size()]
+        if anim == "AttackSlash":
+                play_slash_animation()
+        else:
+                play_lunge_animation()
 
-	tgt.take_damage()
-	velocity      = Vector2.ZERO
-	cooldown      = ATTACK_COOLDOWN
-	cooldown_lock = ATTACK_COOLDOWN
+        velocity      = Vector2.ZERO
+        cooldown      = ATTACK_COOLDOWN
+        cooldown_lock = ATTACK_COOLDOWN
+        var delay = _hit_delay(anim, 5)
+        await get_tree().create_timer(delay).timeout
+        if is_instance_valid(tgt):
+                tgt.take_damage()
 
 func _on_target_enter(n: Node) -> void:
 	# We can still check “is EnemyNPC” even if not type‐hinted 
@@ -238,9 +241,9 @@ func play_slash_animation() -> void:
 		sword.speed_scale = appearance.speed_scale
 
 func play_lunge_animation() -> void:
-	anim_override            = true
-	current_anim             = "lunge"
-	anim_override_start_time = Time.get_ticks_msec()
+        anim_override            = true
+        current_anim             = "lunge"
+        anim_override_start_time = Time.get_ticks_msec()
 
 	var anim_name = "AttackLunge"
 	var frame_count = appearance.sprite_frames.get_frame_count(anim_name)
@@ -249,5 +252,11 @@ func play_lunge_animation() -> void:
 		fps = 1.0
 	anim_override_duration = int((frame_count / fps) * 1000)
 
-	if sword:
-		sword.speed_scale = appearance.speed_scale
+        if sword:
+                sword.speed_scale = appearance.speed_scale
+
+func _hit_delay(anim_name: String, frame: int) -> float:
+        var fps = appearance.sprite_frames.get_animation_speed(anim_name)
+        if fps <= 0.001:
+                fps = 1.0
+        return float(frame - 1) / fps
