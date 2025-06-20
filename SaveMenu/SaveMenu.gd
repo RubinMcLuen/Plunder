@@ -128,8 +128,8 @@ func _delete_current_save() -> void:
 #  HEADER ANIMATION
 # ─────────────────────────────────────────────────────────────────────
 func animate_header(down: bool) -> Tween:
-		if sfx_header_slide:
-				sfx_header_slide.play()
+                if sfx_header_slide and not down:
+                                sfx_header_slide.play()
 		var delta = HEADER_MOVE_Y * (1 if down else -1)
 		var tw: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 		tw.tween_property(header, "global_position:y", header.global_position.y + delta, HEADER_TWEEN_TIME)
