@@ -31,3 +31,6 @@ res://Island/island.gd
 res://KelptownInn/KelptownInnTutorial.gd
 res://Battle/BattleManagerTutorial.gd
 res://KelptownInn/BobbingArrow.gd
+res://Battle/BoardingBattle.gd
+res://Ocean/Ocean.gd
+res://UI/UIManager.gd

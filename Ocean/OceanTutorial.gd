@@ -35,12 +35,12 @@ func _apply_allowed_actions():
 
 func _ready() -> void:
 				await super._ready()
-                                if player_ship:
-                                                                _orig_max_speed = player_ship.max_speed
-                                                                _orig_target_speed = player_ship.target_speed
-                                                                # Slightly faster tutorial ship speed
-                                                                player_ship.max_speed *= 0.5
-                                                                player_ship.target_speed *= 0.5
+				if player_ship:
+												_orig_max_speed = player_ship.max_speed
+												_orig_target_speed = player_ship.target_speed
+												# Slightly faster tutorial ship speed
+												player_ship.max_speed *= 0.5
+												player_ship.target_speed *= 0.5
 				if player_ship.has_signal("player_docked"):
 						player_ship.connect("player_docked", _on_player_docked)
 
@@ -198,9 +198,9 @@ func _advance_step(next_step: int) -> void:
 
 		_show_step_text()
 		_apply_allowed_actions()
-                _advancing = false
+		_advancing = false
 
 func begin_raid_pressed() -> void:
-                if step == 6 and not _advancing:
-                                hint_label.add_theme_color_override("default_color", Color.GREEN)
-                                await _fade_out_hint(hint_label)
+				if step == 6 and not _advancing:
+								hint_label.add_theme_color_override("default_color", Color.GREEN)
+								await _fade_out_hint(hint_label)

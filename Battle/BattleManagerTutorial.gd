@@ -24,8 +24,8 @@ func spawn_single_enemy() -> EnemyNPC:
 		var off := Vector2(ext.x * 0.8, 0)
 		e.global_position = center + off
 		e.health = 5
-                # Raise the enemy slightly so range indicators draw beneath
-                e.z_index += 2
+				# Raise the enemy slightly so range indicators draw beneath
+		e.z_index += 2
 		if e.has_node("MeleeRange"):
 				e.get_node("MeleeRange").z_index += 1
 		enemy_container.add_child(e)
