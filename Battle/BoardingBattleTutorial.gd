@@ -37,9 +37,9 @@ func _process(_delta: float) -> void:
 		2:
 			if barnaby and enemy and barnaby.targets.has(enemy) and not _advancing:
 				_advance_step(3)
-		3:
-			if enemy and not is_instance_valid(enemy):
-				_advance_step(4)
+               3:
+                       if enemy and not is_instance_valid(enemy) and not _advancing:
+                               _advance_step(4)
 
 func _show_step() -> void:
 				hint_label.add_theme_color_override("default_color", Color.WHITE)

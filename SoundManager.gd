@@ -14,7 +14,9 @@ func _ready() -> void:
 	add_child(music_player)
 	add_child(sfx_player)
 	music_player.finished.connect(_on_music_finished)
-	get_tree().connect("current_scene_changed", Callable(self, "_on_scene_changed"))
+       # In some versions of Godot the signal is named `scene_changed`.
+       # Use this to remain compatible across releases.
+       get_tree().connect("scene_changed", Callable(self, "_on_scene_changed"))
 
 func _on_scene_changed(scene: Node) -> void:
 	var path := scene.scene_file_path if scene else ""
