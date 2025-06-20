@@ -101,13 +101,25 @@ func _on_player_started_moving() -> void:
 # “Begin Raid” button
 # ──────────────────────────
 func _on_begin_raid_button_pressed() -> void:
-	var ocean = get_tree().current_scene
-	if not ocean or not ocean.has_node("PlayerShip"):
-		return
+        var ocean = get_tree().current_scene
+        if not ocean or not ocean.has_node("PlayerShip"):
+                return
 
-	# fade sails
-	if ocean.has_method("start_boarding_transition"):
-		ocean.start_boarding_transition(1.5)
+        var ship = ocean.get_node("PlayerShip") as Node2D
+        if ship:
+                Global.spawn_position = ship.global_position
+                Global.ship_state = {
+                        "frame": ship.current_frame,
+                        "moving": ship.moving_forward,
+                        "health": ship.health
+                }
+                Global.return_scene_path = ocean.scene_file_path
+                if ocean.has_method("begin_raid_pressed"):
+                        await ocean.begin_raid_pressed()
+
+        # fade sails
+        if ocean.has_method("start_boarding_transition"):
+                ocean.start_boarding_transition(1.5)
 
 	# zoom camera
 	var cam = ocean.get_node("PlayerShip/ShipCamera") as Camera2D
