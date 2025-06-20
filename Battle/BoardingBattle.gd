@@ -26,18 +26,18 @@ func _ready() -> void:
 
 func _collect_canvas_items(node: Node) -> Array:
 	var out := []
-        for child in node.get_children():
-                if child is CanvasItem:
-                        out.append(child)
-                out += _collect_canvas_items(child)
-        return out
+	for child in node.get_children():
+			if child is CanvasItem:
+					out.append(child)
+			out += _collect_canvas_items(child)
+	return out
 
 func fade_out_all(t: float = FADE_DURATION) -> Tween:
-        var visuals: Array = []
-        for c in containers:
-                visuals += _collect_canvas_items(c)
+		var visuals: Array = []
+		for c in containers:
+				visuals += _collect_canvas_items(c)
 
-        var tw = create_tween().set_parallel(true)
-        for item in visuals:
-                tw.tween_property(item, "modulate:a", 0.0, t)
-        return tw
+		var tw = create_tween().set_parallel(true)
+		for item in visuals:
+				tw.tween_property(item, "modulate:a", 0.0, t)
+		return tw
