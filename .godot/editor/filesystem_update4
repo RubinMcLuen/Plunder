@@ -34,3 +34,5 @@ res://KelptownInn/BobbingArrow.gd
 res://Battle/BoardingBattle.gd
 res://Ocean/Ocean.gd
 res://UI/UIManager.gd
+res://CharacterCreator/CharacterCreator.gd
+res://CharacterCreator/CharacterCreator.tscn

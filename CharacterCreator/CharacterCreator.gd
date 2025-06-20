@@ -129,16 +129,16 @@ func _on_page_changed(page: int) -> void:
 	_populate_items()
 
 func _on_item_selected(cat: String, item) -> void:
-        if sfx_item_button:
-                sfx_item_button.play()
-        match cat:
-                "skin":   customization.skin_option   = item
-                "top":    customization.top_option    = item
-                "bottom": customization.bottom_option = item
-		"hat":    customization.hat_option    = item
-		"hair":   customization.hair_option   = item
-		"misc":   _toggle_misc(int(item))
-	_update_player_texture()
+		if sfx_item_button:
+				sfx_item_button.play()
+		match cat:
+				"skin":   customization.skin_option   = item
+				"top":    customization.top_option    = item
+				"bottom": customization.bottom_option = item
+				"hat":    customization.hat_option    = item
+				"hair":   customization.hair_option   = item
+				"misc":   _toggle_misc(int(item))
+		_update_player_texture()
 
 func _toggle_misc(idx: int) -> void:
 	match idx:
@@ -159,17 +159,17 @@ func _update_player_texture() -> void:
 # ─────────────────────────────────────────────────────────────────────
 # 2)  Relative animation, camera-proof
 func animate_header(down: bool) -> Tween:
-        if sfx_header_slide:
-                sfx_header_slide.play()
-        var delta := HEADER_MOVE_Y * (1 if down else -1)
-        var tw := create_tween()\
-                .set_trans(Tween.TRANS_SINE)\
-                .set_ease(Tween.EASE_IN_OUT)
+		if sfx_header_slide:
+				sfx_header_slide.play()
+		var delta := HEADER_MOVE_Y * (1 if down else -1)
+		var tw := create_tween()\
+				.set_trans(Tween.TRANS_SINE)\
+				.set_ease(Tween.EASE_IN_OUT)
 
-	tw.tween_property(header, "position:y",
-		header.position.y + delta, HEADER_TWEEN_TIME)
+		tw.tween_property(header, "position:y",
+			header.position.y + delta, HEADER_TWEEN_TIME)
 
-	return tw
+		return tw
 
 
 
@@ -177,15 +177,15 @@ func animate_header(down: bool) -> Tween:
 #  FINISH / SAVE
 # ─────────────────────────────────────────────────────────────────────
 func _on_finish() -> void:
-        if sfx_finish_button:
-                sfx_finish_button.play()
-        _build_character_data()
-        _save_data()
-	SceneSwitcher.switch_scene(
-				"res://KelptownInn/KelptownInnTutorial.tscn",
-				Vector2(381, 23),
-				"fade"
-		)
+		if sfx_finish_button:
+				sfx_finish_button.play()
+		_build_character_data()
+		_save_data()
+		SceneSwitcher.switch_scene(
+					"res://KelptownInn/KelptownInnTutorial.tscn",
+					Vector2(381, 23),
+					"fade"
+			)
 
 func _build_character_data() -> void:
 	character_data["name"]   = name_input.text.strip_edges()
