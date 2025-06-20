@@ -13,6 +13,9 @@ class_name CharacterCreator
 @onready var cat_buttons:   Node             = $Window/CategoryButtons
 @onready var item_buttons:  Node             = $Window/ItemButtons
 @onready var slider:        Node             = $Window/Slider
+@onready var sfx_header_slide: AudioStreamPlayer = $HeaderSlideSound
+@onready var sfx_finish_button: AudioStreamPlayer = $FinishButtonSound
+@onready var sfx_item_button:  AudioStreamPlayer = $ItemButtonSound
 
 # ─────────────────────────────────────────────────────────────────────
 #  CONSTANTS
@@ -126,10 +129,12 @@ func _on_page_changed(page: int) -> void:
 	_populate_items()
 
 func _on_item_selected(cat: String, item) -> void:
-	match cat:
-		"skin":   customization.skin_option   = item
-		"top":    customization.top_option    = item
-		"bottom": customization.bottom_option = item
+        if sfx_item_button:
+                sfx_item_button.play()
+        match cat:
+                "skin":   customization.skin_option   = item
+                "top":    customization.top_option    = item
+                "bottom": customization.bottom_option = item
 		"hat":    customization.hat_option    = item
 		"hair":   customization.hair_option   = item
 		"misc":   _toggle_misc(int(item))
@@ -154,10 +159,12 @@ func _update_player_texture() -> void:
 # ─────────────────────────────────────────────────────────────────────
 # 2)  Relative animation, camera-proof
 func animate_header(down: bool) -> Tween:
-	var delta := HEADER_MOVE_Y * (1 if down else -1)
-	var tw := create_tween()\
-		.set_trans(Tween.TRANS_SINE)\
-		.set_ease(Tween.EASE_IN_OUT)
+        if sfx_header_slide:
+                sfx_header_slide.play()
+        var delta := HEADER_MOVE_Y * (1 if down else -1)
+        var tw := create_tween()\
+                .set_trans(Tween.TRANS_SINE)\
+                .set_ease(Tween.EASE_IN_OUT)
 
 	tw.tween_property(header, "position:y",
 		header.position.y + delta, HEADER_TWEEN_TIME)
@@ -170,8 +177,10 @@ func animate_header(down: bool) -> Tween:
 #  FINISH / SAVE
 # ─────────────────────────────────────────────────────────────────────
 func _on_finish() -> void:
-	_build_character_data()
-	_save_data()
+        if sfx_finish_button:
+                sfx_finish_button.play()
+        _build_character_data()
+        _save_data()
 	SceneSwitcher.switch_scene(
 				"res://KelptownInn/KelptownInnTutorial.tscn",
 				Vector2(381, 23),
