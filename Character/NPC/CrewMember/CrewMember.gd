@@ -221,7 +221,8 @@ func stop_drag() -> void:
 	velocity = Vector2.ZERO
 
 func play_slash_animation() -> void:
-	anim_override            = true
+        _play_sword_sound()
+        anim_override            = true
 	current_anim             = "slash"
 	anim_override_start_time = Time.get_ticks_msec()
 
@@ -241,7 +242,8 @@ func play_slash_animation() -> void:
 		sword.speed_scale = appearance.speed_scale
 
 func play_lunge_animation() -> void:
-		anim_override            = true
+                _play_sword_sound()
+                anim_override            = true
 		current_anim             = "lunge"
 		anim_override_start_time = Time.get_ticks_msec()
 

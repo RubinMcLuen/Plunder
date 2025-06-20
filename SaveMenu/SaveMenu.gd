@@ -12,6 +12,7 @@ signal hide_character_creator()
 @onready var slots_container:  Node              = $SaveSlots
 @onready var sfx_slot_click:   AudioStreamPlayer = $SaveSlotClickNoise
 @onready var sfx_add_slot:     AudioStreamPlayer = $AddSaveSlotNoise
+@onready var sfx_header_slide: AudioStreamPlayer = $HeaderSlideSound
 
 # ─────────────────────────────────────────────────────────────────────
 #  CONSTANTS
@@ -127,10 +128,12 @@ func _delete_current_save() -> void:
 #  HEADER ANIMATION
 # ─────────────────────────────────────────────────────────────────────
 func animate_header(down: bool) -> Tween:
-	var delta = HEADER_MOVE_Y * (1 if down else -1)
-	var tw: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tw.tween_property(header, "global_position:y", header.global_position.y + delta, HEADER_TWEEN_TIME)
-	return tw
+        if sfx_header_slide:
+                sfx_header_slide.play()
+        var delta = HEADER_MOVE_Y * (1 if down else -1)
+        var tw: Tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+        tw.tween_property(header, "global_position:y", header.global_position.y + delta, HEADER_TWEEN_TIME)
+        return tw
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and info_popup:
