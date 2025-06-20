@@ -22,15 +22,15 @@ const DEFAULT_ARROW_OFFSET := Vector2(1.0, -33.0)
 const EXIT_ARROW_OFFSET    := Vector2(0.0, -25.0)
 
 func _set_arrow_target(t: Node2D, use_exit_offset: bool = false) -> void:
-    arrow.target = t
-    if use_exit_offset:
-        arrow.x_offset = EXIT_ARROW_OFFSET.x
-        arrow.y_offset = EXIT_ARROW_OFFSET.y
-    else:
-        arrow.x_offset = DEFAULT_ARROW_OFFSET.x
-        arrow.y_offset = DEFAULT_ARROW_OFFSET.y
-    if t:
-        arrow.global_position = t.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+	arrow.target = t
+	if use_exit_offset:
+		arrow.x_offset = EXIT_ARROW_OFFSET.x
+		arrow.y_offset = EXIT_ARROW_OFFSET.y
+	else:
+		arrow.x_offset = DEFAULT_ARROW_OFFSET.x
+		arrow.y_offset = DEFAULT_ARROW_OFFSET.y
+	if t:
+		arrow.global_position = t.global_position + Vector2(arrow.x_offset, arrow.y_offset)
 
 func get_tutorial_state() -> Dictionary:
 	var target := ""
@@ -141,17 +141,17 @@ func apply_tutorial_state(state: Dictionary) -> void:
 				barnaby.auto_target_position = barnaby.auto_target_position
 
 				stage_exit_started = state.get("stage_exit_started", false)
-                var target_str = state.get("arrow_target", "")
-                match target_str:
-                        "bartender":
-                                _set_arrow_target(bartender)
-                        "barnaby":
-                                _set_arrow_target(barnaby)
-                        "exit":
-                                _set_arrow_target(exit_area, true)
-                        _:
-                                arrow.target = null
-                arrow.visible = state.get("arrow_visible", false)
+				var target_str = state.get("arrow_target", "")
+				match target_str:
+						"bartender":
+								_set_arrow_target(bartender)
+						"barnaby":
+								_set_arrow_target(barnaby)
+						"exit":
+								_set_arrow_target(exit_area, true)
+						_:
+								arrow.target = null
+				arrow.visible = state.get("arrow_visible", false)
 
 		fade_rect.modulate.a = state.get("fade_alpha", fade_rect.modulate.a)
 
@@ -278,8 +278,8 @@ func _check_movement_complete() -> void:
 			_fade_out_hint(hint_keys)
 			await get_tree().create_timer(0.5).timeout
 
-        _set_arrow_target(bartender)
-        arrow.visible = true
+	_set_arrow_target(bartender)
+	arrow.visible = true
 	_fade_in_hint(hint_bartender)
 	bartender.state = "introduction"
 
@@ -341,8 +341,8 @@ func _on_dialogue_finished_tutorial() -> void:
 				await get_tree().create_timer(0.5).timeout
 				barnaby.state = "Hirable"
 
-                _set_arrow_target(barnaby)
-                arrow.visible = true
+				_set_arrow_target(barnaby)
+				arrow.visible = true
 		_fade_in_hint(hint_hire)
 
 func _on_barnaby_dialogue_requested_tutorial(section: String, b: NPC) -> void:
@@ -361,8 +361,8 @@ func _on_barnaby_dialogue_requested_tutorial(section: String, b: NPC) -> void:
 func _on_dialogue_finished_barnaby_tutorial(b: NPC) -> void:
 		player.disable_user_input = false
 		if stage_three_started and not b.hired:
-                                _set_arrow_target(b)
-                                arrow.visible = true
+								_set_arrow_target(b)
+								arrow.visible = true
 				# Hint remains visible; simply restore the arrow
 
 func _on_barnaby_hired_tutorial(_b: NPC) -> void:
@@ -377,8 +377,8 @@ func _on_barnaby_hired_tutorial(_b: NPC) -> void:
 				bartender.state = "normal"
 				tutorial_complete = true
 				stage_exit_started = true
-                                _set_arrow_target(exit_area, true)
-                                arrow.visible = true
+				_set_arrow_target(exit_area, true)
+				arrow.visible = true
 				_fade_in_hint(hint_exit)
 
 func _on_exit_body_entered(body: Node) -> void:

@@ -29,3 +29,5 @@ res://Character/NPC/NPC.gd
 res://Ocean/OceanTutorial.gd
 res://Island/island.gd
 res://KelptownInn/KelptownInnTutorial.gd
+res://Battle/BattleManagerTutorial.gd
+res://KelptownInn/BobbingArrow.gd
