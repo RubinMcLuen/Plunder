@@ -18,17 +18,16 @@ var _enemy_layer: int = 0
 var _enemy_mask: int = 0
 
 func _allowed_actions_for_step(s: int) -> Array[String]:
-		match s:
-				0:
-						return ["ui_up"]
-				1:
-						return ["ui_down"]
-				2:
-						return ["ui_left", "ui_right"]
-				3:
-						return ["shoot_left", "shoot_right"]
-				_:
-						return []
+                var actions: Array[String] = []
+                if s >= 0:
+                                actions.append("ui_up")
+                if s >= 1:
+                                actions.append("ui_down")
+                if s >= 2:
+                                actions.append_array(["ui_left", "ui_right"])
+                if s >= 3:
+                                actions.append_array(["shoot_left", "shoot_right"])
+                return actions
 
 func _apply_allowed_actions():
 	if player_ship and player_ship.has_method("set_allowed_actions"):
@@ -163,8 +162,8 @@ func _advance_step(next_step: int) -> void:
 		shoot_left_done = false
 		shoot_right_done = false
 
-				if step == 4:
-						if enemy_ship and player_ship:
+                                if step == 4:
+                                                if enemy_ship and player_ship:
 										enemy_ship.global_position = player_ship.global_position + Vector2(100, 0)
 										enemy_ship.visible = true
 										enemy_ship.ready_for_boarding = false
@@ -175,14 +174,15 @@ func _advance_step(next_step: int) -> void:
 										enemy_ship.set_physics_process(true)
 										if enemy_ship.has_node("Trail/SubViewport/Line2D"):
 												enemy_ship.get_node("Trail/SubViewport/Line2D").reset_line()
-								arrow.visible = false
-								arrow.target = null
-								arrow.self_modulate = Color.WHITE
-				elif step == 5:
-								arrow.self_modulate = Color.RED
-								arrow.target = enemy_ship
-								arrow.global_position = enemy_ship.global_position + Vector2(arrow.x_offset, arrow.y_offset)
-								arrow.visible = true
+                                                                arrow.self_modulate = Color.RED
+                                                                arrow.target = enemy_ship
+                                                                arrow.global_position = enemy_ship.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+                                                                arrow.visible = true
+                                elif step == 5:
+                                                                arrow.self_modulate = Color.WHITE
+                                                                arrow.target = enemy_ship
+                                                                arrow.global_position = enemy_ship.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+                                                                arrow.visible = true
 				elif step == 6:
 								arrow.visible = false
 								arrow.target = null
