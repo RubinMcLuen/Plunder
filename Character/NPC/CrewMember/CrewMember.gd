@@ -75,26 +75,26 @@ func update_animation() -> void:
 			sword.visible = true
 
 		match current_anim:
-			"slash":
-				if appearance.animation != "AttackSlash":
-					appearance.play("AttackSlash")
-				if sword.animation != "AttackSlash":
-					sword.play("AttackSlash")
-			"lunge":
-				if appearance.animation != "AttackLunge":
-					appearance.play("AttackLunge")
-				if sword.animation != "AttackLunge":
-					sword.play("AttackLunge")
-			"block":
-				if appearance.animation != "AttackBlock":
-					appearance.play("AttackBlock")
-				if sword.animation != "AttackBlock":
-					sword.play("AttackBlock")
-			"hurt":
-				if appearance.animation != "Hurt":
-					appearance.play("Hurt")
-				if sword.animation != "Hurt":
-					sword.play("Hurt")
+                       "slash":
+                               if appearance.animation != "AttackSlash" or not appearance.is_playing():
+                                       appearance.play("AttackSlash")
+                               if sword and (sword.animation != "AttackSlash" or not sword.is_playing()):
+                                       sword.play("AttackSlash")
+                       "lunge":
+                               if appearance.animation != "AttackLunge" or not appearance.is_playing():
+                                       appearance.play("AttackLunge")
+                               if sword and (sword.animation != "AttackLunge" or not sword.is_playing()):
+                                       sword.play("AttackLunge")
+                       "block":
+                               if appearance.animation != "AttackBlock" or not appearance.is_playing():
+                                       appearance.play("AttackBlock")
+                               if sword and (sword.animation != "AttackBlock" or not sword.is_playing()):
+                                       sword.play("AttackBlock")
+                       "hurt":
+                               if appearance.animation != "Hurt" or not appearance.is_playing():
+                                       appearance.play("Hurt")
+                               if sword and (sword.animation != "Hurt" or not sword.is_playing()):
+                                       sword.play("Hurt")
 
 		# Sync flipping and speed
 		appearance.flip_h = (direction == Vector2.LEFT)
