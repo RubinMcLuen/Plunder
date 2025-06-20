@@ -49,9 +49,10 @@ func _ready() -> void:
 												enemy_ship.set_process(false)
 												enemy_ship.set_physics_process(false)
 												enemy_ship.modulate.a = 1.0
-												var tw = get_tree().create_tween()
-												tw.tween_property(enemy_ship, "modulate:a", 0.0, 2.0)
-												tw.tween_callback(Callable(enemy_ship, "queue_free"))
+               var tw = get_tree().create_tween()
+               tw.tween_property(enemy_ship, "modulate:a", 0.0, 2.0)
+               tw.tween_callback(Callable(enemy_ship, "queue_free"))
+               tw.tween_callback(Callable(self, "_clear_enemy_ship"))
 								return
 				if player_ship:
 												_orig_max_speed = player_ship.max_speed
@@ -82,8 +83,10 @@ func _ready() -> void:
 										_apply_allowed_actions()
 
 func _process(_delta: float) -> void:
-	if enemy_ship:
-		enemy_ship.input_pickable = step >= 5
+        if enemy_ship and is_instance_valid(enemy_ship):
+                enemy_ship.input_pickable = step >= 5
+        else:
+                enemy_ship = null
 	match step:
 				0:
 								if Input.is_action_just_pressed("ui_up") and not _advancing:
@@ -219,6 +222,9 @@ func _advance_step(next_step: int) -> void:
 		_advancing = false
 
 func begin_raid_pressed() -> void:
-				if step == 6 and not _advancing:
-								hint_label.add_theme_color_override("default_color", Color.GREEN)
-								await _fade_out_hint(hint_label)
+                if step == 6 and not _advancing:
+                                hint_label.add_theme_color_override("default_color", Color.GREEN)
+                                await _fade_out_hint(hint_label)
+
+func _clear_enemy_ship() -> void:
+       enemy_ship = null
