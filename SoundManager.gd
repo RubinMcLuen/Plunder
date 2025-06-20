@@ -1,5 +1,4 @@
 extends Node
-class_name SoundManager
 
 const ISLAND_SONG_1 := preload("res://SFX/islandsong1.ogg")
 const ISLAND_SONG_2 := preload("res://SFX/islandsong2.mp3")
