@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://cwlpgtbhderfk"]
+[gd_scene load_steps=18 format=3 uid="uid://cwlpgtbhderfk"]
 
 [ext_resource type="Script" path="res://CharacterCreator/CharacterCreator.gd" id="1_lo01y"]
 [ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://SaveMenu/assets/saveslotmenubackground.png" id="2_tug1n"]
@@ -10,14 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://bhrqe0xbobwf5" path="res://CharacterCreator/CategoryButtons/category_buttons.tscn" id="8_7sw5f"]
 [ext_resource type="PackedScene" uid="uid://dsbcfpv14xee0" path="res://CharacterCreator/ItemButtons/item_buttons.tscn" id="9_evum5"]
 [ext_resource type="PackedScene" uid="uid://c57wj6nmw2lgl" path="res://CharacterCreator/Slider/slider.tscn" id="10_naqu7"]
-[ext_resource type="PackedScene" uid="uid://cup2getx61mv4" path="res://Character/Character.tscn" id="11_ao468"]
-[ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/Player.tscn" id="12_yshow"]
+[ext_resource type="PackedScene" uid="uid://cup2getx61mv4" path="res://Character/character.tscn" id="11_ao468"]
+[ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/player.tscn" id="12_yshow"]
 [ext_resource type="Script" path="res://CharacterCreator/CharacterNameArea.gd" id="13_lrmj7"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="14_a10nl"]
 [ext_resource type="Texture2D" uid="uid://s5jx1ajy7ojo" path="res://CharacterCreator/assets/entername.png" id="15_t416m"]
-[ext_resource type="AudioStream" path="res://SFX/headerslide.wav" id="16_header"]
-[ext_resource type="AudioStream" path="res://SFX/finishbutton.wav" id="17_finish"]
-[ext_resource type="AudioStream" path="res://SFX/itembutton.wav" id="18_item"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mmy72"]
 
@@ -109,12 +106,3 @@ max_length = 15
 flat = true
 select_all_on_focus = true
 caret_blink = true
-
-[node name="HeaderSlideSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("16_header")
-
-[node name="FinishButtonSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("17_finish")
-
-[node name="ItemButtonSound" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("18_item")
