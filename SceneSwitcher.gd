@@ -226,9 +226,11 @@ func _load_new_scene() -> void:
 				nc.zoom = target_zoom
 
 	# attach it
-	get_tree().root.add_child(new_scene)
-	active_scene = new_scene
-	get_tree().current_scene = new_scene
+        get_tree().root.add_child(new_scene)
+        active_scene = new_scene
+        get_tree().current_scene = new_scene
+        if Engine.has_singleton("SoundManager"):
+                SoundManager._on_scene_changed(new_scene)
 
 # -----------------------------------------------------------
 # CAMERA HELPERS
