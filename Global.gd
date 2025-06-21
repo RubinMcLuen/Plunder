@@ -16,6 +16,7 @@ var restore_sails_next: bool = false
 var skip_player_fade: bool = false
 var board_zoom_out_next: bool = false
 var island_intro_next: bool = false
+var post_tutorial_enemy_spawned: bool = false
 var return_scene_path: String = ""
 
 

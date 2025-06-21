@@ -569,7 +569,7 @@ mouse_filter = 2
 theme_override_fonts/normal_font = ExtResource("39_font")
 theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
-text = "[center]Use WASD or arrow keys to move around[/center]"
+text = "[center]Use the WASD keys to move around[/center]"
 
 [node name="HintBartender" type="RichTextLabel" parent="CanvasLayer"]
 visible = false
@@ -588,7 +588,7 @@ mouse_filter = 2
 theme_override_fonts/normal_font = ExtResource("39_font")
 theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
-text = "[center]Click on the bartender to speak to him[/center]"
+text = "[center]Click on the bartender to speak with him[/center]"
 
 [node name="HintHireBarnaby" type="RichTextLabel" parent="CanvasLayer"]
 visible = false
@@ -607,7 +607,7 @@ mouse_filter = 2
 theme_override_fonts/normal_font = ExtResource("39_font")
 theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
-text = "[center]Hire Barnaby to finish the tutorial[/center]"
+text = "[center]Speak with Barnaby and hire him to your crew.[/center]"
 
 [node name="HintExit" type="RichTextLabel" parent="CanvasLayer"]
 visible = false
@@ -626,7 +626,7 @@ mouse_filter = 2
 theme_override_fonts/normal_font = ExtResource("39_font")
 theme_override_font_sizes/normal_font_size = 11
 bbcode_enabled = true
-text = "[center]Leave the inn through the door[/center]"
+text = "[center]Walk out the front door to exit the inn[/center]"
 
 [node name="Arrow" type="Sprite2D" parent="."]
 visible = false
