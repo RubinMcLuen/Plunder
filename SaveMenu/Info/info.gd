@@ -17,8 +17,8 @@ func _ready() -> void:
 	lbl_name.text = "Captain %s" % player.name_input
 
 func _on_play_pressed() -> void:
-	if sfx_button:
-			sfx_button.play()
+        if sfx_button:
+                SoundManager.play_sfx(sfx_button.stream)
 		# 1) Make sure the SaveMenu already set Global.active_save_slot
 	# 2) Load everything (scene, player pos, crew, quests)
 	Global.load_game_state()
@@ -26,8 +26,8 @@ func _on_play_pressed() -> void:
 	queue_free()
 
 func _on_delete_pressed() -> void:
-	if sfx_button:
-			sfx_button.play()
+        if sfx_button:
+                SoundManager.play_sfx(sfx_button.stream)
 	var slot_idx = Global.active_save_slot
 	var path = SAVE_PATH_FORMAT % slot_idx
 	if FileAccess.file_exists(path):
