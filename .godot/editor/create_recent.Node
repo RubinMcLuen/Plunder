@@ -1,3 +1,4 @@
+AudioStreamPlayer
 Sprite2D
 ColorRect
 Timer
@@ -11,4 +12,3 @@ TextureRect
 AnimatedSprite2D
 CanvasLayer
 SubViewport
-Line2D
