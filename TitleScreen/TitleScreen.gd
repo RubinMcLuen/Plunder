@@ -49,7 +49,8 @@ func _on_show_creator(_slot: int) -> void:
 
 
 func _on_hide_creator() -> void:
-	creator.visible = false
-	menu_save.visible = true
-	menu_save.animate_header(true)
-	fade_anim.play_backwards("fade")
+        creator.animate_header(true)
+        creator.visible = false
+        menu_save.visible = true
+        menu_save.animate_header(true)
+        fade_anim.play_backwards("fade")
