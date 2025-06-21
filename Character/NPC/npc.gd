@@ -144,19 +144,19 @@ func _on_frame_changed() -> void:
 				_play_step_sound()
 
 func _play_step_sound() -> void:
-                var snd = STEP_SOUNDS[_step_index % STEP_SOUNDS.size()]
-                _step_index = (_step_index + 1) % STEP_SOUNDS.size()
-                var p = AudioStreamPlayer2D.new()
-                p.stream = snd
-                p.pitch_scale = randf_range(0.9, 1.1)
-                add_child(p)
-                p.play()
-		var t = Timer.new()
-		t.one_shot = true
-		t.wait_time = snd.get_length()
-		p.add_child(t)
-		t.timeout.connect(p.queue_free)
-		t.start()
+				var snd = STEP_SOUNDS[_step_index % STEP_SOUNDS.size()]
+				_step_index = (_step_index + 1) % STEP_SOUNDS.size()
+				var p = AudioStreamPlayer2D.new()
+				p.stream = snd
+				p.pitch_scale = randf_range(0.9, 1.1)
+				add_child(p)
+				p.play()
+				var t = Timer.new()
+				t.one_shot = true
+				t.wait_time = snd.get_length()
+				p.add_child(t)
+				t.timeout.connect(p.queue_free)
+				t.start()
 
 func _play_sword_sound() -> void:
 		var snd = SWORD_SOUNDS[randi() % SWORD_SOUNDS.size()]
