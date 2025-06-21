@@ -32,3 +32,4 @@ res://TitleScreen/TitleScreen.gd
 res://TitleScreen/TitleScreen.tscn
 res://Island/IslandTutorial.gd
 res://KelptownInn/KelptownInnTutorial.gd
+res://Dialogue/balloon.gd

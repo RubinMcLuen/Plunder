@@ -181,9 +181,9 @@ func _update_responses_menu(responses: Array) -> void:
 
 
 func _on_next_button_pressed() -> void:
-        if button_sound:
-                button_sound.play()
-        # 1. If text is still typing, skip to the end
+	if button_sound:
+			button_sound.play()
+	# 1. If text is still typing, skip to the end
 	if dialogue_label.is_typing:
 		dialogue_label.skip_typing()
 		return
@@ -213,9 +213,9 @@ func _on_next_button_pressed() -> void:
 
 
 func _on_response_button_pressed(index: int) -> void:
-        if button_sound:
-                button_sound.play()
-        # Only keep the clicked button toggled on
+	if button_sound:
+			button_sound.play()
+	# Only keep the clicked button toggled on
 	for i in range(option_buttons.size()):
 		option_buttons[i].set_pressed(i == index)
 
