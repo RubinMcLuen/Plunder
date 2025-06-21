@@ -58,7 +58,7 @@ size = Vector2(0, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_etuke"]
 size = Vector2(26, 0)
 
-[node name="Island2" type="Node2D"]
+[node name="Island" type="Node2D"]
 script = ExtResource("1_n8rp0")
 
 [node name="SandSprite" type="Sprite2D" parent="."]
