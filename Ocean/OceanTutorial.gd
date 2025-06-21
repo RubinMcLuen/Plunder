@@ -131,8 +131,13 @@ func _process(_delta: float) -> void:
 								pass
 
 func _on_player_docked() -> void:
-		if step == 5 and not _advancing:
-				_advance_step(6)
+                if step == 5 and not _advancing:
+                                _advance_step(6)
+
+func _on_board_enemy_request(enemy: Node2D) -> void:
+                if step == 5 and not _advancing:
+                                _advance_step(6)
+                super._on_board_enemy_request(enemy)
 
 func _on_enemy_area_entered(area: Area2D) -> void:
 		if step == 4 and not _advancing and area.is_in_group("cannonball2"):
@@ -234,10 +239,8 @@ func _advance_step(next_step: int) -> void:
 		_advancing = false
 
 func begin_raid_pressed() -> void:
-								if step == 6 and not _advancing:
-																hint_label.add_theme_color_override("default_color", Color.GREEN)
-																SoundManager.play_success()
-																await _fade_out_hint(hint_label)
+                                                                if step == 6 and not _advancing:
+                                                                               _advance_step(7)
 
 func _clear_enemy_ship() -> void:
 	enemy_ship = null
