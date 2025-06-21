@@ -33,3 +33,5 @@ res://TitleScreen/TitleScreen.tscn
 res://Island/IslandTutorial.gd
 res://KelptownInn/KelptownInnTutorial.gd
 res://Dialogue/balloon.gd
+res://Character/NPC/npcs/Barnaby.gd
+res://SaveMenu/Info/Info.gd

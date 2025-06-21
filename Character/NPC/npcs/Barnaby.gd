@@ -20,10 +20,10 @@ func _on_area_input_event(_viewport, event, _shape_idx) -> void:
 # OVERRIDE: suppress auto-hire on dialogue finish
 # ─────────────────────────────────────────────
 func show_dialogue(dialogue_key: String) -> Node:
-        if dialogue_resource == null:
-                push_error("Dialogue resource not loaded for NPC " + npc_name)
-                return null
-        _play_grunt_sound()
-        # Show the dialogue balloon WITHOUT connecting it to NPC._on_dialogue_finished
-        var balloon = DialogueManager.show_dialogue_balloon(dialogue_resource, dialogue_key, [self])
-        return balloon
+		if dialogue_resource == null:
+				push_error("Dialogue resource not loaded for NPC " + npc_name)
+				return null
+		_play_grunt_sound()
+		# Show the dialogue balloon WITHOUT connecting it to NPC._on_dialogue_finished
+		var balloon = DialogueManager.show_dialogue_balloon(dialogue_resource, dialogue_key, [self])
+		return balloon

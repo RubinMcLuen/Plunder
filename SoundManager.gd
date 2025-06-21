@@ -24,17 +24,17 @@ func _ready() -> void:
 		_on_scene_changed()
 
 func _on_scene_changed(scene: Node = null) -> void:
-        if scene == null:
-                scene = get_tree().current_scene
-        var path := scene.scene_file_path if scene else ""
-        if path.ends_with("KelptownInnTutorial.tscn") \
-                        or path.ends_with("islandtutorial.tscn") \
-                        or path.ends_with("oceantutorial.tscn"):
-                _start_island_music()
-        elif path.ends_with("BoardingBattleTutorial.tscn"):
-                _start_boarding_music()
-        else:
-                stop_music()
+		if scene == null:
+				scene = get_tree().current_scene
+		var path := scene.scene_file_path if scene else ""
+		if path.ends_with("KelptownInnTutorial.tscn") \
+						or path.ends_with("islandtutorial.tscn") \
+						or path.ends_with("oceantutorial.tscn"):
+				_start_island_music()
+		elif path.ends_with("BoardingBattleTutorial.tscn"):
+				_start_boarding_music()
+		else:
+				stop_music()
 
 func _start_island_music() -> void:
 		if music_player.stream == ISLAND_SONG_1 or music_player.stream == ISLAND_SONG_2:
@@ -61,9 +61,9 @@ func stop_music() -> void:
 	music_player.stop()
 
 func play_success() -> void:
-        sfx_player.stream = SUCCESS_SFX
-        sfx_player.play()
+		sfx_player.stream = SUCCESS_SFX
+		sfx_player.play()
 
 func play_sfx(stream: AudioStream) -> void:
-        sfx_player.stream = stream
-        sfx_player.play()
+		sfx_player.stream = stream
+		sfx_player.play()
