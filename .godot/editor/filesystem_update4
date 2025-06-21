@@ -27,3 +27,5 @@ res://Ships/EnemyShip.tscn
 res://Ships/Trail.tscn
 res://SoundManager.gd
 res://Ocean/OceanTutorial.gd
+res://CharacterCreator/CharacterCreator.gd
+res://TitleScreen/TitleScreen.gd
