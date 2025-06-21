@@ -11,22 +11,22 @@ const SUCCESS_SFX := preload("res://SFX/success.wav")
 var _island_index: int = 0
 
 func _ready() -> void:
-        add_child(music_player)
-        add_child(sfx_player)
-        music_player.finished.connect(_on_music_finished)
-        # Connect to the appropriate SceneTree signal. Some Godot versions
-        # provide `scene_changed` while others use `current_scene_changed`.
-        if get_tree().has_signal("scene_changed"):
-                        get_tree().connect("scene_changed", Callable(self, "_on_scene_changed"))
-        elif get_tree().has_signal("current_scene_changed"):
-                        get_tree().connect("current_scene_changed", Callable(self, "_on_scene_changed"))
-        # Kick off music for whatever scene is already loaded
-        _on_scene_changed()
+		add_child(music_player)
+		add_child(sfx_player)
+		music_player.finished.connect(_on_music_finished)
+		# Connect to the appropriate SceneTree signal. Some Godot versions
+		# provide `scene_changed` while others use `current_scene_changed`.
+		if get_tree().has_signal("scene_changed"):
+						get_tree().connect("scene_changed", Callable(self, "_on_scene_changed"))
+		elif get_tree().has_signal("current_scene_changed"):
+						get_tree().connect("current_scene_changed", Callable(self, "_on_scene_changed"))
+		# Kick off music for whatever scene is already loaded
+		_on_scene_changed()
 
 func _on_scene_changed(scene: Node = null) -> void:
-        if scene == null:
-                scene = get_tree().current_scene
-        var path := scene.scene_file_path if scene else ""
+	if scene == null:
+			scene = get_tree().current_scene
+	var path := scene.scene_file_path if scene else ""
 	if path.ends_with("KelptownInnTutorial.tscn") or path.ends_with("islandtutorial.tscn"):
 		_start_island_music()
 	elif path.ends_with("BoardingBattleTutorial.tscn"):
