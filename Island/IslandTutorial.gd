@@ -52,7 +52,7 @@ func _show_step() -> void:
                                hint_label.text = "[center]Walk onto your ship at the end of the dock[/center]"
                                _fade_in_hint(hint_label)
                                1:
-						hint_label.text = "[center]Press Set Sail[/center]"
+                               hint_label.text = "[center]Press Set Sail to begin sailing[/center]"
 						_fade_in_hint(hint_label)
 				_:
 						hint_label.hide()
