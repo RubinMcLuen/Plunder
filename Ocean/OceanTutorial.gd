@@ -54,16 +54,16 @@ func _ready() -> void:
 									enemy_ship.set_process(false)
 									enemy_ship.set_physics_process(false)
 									enemy_ship.modulate.a = 1.0
-                                var tw = get_tree().create_tween()
-                                tw.tween_interval(1.5)
-                                tw.tween_property(enemy_ship, "modulate:a", 0.0, 2.0)
-                                tw.parallel().tween_property(enemy_ship.get_node("Trail"), "modulate:a", 0.0, 2.0)
-                                var sprite := enemy_ship.get_node("Trail/Sprite2D")
-                                if sprite.material is ShaderMaterial:
-                                                tw.parallel().tween_property(sprite.material,
-                                                        "shader_parameter/FadeAlpha", 0.0, 2.0)
-                                tw.tween_callback(Callable(enemy_ship, "queue_free"))
-                                tw.tween_callback(Callable(self, "_clear_enemy_ship"))
+									var tw = get_tree().create_tween()
+									tw.tween_interval(1.5)
+									tw.tween_property(enemy_ship, "modulate:a", 0.0, 2.0)
+									tw.parallel().tween_property(enemy_ship.get_node("Trail"), "modulate:a", 0.0, 2.0)
+									var sprite := enemy_ship.get_node("Trail/Sprite2D")
+									if sprite.material is ShaderMaterial:
+													tw.parallel().tween_property(sprite.material,
+															"shader_parameter/FadeAlpha", 0.0, 2.0)
+									tw.tween_callback(Callable(enemy_ship, "queue_free"))
+									tw.tween_callback(Callable(self, "_clear_enemy_ship"))
 									return
 				if player_ship:
 												_orig_max_speed = player_ship.max_speed

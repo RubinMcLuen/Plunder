@@ -10,4 +10,3 @@ shader_parameter/Speed = 0.2
 shader_parameter/QuantizeColourAmount = 3.0
 shader_parameter/BrightnessOffset = 0.0
 shader_parameter/UpperCutoff = 1.0
-shader_parameter/FadeAlpha = 1.0
