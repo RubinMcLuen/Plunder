@@ -153,32 +153,32 @@ func _show_step_text() -> void:
 func _update_hint_text() -> void:
 		var text := ""
 		match step:
-                       0:
-                               text = "Hold W to increase speed"
-                       1:
-                               text = "Hold S to decrease speed"
-                       2:
-                               var l1 = "Hold A to rotate counter clockwise"
-                               var l2 = "Hold D to rotate clockwise"
-				if left_done:
-						l1 = "[color=green]%s[/color]" % l1
-				if right_done:
-						l2 = "[color=green]%s[/color]" % l2
-				text = "%s\n%s" % [l1, l2]
-                       3:
-                               var sl = "Press O to fire cannons port side (left)"
-                               var sr = "Press P to fire cannons starboard side (right)"
-												if shoot_left_done:
-																sl = "[color=green]%s[/color]" % sl
-												if shoot_right_done:
-																sr = "[color=green]%s[/color]" % sr
-												text = "%s\n%s" % [sl, sr]
-                       4:
-                               text = "While moving, hit the shipwreck with a cannonball\n[color=orange]WASD to move, OP to shoot[/color]"
-                       5:
-                                                       text = "Click on the shipwreck to dock"
-                       6:
-                                                       text = "Click the Begin Raid button to board the ship"
+					0:
+							text = "Hold W to increase speed"
+					1:
+							text = "Hold S to decrease speed"
+					2:
+							var l1 = "Hold A to rotate counter clockwise"
+							var l2 = "Hold D to rotate clockwise"
+							if left_done:
+									l1 = "[color=green]%s[/color]" % l1
+							if right_done:
+									l2 = "[color=green]%s[/color]" % l2
+							text = "%s\n%s" % [l1, l2]
+					3:
+							var sl = "Press O to fire cannons port side (left)"
+							var sr = "Press P to fire cannons starboard side (right)"
+							if shoot_left_done:
+											sl = "[color=green]%s[/color]" % sl
+							if shoot_right_done:
+											sr = "[color=green]%s[/color]" % sr
+							text = "%s\n%s" % [sl, sr]
+					4:
+							text = "While moving, hit the shipwreck with a cannonball\n[color=orange]WASD to move, OP to shoot[/color]"
+					5:
+													text = "Click on the shipwreck to dock"
+					6:
+													text = "Click the Begin Raid button to board the ship"
 		hint_label.text = "[center]%s[/center]" % text
 
 func _fade_in_hint(label: CanvasItem, duration: float = 0.5) -> void:
@@ -243,26 +243,26 @@ func begin_raid_pressed() -> void:
 																			_advance_step(7)
 
 func _clear_enemy_ship() -> void:
-       enemy_ship = null
-       if Global.ocean_tutorial_complete and not Global.post_tutorial_enemy_spawned:
-               _spawn_normal_enemy()
+	enemy_ship = null
+	if Global.ocean_tutorial_complete and not Global.post_tutorial_enemy_spawned:
+			_spawn_normal_enemy()
 
 func _spawn_normal_enemy() -> void:
-       if Global.post_tutorial_enemy_spawned:
-               return
-       Global.post_tutorial_enemy_spawned = true
-       var scene := preload("res://Ships/EnemyShip.tscn")
-       enemy_ship = scene.instantiate()
-       add_child(enemy_ship)
-       if player_ship:
-               enemy_ship.global_position = player_ship.global_position + Vector2(100, 0)
-               enemy_ship.player = player_ship
-       enemy_ship.visible = true
-       enemy_ship.ready_for_boarding = false
-       enemy_ship.input_pickable = false
-       _enemy_layer = enemy_ship.collision_layer
-       _enemy_mask  = enemy_ship.collision_mask
-       enemy_ship.set_process(true)
-       enemy_ship.set_physics_process(true)
-       if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
-               enemy_ship.connect("area_entered", _on_enemy_area_entered)
+	if Global.post_tutorial_enemy_spawned:
+			return
+	Global.post_tutorial_enemy_spawned = true
+	var scene := preload("res://Ships/EnemyShip.tscn")
+	enemy_ship = scene.instantiate()
+	add_child(enemy_ship)
+	if player_ship:
+			enemy_ship.global_position = player_ship.global_position + Vector2(100, 0)
+			enemy_ship.player = player_ship
+	enemy_ship.visible = true
+	enemy_ship.ready_for_boarding = false
+	enemy_ship.input_pickable = false
+	_enemy_layer = enemy_ship.collision_layer
+	_enemy_mask  = enemy_ship.collision_mask
+	enemy_ship.set_process(true)
+	enemy_ship.set_physics_process(true)
+	if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
+			enemy_ship.connect("area_entered", _on_enemy_area_entered)

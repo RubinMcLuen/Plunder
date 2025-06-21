@@ -37,3 +37,5 @@ res://Character/NPC/npcs/Barnaby.gd
 res://SaveMenu/Info/Info.gd
 res://SaveMenu/Info/info.tscn
 res://UI/UIManager.gd
+res://CharacterCreator/ItemButtons/ItemButtons.gd
+res://Battle/BoardingBattleTutorial.gd
