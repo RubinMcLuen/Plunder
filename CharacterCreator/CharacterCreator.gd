@@ -59,16 +59,15 @@ var _header_hidden_y: float
 #  READY                                ← only the shown lines changed
 # ─────────────────────────────────────────────────────────────────────
 # CharacterCreator.gd  ───────────────────────────────────────────────
-# 1)  Hide the header at start (same as before, but keep no cache)
+# 1)  Cache header positions
 func _ready() -> void:
                 _init_customization_resource()
                 _load_all_options()
                 _connect_ui()
                 _refresh_ui()
 
-                _header_shown_y = header.position.y
-                header.position.y += HEADER_MOVE_Y   # start just out of view
-                _header_hidden_y = header.position.y
+_header_shown_y = header.position.y
+_header_hidden_y = header.position.y - HEADER_MOVE_Y
 
 
 # ─────────────────────────────────────────────────────────────────────
