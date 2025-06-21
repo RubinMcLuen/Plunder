@@ -97,9 +97,9 @@ func _on_ship_area_entered(body: Node) -> void:
 				_advance_step(1)
 
 func _on_set_sail_pressed() -> void:
-                if step == 1 and not _advancing:
-                                SoundManager.play_sfx(UIManager.INFO_BUTTON_SFX)
-                                _advance_step(2)
+				if step == 1 and not _advancing:
+								SoundManager.play_sfx(UIManager.INFO_BUTTON_SFX)
+								_advance_step(2)
 				var tw = get_tree().create_tween()
 				tw.tween_interval(1.0)
 				tw.connect("finished", Callable(self, "start_leave_island_transition").bind(1.0))

@@ -35,3 +35,5 @@ res://KelptownInn/KelptownInnTutorial.gd
 res://Dialogue/balloon.gd
 res://Character/NPC/npcs/Barnaby.gd
 res://SaveMenu/Info/Info.gd
+res://SaveMenu/Info/info.tscn
+res://UI/UIManager.gd
