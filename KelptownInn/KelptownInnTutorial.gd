@@ -321,34 +321,40 @@ func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 				super._on_bartender_dialogue_requested(section)
 				return
 
-		# Transition from step 2 (talk to bartender) to step 3 (hire Barnaby)
-				arrow.visible = false
-				arrow.target  = null
-				hint_bartender.add_theme_color_override("default_color", Color.GREEN)
-				SoundManager.play_success()
-				_fade_out_hint(hint_bartender)
+                # Transition from step 2 (talk to bartender) to step 3 (hire Barnaby)
+                                arrow.visible = false
+                                arrow.target  = null
+                                hint_bartender.add_theme_color_override("default_color", Color.GREEN)
+                                SoundManager.play_success()
+                                _fade_out_hint(hint_bartender)
 
-		player.disable_user_input = true
-		var balloon := bartender.show_dialogue(section)
-		if balloon:
-						balloon.connect(
-										"dialogue_finished",
-										Callable(self, "_on_dialogue_finished_tutorial")
-						)
-		else:
-						player.disable_user_input = false
+                player.disable_user_input = true
+                var balloon := bartender.show_dialogue(section)
+
+                # Mark the step complete as soon as the dialogue begins so the
+                # player isn't stuck if the balloon fails to emit its signal.
+                stage_three_started = true
+
+                if balloon:
+                                                balloon.connect(
+                                                                               "dialogue_finished",
+                                                                               Callable(self, "_on_dialogue_finished_tutorial")
+                                                )
+                else:
+                                                player.disable_user_input = false
+                                                _on_dialogue_finished_tutorial()
 
 func _on_dialogue_finished_tutorial() -> void:
-		await get_tree().create_timer(0.1).timeout
-		player.disable_user_input = false
-		if stage_two_started and not stage_three_started:
-				stage_three_started = true
-				await get_tree().create_timer(0.5).timeout
-				barnaby.state = "Hirable"
+                await get_tree().create_timer(0.1).timeout
+                player.disable_user_input = false
 
-				_set_arrow_target(barnaby)
-				arrow.visible = true
-		_fade_in_hint(hint_hire)
+                if stage_three_started:
+                                await get_tree().create_timer(0.5).timeout
+                                barnaby.state = "Hirable"
+
+                                _set_arrow_target(barnaby)
+                                arrow.visible = true
+                                _fade_in_hint(hint_hire)
 
 func _on_barnaby_dialogue_requested_tutorial(section: String, b: NPC) -> void:
 		# Only hide the arrow once we're on the hiring step
