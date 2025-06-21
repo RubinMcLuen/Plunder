@@ -262,8 +262,8 @@ void fragment() {
 
 
 // Output:0
-	COLOR.rgb = vec3(n_out58p0.xyz);
-	COLOR.a = n_out52p0;
+        COLOR.rgb = vec3(n_out58p0.xyz) * VertexColour.rgb;
+        COLOR.a = n_out52p0 * VertexColour.a;
 
 
 }
