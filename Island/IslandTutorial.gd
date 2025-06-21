@@ -3,32 +3,42 @@ extends "res://Island/island.gd"
 @onready var hint_label: RichTextLabel = $CanvasLayer/HintLabel
 @onready var arrow      : Sprite2D      = $Arrow
 @onready var ship_area  : Area2D        = $ShipControlArea
+@onready var cam        : Camera2D      = $Player/Camera2D
 
 var step: int = 0
 var _advancing: bool = false
+var intro_cutscene_done: bool = false
 
 func get_tutorial_state() -> Dictionary:
-				return {"step": step}
+                                return {"step": step, "intro_done": intro_cutscene_done}
 
 func apply_tutorial_state(state: Dictionary) -> void:
-				step = int(state.get("step", step))
+                                step = int(state.get("step", step))
+                                intro_cutscene_done = bool(state.get("intro_done", intro_cutscene_done))
 
 func _ready() -> void:
-				await super._ready()
+                                await super._ready()
 
-				ship_area.body_entered.connect(_on_ship_area_entered)
-				var btn = UIManager.get_node("UIManager/SetSailMenu/SetSailButton")
-				if btn:
-								if btn.pressed.is_connected(UIManager._on_set_sail_button_pressed):
-												btn.pressed.disconnect(UIManager._on_set_sail_button_pressed)
-								if not btn.pressed.is_connected(_on_set_sail_pressed):
-												btn.pressed.connect(_on_set_sail_pressed)
+                                ship_area.body_entered.connect(_on_ship_area_entered)
+                                var btn = UIManager.get_node("UIManager/SetSailMenu/SetSailButton")
+                                if btn:
+                                                                if btn.pressed.is_connected(UIManager._on_set_sail_button_pressed):
+                                                                               btn.pressed.disconnect(UIManager._on_set_sail_button_pressed)
+                                                                if not btn.pressed.is_connected(_on_set_sail_pressed):
+                                                                               btn.pressed.connect(_on_set_sail_pressed)
 
-				if Global.island_tutorial_state and Global.island_tutorial_state.size() > 0:
-								apply_tutorial_state(Global.island_tutorial_state)
-								Global.island_tutorial_state = {}
+                                var loaded_state := false
+                                if Global.island_tutorial_state and Global.island_tutorial_state.size() > 0:
+                                                                apply_tutorial_state(Global.island_tutorial_state)
+                                                                Global.island_tutorial_state = {}
+                                                                loaded_state = true
 
-				_show_step()
+                                if Global.island_intro_next and not intro_cutscene_done and not loaded_state:
+                                                                Global.island_intro_next = false
+                                                                await _play_intro_cutscene()
+                                                                intro_cutscene_done = true
+
+                                _show_step()
 
 func _show_step() -> void:
 		arrow.visible = false
@@ -54,10 +64,26 @@ func _fade_in_hint(label: CanvasItem, duration: float = 0.5) -> void:
 		get_tree().create_tween().tween_property(label, "modulate:a", 1.0, duration)
 
 func _fade_out_hint(label: CanvasItem, duration: float = 0.5) -> void:
-		var tw = get_tree().create_tween()
-		tw.tween_property(label, "modulate:a", 0.0, duration)
-		await tw.finished
-		label.hide()
+                var tw = get_tree().create_tween()
+                tw.tween_property(label, "modulate:a", 0.0, duration)
+                await tw.finished
+                label.hide()
+
+func _play_intro_cutscene() -> void:
+                var orig_zoom = cam.zoom
+                var orig_pos = cam.global_position
+                var ship_pos = $PlayerShipClose.global_position
+                var tw = get_tree().create_tween().set_parallel(true)
+                player.disable_user_input = true
+                tw.tween_property(cam, "zoom", Vector2(0.5, 0.5), 1.0)
+                tw.tween_property(cam, "global_position", ship_pos, 1.0)
+                await tw.finished
+                await get_tree().create_timer(0.5).timeout
+                var tw2 = get_tree().create_tween().set_parallel(true)
+                tw2.tween_property(cam, "zoom", orig_zoom, 1.0)
+                tw2.tween_property(cam, "global_position", orig_pos, 1.0)
+                await tw2.finished
+                player.disable_user_input = false
 
 func _on_ship_area_entered(body: Node) -> void:
 		if body == player and step == 0 and not _advancing:
