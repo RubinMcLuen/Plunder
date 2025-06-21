@@ -117,39 +117,60 @@ func _fade_ship_sails(ship: Node2D, t: float) -> void:
 		hull.modulate.a = 1.0
 
 	# 2) Fade the sail sprite only
-	var sail : CanvasItem = null
-	if ship.has_node("Boat"):
-		sail = ship.get_node("Boat") as CanvasItem
-	elif ship.has_node("ShipSprite"):
-		sail = ship.get_node("ShipSprite") as CanvasItem
+       var sail : CanvasItem = null
+       if ship.has_node("Boat"):
+               sail = ship.get_node("Boat") as CanvasItem
+       elif ship.has_node("ShipSprite"):
+               sail = ship.get_node("ShipSprite") as CanvasItem
 
-		if sail:
-				sail.modulate.a = 1.0
-				get_tree().create_tween().tween_property(sail, "modulate:a", 0.0, t)
+       if sail:
+               sail.modulate.a = 1.0
+               get_tree().create_tween().tween_property(sail, "modulate:a", 0.0, t)
+
+       # 3) Fade trail if present
+       if ship.has_node("Trail/Sprite2D"):
+               var trail_sprite := ship.get_node("Trail/Sprite2D") as Sprite2D
+               var mat := trail_sprite.material
+               if mat is ShaderMaterial:
+                       if t <= 0.0:
+                               mat.set_shader_parameter("InitialAlpha", 0.0)
+                       else:
+                               get_tree().create_tween().tween_property(mat, "shader_parameter/InitialAlpha", 0.0, t)
 
 func _restore_ship_sails(ship: Node2D, t: float) -> void:
-				var hull: CanvasItem = null
-				if ship.has_node("NoSails"):
-								hull = ship.get_node("NoSails") as CanvasItem
-								hull.visible = true
+       var hull: CanvasItem = null
+       if ship.has_node("NoSails"):
+               hull = ship.get_node("NoSails") as CanvasItem
+               hull.visible = true
 
-				var sail: CanvasItem = null
-				if ship.has_node("Boat"):
-						sail = ship.get_node("Boat") as CanvasItem
-				elif ship.has_node("ShipSprite"):
-					sail = ship.get_node("ShipSprite") as CanvasItem
+       var sail: CanvasItem = null
+       if ship.has_node("Boat"):
+               sail = ship.get_node("Boat") as CanvasItem
+       elif ship.has_node("ShipSprite"):
+               sail = ship.get_node("ShipSprite") as CanvasItem
 
-				if sail:
-								if t <= 0.0:
-												sail.modulate.a = 1.0
-												if hull:
-																hull.visible = false
-								else:
-												sail.modulate.a = 0.0
-												var tw = get_tree().create_tween()
-												tw.tween_property(sail, "modulate:a", 1.0, t)
-												if hull:
-																tw.tween_callback(Callable(hull, "hide"))
+       if sail:
+               if t <= 0.0:
+                       sail.modulate.a = 1.0
+                       if hull:
+                               hull.visible = false
+               else:
+                       sail.modulate.a = 0.0
+                       var tw = get_tree().create_tween()
+                       tw.tween_property(sail, "modulate:a", 1.0, t)
+                       if hull:
+                               tw.tween_callback(Callable(hull, "hide"))
+
+       # Restore trail opacity
+       if ship.has_node("Trail/Sprite2D"):
+               var trail_sprite := ship.get_node("Trail/Sprite2D") as Sprite2D
+               var mat := trail_sprite.material
+               if mat is ShaderMaterial:
+                       var target_alpha = 0.6
+                       if t <= 0.0:
+                               mat.set_shader_parameter("InitialAlpha", target_alpha)
+                       else:
+                               get_tree().create_tween().tween_property(mat, "shader_parameter/InitialAlpha", target_alpha, t)
 
 func _fade_environment_in(t: float) -> void:
 		var tw = get_tree().create_tween().set_parallel(true)
