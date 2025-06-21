@@ -18,48 +18,48 @@ var _enemy_layer: int = 0
 var _enemy_mask: int = 0
 
 func _allowed_actions_for_step(s: int) -> Array[String]:
-                                var actions: Array[String] = []
-                                if s >= 0:
-                                                                actions.append("ui_up")
-                                if s >= 1:
-                                                                actions.append("ui_down")
-                                if s >= 2:
-                                                                actions.append_array(["ui_left", "ui_right"])
-                                if s >= 3:
-                                                                actions.append_array(["shoot_left", "shoot_right"])
-                                if s >= 7:
-                                                                actions.append("move")
-                                return actions
+								var actions: Array[String] = []
+								if s >= 0:
+																actions.append("ui_up")
+								if s >= 1:
+																actions.append("ui_down")
+								if s >= 2:
+																actions.append_array(["ui_left", "ui_right"])
+								if s >= 3:
+																actions.append_array(["shoot_left", "shoot_right"])
+								if s >= 7:
+																actions.append("move")
+								return actions
 
 func _apply_allowed_actions():
 	if player_ship and player_ship.has_method("set_allowed_actions"):
 		player_ship.set_allowed_actions(_allowed_actions_for_step(step))
 
 func _ready() -> void:
-                                await super._ready()
-                                if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
-                                                                enemy_ship.global_position = Global.enemy_spawn_position
-                                                                Global.enemy_spawn_position = Vector2.ZERO
-                                if Global.ocean_tutorial_complete:
-								step = 7
-								arrow.visible = false
-								hint_label.hide()
-								_apply_allowed_actions()
-                                                                if enemy_ship:
-                                                                               enemy_ship.visible = true
-                                                                               enemy_ship.ready_for_boarding = false
-                                                                               enemy_ship.input_pickable = false
-                                                                               enemy_ship.collision_layer = 0
-                                                                               enemy_ship.collision_mask = 0
-                                                                               enemy_ship.set_process(false)
-                                                                               enemy_ship.set_physics_process(false)
-                                                                               enemy_ship.modulate.a = 1.0
-                                                                               var tw = get_tree().create_tween()
-                                                                               tw.tween_interval(1.5)
-                                                                               tw.tween_property(enemy_ship, "modulate:a", 0.0, 2.0)
-                                                                               tw.tween_callback(Callable(enemy_ship, "queue_free"))
-                                                                               tw.tween_callback(Callable(self, "_clear_enemy_ship"))
-                                                                return
+				await super._ready()
+				if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
+												enemy_ship.global_position = Global.enemy_spawn_position
+												Global.enemy_spawn_position = Vector2.ZERO
+				if Global.ocean_tutorial_complete:
+					step = 7
+					arrow.visible = false
+					hint_label.hide()
+					_apply_allowed_actions()
+					if enemy_ship:
+									enemy_ship.visible = true
+									enemy_ship.ready_for_boarding = false
+									enemy_ship.input_pickable = false
+									enemy_ship.collision_layer = 0
+									enemy_ship.collision_mask = 0
+									enemy_ship.set_process(false)
+									enemy_ship.set_physics_process(false)
+									enemy_ship.modulate.a = 1.0
+									var tw = get_tree().create_tween()
+									tw.tween_interval(1.5)
+									tw.tween_property(enemy_ship, "modulate:a", 0.0, 2.0)
+									tw.tween_callback(Callable(enemy_ship, "queue_free"))
+									tw.tween_callback(Callable(self, "_clear_enemy_ship"))
+									return
 				if player_ship:
 												_orig_max_speed = player_ship.max_speed
 												_orig_target_speed = player_ship.target_speed
