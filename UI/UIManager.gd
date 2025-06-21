@@ -105,17 +105,22 @@ func _on_begin_raid_button_pressed() -> void:
 		if not ocean or not ocean.has_node("PlayerShip"):
 				return
 
-		var ship = ocean.get_node("PlayerShip") as Node2D
-		if ship:
-				Global.spawn_position = ship.global_position
-				Global.ship_state = {
-						"frame": ship.current_frame,
-						"moving": ship.moving_forward,
-						"health": ship.health
-				}
-				Global.return_scene_path = ocean.scene_file_path
-				if ocean.has_method("begin_raid_pressed"):
-						await ocean.begin_raid_pressed()
+                var ship = ocean.get_node("PlayerShip") as Node2D
+                if ship:
+                                Global.spawn_position = ship.global_position
+                                Global.ship_state = {
+                                                "frame": ship.current_frame,
+                                                "moving": ship.moving_forward,
+                                                "health": ship.health
+                                }
+                                if ocean.has_node("EnemyShip"):
+                                                Global.enemy_spawn_position = ocean.get_node("EnemyShip").global_position
+                                else:
+                                                Global.enemy_spawn_position = Vector2.ZERO
+
+                                Global.return_scene_path = ocean.scene_file_path
+                                if ocean.has_method("begin_raid_pressed"):
+                                                await ocean.begin_raid_pressed()
 
 		# fade sails
 		if ocean.has_method("start_boarding_transition"):
