@@ -371,19 +371,19 @@ func _on_exit_body_entered(body: Node) -> void:
 	if body == player:
 		arrow.visible = false
 		arrow.target = null
-                if hint_exit.visible:
-                        _fade_out_hint(hint_exit)
-                Global.kelptown_tutorial_state = get_tutorial_state()
-                Global.skip_player_fade = true
-                Global.island_intro_next = true
-                SceneSwitcher.switch_scene(
-                        "res://Island/islandtutorial.tscn",
-                        Vector2(64, -42),
-			"fade",
-			Vector2.ONE,
-			Vector2.ZERO,
-			Vector2(1.5, 1.5)
-		)
+		if hint_exit.visible:
+				_fade_out_hint(hint_exit)
+		Global.kelptown_tutorial_state = get_tutorial_state()
+		Global.skip_player_fade = true
+		Global.island_intro_next = true
+		SceneSwitcher.switch_scene(
+				"res://Island/islandtutorial.tscn",
+				Vector2(64, -42),
+	"fade",
+	Vector2.ONE,
+	Vector2.ZERO,
+	Vector2(1.5, 1.5)
+)
 
 func _exit_tree() -> void:
 	Global.kelptown_tutorial_state = get_tutorial_state()
