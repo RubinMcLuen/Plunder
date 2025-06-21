@@ -10,7 +10,7 @@ signal item_selected(category: String, item)
 # Preload the spritesheet containing all item cells.
 const ITEM_SPRITESHEET: Texture2D = preload("res://Character/assets/PlayerCustomizationSprites.png")
 const CELL_SIZE: Vector2i = Vector2i(48, 48)
-const BUTTON_GROUP: ButtonGroup = preload("res://CharacterCreator/ItemButtons/itembuttongroup.tres")
+var button_group: ButtonGroup = ButtonGroup.new()
 
 func _ready():
 	for i in range(page_size):
@@ -26,7 +26,12 @@ func populate_buttons(category: String, options_dict: Dictionary, page: int = 0,
 		options = options_dict
 		customization = custom
 
-		var group_to_use: ButtonGroup = BUTTON_GROUP if category != "misc" else null
+                # Create a fresh ButtonGroup for each category so selections don't
+                # carry over when switching categories.
+                var group_to_use: ButtonGroup = null
+                if category != "misc":
+                                button_group = ButtonGroup.new()
+                                group_to_use = button_group
 		for i in range(page_size):
 				var button = get_node("Button" + str(i + 1))
 				button.button_group = group_to_use
