@@ -33,8 +33,10 @@ func _ready() -> void:
                                                                 Global.island_tutorial_state = {}
                                                                 loaded_state = true
 
-                                if Global.island_intro_next and not intro_cutscene_done and not loaded_state:
+                                if Global.island_intro_next:
                                                                 Global.island_intro_next = false
+
+                                if not intro_cutscene_done and not loaded_state:
                                                                 await _play_intro_cutscene()
                                                                 intro_cutscene_done = true
 
@@ -72,16 +74,17 @@ func _fade_out_hint(label: CanvasItem, duration: float = 0.5) -> void:
 func _play_intro_cutscene() -> void:
                 var orig_zoom = cam.zoom
                 var orig_pos = cam.global_position
-                var ship_pos = $PlayerShipClose.global_position
+                # Center of the ship (same position used when leaving for the ocean)
+                var ship_pos = Vector2(-32, 624)
                 var tw = get_tree().create_tween().set_parallel(true)
                 player.disable_user_input = true
-                tw.tween_property(cam, "zoom", Vector2(0.5, 0.5), 1.0)
-                tw.tween_property(cam, "global_position", ship_pos, 1.0)
+                tw.tween_property(cam, "zoom", Vector2(0.5, 0.5), 1.5)
+                tw.tween_property(cam, "global_position", ship_pos, 1.5)
                 await tw.finished
                 await get_tree().create_timer(0.5).timeout
                 var tw2 = get_tree().create_tween().set_parallel(true)
-                tw2.tween_property(cam, "zoom", orig_zoom, 1.0)
-                tw2.tween_property(cam, "global_position", orig_pos, 1.0)
+                tw2.tween_property(cam, "zoom", orig_zoom, 1.5)
+                tw2.tween_property(cam, "global_position", orig_pos, 1.5)
                 await tw2.finished
                 player.disable_user_input = false
 
