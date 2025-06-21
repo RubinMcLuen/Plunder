@@ -14,6 +14,7 @@ extends CanvasLayer
 # Constants & state
 # ──────────────────────────
 const NOTIF_HOME_POS := Vector2(191, -32)
+const INFO_BUTTON_SFX := preload("res://SFX/infobuttons.wav")
 
 var _board_mode : bool                 = false
 var _current_ocean  : Node             = null
@@ -224,9 +225,10 @@ func hide_begin_raid_menu() -> void:
 # Editor-wired buttons (if any)
 # ──────────────────────────
 func _on_set_sail_button_pressed() -> void:
-								var island = get_tree().current_scene
-								if island and island.has_method("start_leave_island_transition"):
-																var tw = get_tree().create_tween()
+        SoundManager.play_sfx(INFO_BUTTON_SFX)
+        var island = get_tree().current_scene
+        if island and island.has_method("start_leave_island_transition"):
+                var tw = get_tree().create_tween()
 																tw.tween_interval(1.0)
 																tw.connect("finished", Callable(island, "start_leave_island_transition").bind(1.0))
 
@@ -241,17 +243,22 @@ func _on_set_sail_button_pressed() -> void:
 								hide_set_sail_menu()
 
 func _on_dock_ship_button_pressed() -> void:
-	var ocean = get_tree().current_scene
-	if ocean and ocean.has_method("start_dock_transition"):
-		# Delay the sail fade until the camera begins zooming
-		var tw = get_tree().create_tween()
-		tw.tween_interval(1.0)
-		tw.connect("finished", Callable(ocean, "start_dock_transition").bind(1.0))
+        SoundManager.play_sfx(INFO_BUTTON_SFX)
+        var ocean = get_tree().current_scene
+        if ocean and ocean.has_method("start_dock_transition"):
+                # Delay the sail fade until the camera begins zooming
+                var tw = get_tree().create_tween()
+                tw.tween_interval(1.0)
+                tw.connect("finished", Callable(ocean, "start_dock_transition").bind(1.0))
 
-	SceneSwitcher.switch_scene(
-				   "res://Island/island.tscn",
-				   Vector2(-190, 648), "zoom",
-				   Vector2(16, 16), Vector2(-11.875, 40.5),
-				   Vector2(1, 1), true
-	)
+        var target_scene := "res://Island/island.tscn"
+        if ocean and ocean.scene_file_path.ends_with("oceantutorial.tscn"):
+                target_scene = "res://Island/islandtutorial.tscn"
+
+        SceneSwitcher.switch_scene(
+                                   target_scene,
+                                   Vector2(-190, 648), "zoom",
+                                   Vector2(16, 16), Vector2(-11.875, 40.5),
+                                   Vector2(1, 1), true
+        )
 	hide_dock_ship_menu()
