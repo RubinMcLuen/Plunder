@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://CharacterCreator/ItemButtons/ItemButtons.gd" id="1_ytq43"]
 [ext_resource type="ButtonGroup" uid="uid://y0po0cjqj0sm" path="res://CharacterCreator/ItemButtons/itembuttongroup.tres" id="2_4ydgi"]
 [ext_resource type="Texture2D" uid="uid://f15wrm7l2bud" path="res://CharacterCreator/assets/item_background_off.png" id="3_6uvmr"]
+[ext_resource type="Texture2D" uid="uid://ibwpon5exn6r" path="res://CharacterCreator/assets/item_background_on.png" id="5_nskc7"]
 [ext_resource type="PackedScene" uid="uid://dmhdl7omntbea" path="res://Character/Model/Model.tscn" id="4_kdxa8"]
 
 [node name="ItemButtons" type="Node2D"]
@@ -16,6 +17,7 @@ button_pressed = true
 action_mode = 0
 button_group = ExtResource("2_4ydgi")
 texture_normal = ExtResource("3_6uvmr")
+texture_pressed = ExtResource("5_nskc7")
 
 [node name="Model" parent="Button1" instance=ExtResource("4_kdxa8")]
 position = Vector2(24, 24)
@@ -29,6 +31,7 @@ toggle_mode = true
 action_mode = 0
 button_group = ExtResource("2_4ydgi")
 texture_normal = ExtResource("3_6uvmr")
+texture_pressed = ExtResource("5_nskc7")
 
 [node name="Model" parent="Button2" instance=ExtResource("4_kdxa8")]
 position = Vector2(24, 24)
@@ -42,6 +45,7 @@ toggle_mode = true
 action_mode = 0
 button_group = ExtResource("2_4ydgi")
 texture_normal = ExtResource("3_6uvmr")
+texture_pressed = ExtResource("5_nskc7")
 
 [node name="Model" parent="Button3" instance=ExtResource("4_kdxa8")]
 position = Vector2(24, 24)
@@ -55,6 +59,7 @@ toggle_mode = true
 action_mode = 0
 button_group = ExtResource("2_4ydgi")
 texture_normal = ExtResource("3_6uvmr")
+texture_pressed = ExtResource("5_nskc7")
 
 [node name="Model" parent="Button4" instance=ExtResource("4_kdxa8")]
 position = Vector2(24, 24)
@@ -69,6 +74,7 @@ toggle_mode = true
 action_mode = 0
 button_group = ExtResource("2_4ydgi")
 texture_normal = ExtResource("3_6uvmr")
+texture_pressed = ExtResource("5_nskc7")
 
 [node name="Model" parent="Button5" instance=ExtResource("4_kdxa8")]
 position = Vector2(24, 24)
@@ -83,6 +89,7 @@ toggle_mode = true
 action_mode = 0
 button_group = ExtResource("2_4ydgi")
 texture_normal = ExtResource("3_6uvmr")
+texture_pressed = ExtResource("5_nskc7")
 
 [node name="Model" parent="Button6" instance=ExtResource("4_kdxa8")]
 position = Vector2(24, 24)
