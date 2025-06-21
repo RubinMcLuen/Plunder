@@ -140,16 +140,21 @@ func _on_begin_raid_button_pressed() -> void:
 		tw.connect("finished", Callable(self, "_switch_to_boarding"))
 
 func _switch_to_boarding() -> void:
-	var ocean = get_tree().current_scene
-	if not ocean or not ocean.has_node("PlayerShip"):
-		return
+        var ocean = get_tree().current_scene
+        if not ocean or not ocean.has_node("PlayerShip"):
+                return
 
-	var player_ship = ocean.get_node("PlayerShip") as Node2D
-	var pos = player_ship.global_position
+        var player_ship = ocean.get_node("PlayerShip") as Node2D
+        var pos = player_ship.global_position
+        Global.spawn_position = pos
+        if ocean.has_node("EnemyShip"):
+                Global.enemy_spawn_position = ocean.get_node("EnemyShip").global_position
+        else:
+                Global.enemy_spawn_position = Vector2.ZERO
 
-	var scene_path = "res://Battle/BoardingBattle.tscn"
-	if ocean.scene_file_path.ends_with("oceantutorial.tscn"):
-			scene_path = "res://Battle/BoardingBattleTutorial.tscn"
+        var scene_path = "res://Battle/BoardingBattle.tscn"
+        if ocean.scene_file_path.ends_with("oceantutorial.tscn"):
+                        scene_path = "res://Battle/BoardingBattleTutorial.tscn"
 
 	SceneSwitcher.switch_scene(
 			scene_path,
