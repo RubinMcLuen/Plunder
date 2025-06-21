@@ -50,8 +50,10 @@ var character_data:   Dictionary = {
 }
 
 # ─────────────────────────────────────────────────────────────────────
-#  HEADER
+#  HEADER POSITION CACHE
 # ─────────────────────────────────────────────────────────────────────
+var _header_shown_y:  float
+var _header_hidden_y: float
 
 # ─────────────────────────────────────────────────────────────────────
 #  READY                                ← only the shown lines changed
@@ -59,12 +61,14 @@ var character_data:   Dictionary = {
 # CharacterCreator.gd  ───────────────────────────────────────────────
 # 1)  Hide the header at start (same as before, but keep no cache)
 func _ready() -> void:
-		_init_customization_resource()
-		_load_all_options()
-		_connect_ui()
-		_refresh_ui()
+                _init_customization_resource()
+                _load_all_options()
+                _connect_ui()
+                _refresh_ui()
 
-		header.position.y += HEADER_MOVE_Y   # start just out of view
+                _header_shown_y = header.position.y
+                header.position.y += HEADER_MOVE_Y   # start just out of view
+                _header_hidden_y = header.position.y
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -160,16 +164,16 @@ func _update_player_texture() -> void:
 # ─────────────────────────────────────────────────────────────────────
 # 2)  Relative animation, camera-proof
 func animate_header(down: bool) -> Tween:
-		if sfx_header_slide and not down:
-				sfx_header_slide.play()
-		var delta := HEADER_MOVE_Y * (1 if down else -1)
-		var tw := create_tween()\
-				.set_trans(Tween.TRANS_SINE)\
-				.set_ease(Tween.EASE_IN_OUT)
+        if sfx_header_slide and not down:
+                sfx_header_slide.play()
+        var target := _header_hidden_y if down else _header_shown_y
+        var tw := create_tween()\
+                .set_trans(Tween.TRANS_SINE)\
+                .set_ease(Tween.EASE_IN_OUT)
 
-		tw.tween_property(header, "global_position:y", header.global_position.y + delta, HEADER_TWEEN_TIME)
+        tw.tween_property(header, "position:y", target, HEADER_TWEEN_TIME)
 
-		return tw
+        return tw
 
 
 
