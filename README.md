@@ -2,6 +2,14 @@
 
 This repository contains the sources for the **Plunder** game created in Godot.  
 
+## Controls
+
+- **On Foot**: Move with WASD or arrow keys.
+- **Ship**:
+  - Increase/Decrease Speed: W/S or Up/Down.
+  - Rotate Left/Right: A/D or Left/Right.
+  - Fire Cannons: O (left) and P (right).
+
 ## Naming Conventions
 
 To keep files tidy, asset names use lowercase with underscores.  
