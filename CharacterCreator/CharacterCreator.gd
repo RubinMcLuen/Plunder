@@ -64,7 +64,7 @@ func _ready() -> void:
 		_connect_ui()
 		_refresh_ui()
 
-               header.position.y += HEADER_MOVE_Y   # start just out of view
+		header.position.y += HEADER_MOVE_Y   # start just out of view
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -160,16 +160,16 @@ func _update_player_texture() -> void:
 # ─────────────────────────────────────────────────────────────────────
 # 2)  Relative animation, camera-proof
 func animate_header(down: bool) -> Tween:
-        if sfx_header_slide and not down:
-                sfx_header_slide.play()
-        var delta := HEADER_MOVE_Y * (1 if down else -1)
-        var tw := create_tween()\
-                .set_trans(Tween.TRANS_SINE)\
-                .set_ease(Tween.EASE_IN_OUT)
+		if sfx_header_slide and not down:
+				sfx_header_slide.play()
+		var delta := HEADER_MOVE_Y * (1 if down else -1)
+		var tw := create_tween()\
+				.set_trans(Tween.TRANS_SINE)\
+				.set_ease(Tween.EASE_IN_OUT)
 
-        tw.tween_property(header, "global_position:y", header.global_position.y + delta, HEADER_TWEEN_TIME)
+		tw.tween_property(header, "global_position:y", header.global_position.y + delta, HEADER_TWEEN_TIME)
 
-        return tw
+		return tw
 
 
 
