@@ -291,17 +291,17 @@ func _on_intro_move_completed() -> void:
 	intro_walk_finished = true
 
 func _fade_in_hint(label: CanvasItem, duration: float = 0.5) -> void:
-        label.visible = true
-        label.modulate.a = 0.0
-        var tw = get_tree().create_tween()
-        tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-        tw.tween_property(label, "modulate:a", 1.0, duration)
+		label.visible = true
+		label.modulate.a = 0.0
+		var tw = get_tree().create_tween()
+		tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		tw.tween_property(label, "modulate:a", 1.0, duration)
 
 func _fade_out_hint(label: CanvasItem, duration: float = 0.5) -> void:
-        var tw = get_tree().create_tween()
-        tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-        tw.tween_property(label, "modulate:a", 0.0, duration)
-        tw.tween_callback(Callable(label, "hide"))
+		var tw = get_tree().create_tween()
+		tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		tw.tween_property(label, "modulate:a", 0.0, duration)
+		tw.tween_callback(Callable(label, "hide"))
 
 func _on_bartender_dialogue_requested_tutorial(section: String) -> void:
 		# Tutorial completed → fallback to the normal bartender handler
