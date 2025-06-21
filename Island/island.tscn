@@ -12,7 +12,7 @@
 [ext_resource type="Script" path="res://Island/ShipControlArea.gd" id="10_07xlk"]
 [ext_resource type="Texture2D" uid="uid://docbhg71ou20u" path="res://Island/rail1.png" id="11_bqfu2"]
 [ext_resource type="Texture2D" uid="uid://d13iw7rwft51w" path="res://Island/rail2.png" id="12_nc36f"]
-[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="13_cts8x"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="13_cts8x"]
 [ext_resource type="Script" path="res://Character/NPC/npcs/MonteCoral.gd" id="14_clwk4"]
 [ext_resource type="Script" path="res://Character/NPC/npcs/FirstMate.gd" id="15_75dku"]
 

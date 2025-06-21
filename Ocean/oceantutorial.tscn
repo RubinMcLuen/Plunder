@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Ocean/OceanTutorial.gd" id="1_kxoef"]
 [ext_resource type="Texture2D" uid="uid://fxlwkiykamae" path="res://Ocean/frame_0100-sheet.png" id="1_xs5hd"]
-[ext_resource type="PackedScene" uid="uid://bw8b2mbvoo5rw" path="res://KelptownIsland/KelptownIslandTutorial.tscn" id="2_4inh8"]
+[ext_resource type="PackedScene" uid="uid://bw8b2mbvoo5rw" path="res://KelptownIsland/KelptownIsland.tscn" id="2_4inh8"]
 [ext_resource type="PackedScene" uid="uid://0ab5frbt0cuk" path="res://Ships/PlayerShip.tscn" id="3_qc67i"]
 [ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/playerisland.png" id="5_3mcoo"]
 [ext_resource type="Texture2D" uid="uid://cecfqmsm2oaqt" path="res://Battle/ZoomedOutNewShip.png" id="5_ry4ey"]

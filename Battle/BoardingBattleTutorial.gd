@@ -34,11 +34,11 @@ func _process(_delta: float) -> void:
 		1:
 			if barnaby and barnaby.dragging and not _advancing:
 				_advance_step(2)
-               2:
-                        if barnaby and enemy and barnaby.targets.has(enemy) and not _advancing:
-                                _advance_step(3)
-               3:
-                        pass
+		2:
+						if barnaby and enemy and barnaby.targets.has(enemy) and not _advancing:
+								_advance_step(3)
+		3:
+						pass
 
 func _show_step() -> void:
 				hint_label.add_theme_color_override("default_color", Color.WHITE)
@@ -50,28 +50,28 @@ func _show_step() -> void:
 												if barnaby:
 																arrow.target = barnaby
 																arrow.visible = true
-                                                                               hint_label.text = "[center]Click Barnaby to deploy him to the enemy ship[/center]"
+																hint_label.text = "[center]Click Barnaby to deploy him to the enemy ship[/center]"
 												_fade_in_hint(hint_label)
 								1:
-                                                                        hint_label.text = "[center]Click and drag Barnaby around to move him[/center]"
+									hint_label.text = "[center]Click and drag Barnaby around to move him[/center]"
 									_fade_in_hint(hint_label)
-                                                               2:
-                                                                               enemy = manager.spawn_single_enemy()
-                                                                               _toggle_ranges(true)
-                                                                               if enemy:
-                                                                               arrow.self_modulate = Color.RED
-                                                                               arrow.target = enemy
-                                                                               arrow.visible = true
-                                                                               hint_label.text = "[center]Move Barnaby close to the enemy to begin auto-attacking[/center]"
-                                                                               _fade_in_hint(hint_label)
-                                                                3:
-                                                                        _toggle_ranges(false)
-                                                                        hint_label.add_theme_color_override("default_color", Color.GREEN)
-                                                                        hint_label.text = "[center]Tutorial complete![/center]"
-                                                                        _fade_in_hint(hint_label)
-                                                                        await get_tree().create_timer(2.0).timeout
-                                                                        await _fade_out_hint(hint_label)
-                                                                        await _finish_tutorial()
+								2:
+												enemy = manager.spawn_single_enemy()
+												_toggle_ranges(true)
+												if enemy:
+													arrow.self_modulate = Color.RED
+													arrow.target = enemy
+													arrow.visible = true
+												hint_label.text = "[center]Move Barnaby close to the enemy to begin auto-attacking[/center]"
+												_fade_in_hint(hint_label)
+								3:
+											_toggle_ranges(false)
+											hint_label.add_theme_color_override("default_color", Color.GREEN)
+											hint_label.text = "[center]Tutorial complete![/center]"
+											_fade_in_hint(hint_label)
+											await get_tree().create_timer(2.0).timeout
+											await _fade_out_hint(hint_label)
+											await _finish_tutorial()
 
 func _toggle_ranges(on: bool) -> void:
 	_set_range_visible(barnaby, on, Color.CYAN)
