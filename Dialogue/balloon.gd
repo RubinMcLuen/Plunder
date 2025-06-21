@@ -18,6 +18,7 @@ extends CanvasLayer
 @onready var option_label_2: RichTextLabel = %Option2Label
 @onready var option_label_3: RichTextLabel = %Option3Label
 @onready var option_label_4: RichTextLabel = %Option4Label
+@onready var button_sound: AudioStreamPlayer = $ButtonSound
 
 var resource: DialogueResource
 var temporary_game_states: Array = []
@@ -180,7 +181,9 @@ func _update_responses_menu(responses: Array) -> void:
 
 
 func _on_next_button_pressed() -> void:
-	# 1. If text is still typing, skip to the end
+        if button_sound:
+                button_sound.play()
+        # 1. If text is still typing, skip to the end
 	if dialogue_label.is_typing:
 		dialogue_label.skip_typing()
 		return
@@ -210,7 +213,9 @@ func _on_next_button_pressed() -> void:
 
 
 func _on_response_button_pressed(index: int) -> void:
-	# Only keep the clicked button toggled on
+        if button_sound:
+                button_sound.play()
+        # Only keep the clicked button toggled on
 	for i in range(option_buttons.size()):
 		option_buttons[i].set_pressed(i == index)
 

@@ -48,16 +48,21 @@ const STEP_SOUNDS = [
 		preload("res://SFX/stepwood_2.wav")
 ]
 const SWORD_SOUNDS = [
-		preload("res://SFX/sword_clash.1.ogg"),
-		preload("res://SFX/sword_clash.2.ogg"),
-		preload("res://SFX/sword_clash.3.ogg"),
-		preload("res://SFX/sword_clash.4.ogg"),
-		preload("res://SFX/sword_clash.5.ogg"),
-		preload("res://SFX/sword_clash.6.ogg"),
-		preload("res://SFX/sword_clash.7.ogg"),
-		preload("res://SFX/sword_clash.8.ogg"),
-		preload("res://SFX/sword_clash.9.ogg"),
-		preload("res://SFX/sword_clash.10.ogg")
+                preload("res://SFX/sword_clash.1.ogg"),
+                preload("res://SFX/sword_clash.2.ogg"),
+                preload("res://SFX/sword_clash.3.ogg"),
+                preload("res://SFX/sword_clash.4.ogg"),
+                preload("res://SFX/sword_clash.5.ogg"),
+                preload("res://SFX/sword_clash.6.ogg"),
+                preload("res://SFX/sword_clash.7.ogg"),
+                preload("res://SFX/sword_clash.8.ogg"),
+                preload("res://SFX/sword_clash.9.ogg"),
+                preload("res://SFX/sword_clash.10.ogg")
+]
+const GRUNT_SOUNDS = [
+                preload("res://SFX/Grunt1.wav"),
+                preload("res://SFX/Grunt2.wav"),
+                preload("res://SFX/Grunt3.wav")
 ]
 var _step_index: int = 0
 
@@ -159,17 +164,30 @@ func _play_step_sound() -> void:
 				t.start()
 
 func _play_sword_sound() -> void:
-		var snd = SWORD_SOUNDS[randi() % SWORD_SOUNDS.size()]
-		var p = AudioStreamPlayer2D.new()
-		p.stream = snd
-		add_child(p)
-		p.play()
-		var t = Timer.new()
-		t.one_shot = true
-		t.wait_time = snd.get_length()
-		p.add_child(t)
-		t.timeout.connect(p.queue_free)
-		t.start()
+                var snd = SWORD_SOUNDS[randi() % SWORD_SOUNDS.size()]
+                var p = AudioStreamPlayer2D.new()
+                p.stream = snd
+                add_child(p)
+                p.play()
+                var t = Timer.new()
+                t.one_shot = true
+                t.wait_time = snd.get_length()
+                p.add_child(t)
+                t.timeout.connect(p.queue_free)
+                t.start()
+
+func _play_grunt_sound() -> void:
+                var snd = GRUNT_SOUNDS[randi() % GRUNT_SOUNDS.size()]
+                var p = AudioStreamPlayer2D.new()
+                p.stream = snd
+                add_child(p)
+                p.play()
+                var t = Timer.new()
+                t.one_shot = true
+                t.wait_time = snd.get_length()
+                p.add_child(t)
+                t.timeout.connect(p.queue_free)
+                t.start()
 
 # ─────────────────────────────────────────────
 # Damage + death
@@ -324,12 +342,13 @@ func update_animation() -> void:
 # Dialogue helpers
 # ─────────────────────────────────────────────
 func show_dialogue(dialogue_key: String) -> Node:
-	if dialogue_resource == null:
-		push_error("Dialogue resource not loaded for NPC " + npc_name)
-		return null
-	var balloon := DialogueManager.show_dialogue_balloon(dialogue_resource, dialogue_key, [self])
-	balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
-	return balloon
+        if dialogue_resource == null:
+                push_error("Dialogue resource not loaded for NPC " + npc_name)
+                return null
+        _play_grunt_sound()
+        var balloon := DialogueManager.show_dialogue_balloon(dialogue_resource, dialogue_key, [self])
+        balloon.connect("dialogue_finished", Callable(self, "_on_dialogue_finished"))
+        return balloon
 
 func _on_dialogue_finished() -> void:
 	if hirable and not hired:
