@@ -53,28 +53,28 @@ func _ready() -> void:
 	else:
 			_show_environment()
 
-        if Global.board_zoom_out_next:
-                        Global.board_zoom_out_next = false
-                        if player_ship:
-                                        var hull : CanvasItem = null
-                                        if player_ship.has_node("NoSails"):
-                                                        hull = player_ship.get_node("NoSails") as CanvasItem
-                                                        hull.visible = true
-                                                        hull.modulate.a = 1.0
+	if Global.board_zoom_out_next:
+					Global.board_zoom_out_next = false
+					if player_ship:
+									var hull : CanvasItem = null
+									if player_ship.has_node("NoSails"):
+													hull = player_ship.get_node("NoSails") as CanvasItem
+													hull.visible = true
+													hull.modulate.a = 1.0
 
-                                        var sail: CanvasItem = null
-                                        if player_ship.has_node("Boat"):
-                                                        sail = player_ship.get_node("Boat") as CanvasItem
-                                        elif player_ship.has_node("ShipSprite"):
-                                                        sail = player_ship.get_node("ShipSprite") as CanvasItem
-                                        if sail:
-                                                        sail.modulate.a = 0.0
+									var sail: CanvasItem = null
+									if player_ship.has_node("Boat"):
+													sail = player_ship.get_node("Boat") as CanvasItem
+									elif player_ship.has_node("ShipSprite"):
+													sail = player_ship.get_node("ShipSprite") as CanvasItem
+									if sail:
+													sail.modulate.a = 0.0
 
-                                        start_restore_sails(1.5)
-                                        if player_ship.has_node("ShipCamera"):
-                                                        var cam := player_ship.get_node("ShipCamera") as Camera2D
-                                                        cam.zoom = Vector2(16,16)
-                                                        cam.create_tween().tween_property(cam, "zoom", Vector2(1,1), 1.5)
+									start_restore_sails(1.5)
+									if player_ship.has_node("ShipCamera"):
+													var cam := player_ship.get_node("ShipCamera") as Camera2D
+													cam.zoom = Vector2(16,16)
+													cam.create_tween().tween_property(cam, "zoom", Vector2(1,1), 1.5)
 
 	# Listen for boarding requests
 	connect("board_enemy_request", Callable(self, "_on_board_enemy_request"))

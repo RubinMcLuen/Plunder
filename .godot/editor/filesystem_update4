@@ -25,3 +25,6 @@ res://CharacterCreator/CharacterCreator.tscn
 res://UI/UIManager.tscn
 res://Island/IslandTutorial.gd
 res://Island/ShipControlArea.gd
+res://Ocean/Ocean.gd
+res://Ocean/OceanTutorial.gd
+res://UI/UIManager.gd
