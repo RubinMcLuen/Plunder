@@ -99,7 +99,7 @@ func _create_save(slot_idx: int) -> void:
 		f.close()
 	active_slot = slot_idx
 	Global.active_save_slot = slot_idx
-        _refresh_slots()
+	_refresh_slots()
 
 func _open_info(slot_idx: int) -> void:
 	active_slot = slot_idx

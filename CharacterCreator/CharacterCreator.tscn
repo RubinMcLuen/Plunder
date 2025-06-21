@@ -113,7 +113,6 @@ caret_blink = true
 
 [node name="HeaderSlideSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("16_gadc3")
-volume_db = -2.5
 
 [node name="FinishButtonSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("17_a63l4")
