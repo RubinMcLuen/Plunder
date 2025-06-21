@@ -10,6 +10,7 @@ var _dragging := false
 var _boundary_rect: Rect2
 
 func _ready() -> void:
+	make_current()
 	zoom = Vector2.ONE
 	var area  := get_node(boundary_area_path) as Area2D
 	var cs    := area.get_node("CollisionShape2D") as CollisionShape2D

@@ -39,3 +39,4 @@ res://CharacterCreator/CharacterCreator.tscn
 res://Island/IslandTutorial.gd
 res://SoundManager.gd
 res://SceneSwitcher.gd
+res://Battle/Camera.gd
