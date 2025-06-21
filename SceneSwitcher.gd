@@ -145,9 +145,10 @@ func _on_fade_out_done() -> void:
 	dtw.connect("finished", Callable(self, "_load_scene_fade"))
 
 func _load_scene_fade() -> void:
-	_remove_old_scene()
-	_load_new_scene()
-	_fade_back_in()
+		if _load_new_scene():
+				_remove_old_scene()
+				_attach_loaded_scene()
+		_fade_back_in()
 
 func _fade_back_in() -> void:
 	var tw = create_tween()
@@ -177,9 +178,10 @@ func _on_zoom_done() -> void:
 		tw.connect("finished", Callable(self, "_load_scene_zoom"))
 
 func _load_scene_zoom() -> void:
-	_remove_old_scene()
-	_load_new_scene()
-	transition_in_progress = false
+		if _load_new_scene():
+				_remove_old_scene()
+				_attach_loaded_scene()
+		transition_in_progress = false
 
 # -----------------------------------------------------------
 # DIRECT (no transition)
@@ -188,9 +190,10 @@ func _start_direct_transition() -> void:
 	call_deferred("_load_scene_direct")
 
 func _load_scene_direct() -> void:
-	_remove_old_scene()
-	_load_new_scene()
-	transition_in_progress = false
+		if _load_new_scene():
+				_remove_old_scene()
+				_attach_loaded_scene()
+		transition_in_progress = false
 
 # -----------------------------------------------------------
 # REMOVE & LOAD
@@ -201,36 +204,39 @@ func _remove_old_scene() -> void:
 		active_scene.call_deferred("free")
 	active_scene = null
 
-func _load_new_scene() -> void:
-	var packed = ResourceLoader.load(target_scene_path) as PackedScene
-	if not packed:
-		print("SceneSwitcher: failed to load ", target_scene_path)
-		transition_in_progress = false
-		return
+var _next_scene: Node = null
 
-	var new_scene = packed.instantiate()
+func _load_new_scene() -> bool:
+		var packed = ResourceLoader.load(target_scene_path) as PackedScene
+		if not packed:
+				push_error("SceneSwitcher: failed to load %s" % target_scene_path)
+				return false
 
-	# set player position
-	if pending_move_player:
-		if new_scene.has_node("PlayerShip"):
-			new_scene.get_node("PlayerShip").global_position = target_position
-		elif new_scene.has_node("Player"):
-			new_scene.get_node("Player").global_position = target_position
+		_next_scene = packed.instantiate()
 
-	# set the NEW scene's camera zoom to load_camera_zoom
-		var nc = _find_camera_for_scene(new_scene)
+		if pending_move_player:
+				if _next_scene.has_node("PlayerShip"):
+						_next_scene.get_node("PlayerShip").global_position = target_position
+				elif _next_scene.has_node("Player"):
+						_next_scene.get_node("Player").global_position = target_position
+
+		var nc = _find_camera_for_scene(_next_scene)
 		if nc:
 				var target_zoom = load_camera_zoom
 				if target_zoom.x == 0 or target_zoom.y == 0:
 						target_zoom = Vector2.ONE
 				nc.zoom = target_zoom
 
-	# attach it
-		get_tree().root.add_child(new_scene)
-		active_scene = new_scene
-		get_tree().current_scene = new_scene
-		SoundManager._on_scene_changed(new_scene)
+		return true
 
+func _attach_loaded_scene() -> void:
+		if not _next_scene:
+				return
+		get_tree().root.add_child(_next_scene)
+		active_scene = _next_scene
+		get_tree().current_scene = _next_scene
+		SoundManager._on_scene_changed(_next_scene)
+		_next_scene = null
 # -----------------------------------------------------------
 # CAMERA HELPERS
 # -----------------------------------------------------------

@@ -72,7 +72,7 @@ func _on_set_sail_pressed() -> void:
 				Global.restore_sails_next = true
 				SceneSwitcher.switch_scene(
 						"res://Ocean/oceantutorial.tscn",
-						Vector2(-2, 41),
+						Vector2(-2, 39),
 						"zoom",
 						Vector2(0.0625, 0.0625), Vector2(-32, 656),
 						Vector2(1, 1), true
