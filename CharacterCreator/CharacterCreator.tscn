@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cwlpgtbhderfk"]
+[gd_scene load_steps=22 format=3 uid="uid://cwlpgtbhderfk"]
 
 [ext_resource type="Script" path="res://CharacterCreator/CharacterCreator.gd" id="1_lo01y"]
 [ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://SaveMenu/assets/saveslotmenubackground.png" id="2_tug1n"]
