@@ -262,8 +262,9 @@ void fragment() {
 
 
 // Output:0
-        COLOR.rgb = vec3(n_out58p0.xyz) * VertexColour.rgb;
-        COLOR.a = n_out52p0 * VertexColour.a;
+       vec4 modulate_color = COLOR;
+       COLOR.rgb = vec3(n_out58p0.xyz) * VertexColour.rgb * modulate_color.rgb;
+       COLOR.a = n_out52p0 * VertexColour.a * modulate_color.a;
 
 
 }
