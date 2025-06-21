@@ -6,6 +6,7 @@ class_name SaveInfo
 @onready var btn_delete: TextureButton = $DeleteButton
 @onready var lbl_name:   RichTextLabel = $Name
 @onready var player:     Node2D        = $Control/Player
+@onready var sfx_button: AudioStreamPlayer = $ButtonSound
 
 const SAVE_PATH_FORMAT  := "user://saveslot%d.json"
 
@@ -16,14 +17,18 @@ func _ready() -> void:
 	lbl_name.text = "Captain %s" % player.name_input
 
 func _on_play_pressed() -> void:
-	# 1) Make sure the SaveMenu already set Global.active_save_slot
+        if sfx_button:
+                sfx_button.play()
+        # 1) Make sure the SaveMenu already set Global.active_save_slot
 	# 2) Load everything (scene, player pos, crew, quests)
 	Global.load_game_state()
 	# 3) Close this popup immediately
 	queue_free()
 
 func _on_delete_pressed() -> void:
-	var slot_idx = Global.active_save_slot
+        if sfx_button:
+                sfx_button.play()
+        var slot_idx = Global.active_save_slot
 	var path = SAVE_PATH_FORMAT % slot_idx
 	if FileAccess.file_exists(path):
 		var dir = DirAccess.open("user://")

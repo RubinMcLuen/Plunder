@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dadq4qd7elc50"]
+[gd_scene load_steps=10 format=3 uid="uid://dadq4qd7elc50"]
 
 [ext_resource type="Script" path="res://SaveMenu/Info/Info.gd" id="1_3ryb0"]
 [ext_resource type="Texture2D" uid="uid://deslq2y8f8myq" path="res://SaveMenu/Info/assets/background.png" id="2_k52di"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://ci84x50648pgy" path="res://SaveMenu/Info/assets/deleteicon.png" id="6_nhngs"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="7_ltj2q"]
 [ext_resource type="PackedScene" uid="uid://bgu8oe87qd6w7" path="res://Character/Player/Player.tscn" id="8_4i5k8"]
+[ext_resource type="AudioStream" path="res://SFX/infobuttons.wav" id="9_btn"]
 
 [node name="Info" type="Node2D"]
 script = ExtResource("1_3ryb0")
@@ -61,3 +62,6 @@ offset_bottom = 14.0
 position = Vector2(14, 42)
 scale = Vector2(2, 2)
 customization_only = true
+
+[node name="ButtonSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_btn")

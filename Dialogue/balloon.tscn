@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://tt5acos0n34b"]
+[gd_scene load_steps=12 format=3 uid="uid://tt5acos0n34b"]
 
 [ext_resource type="Script" path="res://Dialogue/balloon.gd" id="1_i6w4i"]
 [ext_resource type="Texture2D" uid="uid://c8ixypn3iikla" path="res://Dialogue/assets/dialogue_frame.png" id="2_a8s57"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://b0f640v1pvyg0" path="res://Dialogue/assets/dialogue_option_button.png" id="8_ckuti"]
 [ext_resource type="Texture2D" uid="uid://c5kccr5n6tcb1" path="res://Dialogue/assets/dialogue_option_button_down.png" id="9_ydi6i"]
 [ext_resource type="Texture2D" uid="uid://d1njd1bw0ryjq" path="res://Dialogue/assets/dialogue_portrait_background.png" id="10_jw8tt"]
+[ext_resource type="AudioStream" path="res://SFX/dialoguebuttons.wav" id="11_btn"]
 
 [node name="ExampleBalloon" type="CanvasLayer"]
 script = ExtResource("1_i6w4i")
@@ -243,6 +244,9 @@ offset_bottom = 60.0
 [node name="PortraitBackground" type="Sprite2D" parent="Node2D/Balloon/Container"]
 position = Vector2(28, 28)
 texture = ExtResource("10_jw8tt")
+
+[node name="ButtonSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_btn")
 
 [connection signal="gui_input" from="Node2D/Balloon" to="." method="_on_balloon_gui_input"]
 [connection signal="pressed" from="Node2D/Balloon/NextButton" to="." method="_on_next_button_pressed"]
