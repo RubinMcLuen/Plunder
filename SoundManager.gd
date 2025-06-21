@@ -25,25 +25,25 @@ func _ready() -> void:
 
 func _on_scene_changed(scene: Node = null) -> void:
 	if scene == null:
-			scene = get_tree().current_scene
-        var path := scene.scene_file_path if scene else ""
-        if path.ends_with("KelptownInnTutorial.tscn") \
-                        or path.ends_with("islandtutorial.tscn") \
-                        or path.ends_with("oceantutorial.tscn"):
-                _start_island_music()
-	elif path.ends_with("BoardingBattleTutorial.tscn"):
-		_start_boarding_music()
+		scene = get_tree().current_scene
+		var path := scene.scene_file_path if scene else ""
+		if path.ends_with("KelptownInnTutorial.tscn") \
+						or path.ends_with("islandtutorial.tscn") \
+						or path.ends_with("oceantutorial.tscn"):
+				_start_island_music()
+		elif path.ends_with("BoardingBattleTutorial.tscn"):
+			_start_boarding_music()
 	else:
 		stop_music()
 
 func _start_island_music() -> void:
-        if music_player.stream == ISLAND_SONG_1 or music_player.stream == ISLAND_SONG_2:
-                if music_player.playing:
-                        return
-        _island_index = randi() % 2
-        music_player.stream = ISLAND_SONG_1 if _island_index == 0 else ISLAND_SONG_2
-        music_player.stream.loop = false
-        music_player.play()
+		if music_player.stream == ISLAND_SONG_1 or music_player.stream == ISLAND_SONG_2:
+				if music_player.playing:
+						return
+		_island_index = randi() % 2
+		music_player.stream = ISLAND_SONG_1 if _island_index == 0 else ISLAND_SONG_2
+		music_player.stream.loop = false
+		music_player.play()
 
 func _start_boarding_music() -> void:
 		music_player.stream = BOARDING_BATTLE
