@@ -163,8 +163,8 @@ func _update_player_texture() -> void:
 # ─────────────────────────────────────────────────────────────────────
 # 2)  Relative animation, camera-proof
 func animate_header(down: bool) -> Tween:
-		if sfx_header_slide and not down:
-				sfx_header_slide.play()
+                if sfx_header_slide:
+                                sfx_header_slide.play()
 		var target := _header_hidden_y if down else _header_shown_y
 		var tw := create_tween()\
 				.set_trans(Tween.TRANS_SINE)\
