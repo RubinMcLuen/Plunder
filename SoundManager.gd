@@ -44,9 +44,10 @@ func _start_island_music() -> void:
 	music_player.play()
 
 func _start_boarding_music() -> void:
-	music_player.stream = BOARDING_BATTLE
-	music_player.stream.loop = true
-	music_player.play()
+        music_player.stream = BOARDING_BATTLE
+        music_player.stream.loop = true
+        music_player.volume_db = linear2db(0.9)
+        music_player.play()
 
 func _on_music_finished() -> void:
 	if music_player.stream == ISLAND_SONG_1 or music_player.stream == ISLAND_SONG_2:
