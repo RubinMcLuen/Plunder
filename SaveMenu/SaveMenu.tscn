@@ -56,3 +56,4 @@ stream = ExtResource("6_rlwof")
 
 [node name="HeaderSlideSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_header")
+volume_db = -2.5
