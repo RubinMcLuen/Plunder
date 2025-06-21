@@ -110,7 +110,7 @@ func _refresh_ui() -> void:
 	_populate_items()
 
 func _populate_items() -> void:
-        item_buttons.populate_buttons(current_category, options, current_page, customization)
+		item_buttons.populate_buttons(current_category, options, current_page, customization)
 
 func _update_slider() -> void:
 	var total: int = options[current_category].size()

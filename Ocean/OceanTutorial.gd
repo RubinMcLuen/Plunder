@@ -158,21 +158,21 @@ func _update_hint_text() -> void:
 			1:
 											text = "Press S to slow and stop the ship"
 			2:
-                               var l1 = "Press Left Arrow to turn to port"
-                               var l2 = "Press Right Arrow to turn starboard"
+				var l1 = "Press Left Arrow to turn to port"
+				var l2 = "Press Right Arrow to turn starboard"
 				if left_done:
 						l1 = "[color=green]%s[/color]" % l1
 				if right_done:
 						l2 = "[color=green]%s[/color]" % l2
 				text = "%s\n%s" % [l1, l2]
 			3:
-                               var sl = "Press A to shoot port side"
-                               var sr = "Press D to shoot starboard side"
-												if shoot_left_done:
-																sl = "[color=green]%s[/color]" % sl
-												if shoot_right_done:
-																sr = "[color=green]%s[/color]" % sr
-												text = "%s\n%s" % [sl, sr]
+							var sl = "Press A to shoot port side"
+							var sr = "Press D to shoot starboard side"
+							if shoot_left_done:
+											sl = "[color=green]%s[/color]" % sl
+							if shoot_right_done:
+											sr = "[color=green]%s[/color]" % sr
+							text = "%s\n%s" % [sl, sr]
 			4:
 							text = "While moving, hit the wreck with a cannonball"
 			5:
