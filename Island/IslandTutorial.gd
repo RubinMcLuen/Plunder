@@ -72,25 +72,25 @@ func _fade_out_hint(label: CanvasItem, duration: float = 0.5) -> void:
 				label.hide()
 
 func _play_intro_cutscene() -> void:
-                                var orig_zoom = cam.zoom
-                                var orig_pos = cam.global_position
-                                # Center of the ship (same position used when leaving for the ocean)
-                                var ship_pos = Vector2(-32, 624)
-                                player.disable_user_input = true
+								var orig_zoom = cam.zoom
+								var orig_pos = cam.global_position
+								# Center of the ship (same position used when leaving for the ocean)
+								var ship_pos = Vector2(-32, 624)
+								player.disable_user_input = true
 
-                                # Small pause before panning the camera so players can orient themselves
-                                await get_tree().create_timer(1.0).timeout
+								# Small pause before panning the camera so players can orient themselves
+								await get_tree().create_timer(1.0).timeout
 
-                                var tw = get_tree().create_tween().set_parallel(true)
-                                tw.tween_property(cam, "zoom", Vector2(0.5, 0.5), 1.5)
-                                tw.tween_property(cam, "global_position", ship_pos, 1.5)
-                                await tw.finished
-                                await get_tree().create_timer(0.5).timeout
-                                var tw2 = get_tree().create_tween().set_parallel(true)
-                                tw2.tween_property(cam, "zoom", orig_zoom, 1.5)
-                                tw2.tween_property(cam, "global_position", orig_pos, 1.5)
-                                await tw2.finished
-                                player.disable_user_input = false
+								var tw = get_tree().create_tween().set_parallel(true)
+								tw.tween_property(cam, "zoom", Vector2(0.5, 0.5), 1.5)
+								tw.tween_property(cam, "global_position", ship_pos, 1.5)
+								await tw.finished
+								await get_tree().create_timer(0.5).timeout
+								var tw2 = get_tree().create_tween().set_parallel(true)
+								tw2.tween_property(cam, "zoom", orig_zoom, 1.5)
+								tw2.tween_property(cam, "global_position", orig_pos, 1.5)
+								await tw2.finished
+								player.disable_user_input = false
 
 func _on_ship_area_entered(body: Node) -> void:
 		if body == player and step == 0 and not _advancing:
