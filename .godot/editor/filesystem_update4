@@ -28,3 +28,5 @@ res://Island/ShipControlArea.gd
 res://Ocean/Ocean.gd
 res://Ocean/OceanTutorial.gd
 res://UI/UIManager.gd
+res://Ships/Trail.tscn
+res://Ships/EnemyShip.tscn
