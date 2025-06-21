@@ -23,7 +23,7 @@
 size = Vector2(26, 6)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_htmtw"]
-size = Vector2(96, 128)
+size = Vector2(480, 191)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u0ebn"]
 size = Vector2(115, 0)
@@ -121,7 +121,7 @@ position = Vector2(-170, 635)
 script = ExtResource("10_07xlk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ShipControlArea"]
-position = Vector2(-38, 5)
+position = Vector2(138, 4.5)
 shape = SubResource("RectangleShape2D_htmtw")
 
 [node name="Collisions" type="Node2D" parent="."]
