@@ -6,6 +6,7 @@ const IslandTutorial    = preload("res://Island/IslandTutorial.gd")
 
 var active_save_slot: int = -1
 var spawn_position: Vector2 = Vector2.ZERO
+var enemy_spawn_position: Vector2 = Vector2.ZERO
 var crew: Array[String] = []
 var ship_state: Dictionary = {}   # holds extra data just for PlayerShip
 var kelptown_tutorial_state: Dictionary = {}
