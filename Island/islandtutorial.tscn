@@ -100,7 +100,7 @@ scale = Vector2(16, 16)
 texture = ExtResource("7_spt4l")
 
 [node name="Player" parent="." instance=ExtResource("9_l87hv")]
-position = Vector2(-32, 624)
+position = Vector2(62, -48)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 zoom = Vector2(1.5, 1.5)

@@ -29,3 +29,6 @@ res://SoundManager.gd
 res://Ocean/OceanTutorial.gd
 res://CharacterCreator/CharacterCreator.gd
 res://TitleScreen/TitleScreen.gd
+res://TitleScreen/TitleScreen.tscn
+res://Island/IslandTutorial.gd
+res://KelptownInn/KelptownInnTutorial.gd

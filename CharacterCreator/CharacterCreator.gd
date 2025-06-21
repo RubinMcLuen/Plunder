@@ -61,10 +61,10 @@ var _header_hidden_y: float
 # CharacterCreator.gd  ───────────────────────────────────────────────
 # 1)  Cache header positions
 func _ready() -> void:
-                _init_customization_resource()
-                _load_all_options()
-                _connect_ui()
-                _refresh_ui()
+				_init_customization_resource()
+				_load_all_options()
+				_connect_ui()
+				_refresh_ui()
 
 _header_shown_y = header.position.y
 _header_hidden_y = header.position.y - HEADER_MOVE_Y
@@ -163,16 +163,16 @@ func _update_player_texture() -> void:
 # ─────────────────────────────────────────────────────────────────────
 # 2)  Relative animation, camera-proof
 func animate_header(down: bool) -> Tween:
-        if sfx_header_slide and not down:
-                sfx_header_slide.play()
-        var target := _header_hidden_y if down else _header_shown_y
-        var tw := create_tween()\
-                .set_trans(Tween.TRANS_SINE)\
-                .set_ease(Tween.EASE_IN_OUT)
+		if sfx_header_slide and not down:
+				sfx_header_slide.play()
+		var target := _header_hidden_y if down else _header_shown_y
+		var tw := create_tween()\
+				.set_trans(Tween.TRANS_SINE)\
+				.set_ease(Tween.EASE_IN_OUT)
 
-        tw.tween_property(header, "position:y", target, HEADER_TWEEN_TIME)
+		tw.tween_property(header, "position:y", target, HEADER_TWEEN_TIME)
 
-        return tw
+		return tw
 
 
 

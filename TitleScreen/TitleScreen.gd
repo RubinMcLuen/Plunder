@@ -42,14 +42,14 @@ func _on_show_creator(_slot: int) -> void:
 	await get_tree().create_timer(half_time).timeout
 
 	menu_save.visible = false                   # hide old UI while screen is black
-       creator.visible   = true                    # show new UI
-       creator.animate_header(true)
+	   creator.visible   = true                    # show new UI
+	   creator.animate_header(true)
 
 	await fade_anim.animation_finished          # let fade back to transparent finish
 
 
 func _on_hide_creator() -> void:
-               creator.animate_header(false)
+			   creator.animate_header(false)
 		creator.visible = false
 		menu_save.visible = true
 		menu_save.animate_header(true)
