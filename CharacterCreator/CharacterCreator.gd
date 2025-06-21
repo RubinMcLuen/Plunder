@@ -66,8 +66,8 @@ func _ready() -> void:
 				_connect_ui()
 				_refresh_ui()
 
-_header_shown_y = header.position.y
-_header_hidden_y = header.position.y - HEADER_MOVE_Y
+				_header_shown_y = header.position.y
+				_header_hidden_y = header.position.y - HEADER_MOVE_Y
 
 
 # ─────────────────────────────────────────────────────────────────────
