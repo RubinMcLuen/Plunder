@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://db6lj2cbdv3s7"]
+[gd_scene load_steps=9 format=3 uid="uid://db6lj2cbdv3s7"]
 
 [ext_resource type="Texture2D" uid="uid://dwya1p360m0a4" path="res://UI/LocationBackground.png" id="1_o0auw"]
 [ext_resource type="Script" path="res://UI/UIManager.gd" id="1_vahum"]
@@ -238,13 +238,11 @@ text = "Ready To Board?"
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
-anchor_top = 0.0
 anchor_right = 1.0
-anchor_bottom = 0.0
-offset_left = -26.0
+offset_left = -40.0
 offset_top = 8.0
 offset_right = -8.0
-offset_bottom = 26.0
+offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 0
 action_mode = 0

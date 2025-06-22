@@ -26,29 +26,29 @@ var _location_notify_tween : Tween     = null
 # Ready
 # ──────────────────────────
 func _ready() -> void:
-        # connect our UI button once
-        begin_raid_button.pressed.connect(Callable(self, "_on_begin_raid_button_pressed"))
-        enemy_toggle_button.pressed.connect(Callable(self, "_on_spawn_enemy_button_pressed"))
+		# connect our UI button once
+		begin_raid_button.pressed.connect(Callable(self, "_on_begin_raid_button_pressed"))
+		enemy_toggle_button.pressed.connect(Callable(self, "_on_spawn_enemy_button_pressed"))
 
-        enemy_toggle_button.hide()
+		enemy_toggle_button.hide()
 
 	# initial wiring
-	_rewire_to_scene(get_tree().current_scene)
-	set_process(true)
-	
-	hide_location_notification()
-	hide_set_sail_menu()
-	hide_dock_ship_menu()
-	hide_begin_raid_menu()
+		_rewire_to_scene(get_tree().current_scene)
+		set_process(true)
+		
+		hide_location_notification()
+		hide_set_sail_menu()
+		hide_dock_ship_menu()
+		hide_begin_raid_menu()
 
 # ──────────────────────────
 # Per-frame: detect scene swaps
 # ──────────────────────────
 func _process(_delta: float) -> void:
-        var cs = get_tree().current_scene
-        if cs != _current_ocean:
-                _rewire_to_scene(cs)
-        _update_enemy_button_visibility()
+		var cs = get_tree().current_scene
+		if cs != _current_ocean:
+				_rewire_to_scene(cs)
+		_update_enemy_button_visibility()
 
 # ──────────────────────────
 # Scene wiring / unwiring
@@ -270,19 +270,19 @@ func _on_dock_ship_button_pressed() -> void:
 								   Vector2(16, 16), Vector2(-11.875, 40.5),
 								   Vector2(1, 1), true
 		)
-                hide_dock_ship_menu()
+		hide_dock_ship_menu()
 
 # ──────────────────────────
 # Enemy spawn toggle button
 # ──────────────────────────
 func _update_enemy_button_visibility() -> void:
-        var scene = get_tree().current_scene
-        if scene and scene.scene_file_path.ends_with("oceantutorial.tscn") and Global.ocean_tutorial_complete:
-                enemy_toggle_button.show()
-        else:
-                enemy_toggle_button.hide()
+		var scene = get_tree().current_scene
+		if scene and scene.scene_file_path.ends_with("oceantutorial.tscn") and Global.ocean_tutorial_complete:
+				enemy_toggle_button.show()
+		else:
+				enemy_toggle_button.hide()
 
 func _on_spawn_enemy_button_pressed() -> void:
-        var scene = get_tree().current_scene
-        if scene and scene.has_method("toggle_enemy_ship"):
-                scene.toggle_enemy_ship()
+		var scene = get_tree().current_scene
+		if scene and scene.has_method("toggle_enemy_ship"):
+				scene.toggle_enemy_ship()
