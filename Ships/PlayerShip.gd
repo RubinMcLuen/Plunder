@@ -78,6 +78,8 @@ signal position_updated(new_position: Vector2)
 signal movement_started()
 signal player_docked()
 signal manual_rotation_started()
+signal cannons_fired_left()
+signal cannons_fired_right()
 
 # List of input action names that are allowed while tutorial or other
 # systems restrict player control. When empty, all controls are allowed.
@@ -235,9 +237,11 @@ func reset_bot_input():
 
 # --- Firing Logic: Random Delay (0-1s) for Each Cannon, All in Parallel ---
 func shoot_left():
-	if not can_shoot:
-		return
-	can_shoot = false
+        if not can_shoot:
+                return
+        can_shoot = false
+
+        emit_signal("cannons_fired_left")
 	
 	# Start GunCooldown immediately when shoot is pressed.
 	$GunCooldown.start()
@@ -296,9 +300,11 @@ func _fire_left_cannon(i):
 	smoke.start(velocity)
 
 func shoot_right():
-	if not can_shoot:
-		return
-	can_shoot = false
+        if not can_shoot:
+                return
+        can_shoot = false
+
+        emit_signal("cannons_fired_right")
 	
 	# Start GunCooldown immediately when shoot is pressed.
 	$GunCooldown.start()
