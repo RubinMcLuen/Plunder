@@ -20,54 +20,54 @@ var _enemy_layer       : int   = 0
 var _enemy_mask        : int   = 0
 
 func get_tutorial_state() -> Dictionary:
-       var es := {}
-       if enemy_ship and is_instance_valid(enemy_ship):
-               es = {
-                       "exists": true,
-                       "position": enemy_ship.global_position,
-                       "frame": enemy_ship.current_frame,
-                       "state": int(enemy_ship.current_state),
-                       "health": enemy_ship.health,
-                       "ready": enemy_ship.ready_for_boarding,
-               }
-       else:
-               es = {"exists": false}
+	var es := {}
+	if enemy_ship and is_instance_valid(enemy_ship):
+			es = {
+					"exists": true,
+					"position": enemy_ship.global_position,
+					"frame": enemy_ship.current_frame,
+					"state": int(enemy_ship.current_state),
+					"health": enemy_ship.health,
+					"ready": enemy_ship.ready_for_boarding,
+			}
+	else:
+			es = {"exists": false}
 
-       return {
-               "step": step,
-               "left_done": left_done,
-               "right_done": right_done,
-               "shoot_left_done": shoot_left_done,
-               "shoot_right_done": shoot_right_done,
-               "enemy_hit": enemy_hit,
-               "enemy": es,
-       }
+	return {
+			"step": step,
+			"left_done": left_done,
+			"right_done": right_done,
+			"shoot_left_done": shoot_left_done,
+			"shoot_right_done": shoot_right_done,
+			"enemy_hit": enemy_hit,
+			"enemy": es,
+	   }
 
 func apply_tutorial_state(state: Dictionary) -> void:
-       step = int(state.get("step", step))
-       left_done = bool(state.get("left_done", left_done))
-       right_done = bool(state.get("right_done", right_done))
-       shoot_left_done = bool(state.get("shoot_left_done", shoot_left_done))
-       shoot_right_done = bool(state.get("shoot_right_done", shoot_right_done))
-       enemy_hit = bool(state.get("enemy_hit", enemy_hit))
+	step = int(state.get("step", step))
+	left_done = bool(state.get("left_done", left_done))
+	right_done = bool(state.get("right_done", right_done))
+	shoot_left_done = bool(state.get("shoot_left_done", shoot_left_done))
+	shoot_right_done = bool(state.get("shoot_right_done", shoot_right_done))
+	enemy_hit = bool(state.get("enemy_hit", enemy_hit))
 
-       var es: Dictionary = state.get("enemy", {})
-       if es.get("exists", false):
-               if enemy_ship == null:
-                       _spawn_normal_enemy(false)
-               enemy_ship.global_position = es.get("position", enemy_ship.global_position)
-               enemy_ship.current_frame   = es.get("frame", enemy_ship.current_frame)
-               enemy_ship.current_state   = int(es.get("state", enemy_ship.current_state))
-               enemy_ship.health          = int(es.get("health", enemy_ship.health))
-               enemy_ship.ready_for_boarding = bool(es.get("ready", enemy_ship.ready_for_boarding))
-               if enemy_ship.has_method("_update_frame"):
-                       enemy_ship._update_frame()
-       elif enemy_ship:
-               enemy_ship.queue_free()
-               enemy_ship = null
+	var es: Dictionary = state.get("enemy", {})
+	if es.get("exists", false):
+			if enemy_ship == null:
+					_spawn_normal_enemy(false)
+			enemy_ship.global_position = es.get("position", enemy_ship.global_position)
+			enemy_ship.current_frame   = es.get("frame", enemy_ship.current_frame)
+			enemy_ship.current_state   = int(es.get("state", enemy_ship.current_state))
+			enemy_ship.health          = int(es.get("health", enemy_ship.health))
+			enemy_ship.ready_for_boarding = bool(es.get("ready", enemy_ship.ready_for_boarding))
+			if enemy_ship.has_method("_update_frame"):
+					enemy_ship._update_frame()
+	elif enemy_ship:
+			enemy_ship.queue_free()
+			enemy_ship = null
 
-       _show_step_text()
-       _apply_allowed_actions()
+	_show_step_text()
+	_apply_allowed_actions()
 
 
 func _allowed_actions_for_step(s: int) -> Array[String]:
@@ -123,15 +123,15 @@ func _ready() -> void:
 			if sprite.material is ShaderMaterial:
 				tw.parallel().tween_property(sprite.material, "shader_parameter/InitialAlpha", 0.0, 4.0)
 
-        tw.tween_callback(Callable(enemy_ship, "queue_free"))
-        tw.tween_callback(Callable(self, "_clear_enemy_ship"))
-        return
+			tw.tween_callback(Callable(enemy_ship, "queue_free"))
+			tw.tween_callback(Callable(self, "_clear_enemy_ship"))
+			return
 
-        var loaded_state := false
-        if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
-                apply_tutorial_state(Global.ocean_tutorial_state)
-                Global.ocean_tutorial_state = {}
-                loaded_state = true
+	var loaded_state := false
+	if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
+			apply_tutorial_state(Global.ocean_tutorial_state)
+			Global.ocean_tutorial_state = {}
+			loaded_state = true
 
 	if player_ship:
 		_orig_max_speed    = player_ship.max_speed
@@ -476,16 +476,16 @@ func _create_borders(center: Vector2, size: int) -> void:
 
 
 func _add_wall(parent: Node, pos: Vector2, extents: Vector2) -> void:
-        var body  := StaticBody2D.new()
-        body.position = pos
+	var body  := StaticBody2D.new()
+	body.position = pos
 
 	var shape := CollisionShape2D.new()
 	var rect  := RectangleShape2D.new()
 	rect.extents = extents
 	shape.shape  = rect
 
-        body.add_child(shape)
-        parent.add_child(body)
+	body.add_child(shape)
+	parent.add_child(body)
 
 func _exit_tree() -> void:
-        Global.ocean_tutorial_state = get_tutorial_state()
+		Global.ocean_tutorial_state = get_tutorial_state()
