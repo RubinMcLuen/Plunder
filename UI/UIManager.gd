@@ -22,6 +22,7 @@ var _current_ocean  : Node             = null
 var _current_player : Node2D           = null
 var _current_enemy  : Node2D           = null
 var _player_docked  : bool             = false
+var _island_dock_next : bool           = false
 var _location_notify_tween : Tween     = null
 
 # ──────────────────────────
@@ -110,47 +111,55 @@ func _rewire_to_scene(ocean: Node) -> void:
 		_current_enemy = enemy
 
 	# ── wire up the new PlayerShip if present ──────────────────────
-	if ocean and ocean.has_node("PlayerShip"):
-		var player = ocean.get_node("PlayerShip") as Node2D
-		if player.has_signal("movement_started") and not player.is_connected("movement_started", Callable(self, "_on_player_started_moving")):
-			player.connect("movement_started", Callable(self, "_on_player_started_moving"))
-		if player.has_signal("manual_rotation_started") and not player.is_connected("manual_rotation_started", Callable(self, "_on_player_started_moving")):
-			player.connect("manual_rotation_started", Callable(self, "_on_player_started_moving"))
-		if player.has_signal("player_docked") and not player.is_connected("player_docked", Callable(self, "_on_player_docked")):
-			player.connect("player_docked", Callable(self, "_on_player_docked"))
-		_current_player = player
+        if ocean and ocean.has_node("PlayerShip"):
+                var player = ocean.get_node("PlayerShip") as Node2D
+                if player.has_signal("movement_started") and not player.is_connected("movement_started", Callable(self, "_on_player_started_moving")):
+                        player.connect("movement_started", Callable(self, "_on_player_started_moving"))
+                if player.has_signal("manual_rotation_started") and not player.is_connected("manual_rotation_started", Callable(self, "_on_player_started_moving")):
+                        player.connect("manual_rotation_started", Callable(self, "_on_player_started_moving"))
+                if player.has_signal("player_docked") and not player.is_connected("player_docked", Callable(self, "_on_player_docked")):
+                        player.connect("player_docked", Callable(self, "_on_player_docked"))
+                _current_player = player
 
 # ──────────────────────────
 # Boarding / docking logic
 # ──────────────────────────
+func queue_island_dock() -> void:
+        _island_dock_next = true
+
 func _on_board_enemy_request(_enemy: Node2D) -> void:
-	_board_mode = true
-	hide_set_sail_menu()
-	hide_dock_ship_menu()
-	hide_location_notification()
-	hide_begin_raid_menu()
+        _board_mode = true
+        hide_set_sail_menu()
+        hide_dock_ship_menu()
+        hide_location_notification()
+        hide_begin_raid_menu()
 
 func _on_player_docked() -> void:
-		_player_docked = true
-		var ocean = get_tree().current_scene
-		var enemy_ready := false
-		if ocean and ocean.has_node("EnemyShip"):
-				var enemy = ocean.get_node("EnemyShip")
-				if enemy.has_method("get"):
-						enemy_ready = enemy.get("ready_for_boarding")
+                _player_docked = true
+                var ocean = get_tree().current_scene
+                var enemy_ready := false
+                if ocean and ocean.has_node("EnemyShip"):
+                                var enemy = ocean.get_node("EnemyShip")
+                                if enemy.has_method("get"):
+                                                enemy_ready = enemy.get("ready_for_boarding")
 
-		if _board_mode or enemy_ready:
-				show_begin_raid_menu()
-				_board_mode = true
-		else:
-				show_dock_ship_menu()
+                if _island_dock_next:
+                                show_dock_ship_menu()
+                                _island_dock_next = false
+                                _board_mode = false
+                elif _board_mode or enemy_ready:
+                                show_begin_raid_menu()
+                                _board_mode = true
+                else:
+                                show_dock_ship_menu()
 
 func _on_player_started_moving() -> void:
 		var was_visible := begin_raid_menu.visible
 		hide_begin_raid_menu()
 		_player_docked = false
 		if was_visible:
-				_board_mode = false
+		_board_mode = false
+		_island_dock_next = false
 
 # ──────────────────────────
 # “Begin Raid” button
