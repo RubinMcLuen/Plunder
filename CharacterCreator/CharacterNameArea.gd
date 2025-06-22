@@ -4,11 +4,13 @@ extends Node2D
 var is_default_text = true  # Track if the default text is still showing
 
 func _ready():
-	# Set up the placeholder text
-	name_input.text = "Enter Name..."
-	# Connect signals with the correct syntax
-	name_input.focus_entered.connect(_on_name_focus_entered)
-	name_input.focus_exited.connect(_on_name_focus_exited)
+        # Set up the placeholder text
+        name_input.text = "Enter Name..."
+        # Disable the default context menu so right click does nothing
+        name_input.context_menu_enabled = false
+        # Connect signals with the correct syntax
+        name_input.focus_entered.connect(_on_name_focus_entered)
+        name_input.focus_exited.connect(_on_name_focus_exited)
 
 func _input(event):
 	if event is InputEventMouseButton and event.pressed:

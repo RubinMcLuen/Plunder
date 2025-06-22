@@ -89,9 +89,17 @@ func _ready() -> void:
 
 										arrow.visible = false
 										arrow.target  = null
-										arrow.self_modulate = Color.WHITE
-										_show_step_text()
-										_apply_allowed_actions()
+                               arrow.self_modulate = Color.WHITE
+                               _show_step_text()
+                               _apply_allowed_actions()
+
+                               # Rewire the Begin Raid button so we can track tutorial progress
+                               var btn = UIManager.get_node("UIManager/BeginRaidMenu/BeginRaidButton")
+                               if btn:
+                                       if btn.pressed.is_connected(UIManager._on_begin_raid_button_pressed):
+                                               btn.pressed.disconnect(UIManager._on_begin_raid_button_pressed)
+                                       if not btn.pressed.is_connected(_on_begin_raid_pressed):
+                                               btn.pressed.connect(_on_begin_raid_pressed)
 
 func _process(_delta: float) -> void:
 	if enemy_ship and is_instance_valid(enemy_ship):
@@ -239,8 +247,13 @@ func _advance_step(next_step: int) -> void:
 		_advancing = false
 
 func begin_raid_pressed() -> void:
-																if step == 6 and not _advancing:
-																			_advance_step(7)
+                                                                               if step == 6 and not _advancing:
+                                                                               _advance_step(7)
+
+func _on_begin_raid_pressed() -> void:
+       if step == 6 and not _advancing:
+               _advance_step(7)
+       UIManager._on_begin_raid_button_pressed()
 
 func _clear_enemy_ship() -> void:
 	enemy_ship = null
