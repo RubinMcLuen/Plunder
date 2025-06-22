@@ -74,7 +74,7 @@ func move_player_to_target(target_pos: Vector2):
 		player.call("drive_to_target_position", target_pos)
 		_awaiting_island_dock = true			# we expect the very next dock to be ours
 		if UIManager.has_method("queue_island_dock"):
-		UIManager.queue_island_dock()
+			UIManager.queue_island_dock()
 
 
 func _on_player_docked():
