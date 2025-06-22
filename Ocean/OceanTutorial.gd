@@ -267,13 +267,13 @@ func _on_begin_raid_pressed() -> void:
 	UIManager._on_begin_raid_button_pressed()
 
 func _clear_enemy_ship() -> void:
-        enemy_ship = null
+		enemy_ship = null
 
 func _spawn_normal_enemy(record_spawned: bool = true) -> void:
-                if record_spawned and Global.post_tutorial_enemy_spawned:
-                                                return
-                if record_spawned:
-                                Global.post_tutorial_enemy_spawned = true
+		if record_spawned and Global.post_tutorial_enemy_spawned:
+										return
+		if record_spawned:
+						Global.post_tutorial_enemy_spawned = true
 		var scene := preload("res://Ships/EnemyShip.tscn")
 		enemy_ship = scene.instantiate()
 		enemy_ship.start_dead_for_testing = false
@@ -293,11 +293,11 @@ func _spawn_normal_enemy(record_spawned: bool = true) -> void:
 		if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
 						enemy_ship.connect("area_entered", _on_enemy_area_entered)
 		Global.crew_override = ["Barnaby", "Barnaby", "Barnaby", "Barnaby", "Barnaby"]
-                Global.enemy_count_override = 3
+		Global.enemy_count_override = 3
 
 func toggle_enemy_ship() -> void:
-        if enemy_ship and is_instance_valid(enemy_ship) and enemy_ship.current_state != enemy_ship.EnemyState.DEAD:
-                if enemy_ship.has_method("_die"):
-                        enemy_ship._die()
-                return
-        _spawn_normal_enemy(false)
+		if enemy_ship and is_instance_valid(enemy_ship) and enemy_ship.current_state != enemy_ship.EnemyState.DEAD:
+				if enemy_ship.has_method("_die"):
+						enemy_ship._die()
+				return
+		_spawn_normal_enemy(false)
