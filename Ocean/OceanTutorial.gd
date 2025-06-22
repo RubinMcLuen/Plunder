@@ -22,15 +22,15 @@ var _enemy_mask        : int   = 0
 func get_tutorial_state() -> Dictionary:
 	var es := {}
 	if enemy_ship and is_instance_valid(enemy_ship):
-                       es = {
-                                       "exists": true,
-                                       "position": enemy_ship.global_position,
-                                       "frame": enemy_ship.current_frame,
-                                       "state": int(enemy_ship.current_state),
-                                       "health": enemy_ship.health,
-                                       "ready": enemy_ship.ready_for_boarding,
-                                       "visible": enemy_ship.visible,
-                       }
+					es = {
+									   "exists": true,
+									   "position": enemy_ship.global_position,
+									   "frame": enemy_ship.current_frame,
+									   "state": int(enemy_ship.current_state),
+									   "health": enemy_ship.health,
+									   "ready": enemy_ship.ready_for_boarding,
+									   "visible": enemy_ship.visible,
+					   }
 	else:
 			es = {"exists": false}
 
@@ -51,20 +51,20 @@ func get_tutorial_state() -> Dictionary:
    }
 
 func apply_tutorial_state(state: Dictionary) -> void:
-        step = int(state.get("step", step))
+	step = int(state.get("step", step))
 	left_done = bool(state.get("left_done", left_done))
 	right_done = bool(state.get("right_done", right_done))
 	shoot_left_done = bool(state.get("shoot_left_done", shoot_left_done))
 	shoot_right_done = bool(state.get("shoot_right_done", shoot_right_done))
 	enemy_hit = bool(state.get("enemy_hit", enemy_hit))
 
-        var es: Dictionary = state.get("enemy", {})
-        if es.get("exists", false):
-                if enemy_ship == null or not is_instance_valid(enemy_ship):
-                        _spawn_normal_enemy(false)
-                if _enemy_layer == 0 and _enemy_mask == 0 and enemy_ship:
-                        _enemy_layer = enemy_ship.collision_layer
-                        _enemy_mask  = enemy_ship.collision_mask
+	var es: Dictionary = state.get("enemy", {})
+	if es.get("exists", false):
+		if enemy_ship == null or not is_instance_valid(enemy_ship):
+			_spawn_normal_enemy(false)
+		if _enemy_layer == 0 and _enemy_mask == 0 and enemy_ship:
+			_enemy_layer = enemy_ship.collision_layer
+			_enemy_mask = enemy_ship.collision_mask
 
 		var pos = es.get("position", enemy_ship.global_position)
 		if typeof(pos) == TYPE_DICTIONARY and pos.has("x") and pos.has("y"):
@@ -76,20 +76,21 @@ func apply_tutorial_state(state: Dictionary) -> void:
 			if typeof(tmp) == TYPE_VECTOR2:
 				enemy_ship.global_position = tmp
 
-               enemy_ship.current_frame = es.get("frame", enemy_ship.current_frame)
-               enemy_ship.current_state = int(es.get("state", enemy_ship.current_state))
-               enemy_ship.health = int(es.get("health", enemy_ship.health))
-               enemy_ship.ready_for_boarding = bool(es.get("ready", enemy_ship.ready_for_boarding))
-               enemy_ship.visible = bool(es.get("visible", enemy_ship.visible))
+		enemy_ship.current_frame = es.get("frame", enemy_ship.current_frame)
+		enemy_ship.current_state = int(es.get("state", enemy_ship.current_state))
+		enemy_ship.health = int(es.get("health", enemy_ship.health))
+		enemy_ship.ready_for_boarding = bool(es.get("ready", enemy_ship.ready_for_boarding))
+		enemy_ship.visible = bool(es.get("visible", enemy_ship.visible))
 		if enemy_ship.has_method("_update_frame"):
 			enemy_ship._update_frame()
 	elif enemy_ship:
 		enemy_ship.queue_free()
 		enemy_ship = null
 
-        _show_step_text()
-        _apply_allowed_actions()
-       _apply_loaded_step()
+	_show_step_text()
+	_apply_allowed_actions()
+	_apply_loaded_step()
+
 
 
 
