@@ -265,15 +265,15 @@ func _apply_constant_turn(delta : float, deg_per_sec : float) -> void:
 
 
 func _update_frame() -> void:
-    if $Boat:
-        if $Boat.hframes > 1:
-            $Boat.frame = (int(current_frame) + NUM_FRAMES / 2) % NUM_FRAMES
-        else:
-            $Boat.frame = 0
-    if collision_shape:
-        collision_shape.rotation_degrees = current_frame * ANGLE_PER_FRAME
-    if trail_sprite:
-        trail_sprite.rotation_degrees = collision_shape.rotation_degrees
+	if $Boat:
+		if $Boat.hframes > 1:
+			$Boat.frame = (int(current_frame) + NUM_FRAMES / 2) % NUM_FRAMES
+		else:
+			$Boat.frame = 0
+	if collision_shape:
+		collision_shape.rotation_degrees = current_frame * ANGLE_PER_FRAME
+	if trail_sprite:
+		trail_sprite.rotation_degrees = collision_shape.rotation_degrees
 
 
 

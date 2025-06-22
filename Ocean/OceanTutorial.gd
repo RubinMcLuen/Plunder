@@ -20,8 +20,8 @@ var _enemy_layer       : int   = 0
 var _enemy_mask        : int   = 0
 
 func get_tutorial_state() -> Dictionary:
-        var es := {}
-        if enemy_ship and is_instance_valid(enemy_ship):
+	var es := {}
+	if enemy_ship and is_instance_valid(enemy_ship):
 			es = {
 					"exists": true,
 					"position": enemy_ship.global_position,
@@ -33,21 +33,21 @@ func get_tutorial_state() -> Dictionary:
 	else:
 			es = {"exists": false}
 
-        var s := step
-        if s == 6:
-                # Saving on the final step drops you back one step so the
-                # player remains docked when reloading.
-                s = 5
+	var s := step
+	if s == 6:
+			# Saving on the final step drops you back one step so the
+			# player remains docked when reloading.
+			s = 5
 
-        return {
-                        "step": s,
-			"left_done": left_done,
-			"right_done": right_done,
-			"shoot_left_done": shoot_left_done,
-			"shoot_right_done": shoot_right_done,
-			"enemy_hit": enemy_hit,
-			"enemy": es,
-	   }
+	return {
+					"step": s,
+		"left_done": left_done,
+		"right_done": right_done,
+		"shoot_left_done": shoot_left_done,
+		"shoot_right_done": shoot_right_done,
+		"enemy_hit": enemy_hit,
+		"enemy": es,
+   }
 
 func apply_tutorial_state(state: Dictionary) -> void:
 	step = int(state.get("step", step))
@@ -163,19 +163,19 @@ func _ready() -> void:
 	if player_ship.has_signal("cannons_fired_right"):
 		player_ship.connect("cannons_fired_right", _on_cannons_fired_right)
 
-        if enemy_ship and not loaded_state:
-                _enemy_layer = enemy_ship.collision_layer
-                _enemy_mask  = enemy_ship.collision_mask
-                enemy_ship.visible = false
-                enemy_ship.ready_for_boarding = false
-                enemy_ship.input_pickable = false
-                enemy_ship.collision_layer = 0
-                enemy_ship.collision_mask = 0
-                enemy_ship.set_process(false)
-                enemy_ship.set_physics_process(false)
+		if enemy_ship and not loaded_state:
+				_enemy_layer = enemy_ship.collision_layer
+				_enemy_mask  = enemy_ship.collision_mask
+				enemy_ship.visible = false
+				enemy_ship.ready_for_boarding = false
+				enemy_ship.input_pickable = false
+				enemy_ship.collision_layer = 0
+				enemy_ship.collision_mask = 0
+				enemy_ship.set_process(false)
+				enemy_ship.set_physics_process(false)
 
-                if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
-                        enemy_ship.connect("area_entered", _on_enemy_area_entered)
+				if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
+						enemy_ship.connect("area_entered", _on_enemy_area_entered)
 
 	arrow.visible       = false
 	arrow.target        = null
