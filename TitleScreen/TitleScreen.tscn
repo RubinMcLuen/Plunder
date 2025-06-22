@@ -1,8 +1,8 @@
 [gd_scene load_steps=22 format=3 uid="uid://cm8ppnapjo5rr"]
 
 [ext_resource type="Script" path="res://TitleScreen/TitleScreen.gd" id="1_d6u5a"]
-[ext_resource type="Texture2D" uid="uid://dmjwte78jm5l8" path="res://TitleScreen/assets/titlescreenbackground.png" id="1_l328g"]
 [ext_resource type="Texture2D" uid="uid://cxsvekkv3xust" path="res://TitleScreen/assets/titlescreenboat.png" id="3_7ul8s"]
+[ext_resource type="Texture2D" uid="uid://l0hqjka0qxu3" path="res://TitleScreen/assets/mainmenu-Recovered 2-export.png" id="4_0dlmf"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="4_rii8i"]
 [ext_resource type="AudioStream" uid="uid://b5capdarsmt17" path="res://SFX/appear-online.mp3" id="5_hxgrm"]
 [ext_resource type="PackedScene" uid="uid://cwlpgtbhderfk" path="res://CharacterCreator/CharacterCreator.tscn" id="6_ppw85"]
@@ -140,7 +140,7 @@ position = Vector2(240, 135)
 
 [node name="Background" type="Sprite2D" parent="."]
 position = Vector2(240, 0)
-texture = ExtResource("1_l328g")
+texture = ExtResource("4_0dlmf")
 
 [node name="Boat" type="Sprite2D" parent="."]
 position = Vector2(205, 213)

@@ -21,14 +21,14 @@ func _ready() -> void:
 const NPC_FOLDER := "res://Character/NPC/npcs"
 const GENERIC_CREW_SCENE := "res://Character/NPC/CrewMember/CrewMember.tscn"
 func spawn_crews() -> void:
-        var crew_names: Array[String]
-        if Global.crew_override.size() > 0:
-                crew_names = Global.crew_override.duplicate()
-                Global.crew_override.clear()
-        else:
-                if "Barnaby" not in Global.crew:
-                        Global.crew.append("Barnaby")
-                crew_names = Global.crew.duplicate()
+	var crew_names: Array[String]
+	if Global.crew_override.size() > 0:
+			crew_names = Global.crew_override.duplicate()
+			Global.crew_override.clear()
+	else:
+			if "Barnaby" not in Global.crew:
+					Global.crew.append("Barnaby")
+			crew_names = Global.crew.duplicate()
 	# 2) Grab all the planks
 	var planks: Array = plank_container.get_children()
 	if planks.is_empty():
@@ -69,22 +69,22 @@ func _get_crew_scene(npc_name: String) -> PackedScene:
 
 
 func spawn_enemies() -> void:
-        var scene := preload("res://Character/NPC/Enemy/Enemy.tscn")
-        var cs : CollisionShape2D   = enemy_spawn_area.get_node("CollisionShape2D")
-        var rect := cs.shape as RectangleShape2D
-        var center : Vector2 = cs.global_position
-        var ext    : Vector2 = rect.extents
+		var scene := preload("res://Character/NPC/Enemy/Enemy.tscn")
+		var cs : CollisionShape2D   = enemy_spawn_area.get_node("CollisionShape2D")
+		var rect := cs.shape as RectangleShape2D
+		var center : Vector2 = cs.global_position
+		var ext    : Vector2 = rect.extents
 
-        var num = 10
-        if Global.enemy_count_override > 0:
-                num = Global.enemy_count_override
-                Global.enemy_count_override = -1
+		var num = 10
+		if Global.enemy_count_override > 0:
+				num = Global.enemy_count_override
+				Global.enemy_count_override = -1
 
-        for i in range(num):
-                var e : EnemyNPC = scene.instantiate()
-                var off := Vector2(randf_range(-ext.x, ext.x), randf_range(-ext.y, ext.y))
-                e.global_position = center + off
-                enemy_container.add_child(e)
+		for i in range(num):
+				var e : EnemyNPC = scene.instantiate()
+				var off := Vector2(randf_range(-ext.x, ext.x), randf_range(-ext.y, ext.y))
+				e.global_position = center + off
+				enemy_container.add_child(e)
 
 func select_unit(unit : CrewMemberNPC) -> void:
 	if selected and is_instance_valid(selected):
