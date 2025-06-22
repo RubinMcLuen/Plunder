@@ -124,10 +124,10 @@ func _ready() -> void:
 			Global.enemy_spawn_position = Vector2.ZERO
 
 		if Global.ocean_tutorial_complete:
-		step = 7
-		arrow.visible = false
-		hint_label.hide()
-		_apply_allowed_actions()
+			step = 7
+			arrow.visible = false
+			hint_label.hide()
+			_apply_allowed_actions()
 
 		if enemy_ship:
 			_fade_out_enemy_ship(1.0)
@@ -544,16 +544,17 @@ func _add_wall(parent: Node, pos: Vector2, extents: Vector2) -> void:
 
 	body.add_child(shape)
 	parent.add_child(body)
-	func _show_post_menu() -> void:
-		post_menu_shown = true
-		var menu = POST_MENU_SCENE.instantiate()
-		add_child(menu)
-		if player_ship:
-			player_ship.set_allowed_actions([])
-		menu.tutorial_finished.connect(_on_post_menu_finished)
+	
+func _show_post_menu() -> void:
+	post_menu_shown = true
+	var menu = POST_MENU_SCENE.instantiate()
+	add_child(menu)
+	if player_ship:
+		player_ship.set_allowed_actions([])
+	menu.tutorial_finished.connect(_on_post_menu_finished)
 
-	func _on_post_menu_finished() -> void:
-		_apply_allowed_actions()
+func _on_post_menu_finished() -> void:
+	_apply_allowed_actions()
 
 
 func _exit_tree() -> void:

@@ -35,3 +35,4 @@ res://UI/UIManager.gd
 res://KelptownIsland/KelptownIsland.gd
 res://Island/island.gd
 res://Island/ShipControlArea.gd
+res://SwordFight/PostBoardingTutorial.tscn
