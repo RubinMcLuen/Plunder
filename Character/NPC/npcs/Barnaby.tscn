@@ -13,9 +13,9 @@ shader_parameter/hurt_color = Color(0.678, 0.196, 0.196, 0.6)
 
 [node name="Barnaby" instance=ExtResource("1_ov7nb")]
 script = ExtResource("2_jlfk8")
-scene_pre_hire = "res://KelptownInn/KelptownInn.tscn"
+scene_pre_hire = "res://KelptownInn/KelptownInnTutorial.tscn"
 position_pre_hire = Vector2(235, 133)
-scene_post_hire = "res://Island/Island.tscn"
+scene_post_hire = "res://Island/islandtutorial.tscn"
 position_post_hire = Vector2(75, 700)
 state = "Hirable"
 npc_name = "Barnaby"
