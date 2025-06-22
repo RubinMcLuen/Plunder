@@ -265,6 +265,7 @@ sources/0 = SubResource("TileSetAtlasSource_8clfk")
 
 [node name="Ocean" type="Node2D"]
 script = ExtResource("1_kxoef")
+player_ship_path = NodePath("PlayerShip")
 metadata/_edit_horizontal_guides_ = [-151.0]
 
 [node name="Water" type="ColorRect" parent="."]
