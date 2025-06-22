@@ -12,91 +12,95 @@ var barnaby : CrewMemberNPC = null
 var enemy   : EnemyNPC = null
 
 func get_tutorial_state() -> Dictionary:
-		var barnaby_state := {}
-		if barnaby:
-				barnaby_state = {
-						"pos": barnaby.global_position,
-						"health": barnaby.health,
-						"dragging": barnaby.dragging,
-						"is_boarding": barnaby.is_boarding,
-						"has_boarded": barnaby.has_boarded,
-				}
-                var enemy_state := {}
-                if enemy and is_instance_valid(enemy):
-                                enemy_state = {
-                                                "exists": true,
-                                                "pos": enemy.global_position,
-                                                "health": enemy.health,
-                                }
-                else:
-                                enemy_state = {"exists": false}
+	var barnaby_state := {}
+	if barnaby:
+		barnaby_state = {
+			"pos": barnaby.global_position,
+			"health": barnaby.health,
+			"dragging": barnaby.dragging,
+			"is_boarding": barnaby.is_boarding,
+			"has_boarded": barnaby.has_boarded,
+		}
 
-                var cam_state := {
-                                "pos": cam.global_position,
-                                "zoom": cam.zoom,
-                }
+	var enemy_state := {}
+	if enemy and is_instance_valid(enemy):
+		enemy_state = {
+			"exists": true,
+			"pos": enemy.global_position,
+			"health": enemy.health,
+		}
+	else:
+		enemy_state = {
+			"exists": false,
+		}
 
-                return {
-                                "step": step,
-                                "barnaby": barnaby_state,
-                                "enemy": enemy_state,
-                                "camera": cam_state,
-                }
+	var cam_state := {
+		"pos": cam.global_position,
+		"zoom": cam.zoom,
+	}
+
+	return {
+		"step": step,
+		"barnaby": barnaby_state,
+		"enemy": enemy_state,
+		"camera": cam_state,
+	}
+
 
 func apply_tutorial_state(state: Dictionary) -> void:
-                step = int(state.get("step", step))
-                var b = state.get("barnaby", {})
-                if barnaby and b:
-                                var pos = b.get("pos", barnaby.global_position)
-                                if typeof(pos) == TYPE_DICTIONARY and pos.has("x") and pos.has("y"):
-                                                barnaby.global_position = Vector2(pos["x"], pos["y"])
-                                elif typeof(pos) == TYPE_VECTOR2:
-                                                barnaby.global_position = pos
-                                elif typeof(pos) == TYPE_STRING:
-                                                var tmp = str_to_var(pos)
-                                                if typeof(tmp) == TYPE_VECTOR2:
-                                                                barnaby.global_position = tmp
+				step = int(state.get("step", step))
+				var b = state.get("barnaby", {})
+				if barnaby and b:
+								var pos = b.get("pos", barnaby.global_position)
+								if typeof(pos) == TYPE_DICTIONARY and pos.has("x") and pos.has("y"):
+												barnaby.global_position = Vector2(pos["x"], pos["y"])
+								elif typeof(pos) == TYPE_VECTOR2:
+												barnaby.global_position = pos
+								elif typeof(pos) == TYPE_STRING:
+												var tmp = str_to_var(pos)
+												if typeof(tmp) == TYPE_VECTOR2:
+																barnaby.global_position = tmp
 
-                                barnaby.health = int(b.get("health", barnaby.health))
-                                barnaby.dragging = bool(b.get("dragging", barnaby.dragging))
-                                barnaby.is_boarding = bool(b.get("is_boarding", barnaby.is_boarding))
-                                barnaby.has_boarded = bool(b.get("has_boarded", barnaby.has_boarded))
-                var e = state.get("enemy", {})
-                if e.get("exists", false):
-                                if enemy == null or not is_instance_valid(enemy):
-                                                enemy = manager.spawn_single_enemy()
-                                var epos = e.get("pos", enemy.global_position)
-                                if typeof(epos) == TYPE_DICTIONARY and epos.has("x") and epos.has("y"):
-                                                enemy.global_position = Vector2(epos["x"], epos["y"])
-                                elif typeof(epos) == TYPE_VECTOR2:
-                                                enemy.global_position = epos
-                                elif typeof(epos) == TYPE_STRING:
-                                                var tmp2 = str_to_var(epos)
-                                                if typeof(tmp2) == TYPE_VECTOR2:
-                                                                enemy.global_position = tmp2
-                                enemy.health = int(e.get("health", enemy.health))
-                _show_step()
+								barnaby.health = int(b.get("health", barnaby.health))
+								barnaby.dragging = bool(b.get("dragging", barnaby.dragging))
+								barnaby.is_boarding = bool(b.get("is_boarding", barnaby.is_boarding))
+								barnaby.has_boarded = bool(b.get("has_boarded", barnaby.has_boarded))
+				var e = state.get("enemy", {})
+				if e.get("exists", false):
+								if enemy == null or not is_instance_valid(enemy):
+												enemy = manager.spawn_single_enemy()
+								var epos = e.get("pos", enemy.global_position)
+								if typeof(epos) == TYPE_DICTIONARY and epos.has("x") and epos.has("y"):
+												enemy.global_position = Vector2(epos["x"], epos["y"])
+								elif typeof(epos) == TYPE_VECTOR2:
+												enemy.global_position = epos
+								elif typeof(epos) == TYPE_STRING:
+												var tmp2 = str_to_var(epos)
+												if typeof(tmp2) == TYPE_VECTOR2:
+																enemy.global_position = tmp2
+								enemy.health = int(e.get("health", enemy.health))
+				_show_step()
 
-                var cam_info = state.get("camera", {})
-                var cpos = cam_info.get("pos", cam.global_position)
-                if typeof(cpos) == TYPE_DICTIONARY and cpos.has("x") and cpos.has("y"):
-                                cam.global_position = Vector2(cpos["x"], cpos["y"])
-                elif typeof(cpos) == TYPE_VECTOR2:
-                                cam.global_position = cpos
-                elif typeof(cpos) == TYPE_STRING:
-                                var tmp3 = str_to_var(cpos)
-                                if typeof(tmp3) == TYPE_VECTOR2:
-                                                cam.global_position = tmp3
+				var cam_info = state.get("camera", {})
+				var cpos = cam_info.get("pos", cam.global_position)
+				if typeof(cpos) == TYPE_DICTIONARY and cpos.has("x") and cpos.has("y"):
+								cam.global_position = Vector2(cpos["x"], cpos["y"])
+				elif typeof(cpos) == TYPE_VECTOR2:
+								cam.global_position = cpos
+				elif typeof(cpos) == TYPE_STRING:
+								var tmp3 = str_to_var(cpos)
+								if typeof(tmp3) == TYPE_VECTOR2:
+												cam.global_position = tmp3
 
-                var cz = cam_info.get("zoom", cam.zoom)
-                if typeof(cz) == TYPE_DICTIONARY and cz.has("x") and cz.has("y"):
-                                cam.zoom = Vector2(cz["x"], cz["y"])
-                elif typeof(cz) == TYPE_VECTOR2:
-                                cam.zoom = cz
-                elif typeof(cz) == TYPE_STRING:
-                                var tmp4 = str_to_var(cz)
-                                if typeof(tmp4) == TYPE_VECTOR2:
-                                                cam.zoom = tmp4
+				var cz = cam_info.get("zoom", cam.zoom)
+				if typeof(cz) == TYPE_DICTIONARY and cz.has("x") and cz.has("y"):
+								cam.zoom = Vector2(cz["x"], cz["y"])
+				elif typeof(cz) == TYPE_VECTOR2:
+								cam.zoom = cz
+				elif typeof(cz) == TYPE_STRING:
+								var tmp4 = str_to_var(cz)
+								if typeof(tmp4) == TYPE_VECTOR2:
+												cam.zoom = tmp4
 
 func _ready() -> void:
 								await super._ready()
