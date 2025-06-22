@@ -15,6 +15,9 @@ const STOP_THRESHOLD     = 2.0                     # px/s → snap speed
 
 # ───────── DEBUG: spawn wreck in dead state ─────────
 @export var start_dead_for_testing: bool = false
+# If true, a dock arrow is spawned automatically when this ship is destroyed.
+# The ocean tutorial handles arrows manually, so it disables this behaviour.
+@export var spawn_dock_arrow_on_death: bool = true
 
 # ───────── EXPORTED / NODES ─────────
 @export var player             : Node2D
@@ -81,16 +84,17 @@ func _ready():
 	ready_for_boarding = false
 
 	# DEBUG: immediately spawn as wreck
-	if start_dead_for_testing:
-			_die()
-			death_aligned          = true
-			current_frame          = DEATH_TARGET_FRAME
-			current_rotation_speed = 0.0
-			_update_frame()
-			current_speed          = 0.0
-			ready_for_boarding     = true
-			input_pickable         = true
-			_spawn_dock_arrow()
+        if start_dead_for_testing:
+                        _die()
+                        death_aligned          = true
+                        current_frame          = DEATH_TARGET_FRAME
+                        current_rotation_speed = 0.0
+                        _update_frame()
+                        current_speed          = 0.0
+                        ready_for_boarding     = true
+                        input_pickable         = true
+                        if spawn_dock_arrow_on_death:
+                                _spawn_dock_arrow()
 
 
 # ───────── PROCESS ─────────
@@ -164,10 +168,11 @@ func _behave_dead(delta):
 							sprite.texture = BROKEN_TEXTURE
 							sprite.hframes = 1
 							sprite.frame = 0
-			if not ready_for_boarding:
-							ready_for_boarding = true
-							input_pickable     = true   # now clickable!
-							_spawn_dock_arrow()
+                        if not ready_for_boarding:
+                                                        ready_for_boarding = true
+                                                        input_pickable     = true   # now clickable!
+                                                        if spawn_dock_arrow_on_death:
+                                                                _spawn_dock_arrow()
 
 
 

@@ -306,6 +306,7 @@ centered = false
 visible = false
 position = Vector2(71, 65)
 start_dead_for_testing = true
+spawn_dock_arrow_on_death = false
 player = NodePath("../PlayerShip")
 full_speed = 40.0
 health = 1
