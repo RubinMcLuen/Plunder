@@ -157,17 +157,17 @@ func _behave_dead(delta):
 
 	# Phase 2 – smooth decel via lerp, then snap
 	current_speed = lerp(current_speed, 0.0, acceleration_factor * 4 * delta)
-        if current_speed < STOP_THRESHOLD:
-                current_speed          = 0.0
-                current_rotation_speed = 0.0
-                if sprite and sprite.texture != BROKEN_TEXTURE:
-                                sprite.texture = BROKEN_TEXTURE
-                                sprite.hframes = 1
-                                sprite.frame = 0
-                if not ready_for_boarding:
-                                ready_for_boarding = true
-                                input_pickable     = true   # now clickable!
-                                _spawn_dock_arrow()
+	if current_speed < STOP_THRESHOLD:
+			current_speed          = 0.0
+			current_rotation_speed = 0.0
+			if sprite and sprite.texture != BROKEN_TEXTURE:
+							sprite.texture = BROKEN_TEXTURE
+							sprite.hframes = 1
+							sprite.frame = 0
+			if not ready_for_boarding:
+							ready_for_boarding = true
+							input_pickable     = true   # now clickable!
+							_spawn_dock_arrow()
 
 
 
@@ -326,14 +326,14 @@ func _die():
 		print("Enemy destroyed – boarding soon.")
 
 func _spawn_dock_arrow() -> void:
-                if dock_arrow and is_instance_valid(dock_arrow):
-                                return
-                if is_queued_for_deletion() or get_tree().current_scene == null:
-                                return
-                dock_arrow = Sprite2D.new()
-                dock_arrow.texture = ARROW_TEXTURE
-                dock_arrow.z_index = 100
-                dock_arrow.set_script(ARROW_SCRIPT)
-                if dock_arrow.has_method("set_target"):
-                                dock_arrow.target = self
-                get_tree().current_scene.call_deferred("add_child", dock_arrow)
+				if dock_arrow and is_instance_valid(dock_arrow):
+								return
+				if is_queued_for_deletion() or get_tree().current_scene == null:
+								return
+				dock_arrow = Sprite2D.new()
+				dock_arrow.texture = ARROW_TEXTURE
+				dock_arrow.z_index = 100
+				dock_arrow.set_script(ARROW_SCRIPT)
+				if dock_arrow.has_method("set_target"):
+								dock_arrow.target = self
+				get_tree().current_scene.call_deferred("add_child", dock_arrow)

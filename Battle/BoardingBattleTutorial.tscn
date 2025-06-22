@@ -1,7 +1,6 @@
-[gd_scene load_steps=11 format=3 uid="uid://ghym7xfsxdrf"]
+[gd_scene load_steps=12 format=3 uid="uid://ghym7xfsxdrf"]
 
 [ext_resource type="Texture2D" uid="uid://cc1klfhtqilyc" path="res://Battle/ZoomedInNewShip.png" id="1_fy6vb"]
-[ext_resource type="Texture2D" uid="uid://d7uv4iugn3ig" path="res://Ships/enemybrokenzoomedin.png" id="8_broken_zoom"]
 [ext_resource type="Script" path="res://Battle/BoardingBattleTutorial.gd" id="1_offb7"]
 [ext_resource type="Script" path="res://Battle/Camera.gd" id="2_rcx86"]
 [ext_resource type="Script" path="res://Battle/BattleManagerTutorial.gd" id="3_5ftdp"]
@@ -9,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="5_arrow"]
 [ext_resource type="Script" path="res://KelptownInn/BobbingArrow.gd" id="6_arrowptr"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="7_font"]
+[ext_resource type="Texture2D" uid="uid://d7uv4iugn3ig" path="res://Ships/enemybrokenzoomedin.png" id="8_broken_zoom"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_87wue"]
 size = Vector2(624, 544)
@@ -20,7 +20,7 @@ size = Vector2(225, 112)
 script = ExtResource("1_offb7")
 
 [node name="EnemyShip" type="Sprite2D" parent="."]
-position = Vector2(-128, -64)
+position = Vector2(-128, -256)
 texture = ExtResource("8_broken_zoom")
 centered = false
 
