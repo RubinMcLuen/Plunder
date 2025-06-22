@@ -1,6 +1,6 @@
 extends Node
 
-@export var target_scene_path: String = "res://Ocean/ocean.tscn"
+@export var target_scene_path: String = "res://Ocean/oceantutorial.tscn"
 @export var target_position: Vector2 = Vector2(-32, 109)
 @export var transition_type: String = "none"  # You can later add transitions if needed.
 @export var target_zoom: Vector2 = Vector2(0.0625, 0.0625)
