@@ -38,10 +38,10 @@ size = Vector2(0, 53)
 size = Vector2(0, 53)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yki55"]
-size = Vector2(0, 554)
+size = Vector2(6, 554)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_huwry"]
-size = Vector2(0, 555)
+size = Vector2(6, 555)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2m8t0"]
 size = Vector2(128, 0)
@@ -75,7 +75,7 @@ mouse_filter = 2
 color = Color(0.223529, 0.262745, 0.596078, 0.8)
 
 [node name="IslandSprite" type="Sprite2D" parent="."]
-position = Vector2(266, -1472)
+position = Vector2(264, -1472)
 texture = ExtResource("5_3hvgk")
 
 [node name="PlayerShipClose" parent="." instance=ExtResource("6_0jtng")]
@@ -154,11 +154,11 @@ position = Vector2(-41, 37.5)
 shape = SubResource("RectangleShape2D_rakrq")
 
 [node name="CollisionShape2D5" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
-position = Vector2(-35, 341)
+position = Vector2(-38, 341)
 shape = SubResource("RectangleShape2D_yki55")
 
 [node name="CollisionShape2D6" type="CollisionShape2D" parent="Collisions/StaticBody2D"]
-position = Vector2(17, 340.5)
+position = Vector2(20, 340.5)
 shape = SubResource("RectangleShape2D_huwry")
 
 [node name="CollisionShape2D7" type="CollisionShape2D" parent="Collisions/StaticBody2D"]

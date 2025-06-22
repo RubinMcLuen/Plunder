@@ -1,8 +1,8 @@
+CollisionShape2D
+ColorRect
 Sprite2D
 AudioStreamPlayer
-ColorRect
 Timer
-CollisionShape2D
 Area2D
 Node2D
 Camera2D
