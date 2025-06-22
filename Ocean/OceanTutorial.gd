@@ -53,11 +53,19 @@ func apply_tutorial_state(state: Dictionary) -> void:
 
 	var es: Dictionary = state.get("enemy", {})
 	if es.get("exists", false):
-			if enemy_ship == null:
-					_spawn_normal_enemy(false)
-			enemy_ship.global_position = es.get("position", enemy_ship.global_position)
-			enemy_ship.current_frame   = es.get("frame", enemy_ship.current_frame)
-			enemy_ship.current_state   = int(es.get("state", enemy_ship.current_state))
+	if enemy_ship == null:
+	_spawn_normal_enemy(false)
+	var pos = es.get("position", enemy_ship.global_position)
+	if typeof(pos) == TYPE_DICTIONARY and pos.has("x") and pos.has("y"):
+	enemy_ship.global_position = Vector2(pos["x"], pos["y"])
+	elif typeof(pos) == TYPE_VECTOR2:
+	enemy_ship.global_position = pos
+	elif typeof(pos) == TYPE_STRING:
+	var tmp = str_to_var(pos)
+	if typeof(tmp) == TYPE_VECTOR2:
+	enemy_ship.global_position = tmp
+	enemy_ship.current_frame   = es.get("frame", enemy_ship.current_frame)
+				enemy_ship.current_state   = int(es.get("state", enemy_ship.current_state))
 			enemy_ship.health          = int(es.get("health", enemy_ship.health))
 			enemy_ship.ready_for_boarding = bool(es.get("ready", enemy_ship.ready_for_boarding))
 			if enemy_ship.has_method("_update_frame"):
