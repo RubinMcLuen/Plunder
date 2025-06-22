@@ -109,10 +109,18 @@ func _on_board_enemy_request(_enemy: Node2D) -> void:
 	hide_begin_raid_menu()
 
 func _on_player_docked() -> void:
-	if _board_mode:
-		show_begin_raid_menu()
-	else:
-		show_dock_ship_menu()
+        var ocean = get_tree().current_scene
+        var enemy_ready := false
+        if ocean and ocean.has_node("EnemyShip"):
+                var enemy = ocean.get_node("EnemyShip")
+                if enemy.has_method("get"):
+                        enemy_ready = enemy.get("ready_for_boarding")
+
+        if _board_mode or enemy_ready:
+                show_begin_raid_menu()
+                _board_mode = true
+        else:
+                show_dock_ship_menu()
 
 func _on_player_started_moving() -> void:
 	var was_visible := begin_raid_menu.visible
