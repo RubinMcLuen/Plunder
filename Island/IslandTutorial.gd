@@ -122,8 +122,8 @@ func _advance_step(next_step: int) -> void:
 func _on_exit_body_entered(body: Node) -> void:
 				if body == player:
 								Global.island_tutorial_state = get_tutorial_state()
-                                SceneSwitcher.switch_scene(
-                                "res://KelptownInn/KelptownInnTutorial.tscn",
+								SceneSwitcher.switch_scene(
+								"res://KelptownInn/KelptownInnTutorial.tscn",
 																			   Vector2(269, 220),
 																			   "fade",
 																			   Vector2.ONE,

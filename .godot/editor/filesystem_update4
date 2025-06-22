@@ -33,3 +33,5 @@ res://Island/IslandTutorial.gd
 res://Ocean/Ocean.gd
 res://UI/UIManager.gd
 res://KelptownIsland/KelptownIsland.gd
+res://Island/island.gd
+res://Island/ShipControlArea.gd

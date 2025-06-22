@@ -112,6 +112,8 @@ dialogue_resource = ExtResource("3_43j7b")
 
 [node name="Barnaby" parent="." instance=ExtResource("41_barnaby")]
 position = Vector2(235, 133)
+scene_pre_hire = "res://KelptownInn/KelptownInnTutorial.tscn"
+scene_post_hire = "res://Island/islandtutorial.tscn"
 fight_side_right = false
 customization_only = false
 fightable = false
