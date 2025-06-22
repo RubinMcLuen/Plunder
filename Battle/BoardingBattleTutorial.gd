@@ -4,9 +4,6 @@ extends "res://Battle/BoardingBattle.gd"
 @onready var arrow      : Sprite2D      = $Arrow
 @onready var manager    : BattleManagerTutorial = $BattleManager
 @onready var crew_container : Node2D = $CrewContainer
-@onready var cam : Camera2D = $Camera2D
-
-var _orig_cam_y: float = 0.0
 
 var step : int = 0
 var _advancing : bool = false

@@ -34,3 +34,5 @@ res://Ocean/OceanTutorial.gd
 res://UI/UIManager.gd
 res://Dialogue/balloon.gd
 res://TitleScreen/TitleScreen.gd
+res://Battle/BoardingBattle.gd
+res://Battle/BoardingBattleTutorial.gd
