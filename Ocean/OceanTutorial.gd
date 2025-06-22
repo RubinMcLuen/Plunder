@@ -71,12 +71,12 @@ func _ready() -> void:
 												# Slightly faster tutorial ship speed
 												player_ship.max_speed *= 0.5
 												player_ship.target_speed *= 0.5
-        if player_ship.has_signal("player_docked"):
-                        player_ship.connect("player_docked", _on_player_docked)
-        if player_ship.has_signal("cannons_fired_left"):
-                        player_ship.connect("cannons_fired_left", _on_cannons_fired_left)
-        if player_ship.has_signal("cannons_fired_right"):
-                        player_ship.connect("cannons_fired_right", _on_cannons_fired_right)
+				if player_ship.has_signal("player_docked"):
+								player_ship.connect("player_docked", _on_player_docked)
+				if player_ship.has_signal("cannons_fired_left"):
+								player_ship.connect("cannons_fired_left", _on_cannons_fired_left)
+				if player_ship.has_signal("cannons_fired_right"):
+								player_ship.connect("cannons_fired_right", _on_cannons_fired_right)
 
 				if enemy_ship:
 										_enemy_layer = enemy_ship.collision_layer
@@ -93,17 +93,17 @@ func _ready() -> void:
 
 										arrow.visible = false
 										arrow.target  = null
-                               arrow.self_modulate = Color.WHITE
-                               _show_step_text()
-                               _apply_allowed_actions()
+										arrow.self_modulate = Color.WHITE
+										_show_step_text()
+										_apply_allowed_actions()
 
-                               # Rewire the Begin Raid button so we can track tutorial progress
-                               var btn = UIManager.get_node("UIManager/BeginRaidMenu/BeginRaidButton")
-                               if btn:
-                                       if btn.pressed.is_connected(UIManager._on_begin_raid_button_pressed):
-                                               btn.pressed.disconnect(UIManager._on_begin_raid_button_pressed)
-                                       if not btn.pressed.is_connected(_on_begin_raid_pressed):
-                                               btn.pressed.connect(_on_begin_raid_pressed)
+							   # Rewire the Begin Raid button so we can track tutorial progress
+				var btn = UIManager.get_node("UIManager/BeginRaidMenu/BeginRaidButton")
+				if btn:
+						if btn.pressed.is_connected(UIManager._on_begin_raid_button_pressed):
+								btn.pressed.disconnect(UIManager._on_begin_raid_button_pressed)
+						if not btn.pressed.is_connected(_on_begin_raid_pressed):
+								btn.pressed.connect(_on_begin_raid_pressed)
 
 func _process(_delta: float) -> void:
 	if enemy_ship and is_instance_valid(enemy_ship):
@@ -126,8 +126,8 @@ func _process(_delta: float) -> void:
 								_update_hint_text()
 						if left_done and right_done and not _advancing:
 								_advance_step(3)
-                               3:
-                                               pass
+				3:
+								pass
 				4:
 								pass
 				5:
@@ -136,22 +136,22 @@ func _process(_delta: float) -> void:
 								pass
 
 func _on_player_docked() -> void:
-                if step == 5 and not _advancing:
-                                _advance_step(6)
+				if step == 5 and not _advancing:
+								_advance_step(6)
 
 func _on_cannons_fired_left() -> void:
-                if step == 3:
-                                shoot_left_done = true
-                                _update_hint_text()
-                                if shoot_left_done and shoot_right_done and not _advancing:
-                                                _advance_step(4)
+				if step == 3:
+								shoot_left_done = true
+								_update_hint_text()
+								if shoot_left_done and shoot_right_done and not _advancing:
+												_advance_step(4)
 
 func _on_cannons_fired_right() -> void:
-                if step == 3:
-                                shoot_right_done = true
-                                _update_hint_text()
-                                if shoot_left_done and shoot_right_done and not _advancing:
-                                                _advance_step(4)
+				if step == 3:
+								shoot_right_done = true
+								_update_hint_text()
+								if shoot_left_done and shoot_right_done and not _advancing:
+												_advance_step(4)
 
 func _on_board_enemy_request(enemy: Node2D) -> void:
 				if step == 5 and not _advancing:
@@ -258,13 +258,13 @@ func _advance_step(next_step: int) -> void:
 		_advancing = false
 
 func begin_raid_pressed() -> void:
-                                                                               if step == 6 and not _advancing:
-                                                                               _advance_step(7)
+																			if step == 6 and not _advancing:
+																				_advance_step(7)
 
 func _on_begin_raid_pressed() -> void:
-       if step == 6 and not _advancing:
-               _advance_step(7)
-       UIManager._on_begin_raid_button_pressed()
+	if step == 6 and not _advancing:
+			_advance_step(7)
+	UIManager._on_begin_raid_button_pressed()
 
 func _clear_enemy_ship() -> void:
 	enemy_ship = null

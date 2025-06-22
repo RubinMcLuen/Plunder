@@ -80,16 +80,16 @@ func _ready():
 	ready_for_boarding = false
 
 	# DEBUG: immediately spawn as wreck
-        if start_dead_for_testing:
-                _die()
-                death_aligned          = true
-                current_frame          = DEATH_TARGET_FRAME
-                current_rotation_speed = 0.0
-                _update_frame()
-                current_speed          = 0.0
-                ready_for_boarding     = true
-                input_pickable         = true
-                _spawn_dock_arrow()
+	if start_dead_for_testing:
+			_die()
+			death_aligned          = true
+			current_frame          = DEATH_TARGET_FRAME
+			current_rotation_speed = 0.0
+			_update_frame()
+			current_speed          = 0.0
+			ready_for_boarding     = true
+			input_pickable         = true
+			_spawn_dock_arrow()
 
 
 # ───────── PROCESS ─────────
@@ -159,10 +159,10 @@ func _behave_dead(delta):
 	if current_speed < STOP_THRESHOLD:
 		current_speed          = 0.0
 		current_rotation_speed = 0.0
-                if not ready_for_boarding:
-                        ready_for_boarding = true
-                        input_pickable     = true   # now clickable!
-                        _spawn_dock_arrow()
+		if not ready_for_boarding:
+				ready_for_boarding = true
+				input_pickable     = true   # now clickable!
+				_spawn_dock_arrow()
 
 
 
@@ -309,24 +309,24 @@ func _update_movement(_d): velocity = _direction() * current_speed
 func _direction() -> Vector2: return Vector2.RIGHT.rotated(deg_to_rad(current_frame*ANGLE_PER_FRAME))
 
 func take_damage(dmg:int):
-        health -= dmg
-        if health <= 0 and current_state != EnemyState.DEAD: _die()
+		health -= dmg
+		if health <= 0 and current_state != EnemyState.DEAD: _die()
 
 func _die():
-        current_state       = EnemyState.DEAD
-        death_initial_speed = max(current_speed, min_speed)
-        death_aligned       = false
-        can_shoot           = false
-        $DecideTimer.stop()
-        print("Enemy destroyed – boarding soon.")
+		current_state       = EnemyState.DEAD
+		death_initial_speed = max(current_speed, min_speed)
+		death_aligned       = false
+		can_shoot           = false
+		$DecideTimer.stop()
+		print("Enemy destroyed – boarding soon.")
 
 func _spawn_dock_arrow() -> void:
-        if dock_arrow and is_instance_valid(dock_arrow):
-                return
-        dock_arrow = Sprite2D.new()
-        dock_arrow.texture = ARROW_TEXTURE
-        dock_arrow.z_index = 100
-        dock_arrow.set_script(ARROW_SCRIPT)
-        if dock_arrow.has_method("set_target"):
-                dock_arrow.target = self
-        get_tree().current_scene.add_child(dock_arrow)
+		if dock_arrow and is_instance_valid(dock_arrow):
+				return
+		dock_arrow = Sprite2D.new()
+		dock_arrow.texture = ARROW_TEXTURE
+		dock_arrow.z_index = 100
+		dock_arrow.set_script(ARROW_SCRIPT)
+		if dock_arrow.has_method("set_target"):
+				dock_arrow.target = self
+		get_tree().current_scene.add_child(dock_arrow)

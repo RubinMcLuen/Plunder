@@ -28,3 +28,8 @@ res://Ships/EnemyShip.tscn
 res://Ships/Trail.tscn
 res://SaveMenu/Info/info.tscn
 res://addons/dialogue_manager/views/main_view.tscn
+res://CharacterCreator/CharacterNameArea.gd
+res://Ocean/OceanTutorial.gd
+res://Ships/PlayerShip.gd
+res://UI/UIManager.gd
+res://Ships/EnemyShip.gd
