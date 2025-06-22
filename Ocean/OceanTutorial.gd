@@ -58,9 +58,9 @@ func apply_tutorial_state(state: Dictionary) -> void:
 	enemy_hit = bool(state.get("enemy_hit", enemy_hit))
 
 	var es: Dictionary = state.get("enemy", {})
-	if es.get("exists", false):
-		if enemy_ship == null:
-			_spawn_normal_enemy(false)
+        if es.get("exists", false):
+                if enemy_ship == null or not is_instance_valid(enemy_ship):
+                        _spawn_normal_enemy(false)
 
 		var pos = es.get("position", enemy_ship.global_position)
 		if typeof(pos) == TYPE_DICTIONARY and pos.has("x") and pos.has("y"):
