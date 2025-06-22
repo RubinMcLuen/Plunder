@@ -76,22 +76,22 @@ func _finish_battle() -> void:
 
 func get_battle_state() -> Dictionary:
 	var crew_list := []
-       for c in $CrewContainer.get_children():
-               var name = c.npc_name
-               var dragging = c.dragging
-               var boarded = c.has_boarded
-		crew_list.append({
-			"name": name,
-			"pos": c.global_position,
-			"health": c.health,
-			"dragging": dragging,
-			"boarded": boarded,
-		})
+	for c in $CrewContainer.get_children():
+			var name = c.npc_name
+			var dragging = c.dragging
+			var boarded = c.has_boarded
+			crew_list.append({
+					"name": name,
+					"pos": c.global_position,
+					"health": c.health,
+					"dragging": dragging,
+					"boarded": boarded,
+				})
 
 	var enemy_list := []
-       for e in $EnemyContainer.get_children():
-               var name = e.npc_name
-               enemy_list.append({
+	for e in $EnemyContainer.get_children():
+			var name = e.npc_name
+			enemy_list.append({
 			"name": name,
 			"pos": e.global_position,
 			"health": e.health,
