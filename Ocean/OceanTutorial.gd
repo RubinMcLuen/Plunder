@@ -83,8 +83,8 @@ func apply_tutorial_state(state: Dictionary) -> void:
 		enemy_ship.visible = bool(es.get("visible", enemy_ship.visible))
 		if enemy_ship.has_method("_update_frame"):
 			enemy_ship._update_frame()
-        elif enemy_ship:
-                _fade_out_enemy_ship(1.0)
+		elif enemy_ship:
+				_fade_out_enemy_ship(1.0)
 
 	_show_step_text()
 	_apply_allowed_actions()
@@ -127,8 +127,8 @@ func _ready() -> void:
 		hint_label.hide()
 		_apply_allowed_actions()
 
-                if enemy_ship:
-                                _fade_out_enemy_ship(1.0)
+		if enemy_ship:
+						_fade_out_enemy_ship(1.0)
 
 	var loaded_state := false
 	if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
@@ -425,18 +425,18 @@ func _on_begin_raid_pressed() -> void:
 # ─────────────────────────────
 
 func _clear_enemy_ship() -> void:
-        enemy_ship = null
+		enemy_ship = null
 
 func _fade_out_enemy_ship(duration: float = 1.0) -> void:
-        if enemy_ship == null:
-                return
+		if enemy_ship == null:
+				return
 
-        enemy_ship.set_process(false)
-        enemy_ship.set_physics_process(false)
-        var tw := get_tree().create_tween()
-        tw.tween_property(enemy_ship, "modulate:a", 0.0, duration)
-        tw.tween_callback(Callable(enemy_ship, "queue_free"))
-        tw.tween_callback(Callable(self, "_clear_enemy_ship"))
+		enemy_ship.set_process(false)
+		enemy_ship.set_physics_process(false)
+		var tw := get_tree().create_tween()
+		tw.tween_property(enemy_ship, "modulate:a", 0.0, duration)
+		tw.tween_callback(Callable(enemy_ship, "queue_free"))
+		tw.tween_callback(Callable(self, "_clear_enemy_ship"))
 
 
 func _spawn_normal_enemy(record_spawned: bool = true) -> void:

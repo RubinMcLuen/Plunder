@@ -31,3 +31,5 @@ res://SaveMenu/Info/info.tscn
 res://addons/dialogue_manager/views/main_view.tscn
 res://Island/IslandTutorial.gd
 res://Ocean/Ocean.gd
+res://UI/UIManager.gd
+res://KelptownIsland/KelptownIsland.gd

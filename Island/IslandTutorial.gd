@@ -122,17 +122,17 @@ func _advance_step(next_step: int) -> void:
 func _on_exit_body_entered(body: Node) -> void:
 				if body == player:
 								Global.island_tutorial_state = get_tutorial_state()
-                                var inn_scene := "res://KelptownInn/KelptownInnTutorial.tscn"
-                                if Global.ocean_tutorial_complete:
-                                        inn_scene = "res://KelptownInn/KelptownInn.tscn"
-                                SceneSwitcher.switch_scene(
-                                                                               inn_scene,
-                                                                               Vector2(269, 220),
-                                                                               "fade",
-                                                                               Vector2.ONE,
-                                                                               Vector2.ZERO,
-                                                                               Vector2(1.5, 1.5)
-                                                                )
+								var inn_scene := "res://KelptownInn/KelptownInnTutorial.tscn"
+								if Global.ocean_tutorial_complete:
+										inn_scene = "res://KelptownInn/KelptownInn.tscn"
+								SceneSwitcher.switch_scene(
+																			   inn_scene,
+																			   Vector2(269, 220),
+																			   "fade",
+																			   Vector2.ONE,
+																			   Vector2.ZERO,
+																			   Vector2(1.5, 1.5)
+																)
 
 func _exit_tree() -> void:
 				Global.island_tutorial_state = get_tutorial_state()
