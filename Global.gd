@@ -3,6 +3,9 @@ extends Node
 
 const KelptownInnTutorial = preload("res://KelptownInn/KelptownInnTutorial.gd")
 const IslandTutorial    = preload("res://Island/IslandTutorial.gd")
+const OceanTutorial     = preload("res://Ocean/OceanTutorial.gd")
+const BoardingBattleTutorial = preload("res://Battle/BoardingBattleTutorial.gd")
+const BoardingBattle = preload("res://Battle/BoardingBattle.gd")
 
 var active_save_slot: int = -1
 var spawn_position: Vector2 = Vector2.ZERO
@@ -13,6 +16,9 @@ var enemy_count_override: int = -1
 var ship_state: Dictionary = {}   # holds extra data just for PlayerShip
 var kelptown_tutorial_state: Dictionary = {}
 var island_tutorial_state: Dictionary = {}
+var ocean_tutorial_state: Dictionary = {}
+var boarding_battle_tutorial_state: Dictionary = {}
+var battle_state: Dictionary = {}
 var ocean_tutorial_complete: bool = false
 var restore_sails_next: bool = false
 var skip_player_fade: bool = false
@@ -22,7 +28,15 @@ var post_tutorial_enemy_spawned: bool = false
 var return_scene_path: String = ""
 
 func _ready() -> void:
-		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+                Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
+func _input(event: InputEvent) -> void:
+        if event is InputEventKey and event.pressed and not event.echo:
+                match event.keycode:
+                        KEY_F5:
+                                save_game_state()
+                        KEY_F8:
+                                load_game_state()
 
 
 func add_crew(npc_name: String) -> void:
@@ -88,10 +102,16 @@ func save_game_state() -> void:
 	save_data["quests"]     = get_quest_manager().quests
 	save_data["crew"]       = crew
 
-	if current_scene_node is KelptownInnTutorial:
-							save_data["kelptown_tutorial"] = current_scene_node.get_tutorial_state()
-	elif current_scene_node is IslandTutorial:
-							save_data["island_tutorial"] = current_scene_node.get_tutorial_state()
+        if current_scene_node is KelptownInnTutorial:
+                                                        save_data["kelptown_tutorial"] = current_scene_node.get_tutorial_state()
+        elif current_scene_node is IslandTutorial:
+                                                        save_data["island_tutorial"] = current_scene_node.get_tutorial_state()
+        elif current_scene_node is OceanTutorial:
+                                                        save_data["ocean_tutorial"] = current_scene_node.get_tutorial_state()
+        elif current_scene_node is BoardingBattleTutorial:
+                                                        save_data["boarding_battle_tutorial"] = current_scene_node.get_tutorial_state()
+        elif current_scene_node is BoardingBattle:
+                                                        save_data["battle_state"] = current_scene_node.get_battle_state()
 
 	var w = FileAccess.open(save_file_path, FileAccess.WRITE)
 	w.store_string(JSON.stringify(save_data))
@@ -161,14 +181,26 @@ func load_game_state() -> void:
 				for c in data["crew"]:
 						crew.append(str(c))
 
-				if "kelptown_tutorial" in data:
-								kelptown_tutorial_state = data["kelptown_tutorial"]
-				else:
-								kelptown_tutorial_state = {}
-				if "island_tutorial" in data:
-								island_tutorial_state = data["island_tutorial"]
-				else:
-								island_tutorial_state = {}
+                                if "kelptown_tutorial" in data:
+                                                                kelptown_tutorial_state = data["kelptown_tutorial"]
+                                else:
+                                                                kelptown_tutorial_state = {}
+                                if "island_tutorial" in data:
+                                                                island_tutorial_state = data["island_tutorial"]
+                                else:
+                                                                island_tutorial_state = {}
+                                if "ocean_tutorial" in data:
+                                                                ocean_tutorial_state = data["ocean_tutorial"]
+                                else:
+                                                                ocean_tutorial_state = {}
+                                if "boarding_battle_tutorial" in data:
+                                                                boarding_battle_tutorial_state = data["boarding_battle_tutorial"]
+                                else:
+                                                                boarding_battle_tutorial_state = {}
+                                if "battle_state" in data:
+                                                                battle_state = data["battle_state"]
+                                else:
+                                                                battle_state = {}
 
 		# 3) Scene + spawn + ship_state
 	var scene_info = data.get("scene", {})

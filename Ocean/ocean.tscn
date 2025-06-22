@@ -288,7 +288,7 @@ player_node_path = NodePath("../PlayerShip")
 target_position = Vector2(-2, 39)
 
 [node name="PlayerShip" parent="." instance=ExtResource("3_qc67i")]
-z_index = 4
+z_index = 5
 position = Vector2(-2, 39)
 disable_mode = 2
 
@@ -301,6 +301,7 @@ centered = false
 
 [node name="EnemyShip" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_6y6ch")]
 visible = false
+z_index = 2
 position = Vector2(71, 65)
 start_dead_for_testing = true
 player = NodePath("../PlayerShip")
