@@ -64,11 +64,22 @@ var can_shoot              = true
 # death / boarding helpers
 var death_initial_speed = 0.0
 var death_aligned       = false
-var ready_for_boarding  = false
+signal ready_for_boarding_changed(ready: bool)
+
+var ready_for_boarding := false setget set_ready_for_boarding, get_ready_for_boarding
 var dock_arrow : Node2D = null
 const ARROW_SCRIPT = preload("res://KelptownInn/BobbingArrow.gd")
 const ARROW_TEXTURE = preload("res://KelptownInn/assets/arrow.png")
 const BROKEN_TEXTURE = preload("res://Ships/enemybroken.png")
+
+func set_ready_for_boarding(val: bool) -> void:
+       if ready_for_boarding == val:
+               return
+       ready_for_boarding = val
+       emit_signal("ready_for_boarding_changed", ready_for_boarding)
+
+func get_ready_for_boarding() -> bool:
+       return ready_for_boarding
 
 
 # ───────── READY ─────────
@@ -80,18 +91,18 @@ func _ready():
 	$DecideTimer.start()
 
 	# clickable only once wrecked
-	input_pickable     = false
-	ready_for_boarding = false
+        input_pickable     = false
+        set_ready_for_boarding(false)
 
 	# DEBUG: immediately spawn as wreck
-	if start_dead_for_testing:
+        if start_dead_for_testing:
 									_die()
 									death_aligned          = true
 									current_frame          = DEATH_TARGET_FRAME
 									current_rotation_speed = 0.0
 									_update_frame()
 									current_speed          = 0.0
-									ready_for_boarding     = true
+                                                                        set_ready_for_boarding(true)
 									input_pickable         = true
 									if sprite:
 													sprite.texture = BROKEN_TEXTURE
@@ -172,9 +183,9 @@ func _behave_dead(delta):
 							sprite.texture = BROKEN_TEXTURE
 							sprite.hframes = 1
 							sprite.frame = 0
-			if not ready_for_boarding:
-											ready_for_boarding = true
-											input_pickable     = true   # now clickable!
+        if not ready_for_boarding:
+                                                                               set_ready_for_boarding(true)
+                                                                               input_pickable     = true   # now clickable!
 											if spawn_dock_arrow_on_death:
 													_spawn_dock_arrow()
 
