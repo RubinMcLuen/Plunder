@@ -128,9 +128,9 @@ func _ready() -> void:
 		hint_label.hide()
 		_apply_allowed_actions()
 
-                if enemy_ship:
-                        enemy_ship.queue_free()
-                        _clear_enemy_ship()
+		if enemy_ship:
+				enemy_ship.queue_free()
+				_clear_enemy_ship()
 
 	var loaded_state := false
 	if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
