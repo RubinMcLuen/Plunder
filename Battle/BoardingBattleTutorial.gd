@@ -12,61 +12,61 @@ var barnaby : CrewMemberNPC = null
 var enemy   : EnemyNPC = null
 
 func get_tutorial_state() -> Dictionary:
-        var barnaby_state := {}
-        if barnaby:
-                barnaby_state = {
-                        "pos": barnaby.global_position,
-                        "health": barnaby.health,
-                        "dragging": barnaby.dragging,
-                        "is_boarding": barnaby.is_boarding,
-                        "has_boarded": barnaby.has_boarded,
-                }
-        var enemy_state := {}
-        if enemy and is_instance_valid(enemy):
-                enemy_state = {
-                        "exists": true,
-                        "pos": enemy.global_position,
-                        "health": enemy.health,
-                }
-        else:
-                enemy_state = {"exists": false}
-        return {
-                "step": step,
-                "barnaby": barnaby_state,
-                "enemy": enemy_state,
-        }
+		var barnaby_state := {}
+		if barnaby:
+				barnaby_state = {
+						"pos": barnaby.global_position,
+						"health": barnaby.health,
+						"dragging": barnaby.dragging,
+						"is_boarding": barnaby.is_boarding,
+						"has_boarded": barnaby.has_boarded,
+				}
+		var enemy_state := {}
+		if enemy and is_instance_valid(enemy):
+				enemy_state = {
+						"exists": true,
+						"pos": enemy.global_position,
+						"health": enemy.health,
+				}
+		else:
+				enemy_state = {"exists": false}
+		return {
+				"step": step,
+				"barnaby": barnaby_state,
+				"enemy": enemy_state,
+		}
 
 func apply_tutorial_state(state: Dictionary) -> void:
-        step = int(state.get("step", step))
-        var b = state.get("barnaby", {})
-        if barnaby and b:
-                barnaby.global_position = b.get("pos", barnaby.global_position)
-                barnaby.health = int(b.get("health", barnaby.health))
-                barnaby.dragging = bool(b.get("dragging", barnaby.dragging))
-                barnaby.is_boarding = bool(b.get("is_boarding", barnaby.is_boarding))
-                barnaby.has_boarded = bool(b.get("has_boarded", barnaby.has_boarded))
-        var e = state.get("enemy", {})
-        if e.get("exists", false):
-                if enemy == null or not is_instance_valid(enemy):
-                        enemy = manager.spawn_single_enemy()
-                enemy.global_position = e.get("pos", enemy.global_position)
-                enemy.health = int(e.get("health", enemy.health))
-        _show_step()
+		step = int(state.get("step", step))
+		var b = state.get("barnaby", {})
+		if barnaby and b:
+				barnaby.global_position = b.get("pos", barnaby.global_position)
+				barnaby.health = int(b.get("health", barnaby.health))
+				barnaby.dragging = bool(b.get("dragging", barnaby.dragging))
+				barnaby.is_boarding = bool(b.get("is_boarding", barnaby.is_boarding))
+				barnaby.has_boarded = bool(b.get("has_boarded", barnaby.has_boarded))
+		var e = state.get("enemy", {})
+		if e.get("exists", false):
+				if enemy == null or not is_instance_valid(enemy):
+						enemy = manager.spawn_single_enemy()
+				enemy.global_position = e.get("pos", enemy.global_position)
+				enemy.health = int(e.get("health", enemy.health))
+		_show_step()
 
 func _ready() -> void:
-                                await super._ready()
-                                _orig_cam_y = cam.global_position.y
-				for c in crew_container.get_children():
-								if c is BarnabyCrew:
-												barnaby = c
-												break
-                                await get_tree().create_timer(2.0).timeout
-                                if Global.boarding_battle_tutorial_state and Global.boarding_battle_tutorial_state.size() > 0:
-                                        apply_tutorial_state(Global.boarding_battle_tutorial_state)
-                                        Global.boarding_battle_tutorial_state = {}
-                                else:
-                                        _show_step()
-                                set_process(true)
+								await super._ready()
+								_orig_cam_y = cam.global_position.y
+								for c in crew_container.get_children():
+												if c is BarnabyCrew:
+																barnaby = c
+																break
+												await get_tree().create_timer(2.0).timeout
+								if Global.boarding_battle_tutorial_state and Global.boarding_battle_tutorial_state.size() > 0:
+										apply_tutorial_state(Global.boarding_battle_tutorial_state)
+										Global.boarding_battle_tutorial_state = {}
+								else:
+										_show_step()
+								set_process(true)
 
 func _process(_delta: float) -> void:
 	match step:
@@ -192,8 +192,8 @@ func _finish_tutorial() -> void:
 		Global.ocean_tutorial_complete = true
 		var scene = Global.return_scene_path if Global.return_scene_path != "" else "res://Ocean/oceantutorial.tscn"
 		Global.return_scene_path = ""
-                SceneSwitcher.switch_scene(scene, Global.spawn_position, "none", Vector2(), Vector2(), Vector2(16,16), true)
+		SceneSwitcher.switch_scene(scene, Global.spawn_position, "none", Vector2(), Vector2(), Vector2(16,16), true)
 
 func _exit_tree() -> void:
-        Global.boarding_battle_tutorial_state = get_tutorial_state()
+		Global.boarding_battle_tutorial_state = get_tutorial_state()
 

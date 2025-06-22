@@ -29,11 +29,11 @@ func _ready() -> void:
 	for item in visuals:
 			tw.tween_property(item, "modulate:a", 1.0, FADE_DURATION)
 
-        _orig_cam_y = cam.global_position.y
-        set_process(true)
-        if Global.battle_state and Global.battle_state.size() > 0:
-                apply_battle_state(Global.battle_state)
-                Global.battle_state = {}
+	_orig_cam_y = cam.global_position.y
+	set_process(true)
+	if Global.battle_state and Global.battle_state.size() > 0:
+			apply_battle_state(Global.battle_state)
+			Global.battle_state = {}
 
 
 func _collect_canvas_items(node: Node) -> Array:
@@ -72,46 +72,49 @@ func _finish_battle() -> void:
 		Global.board_zoom_out_next = true
 		var scene = Global.return_scene_path if Global.return_scene_path != "" else "res://Ocean/oceantutorial.tscn"
 		Global.return_scene_path = ""
-                SceneSwitcher.switch_scene(scene, Global.spawn_position, "none", Vector2(), Vector2(), Vector2(16,16), true)
+		SceneSwitcher.switch_scene(scene, Global.spawn_position, "none", Vector2(), Vector2(), Vector2(16,16), true)
 
 func get_battle_state() -> Dictionary:
-        var crew_list := []
-        for c in $CrewContainer.get_children():
-                crew_list.append({
-                        "name": c.npc_name if "npc_name" in c else c.name,
-                        "pos": c.global_position,
-                        "health": c.health,
-                        "dragging": c.has_method("dragging") ? c.dragging : false,
-                        "boarded": c.has_method("has_boarded") ? c.has_boarded : false,
-                })
-        var enemy_list := []
-        for e in $EnemyContainer.get_children():
-                enemy_list.append({
-                        "name": e.npc_name if "npc_name" in e else e.name,
-                        "pos": e.global_position,
-                        "health": e.health,
-                })
-        return {"crew": crew_list, "enemies": enemy_list}
+	var crew_list = []
+	for c in $CrewContainer.get_children():
+		crew_list.append({
+			"name": c.npc_name if "npc_name" in c else c.name,
+			"pos": c.global_position,
+			"health": c.health,
+			"dragging": c.dragging if c.has_method("dragging") else false,
+			"boarded": c.has_boarded if c.has_method("has_boarded") else false,
+		})
+	var enemy_list = []
+	for e in $EnemyContainer.get_children():
+		enemy_list.append({
+			"name": e.npc_name if "npc_name" in e else e.name,
+			"pos": e.global_position,
+			"health": e.health,
+		})
+	return {
+		"crew": crew_list,
+		"enemies": enemy_list,
+	}
 
 func apply_battle_state(state: Dictionary) -> void:
-        var crew_info = state.get("crew", [])
-        var crews = $CrewContainer.get_children()
-        for i in range(min(crew_info.size(), crews.size())):
-                var data = crew_info[i]
-                var c = crews[i]
-                c.global_position = data.get("pos", c.global_position)
-                c.health = int(data.get("health", c.health))
-                if "dragging" in data:
-                        c.dragging = bool(data["dragging"])
-                if "boarded" in data:
-                        c.has_boarded = bool(data["boarded"])
-        var enemy_info = state.get("enemies", [])
-        var enemies = $EnemyContainer.get_children()
-        for i in range(min(enemy_info.size(), enemies.size())):
-                var d = enemy_info[i]
-                var e = enemies[i]
-                e.global_position = d.get("pos", e.global_position)
-                e.health = int(d.get("health", e.health))
+		var crew_info = state.get("crew", [])
+		var crews = $CrewContainer.get_children()
+		for i in range(min(crew_info.size(), crews.size())):
+				var data = crew_info[i]
+				var c = crews[i]
+				c.global_position = data.get("pos", c.global_position)
+				c.health = int(data.get("health", c.health))
+				if "dragging" in data:
+						c.dragging = bool(data["dragging"])
+				if "boarded" in data:
+						c.has_boarded = bool(data["boarded"])
+		var enemy_info = state.get("enemies", [])
+		var enemies = $EnemyContainer.get_children()
+		for i in range(min(enemy_info.size(), enemies.size())):
+				var d = enemy_info[i]
+				var e = enemies[i]
+				e.global_position = d.get("pos", e.global_position)
+				e.health = int(d.get("health", e.health))
 
 func _exit_tree() -> void:
-        Global.battle_state = get_battle_state()
+		Global.battle_state = get_battle_state()
