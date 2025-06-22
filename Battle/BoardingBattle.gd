@@ -91,10 +91,14 @@ func get_battle_state() -> Dictionary:
 			"pos": e.global_position,
 			"health": e.health,
 		})
-	return {
-		"crew": crew_list,
-		"enemies": enemy_list,
-	}
+        return {
+                "crew": crew_list,
+                "enemies": enemy_list,
+                "camera": {
+                        "pos": cam.global_position,
+                        "zoom": cam.zoom,
+                },
+        }
 
 func apply_battle_state(state: Dictionary) -> void:
 		var crew_info = state.get("crew", [])
@@ -110,11 +114,32 @@ func apply_battle_state(state: Dictionary) -> void:
 						c.has_boarded = bool(data["boarded"])
 		var enemy_info = state.get("enemies", [])
 		var enemies = $EnemyContainer.get_children()
-		for i in range(min(enemy_info.size(), enemies.size())):
-				var d = enemy_info[i]
-				var e = enemies[i]
-				e.global_position = d.get("pos", e.global_position)
-				e.health = int(d.get("health", e.health))
+                for i in range(min(enemy_info.size(), enemies.size())):
+                                var d = enemy_info[i]
+                                var e = enemies[i]
+                                e.global_position = d.get("pos", e.global_position)
+                                e.health = int(d.get("health", e.health))
+
+                var cam_info = state.get("camera", {})
+                var cpos = cam_info.get("pos", cam.global_position)
+                if typeof(cpos) == TYPE_DICTIONARY and cpos.has("x") and cpos.has("y"):
+                                cam.global_position = Vector2(cpos["x"], cpos["y"]) 
+                elif typeof(cpos) == TYPE_VECTOR2:
+                                cam.global_position = cpos
+                elif typeof(cpos) == TYPE_STRING:
+                                var tmp = str_to_var(cpos)
+                                if typeof(tmp) == TYPE_VECTOR2:
+                                                cam.global_position = tmp
+
+                var cz = cam_info.get("zoom", cam.zoom)
+                if typeof(cz) == TYPE_DICTIONARY and cz.has("x") and cz.has("y"):
+                                cam.zoom = Vector2(cz["x"], cz["y"])
+                elif typeof(cz) == TYPE_VECTOR2:
+                                cam.zoom = cz
+                elif typeof(cz) == TYPE_STRING:
+                                var tmp2 = str_to_var(cz)
+                                if typeof(tmp2) == TYPE_VECTOR2:
+                                                cam.zoom = tmp2
 
 func _exit_tree() -> void:
 		Global.battle_state = get_battle_state()
