@@ -286,11 +286,11 @@ func _on_set_sail_button_pressed() -> void:
 
 				Global.restore_sails_next = true
 
-                                SceneSwitcher.switch_scene(
-                                                                "res://Ocean/oceantutorial.tscn",
-                                                                Vector2(-2, 39), "zoom",
-                                                                Vector2(0.0625, 0.0625), Vector2(-32, 624),
-                Vector2(1, 1), true
+				SceneSwitcher.switch_scene(
+												"res://Ocean/oceantutorial.tscn",
+												Vector2(-2, 39), "zoom",
+												Vector2(0.0625, 0.0625), Vector2(-32, 624),
+				Vector2(1, 1), true
 )
 				hide_set_sail_menu()
 
@@ -303,13 +303,13 @@ func _on_dock_ship_button_pressed() -> void:
 				tw.tween_interval(1.0)
 				tw.connect("finished", Callable(ocean, "start_dock_transition").bind(1.0))
 
-                                var target_scene := "res://Island/islandtutorial.tscn"
+				var target_scene := "res://Island/islandtutorial.tscn"
 
 				SceneSwitcher.switch_scene(
 																	target_scene,
 																	Vector2(-190, 648), "zoom",
-                                                                               Vector2(16, 16), Vector2(-11.875, 40.5),
-                                                                               Vector2(1, 1), true
+																			   Vector2(16, 16), Vector2(-11.875, 40.5),
+																			   Vector2(1, 1), true
 				   )
 		hide_dock_ship_menu()
 
