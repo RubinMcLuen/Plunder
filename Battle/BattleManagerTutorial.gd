@@ -8,12 +8,12 @@ func _ready() -> void:
 	# do not spawn any enemies at start
 
 func spawn_crews() -> void:
-        super.spawn_crews()
-        # Adjust Barnaby health for tutorial vs normal battles
-        var hp = 30 if not Global.ocean_tutorial_complete else 10
-        for c in crew_container.get_children():
-                if c is BarnabyCrew:
-                        c.health = hp
+		super.spawn_crews()
+		# Adjust Barnaby health for tutorial vs normal battles
+		var hp = 30 if not Global.ocean_tutorial_complete else 10
+		for c in crew_container.get_children():
+				if c is BarnabyCrew:
+						c.health = hp
 
 func spawn_single_enemy() -> EnemyNPC:
 		var scene := preload("res://Character/NPC/Enemy/Enemy.tscn")
@@ -32,4 +32,3 @@ func spawn_single_enemy() -> EnemyNPC:
 		enemy_container.add_child(e)
 		spawned_enemy = e
 		return e
-

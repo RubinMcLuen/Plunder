@@ -248,25 +248,25 @@ func _clear_enemy_ship() -> void:
 			_spawn_normal_enemy()
 
 func _spawn_normal_enemy() -> void:
-        if Global.post_tutorial_enemy_spawned:
-                        return
-        Global.post_tutorial_enemy_spawned = true
-        var scene := preload("res://Ships/EnemyShip.tscn")
-        enemy_ship = scene.instantiate()
-        add_child(enemy_ship)
-        if player_ship:
-                        enemy_ship.global_position = player_ship.global_position + Vector2(100, 0)
-                        enemy_ship.player = player_ship
-        enemy_ship.full_speed = 40.0
-        enemy_ship.health = 10
-        enemy_ship.visible = true
-        enemy_ship.ready_for_boarding = false
-        enemy_ship.input_pickable = false
-        _enemy_layer = enemy_ship.collision_layer
-        _enemy_mask  = enemy_ship.collision_mask
-        enemy_ship.set_process(true)
-        enemy_ship.set_physics_process(true)
-        if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
-                        enemy_ship.connect("area_entered", _on_enemy_area_entered)
-        Global.crew_override = ["Barnaby", "Barnaby", "Barnaby", "Barnaby", "Barnaby"]
-        Global.enemy_count_override = 3
+		if Global.post_tutorial_enemy_spawned:
+						return
+		Global.post_tutorial_enemy_spawned = true
+		var scene := preload("res://Ships/EnemyShip.tscn")
+		enemy_ship = scene.instantiate()
+		add_child(enemy_ship)
+		if player_ship:
+						enemy_ship.global_position = player_ship.global_position + Vector2(100, 0)
+						enemy_ship.player = player_ship
+		enemy_ship.full_speed = 40.0
+		enemy_ship.health = 10
+		enemy_ship.visible = true
+		enemy_ship.ready_for_boarding = false
+		enemy_ship.input_pickable = false
+		_enemy_layer = enemy_ship.collision_layer
+		_enemy_mask  = enemy_ship.collision_mask
+		enemy_ship.set_process(true)
+		enemy_ship.set_physics_process(true)
+		if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
+						enemy_ship.connect("area_entered", _on_enemy_area_entered)
+		Global.crew_override = ["Barnaby", "Barnaby", "Barnaby", "Barnaby", "Barnaby"]
+		Global.enemy_count_override = 3

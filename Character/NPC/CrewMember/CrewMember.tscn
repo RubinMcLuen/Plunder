@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dh64eacvv81bl"]
 
-[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="1_bh1s7"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="1_bh1s7"]
 [ext_resource type="Script" path="res://Character/NPC/CrewMember/CrewMember.gd" id="2_oe6pe"]
 [ext_resource type="Shader" path="res://Character/Player/UVLookupShader.gdshader" id="3_35h4c"]
 
@@ -16,8 +16,6 @@ radius = 30.0
 [node name="CrewMember" instance=ExtResource("1_bh1s7")]
 z_index = 2
 script = ExtResource("2_oe6pe")
-stats = null
-dialogue_resource = null
 
 [node name="Appearance" parent="." index="0"]
 material = SubResource("ShaderMaterial_70x73")

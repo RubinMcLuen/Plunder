@@ -4,8 +4,9 @@ Bartender: Let's see you stretch those legs a bit before we chat.
 
 ~ introduction
 Bartender: Finally got your sea legs back, aye?
-Bartender: That scurvy is no joke—spend less time on the poopdeck.
-Bartender: Before you set sail, you’ll need a loyal crew. Start by hiring that salty dog over there.
+Bartender: That scurvy is no joke, you ought to spend less time on the poopdeck.
+Bartender: Before you set sail, you’ll need a loyal crew. 
+Bartender: Start by hiring that salty dog, Barnaby, over there.
 => END
 
 ~ introduction_repeat
@@ -14,6 +15,4 @@ Bartender: Still here, captain? Hire yourself a crew before you head for open wa
 
 ~ normal
 % Bartender: Welcome back, captain.
-% Bartender: The ale’s cold and the gossip’s hot.
-% Bartender: What’ll it be — grog or tales of the sea?
 => END
