@@ -22,14 +22,15 @@ var _enemy_mask        : int   = 0
 func get_tutorial_state() -> Dictionary:
 	var es := {}
 	if enemy_ship and is_instance_valid(enemy_ship):
-			es = {
-					"exists": true,
-					"position": enemy_ship.global_position,
-					"frame": enemy_ship.current_frame,
-					"state": int(enemy_ship.current_state),
-					"health": enemy_ship.health,
-					"ready": enemy_ship.ready_for_boarding,
-			}
+                       es = {
+                                       "exists": true,
+                                       "position": enemy_ship.global_position,
+                                       "frame": enemy_ship.current_frame,
+                                       "state": int(enemy_ship.current_state),
+                                       "health": enemy_ship.health,
+                                       "ready": enemy_ship.ready_for_boarding,
+                                       "visible": enemy_ship.visible,
+                       }
 	else:
 			es = {"exists": false}
 
@@ -72,10 +73,11 @@ func apply_tutorial_state(state: Dictionary) -> void:
 			if typeof(tmp) == TYPE_VECTOR2:
 				enemy_ship.global_position = tmp
 
-		enemy_ship.current_frame = es.get("frame", enemy_ship.current_frame)
-		enemy_ship.current_state = int(es.get("state", enemy_ship.current_state))
-		enemy_ship.health = int(es.get("health", enemy_ship.health))
-		enemy_ship.ready_for_boarding = bool(es.get("ready", enemy_ship.ready_for_boarding))
+               enemy_ship.current_frame = es.get("frame", enemy_ship.current_frame)
+               enemy_ship.current_state = int(es.get("state", enemy_ship.current_state))
+               enemy_ship.health = int(es.get("health", enemy_ship.health))
+               enemy_ship.ready_for_boarding = bool(es.get("ready", enemy_ship.ready_for_boarding))
+               enemy_ship.visible = bool(es.get("visible", enemy_ship.visible))
 		if enemy_ship.has_method("_update_frame"):
 			enemy_ship._update_frame()
 	elif enemy_ship:
