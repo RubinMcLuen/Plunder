@@ -1,4 +1,5 @@
 extends "res://Ocean/Ocean.gd"
+class_name OceanTutorial
 
 @onready var hint_label: RichTextLabel = $CanvasLayer/HintLabel
 @onready var island     : Node2D        = $KelptownIsland
@@ -19,6 +20,53 @@ var _orig_target_speed: float = 0.0
 var _enemy_layer: int = 0
 var _enemy_mask: int = 0
 
+func get_tutorial_state() -> Dictionary:
+        var es := {}
+        if enemy_ship and is_instance_valid(enemy_ship):
+                es = {
+                        "exists": true,
+                        "position": enemy_ship.global_position,
+                        "frame": enemy_ship.current_frame,
+                        "state": int(enemy_ship.current_state),
+                        "health": enemy_ship.health,
+                        "ready": enemy_ship.ready_for_boarding,
+                }
+        else:
+                es = {"exists": false}
+        return {
+                "step": step,
+                "left_done": left_done,
+                "right_done": right_done,
+                "shoot_left_done": shoot_left_done,
+                "shoot_right_done": shoot_right_done,
+                "enemy_hit": enemy_hit,
+                "enemy": es,
+        }
+
+func apply_tutorial_state(state: Dictionary) -> void:
+        step = int(state.get("step", step))
+        left_done = bool(state.get("left_done", left_done))
+        right_done = bool(state.get("right_done", right_done))
+        shoot_left_done = bool(state.get("shoot_left_done", shoot_left_done))
+        shoot_right_done = bool(state.get("shoot_right_done", shoot_right_done))
+        enemy_hit = bool(state.get("enemy_hit", enemy_hit))
+        var es: Dictionary = state.get("enemy", {})
+        if es.get("exists", false):
+                if enemy_ship == null:
+                        _spawn_normal_enemy(false)
+                enemy_ship.global_position = es.get("position", enemy_ship.global_position)
+                enemy_ship.current_frame   = es.get("frame", enemy_ship.current_frame)
+                enemy_ship.current_state   = int(es.get("state", enemy_ship.current_state))
+                enemy_ship.health          = int(es.get("health", enemy_ship.health))
+                enemy_ship.ready_for_boarding = bool(es.get("ready", enemy_ship.ready_for_boarding))
+                if enemy_ship.has_method("_update_frame"):
+                        enemy_ship._update_frame()
+        elif enemy_ship:
+                enemy_ship.queue_free()
+                enemy_ship = null
+        _show_step_text()
+        _apply_allowed_actions()
+
 func _allowed_actions_for_step(s: int) -> Array[String]:
 								var actions: Array[String] = []
 								if s >= 0:
@@ -38,13 +86,13 @@ func _apply_allowed_actions():
 		player_ship.set_allowed_actions(_allowed_actions_for_step(step))
 
 func _ready() -> void:
-				await super._ready()
-				_setup_environment()
+                                await super._ready()
+                                _setup_environment()
 				if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
 								enemy_ship.global_position = Global.enemy_spawn_position
 								Global.enemy_spawn_position = Vector2.ZERO
-				if Global.ocean_tutorial_complete:
-					step = 7
+                                if Global.ocean_tutorial_complete:
+                                        step = 7
 					arrow.visible = false
 					hint_label.hide()
 					_apply_allowed_actions()
@@ -66,11 +114,16 @@ func _ready() -> void:
 										tw.parallel().tween_property(sprite.material,
 										"shader_parameter/InitialAlpha", 0.0, 4.0)
 									tw.tween_callback(Callable(enemy_ship, "queue_free"))
-									tw.tween_callback(Callable(self, "_clear_enemy_ship"))
-									return
-				if player_ship:
-												_orig_max_speed = player_ship.max_speed
-												_orig_target_speed = player_ship.target_speed
+                                        tw.tween_callback(Callable(self, "_clear_enemy_ship"))
+                                        return
+                                var loaded_state := false
+                                if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
+                                        apply_tutorial_state(Global.ocean_tutorial_state)
+                                        Global.ocean_tutorial_state = {}
+                                        loaded_state = true
+                                if player_ship:
+                                        _orig_max_speed = player_ship.max_speed
+                                        _orig_target_speed = player_ship.target_speed
 												# Slightly faster tutorial ship speed
 												player_ship.max_speed *= 0.5
 												player_ship.target_speed *= 0.5
@@ -334,11 +387,14 @@ func _create_borders(center: Vector2, size: int) -> void:
 		_add_wall(border, Vector2(center.x + half + thickness * 0.5, center.y), Vector2(thickness * 0.5, half))
 
 func _add_wall(parent: Node, pos: Vector2, ext: Vector2) -> void:
-		var body = StaticBody2D.new()
-		body.position = pos
-		var shape = CollisionShape2D.new()
-		var rect = RectangleShape2D.new()
-		rect.extents = ext
-		shape.shape = rect
-		body.add_child(shape)
-		parent.add_child(body)
+                var body = StaticBody2D.new()
+                body.position = pos
+                var shape = CollisionShape2D.new()
+                var rect = RectangleShape2D.new()
+                rect.extents = ext
+                shape.shape = rect
+                body.add_child(shape)
+                parent.add_child(body)
+
+func _exit_tree() -> void:
+        Global.ocean_tutorial_state = get_tutorial_state()
