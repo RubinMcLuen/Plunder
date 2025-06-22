@@ -303,16 +303,16 @@ func _on_dock_ship_button_pressed() -> void:
 				tw.tween_interval(1.0)
 				tw.connect("finished", Callable(ocean, "start_dock_transition").bind(1.0))
 
-               var target_scene := "res://Island/island.tscn"
-               if ocean and ocean.scene_file_path.ends_with("oceantutorial.tscn") and not Global.ocean_tutorial_complete:
-                               target_scene = "res://Island/islandtutorial.tscn"
+				var target_scene := "res://Island/island.tscn"
+				if ocean and ocean.scene_file_path.ends_with("oceantutorial.tscn") and not Global.ocean_tutorial_complete:
+								target_scene = "res://Island/islandtutorial.tscn"
 
-               SceneSwitcher.switch_scene(
-                                                                   target_scene,
-                                                                   Vector2(-190, 648), "zoom",
-                                                                   Vector2(16, 16), Vector2(-11.875, 40.5),
-                                                                   Vector2(1.5, 1.5), true
-               )
+				SceneSwitcher.switch_scene(
+																	target_scene,
+																	Vector2(-190, 648), "zoom",
+																	Vector2(16, 16), Vector2(-11.875, 40.5),
+																	Vector2(1.5, 1.5), true
+				   )
 		hide_dock_ship_menu()
 
 # ──────────────────────────
