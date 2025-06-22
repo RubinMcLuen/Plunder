@@ -26,9 +26,14 @@ var _location_notify_tween : Tween     = null
 # Ready
 # ──────────────────────────
 func _ready() -> void:
-		# connect our UI button once
-		begin_raid_button.pressed.connect(Callable(self, "_on_begin_raid_button_pressed"))
-		enemy_toggle_button.pressed.connect(Callable(self, "_on_spawn_enemy_button_pressed"))
+                # connect our UI buttons once
+                if not begin_raid_button.pressed.is_connected(Callable(self, "_on_begin_raid_button_pressed")):
+                                begin_raid_button.pressed.connect(Callable(self, "_on_begin_raid_button_pressed"))
+
+                # The enemy toggle button is already connected in the scene. Avoid
+                # attempting to connect again which would raise an error.
+                if not enemy_toggle_button.pressed.is_connected(Callable(self, "_on_spawn_enemy_button_pressed")):
+                                enemy_toggle_button.pressed.connect(Callable(self, "_on_spawn_enemy_button_pressed"))
 
 		enemy_toggle_button.hide()
 
@@ -69,8 +74,13 @@ func _rewire_to_scene(ocean: Node) -> void:
 						_current_player.disconnect("player_docked", Callable(self, "_on_player_docked"))
 
 	# ── update refs ─────────────────────────────────────────
-	_current_ocean  = ocean
-	_current_player = null
+        _current_ocean  = ocean
+        _current_player = null
+
+        # Ensure the Begin Raid button is connected to our handler in case a
+        # previous scene disconnected it (e.g. the tutorial).
+        if not begin_raid_button.pressed.is_connected(Callable(self, "_on_begin_raid_button_pressed")):
+                begin_raid_button.pressed.connect(Callable(self, "_on_begin_raid_button_pressed"))
 
 	# ── now wire up the new ocean only if it really has that signal ──
 	if ocean and ocean.has_signal("board_enemy_request"):
