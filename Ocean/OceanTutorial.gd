@@ -136,12 +136,18 @@ func _ready() -> void:
 			Global.ocean_tutorial_state = {}
 			loaded_state = true
 
-	if player_ship:
-		_orig_max_speed    = player_ship.max_speed
-		_orig_target_speed = player_ship.target_speed
-		# Slightly slower tutorial ship speed
-		player_ship.max_speed    *= 0.5
-		player_ship.target_speed *= 0.5
+        if player_ship:
+                _orig_max_speed    = player_ship.max_speed
+                _orig_target_speed = player_ship.target_speed
+
+                if Global.ocean_tutorial_complete:
+                        # Restore normal speed after completing the boarding tutorial
+                        player_ship.max_speed    = _orig_max_speed
+                        player_ship.target_speed = _orig_target_speed
+                else:
+                        # Slightly slower tutorial ship speed
+                        player_ship.max_speed    *= 0.5
+                        player_ship.target_speed *= 0.5
 
 		if player_ship and player_ship.has_signal("player_docked"):
 				player_ship.connect("player_docked", _on_player_docked)
