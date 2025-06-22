@@ -279,7 +279,9 @@ func _spawn_normal_enemy(record_spawned: bool = true) -> void:
 		enemy_ship.start_dead_for_testing = false
 		add_child(enemy_ship)
 		if player_ship:
-						enemy_ship.global_position = player_ship.global_position + Vector2(100, 0)
+						var radius := 100.0
+						var angle := randf() * TAU
+						enemy_ship.global_position = player_ship.global_position + Vector2(cos(angle), sin(angle)) * radius
 						enemy_ship.player = player_ship
 		enemy_ship.full_speed = 40.0
 		enemy_ship.health = 10
