@@ -32,3 +32,4 @@ res://Ships/EnemyShip.gd
 res://Ocean/Ocean.gd
 res://Ocean/OceanTutorial.gd
 res://UI/UIManager.gd
+res://Dialogue/balloon.gd

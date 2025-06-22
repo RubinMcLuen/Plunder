@@ -95,25 +95,25 @@ func _ready() -> void:
 		option_buttons[i].connect("pressed", Callable(self, "_on_response_button_pressed").bind(i))
 
 func _unhandled_input(event: InputEvent) -> void:
-        get_viewport().set_input_as_handled()
-        if event.is_action_pressed("space"):
-                _on_next_button_pressed()
-                return
+		get_viewport().set_input_as_handled()
+		if event.is_action_pressed("space"):
+				_on_next_button_pressed()
+				return
 
-        if event is InputEventKey and event.pressed and not event.echo and responses_menu.visible:
-                match event.physical_keycode:
-                        KEY_1:
-                                if dialogue_line.responses.size() >= 1:
-                                        _on_response_button_pressed(0)
-                        KEY_2:
-                                if dialogue_line.responses.size() >= 2:
-                                        _on_response_button_pressed(1)
-                        KEY_3:
-                                if dialogue_line.responses.size() >= 3:
-                                        _on_response_button_pressed(2)
-                        KEY_4:
-                                if dialogue_line.responses.size() >= 4:
-                                        _on_response_button_pressed(3)
+		if event is InputEventKey and event.pressed and not event.echo and responses_menu.visible:
+				match event.physical_keycode:
+						KEY_1:
+								if dialogue_line.responses.size() >= 1:
+										_on_response_button_pressed(0)
+						KEY_2:
+								if dialogue_line.responses.size() >= 2:
+										_on_response_button_pressed(1)
+						KEY_3:
+								if dialogue_line.responses.size() >= 3:
+										_on_response_button_pressed(2)
+						KEY_4:
+								if dialogue_line.responses.size() >= 4:
+										_on_response_button_pressed(3)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_TRANSLATION_CHANGED and is_instance_valid(dialogue_label):
