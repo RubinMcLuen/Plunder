@@ -81,8 +81,15 @@ func _rewire_to_scene(ocean: Node) -> void:
 			_current_enemy.disconnect("ready_for_boarding_changed", Callable(self, "_on_enemy_ready_for_boarding"))
 
 	# ── update refs ─────────────────────────────────────────
-	_current_ocean  = ocean
-	_current_player = null
+       _current_ocean  = ocean
+       _current_player = null
+
+       # Reset boarding state whenever we switch scenes so stray flags from
+       # the previous scene don't trigger the wrong UI.
+       _board_mode = false
+       _player_docked = false
+       hide_begin_raid_menu()
+       hide_dock_ship_menu()
 
 	# Ensure the Begin Raid button is connected to our handler in case a
 	# previous scene disconnected it (e.g. the tutorial).
