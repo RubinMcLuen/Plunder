@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=3 uid="uid://ci36078u3htw1"]
+[gd_scene load_steps=62 format=3 uid="uid://ci36078u3htw1"]
 
 [ext_resource type="Script" path="res://KelptownInn/KelptownInnTutorial.gd" id="1_8g3rb"]
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="2_iwfcd"]
@@ -57,6 +57,12 @@ size = Vector2(115.5, 0)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_eh1jv"]
 size = Vector2(26, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l2fj5"]
+size = Vector2(0, 4)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_44i0h"]
+size = Vector2(0, 4)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_05sn2"]
 size = Vector2(0, 224)
@@ -172,6 +178,14 @@ shape = SubResource("RectangleShape2D_lnveo")
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="Collisions/BorderBottom"]
 position = Vector2(118, 14)
 shape = SubResource("RectangleShape2D_eh1jv")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Collisions/BorderBottom"]
+position = Vector2(105, 12)
+shape = SubResource("RectangleShape2D_l2fj5")
+
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="Collisions/BorderBottom"]
+position = Vector2(131, 12)
+shape = SubResource("RectangleShape2D_44i0h")
 
 [node name="BorderRight" type="StaticBody2D" parent="Collisions"]
 position = Vector2(398, 94)
@@ -546,6 +560,7 @@ shape = SubResource("RectangleShape2D_ru76x")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="FadeRect" type="ColorRect" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
