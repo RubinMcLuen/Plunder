@@ -114,40 +114,40 @@ func _apply_allowed_actions() -> void:
 
 
 func _ready() -> void:
-	await super._ready()
-	_setup_environment()
+		await super._ready()
+		_setup_environment()
 
-	if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
-		enemy_ship.global_position = Global.enemy_spawn_position
-		Global.enemy_spawn_position = Vector2.ZERO
+		if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
+			enemy_ship.global_position = Global.enemy_spawn_position
+			Global.enemy_spawn_position = Vector2.ZERO
 
-	if Global.ocean_tutorial_complete:
-		step = 7
-		arrow.visible = false
-		hint_label.hide()
-		_apply_allowed_actions()
+		if Global.ocean_tutorial_complete:
+			step = 7
+			arrow.visible = false
+			hint_label.hide()
+			_apply_allowed_actions()
 
-		if enemy_ship:
-						_fade_out_enemy_ship(1.0)
+			if enemy_ship:
+							_fade_out_enemy_ship(1.0)
 
-	var loaded_state := false
-	if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
-			apply_tutorial_state(Global.ocean_tutorial_state)
-			Global.ocean_tutorial_state = {}
-			loaded_state = true
+		var loaded_state := false
+		if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
+				apply_tutorial_state(Global.ocean_tutorial_state)
+				Global.ocean_tutorial_state = {}
+				loaded_state = true
 
-        if player_ship:
-                _orig_max_speed    = player_ship.max_speed
-                _orig_target_speed = player_ship.target_speed
+		if player_ship:
+				_orig_max_speed    = player_ship.max_speed
+				_orig_target_speed = player_ship.target_speed
 
-                if Global.ocean_tutorial_complete:
-                        # Restore normal speed after completing the boarding tutorial
-                        player_ship.max_speed    = _orig_max_speed
-                        player_ship.target_speed = _orig_target_speed
-                else:
-                        # Slightly slower tutorial ship speed
-                        player_ship.max_speed    *= 0.5
-                        player_ship.target_speed *= 0.5
+				if Global.ocean_tutorial_complete:
+						# Restore normal speed after completing the boarding tutorial
+						player_ship.max_speed    = _orig_max_speed
+						player_ship.target_speed = _orig_target_speed
+				else:
+						# Slightly slower tutorial ship speed
+						player_ship.max_speed    *= 0.5
+						player_ship.target_speed *= 0.5
 
 		if player_ship and player_ship.has_signal("player_docked"):
 				player_ship.connect("player_docked", _on_player_docked)
@@ -170,20 +170,20 @@ func _ready() -> void:
 				if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
 						enemy_ship.connect("area_entered", _on_enemy_area_entered)
 
-	arrow.visible       = false
-	arrow.target        = null
-	arrow.self_modulate = Color.WHITE
+		arrow.visible       = false
+		arrow.target        = null
+		arrow.self_modulate = Color.WHITE
 
-	_show_step_text()
-	_apply_allowed_actions()
+		_show_step_text()
+		_apply_allowed_actions()
 
-	# Rewire the Begin Raid button so we can track tutorial progress
-	var btn := UIManager.get_node("UIManager/BeginRaidMenu/BeginRaidButton")
-	if btn:
-		if btn.pressed.is_connected(UIManager._on_begin_raid_button_pressed):
-			btn.pressed.disconnect(UIManager._on_begin_raid_button_pressed)
-		if not btn.pressed.is_connected(_on_begin_raid_pressed):
-			btn.pressed.connect(_on_begin_raid_pressed)
+		# Rewire the Begin Raid button so we can track tutorial progress
+		var btn := UIManager.get_node("UIManager/BeginRaidMenu/BeginRaidButton")
+		if btn:
+			if btn.pressed.is_connected(UIManager._on_begin_raid_button_pressed):
+				btn.pressed.disconnect(UIManager._on_begin_raid_button_pressed)
+			if not btn.pressed.is_connected(_on_begin_raid_pressed):
+				btn.pressed.connect(_on_begin_raid_pressed)
 
 
 func _process(_delta: float) -> void:

@@ -303,9 +303,9 @@ func _on_dock_ship_button_pressed() -> void:
 				tw.tween_interval(1.0)
 				tw.connect("finished", Callable(ocean, "start_dock_transition").bind(1.0))
 
-                                var target_scene := "res://Island/island.tscn"
-                                if ocean and ocean.scene_file_path.ends_with("oceantutorial.tscn"):
-                                                                target_scene = "res://Island/islandtutorial.tscn"
+				var target_scene := "res://Island/island.tscn"
+				if ocean and ocean.scene_file_path.ends_with("oceantutorial.tscn"):
+												target_scene = "res://Island/islandtutorial.tscn"
 
 				SceneSwitcher.switch_scene(
 																	target_scene,
