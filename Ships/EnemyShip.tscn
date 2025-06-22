@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://jw4tqg00wiia" path="res://Ships/CannonSmoke.tscn" id="6_q3dsf"]
 [ext_resource type="AudioStream" uid="uid://cfj5q5vjaofvm" path="res://Ships/converted_audio2.mp3" id="8_e6ojg"]
 [ext_resource type="Texture2D" uid="uid://bb2gxour5f3rb" path="res://Ships/new_boat_sprite.png" id="8_etm1h"]
-[ext_resource type="Texture2D" uid="uid://hnty1t2qevhi" path="res://Ships/enemyshipsprite.png" id="11_enemy"]
 [ext_resource type="AudioStream" uid="uid://bf7ih7g0442mg" path="res://Ships/hit.mp3" id="9_kiohd"]
 [ext_resource type="AudioStream" uid="uid://yvsvg4l72r6n" path="res://Ships/SplashSoundEffect.mp3" id="10_ivc8j"]
 
@@ -30,7 +29,7 @@ z_index = -1
 
 [node name="Boat" type="Sprite2D" parent="."]
 position = Vector2(-22, -20)
-texture = ExtResource("11_enemy")
+texture = ExtResource("8_etm1h")
 centered = false
 hframes = 360
 
