@@ -115,8 +115,10 @@ func _on_player_docked() -> void:
 		show_dock_ship_menu()
 
 func _on_player_started_moving() -> void:
+	var was_visible := begin_raid_menu.visible
 	hide_begin_raid_menu()
-	_board_mode = false
+	if was_visible:
+		_board_mode = false
 
 # ──────────────────────────
 # “Begin Raid” button
