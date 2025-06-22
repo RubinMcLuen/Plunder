@@ -197,22 +197,25 @@ func handle_bot_input(delta):
 		shoot_right()
 
 func handle_player_input(delta):
-								var key_impulse = 0.0
-								if _action_allowed("ui_right") and Input.is_action_pressed("ui_right"):
-																key_impulse += 1.0
-																emit_signal("manual_rotation_started")
-								if _action_allowed("ui_left") and Input.is_action_pressed("ui_left"):
-																key_impulse -= 1.0
-																emit_signal("manual_rotation_started")
+                                                                var key_impulse = 0.0
+                                                                var prev_speed = current_speed
+                                                                if _action_allowed("ui_right") and Input.is_action_pressed("ui_right"):
+                                                                               key_impulse += 1.0
+                                                                               emit_signal("manual_rotation_started")
+                                                                if _action_allowed("ui_left") and Input.is_action_pressed("ui_left"):
+                                                                               key_impulse -= 1.0
+                                                                               emit_signal("manual_rotation_started")
 								if key_impulse != 0:
 												var keyboard_impulse_multiplier = 10.0
 												steering_velocity += key_impulse * keyboard_impulse_multiplier
 
-								if _action_allowed("ui_up") and Input.is_action_pressed("ui_up"):
-												current_speed += acceleration_rate * delta
-								if _action_allowed("ui_down") and Input.is_action_pressed("ui_down"):
-												current_speed -= acceleration_rate * delta
-								current_speed = clamp(current_speed, 0.0, max_speed)
+                                                                if _action_allowed("ui_up") and Input.is_action_pressed("ui_up"):
+                                                                                current_speed += acceleration_rate * delta
+                                                                if _action_allowed("ui_down") and Input.is_action_pressed("ui_down"):
+                                                                               current_speed -= acceleration_rate * delta
+                                                                current_speed = clamp(current_speed, 0.0, max_speed)
+                                                                if prev_speed <= 0.0 and current_speed > 0.0:
+                                                                                emit_signal("movement_started")
 
 								if _action_allowed("ui_select") and Input.is_action_just_pressed("ui_select"):
 												# Interaction placeholder
