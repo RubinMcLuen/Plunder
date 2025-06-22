@@ -175,32 +175,18 @@ func load_game_state() -> void:
 
 	# 2) Restore quests, crew
 	if "quests" in data:
-		get_quest_manager().quests = data["quests"]
-		if "crew" in data:
-				crew = []
-				for c in data["crew"]:
-						crew.append(str(c))
-
-						if "kelptown_tutorial" in data:
-														kelptown_tutorial_state = data["kelptown_tutorial"]
-						else:
-														kelptown_tutorial_state = {}
-						if "island_tutorial" in data:
-														island_tutorial_state = data["island_tutorial"]
-						else:
-														island_tutorial_state = {}
-						if "ocean_tutorial" in data:
-														ocean_tutorial_state = data["ocean_tutorial"]
-						else:
-														ocean_tutorial_state = {}
-						if "boarding_battle_tutorial" in data:
-														boarding_battle_tutorial_state = data["boarding_battle_tutorial"]
-						else:
-														boarding_battle_tutorial_state = {}
-						if "battle_state" in data:
-														battle_state = data["battle_state"]
-						else:
-														battle_state = {}
+	get_quest_manager().quests = data["quests"]
+	
+	crew = []
+	if "crew" in data:
+	for c in data["crew"]:
+	crew.append(str(c))
+	
+	kelptown_tutorial_state = data.get("kelptown_tutorial", {})
+	island_tutorial_state = data.get("island_tutorial", {})
+	ocean_tutorial_state = data.get("ocean_tutorial", {})
+	boarding_battle_tutorial_state = data.get("boarding_battle_tutorial", {})
+	battle_state = data.get("battle_state", {})
 
 		# 3) Scene + spawn + ship_state
 	var scene_info = data.get("scene", {})
