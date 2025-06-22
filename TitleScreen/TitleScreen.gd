@@ -19,9 +19,9 @@ func _ready() -> void:
 	menu_save.show_character_creator.connect(_on_show_creator)
 	menu_save.hide_character_creator.connect(_on_hide_creator)
 
-	func _unhandled_input(event: InputEvent) -> void:
-		if event is InputEventKey and event.pressed and not event.echo and not btn_start.disabled:
-			_on_start_pressed()
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo and not btn_start.disabled:
+		_on_start_pressed()
 
 func _on_start_pressed() -> void:
 	btn_start.disabled = true
