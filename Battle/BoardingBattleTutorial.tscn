@@ -1,6 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://ghym7xfsxdrf"]
 
 [ext_resource type="Texture2D" uid="uid://cc1klfhtqilyc" path="res://Battle/ZoomedInNewShip.png" id="1_fy6vb"]
+[ext_resource type="Texture2D" uid="uid://d7uv4iugn3ig" path="res://Ships/enemybrokenzoomedin.png" id="8_broken_zoom"]
 [ext_resource type="Script" path="res://Battle/BoardingBattleTutorial.gd" id="1_offb7"]
 [ext_resource type="Script" path="res://Battle/Camera.gd" id="2_rcx86"]
 [ext_resource type="Script" path="res://Battle/BattleManagerTutorial.gd" id="3_5ftdp"]
@@ -20,7 +21,7 @@ script = ExtResource("1_offb7")
 
 [node name="EnemyShip" type="Sprite2D" parent="."]
 position = Vector2(-128, -64)
-texture = ExtResource("1_fy6vb")
+texture = ExtResource("8_broken_zoom")
 centered = false
 
 [node name="PlayerShip" type="Sprite2D" parent="."]
