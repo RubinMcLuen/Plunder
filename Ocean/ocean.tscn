@@ -307,13 +307,6 @@ player = NodePath("../PlayerShip")
 full_speed = 40.0
 health = 1
 
-[node name="NoSails" type="Sprite2D" parent="EnemyShip"]
-visible = false
-z_index = -1
-position = Vector2(-22, -8)
-texture = ExtResource("5_ry4ey")
-centered = false
-
 [node name="MixSprite" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 1, 0)
 z_index = 4

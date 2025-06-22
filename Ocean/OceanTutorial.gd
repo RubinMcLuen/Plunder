@@ -276,8 +276,9 @@ func _spawn_normal_enemy() -> void:
 						return
 		Global.post_tutorial_enemy_spawned = true
 		var scene := preload("res://Ships/EnemyShip.tscn")
-		enemy_ship = scene.instantiate()
-		add_child(enemy_ship)
+                enemy_ship = scene.instantiate()
+                enemy_ship.start_dead_for_testing = true
+                add_child(enemy_ship)
 		if player_ship:
 						enemy_ship.global_position = player_ship.global_position + Vector2(100, 0)
 						enemy_ship.player = player_ship
