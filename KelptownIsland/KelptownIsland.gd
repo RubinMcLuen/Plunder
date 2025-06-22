@@ -114,7 +114,7 @@ func _on_dock_button_pressed():
 		"zoom",                  # Tells SceneSwitcher to tween the *old* camera from current -> old_camera_zoom
 			   Vector2(16,16),         # old_camera_zoom = 16×
 			   Vector2(-11.875, 40.5), # If you want the old camera to move to this position first (optional)
-			   Vector2(1,1)            # The *new* scene's camera will be forced to 1×
+			   Vector2(1.5, 1.5)            # The *new* scene's camera will be forced to 1.5×
 	   )
 	print("Dock button pressed, switching to character scene.")
 

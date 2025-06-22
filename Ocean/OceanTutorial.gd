@@ -128,28 +128,9 @@ func _ready() -> void:
 		hint_label.hide()
 		_apply_allowed_actions()
 
-		if enemy_ship:
-			enemy_ship.visible = true
-			enemy_ship.ready_for_boarding = false
-			enemy_ship.input_pickable = false
-			enemy_ship.collision_layer = 0
-			enemy_ship.collision_mask = 0
-			enemy_ship.set_process(false)
-			enemy_ship.set_physics_process(false)
-			enemy_ship.modulate.a = 1.0
-
-			var tw := get_tree().create_tween()
-			tw.tween_interval(2.0)
-			tw.tween_property(enemy_ship, "modulate:a", 0.0, 2.0)
-			tw.parallel().tween_property(enemy_ship.get_node("Trail"), "modulate:a", 0.0, 4.0)
-
-			var sprite := enemy_ship.get_node("Trail/Sprite2D")
-			if sprite.material is ShaderMaterial:
-				tw.parallel().tween_property(sprite.material, "shader_parameter/InitialAlpha", 0.0, 4.0)
-
-			tw.tween_callback(Callable(enemy_ship, "queue_free"))
-			tw.tween_callback(Callable(self, "_clear_enemy_ship"))
-			return
+                if enemy_ship:
+                        enemy_ship.queue_free()
+                        _clear_enemy_ship()
 
 	var loaded_state := false
 	if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
