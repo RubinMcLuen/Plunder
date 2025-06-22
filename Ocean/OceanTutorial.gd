@@ -145,12 +145,12 @@ func _ready() -> void:
 		player_ship.max_speed    *= 0.5
 		player_ship.target_speed *= 0.5
 
-	if player_ship.has_signal("player_docked"):
-		player_ship.connect("player_docked", _on_player_docked)
-	if player_ship.has_signal("cannons_fired_left"):
-		player_ship.connect("cannons_fired_left", _on_cannons_fired_left)
-	if player_ship.has_signal("cannons_fired_right"):
-		player_ship.connect("cannons_fired_right", _on_cannons_fired_right)
+        if player_ship and player_ship.has_signal("player_docked"):
+                player_ship.connect("player_docked", _on_player_docked)
+        if player_ship and player_ship.has_signal("cannons_fired_left"):
+                player_ship.connect("cannons_fired_left", _on_cannons_fired_left)
+        if player_ship and player_ship.has_signal("cannons_fired_right"):
+                player_ship.connect("cannons_fired_right", _on_cannons_fired_right)
 
 		if enemy_ship and not loaded_state:
 				_enemy_layer = enemy_ship.collision_layer
