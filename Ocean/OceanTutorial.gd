@@ -4,6 +4,8 @@ extends "res://Ocean/Ocean.gd"
 @onready var island     : Node2D        = $KelptownIsland
 @onready var arrow      : Sprite2D      = $Arrow
 @onready var enemy_ship : Area2D        = $EnemyShip
+@onready var waves      : TileMap       = $Waves
+@onready var water      : ColorRect     = $Water
 
 var step: int = 0
 var left_done: bool = false
@@ -36,8 +38,9 @@ func _apply_allowed_actions():
 		player_ship.set_allowed_actions(_allowed_actions_for_step(step))
 
 func _ready() -> void:
-				await super._ready()
-				if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
+                                await super._ready()
+                                _setup_environment()
+                                if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
 												enemy_ship.global_position = Global.enemy_spawn_position
 												Global.enemy_spawn_position = Vector2.ZERO
 				if Global.ocean_tutorial_complete:
@@ -298,8 +301,44 @@ func _spawn_normal_enemy(record_spawned: bool = true) -> void:
 		Global.enemy_count_override = 3
 
 func toggle_enemy_ship() -> void:
-		if enemy_ship and is_instance_valid(enemy_ship) and enemy_ship.current_state != enemy_ship.EnemyState.DEAD:
-				if enemy_ship.has_method("_die"):
-						enemy_ship._die()
-				return
-		_spawn_normal_enemy(false)
+                if enemy_ship and is_instance_valid(enemy_ship) and enemy_ship.current_state != enemy_ship.EnemyState.DEAD:
+                                if enemy_ship.has_method("_die"):
+                                                enemy_ship._die()
+                                return
+                _spawn_normal_enemy(false)
+
+func _setup_environment() -> void:
+        var center = island.position
+        var size = 10 * 128
+        var half = size * 0.5
+        if waves:
+                waves.position = center
+                waves.clear()
+                for x in range(-5,5):
+                        for y in range(-5,5):
+                                waves.set_cell(0, Vector2i(x, y), 0, Vector2i.ZERO, 0)
+        if water:
+                water.position = center - Vector2(half, half)
+                water.size = Vector2(size, size)
+        _create_borders(center, size)
+
+func _create_borders(center: Vector2, size: int) -> void:
+        var half = size * 0.5
+        var thickness = 20.0
+        var border = Node2D.new()
+        border.name = "Borders"
+        add_child(border)
+        _add_wall(border, Vector2(center.x, center.y - half - thickness * 0.5), Vector2(half, thickness * 0.5))
+        _add_wall(border, Vector2(center.x, center.y + half + thickness * 0.5), Vector2(half, thickness * 0.5))
+        _add_wall(border, Vector2(center.x - half - thickness * 0.5, center.y), Vector2(thickness * 0.5, half))
+        _add_wall(border, Vector2(center.x + half + thickness * 0.5, center.y), Vector2(thickness * 0.5, half))
+
+func _add_wall(parent: Node, pos: Vector2, ext: Vector2) -> void:
+        var body = StaticBody2D.new()
+        body.position = pos
+        var shape = CollisionShape2D.new()
+        var rect = RectangleShape2D.new()
+        rect.extents = ext
+        shape.shape = rect
+        body.add_child(shape)
+        parent.add_child(body)
