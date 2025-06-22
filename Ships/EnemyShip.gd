@@ -121,7 +121,7 @@ func _ready() -> void:
 
 # ───────── PROCESS ─────────
 func _process(delta : float) -> void:
-	_update_distance_and_angle()
+        _update_distance_and_angle()
 
 	match current_state:
 		EnemyState.APPROACH: _behave_approach(delta)
@@ -129,8 +129,10 @@ func _process(delta : float) -> void:
 		EnemyState.CIRCLE  : _behave_circle(delta)
 		EnemyState.DEAD    : _behave_dead(delta)
 
-	_update_movement(delta)
-	position += velocity * delta
+        _update_movement(delta)
+        var new_pos = position + velocity * delta
+        if not is_colliding_with_land(new_pos):
+                position = new_pos
 
 
 
@@ -354,7 +356,19 @@ func _play_hit()   -> void: _dup_play(hit_sound_fx)
 
 # ───────── MOVEMENT & DAMAGE ─────────
 func _update_movement(_delta : float) -> void:
-	velocity = _direction() * current_speed
+        velocity = _direction() * current_speed
+
+func is_colliding_with_land(pos: Vector2) -> bool:
+        var space_state = get_world_2d().direct_space_state
+        var query = PhysicsPointQueryParameters2D.new()
+        query.position = pos
+        query.collide_with_bodies = true
+        query.collide_with_areas = false
+        var result = space_state.intersect_point(query)
+        for collision in result:
+                if collision.collider is StaticBody2D:
+                        return true
+        return false
 
 
 func _direction() -> Vector2:
