@@ -81,10 +81,10 @@ func _ready() -> void:
 
 
 func _on_board_enemy_request(enemy: Node2D) -> void:
-        _enemy_to_board = enemy
-        Global.enemy_spawn_position = enemy.global_position
-        if player_ship:
-                player_ship.dock_with_enemy(enemy.global_position)
+		_enemy_to_board = enemy
+		Global.enemy_spawn_position = enemy.global_position
+		if player_ship:
+				player_ship.dock_with_enemy(enemy.global_position)
 
 
 func start_boarding_transition(fade_time: float = 1.5) -> void:

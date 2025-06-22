@@ -83,20 +83,20 @@ func _rewire_to_scene(ocean: Node) -> void:
 				begin_raid_button.pressed.connect(Callable(self, "_on_begin_raid_button_pressed"))
 
 	# ── now wire up the new ocean only if it really has that signal ──
-        if ocean and ocean.has_signal("board_enemy_request"):
-                if not ocean.is_connected("board_enemy_request", Callable(self, "_on_board_enemy_request")):
-                        ocean.connect("board_enemy_request", Callable(self, "_on_board_enemy_request"))
+		if ocean and ocean.has_signal("board_enemy_request"):
+				if not ocean.is_connected("board_enemy_request", Callable(self, "_on_board_enemy_request")):
+						ocean.connect("board_enemy_request", Callable(self, "_on_board_enemy_request"))
 
 	# ── wire up the new PlayerShip if present ──────────────────────
-        if ocean and ocean.has_node("PlayerShip"):
-                                        var player = ocean.get_node("PlayerShip") as Node2D
-                                        if player.has_signal("movement_started") and not player.is_connected("movement_started", Callable(self, "_on_player_started_moving")):
-                                                                        player.connect("movement_started", Callable(self, "_on_player_started_moving"))
-                                        if player.has_signal("manual_rotation_started") and not player.is_connected("manual_rotation_started", Callable(self, "_on_player_started_moving")):
-                                                                        player.connect("manual_rotation_started", Callable(self, "_on_player_started_moving"))
-                                        if player.has_signal("player_docked") and not player.is_connected("player_docked", Callable(self, "_on_player_docked")):
-                                                                        player.connect("player_docked", Callable(self, "_on_player_docked"))
-                                        _current_player = player
+		if ocean and ocean.has_node("PlayerShip"):
+										var player = ocean.get_node("PlayerShip") as Node2D
+										if player.has_signal("movement_started") and not player.is_connected("movement_started", Callable(self, "_on_player_started_moving")):
+																		player.connect("movement_started", Callable(self, "_on_player_started_moving"))
+										if player.has_signal("manual_rotation_started") and not player.is_connected("manual_rotation_started", Callable(self, "_on_player_started_moving")):
+																		player.connect("manual_rotation_started", Callable(self, "_on_player_started_moving"))
+										if player.has_signal("player_docked") and not player.is_connected("player_docked", Callable(self, "_on_player_docked")):
+																		player.connect("player_docked", Callable(self, "_on_player_docked"))
+										_current_player = player
 
 # ──────────────────────────
 # Boarding / docking logic
@@ -140,8 +140,8 @@ func _on_begin_raid_button_pressed() -> void:
 												Global.enemy_spawn_position = Vector2.ZERO
 
 								Global.return_scene_path = ocean.scene_file_path
-                                                                if ocean.has_method("begin_raid_pressed"):
-                                                                               ocean.begin_raid_pressed()
+								if ocean.has_method("begin_raid_pressed"):
+											ocean.begin_raid_pressed()
 
 		# fade sails
 		if ocean.has_method("start_boarding_transition"):
