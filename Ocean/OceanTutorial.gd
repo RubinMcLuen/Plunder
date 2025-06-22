@@ -71,8 +71,12 @@ func _ready() -> void:
 												# Slightly faster tutorial ship speed
 												player_ship.max_speed *= 0.5
 												player_ship.target_speed *= 0.5
-				if player_ship.has_signal("player_docked"):
-						player_ship.connect("player_docked", _on_player_docked)
+        if player_ship.has_signal("player_docked"):
+                        player_ship.connect("player_docked", _on_player_docked)
+        if player_ship.has_signal("cannons_fired_left"):
+                        player_ship.connect("cannons_fired_left", _on_cannons_fired_left)
+        if player_ship.has_signal("cannons_fired_right"):
+                        player_ship.connect("cannons_fired_right", _on_cannons_fired_right)
 
 				if enemy_ship:
 										_enemy_layer = enemy_ship.collision_layer
@@ -122,15 +126,8 @@ func _process(_delta: float) -> void:
 								_update_hint_text()
 						if left_done and right_done and not _advancing:
 								_advance_step(3)
-				3:
-						if Input.is_action_just_pressed("shoot_left"):
-								shoot_left_done = true
-								_update_hint_text()
-						if Input.is_action_just_pressed("shoot_right"):
-								shoot_right_done = true
-								_update_hint_text()
-						if shoot_left_done and shoot_right_done and not _advancing:
-								_advance_step(4)
+                               3:
+                                               pass
 				4:
 								pass
 				5:
@@ -139,8 +136,22 @@ func _process(_delta: float) -> void:
 								pass
 
 func _on_player_docked() -> void:
-				if step == 5 and not _advancing:
-								_advance_step(6)
+                if step == 5 and not _advancing:
+                                _advance_step(6)
+
+func _on_cannons_fired_left() -> void:
+                if step == 3:
+                                shoot_left_done = true
+                                _update_hint_text()
+                                if shoot_left_done and shoot_right_done and not _advancing:
+                                                _advance_step(4)
+
+func _on_cannons_fired_right() -> void:
+                if step == 3:
+                                shoot_right_done = true
+                                _update_hint_text()
+                                if shoot_left_done and shoot_right_done and not _advancing:
+                                                _advance_step(4)
 
 func _on_board_enemy_request(enemy: Node2D) -> void:
 				if step == 5 and not _advancing:

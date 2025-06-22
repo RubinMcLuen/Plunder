@@ -157,9 +157,9 @@ func _switch_to_boarding() -> void:
 		else:
 				Global.enemy_spawn_position = Vector2.ZERO
 
-		var scene_path = "res://Battle/BoardingBattle.tscn"
-		if ocean.scene_file_path.ends_with("oceantutorial.tscn"):
-						scene_path = "res://Battle/BoardingBattleTutorial.tscn"
+               var scene_path = "res://Battle/BoardingBattle.tscn"
+               if ocean.scene_file_path.ends_with("oceantutorial.tscn") and not Global.ocean_tutorial_complete:
+                               scene_path = "res://Battle/BoardingBattleTutorial.tscn"
 
 		SceneSwitcher.switch_scene(
 				scene_path,
