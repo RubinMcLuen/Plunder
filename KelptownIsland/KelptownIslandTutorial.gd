@@ -8,6 +8,6 @@ func _on_dock_button_pressed():
         "zoom",
         Vector2(16,16),
         specific_position,
-        Vector2(1,1)
+        Vector2(1.5, 1.5)
     )
 
