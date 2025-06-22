@@ -18,6 +18,8 @@ var _orig_max_speed    : float = 0.0
 var _orig_target_speed : float = 0.0
 var _enemy_layer       : int   = 0
 var _enemy_mask        : int   = 0
+var post_menu_shown    : bool  = false
+const POST_MENU_SCENE := preload("res://SwordFight/PostBoardingTutorial.tscn")
 
 func get_tutorial_state() -> Dictionary:
 	var es := {}
@@ -122,13 +124,16 @@ func _ready() -> void:
 			Global.enemy_spawn_position = Vector2.ZERO
 
 		if Global.ocean_tutorial_complete:
-			step = 7
-			arrow.visible = false
-			hint_label.hide()
-			_apply_allowed_actions()
+		step = 7
+		arrow.visible = false
+		hint_label.hide()
+		_apply_allowed_actions()
 
-			if enemy_ship:
-							_fade_out_enemy_ship(1.0)
+		if enemy_ship:
+			_fade_out_enemy_ship(1.0)
+			await get_tree().create_timer(1.0).timeout
+		if not post_menu_shown:
+			_show_post_menu()
 
 		var loaded_state := false
 		if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
@@ -539,6 +544,17 @@ func _add_wall(parent: Node, pos: Vector2, extents: Vector2) -> void:
 
 	body.add_child(shape)
 	parent.add_child(body)
+	func _show_post_menu() -> void:
+		post_menu_shown = true
+		var menu = POST_MENU_SCENE.instantiate()
+		add_child(menu)
+		if player_ship:
+			player_ship.set_allowed_actions([])
+		menu.tutorial_finished.connect(_on_post_menu_finished)
+
+	func _on_post_menu_finished() -> void:
+		_apply_allowed_actions()
+
 
 func _exit_tree() -> void:
 		Global.ocean_tutorial_state = get_tutorial_state()

@@ -1,0 +1,142 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Texture2D" path="res://CharacterCreator/assets/window.png" id="1_window"]
+[ext_resource type="Script" path="res://SwordFight/SwordFightPostTutorial.gd" id="2_script"]
+[ext_resource type="Texture2D" path="res://SwordFight/header.png" id="3_header"]
+[ext_resource type="FontFile" path="res://PlunderFont.ttf" id="4_font"]
+[ext_resource type="Texture2D" path="res://SwordFight/next.png" id="5_next"]
+[ext_resource type="Texture2D" path="res://SwordFight/back.png" id="6_back"]
+[ext_resource type="Texture2D" path="res://SwordFight/done.png" id="7_done"]
+[ext_resource type="Texture2D" path="res://UI/shipbutton.png" id="8_ship"]
+
+[node name="PostBoardingTutorial" type="CanvasLayer"]
+script = ExtResource("2_script")
+
+[node name="Node2D" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -164.0
+offset_top = -89.0
+offset_right = 164.0
+offset_bottom = 89.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="Sprite2D" parent="Node2D"]
+texture = ExtResource("1_window")
+centered = false
+
+[node name="Header" type="Sprite2D" parent="Node2D"]
+position = Vector2(92, -17)
+texture = ExtResource("3_header")
+centered = false
+
+[node name="Page1" type="Node2D" parent="Node2D"]
+visible = false
+
+[node name="Text1" type="RichTextLabel" parent="Node2D/Page1"]
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 325.0
+offset_bottom = 63.0
+theme_override_colors/default_color = Color(0.45098, 0.4, 0.301961, 1)
+theme_override_fonts/normal_font = ExtResource("4_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "[center]You're now free to roam around and test the combat!"
+scroll_active = false
+
+[node name="Text2" type="RichTextLabel" parent="Node2D/Page1"]
+offset_left = 63.0
+offset_top = 63.0
+offset_right = 265.0
+offset_bottom = 109.0
+theme_override_colors/default_color = Color(0.45098, 0.4, 0.301961, 1)
+theme_override_fonts/normal_font = ExtResource("4_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "- Press the ship button in the top right to spawn an enemy ship"
+scroll_active = false
+
+[node name="Text3" type="RichTextLabel" parent="Node2D/Page1"]
+offset_left = 63.0
+offset_top = 110.0
+offset_right = 265.0
+offset_bottom = 139.0
+theme_override_colors/default_color = Color(0.45098, 0.4, 0.301961, 1)
+theme_override_fonts/normal_font = ExtResource("4_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "- Press again while it's alive to destroy it"
+scroll_active = false
+
+[node name="Icon" type="Sprite2D" parent="Node2D/Page1"]
+position = Vector2(292, 20)
+texture = ExtResource("8_ship")
+
+[node name="Page2" type="Node2D" parent="Node2D"]
+visible = false
+
+[node name="Text4" type="RichTextLabel" parent="Node2D/Page2"]
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 325.0
+offset_bottom = 63.0
+theme_override_colors/default_color = Color(0.45098, 0.4, 0.301961, 1)
+theme_override_fonts/normal_font = ExtResource("4_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "[center]There's not a lot to see, but you can explore Kelptown."
+scroll_active = false
+
+[node name="Text5" type="RichTextLabel" parent="Node2D/Page2"]
+offset_left = 63.0
+offset_top = 63.0
+offset_right = 265.0
+offset_bottom = 109.0
+theme_override_colors/default_color = Color(0.45098, 0.4, 0.301961, 1)
+theme_override_fonts/normal_font = ExtResource("4_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "Click anywhere on the island to automatically dock."
+scroll_active = false
+
+[node name="Page3" type="Node2D" parent="Node2D"]
+
+[node name="Text6" type="RichTextLabel" parent="Node2D/Page3"]
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 325.0
+offset_bottom = 139.0
+theme_override_colors/default_color = Color(0.45098, 0.4, 0.301961, 1)
+theme_override_fonts/normal_font = ExtResource("4_font")
+theme_override_font_sizes/normal_font_size = 11
+bbcode_enabled = true
+text = "[center]Thank you so much for supporting the game!\nI hope you enjoyed this snippet. Let me know your thoughts in the testing section of the demo. This is just the beginning, so stay tuned :)"
+scroll_active = false
+
+[node name="NextButton" type="TextureButton" parent="Node2D"]
+offset_left = 272.0
+offset_top = 151.0
+offset_right = 319.0
+offset_bottom = 169.0
+texture_normal = ExtResource("5_next")
+
+[node name="BackButton" type="TextureButton" parent="Node2D"]
+offset_left = 219.0
+offset_top = 151.0
+offset_right = 266.0
+offset_bottom = 169.0
+texture_normal = ExtResource("6_back")
+
+[node name="DoneButton" type="TextureButton" parent="Node2D"]
+visible = false
+offset_left = 272.0
+offset_top = 151.0
+offset_right = 319.0
+offset_bottom = 169.0
+texture_normal = ExtResource("7_done")
