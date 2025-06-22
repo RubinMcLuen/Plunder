@@ -39,3 +39,4 @@ res://SaveMenu/Info/info.tscn
 res://UI/UIManager.gd
 res://CharacterCreator/ItemButtons/ItemButtons.gd
 res://Battle/BoardingBattleTutorial.gd
+res://Global.gd

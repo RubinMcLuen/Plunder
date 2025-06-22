@@ -20,7 +20,7 @@ var post_tutorial_enemy_spawned: bool = false
 var return_scene_path: String = ""
 
 func _ready() -> void:
-        Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+		Input.set_default_cursor_shape(Input.CURSOR_ARROW)
 
 
 func add_crew(npc_name: String) -> void:
