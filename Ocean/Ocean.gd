@@ -19,7 +19,13 @@ func _enter_tree() -> void:
 						$"KelptownIsland/Foam".modulate.a = 1.0
 
 func _ready() -> void:
-	player_ship = get_node(player_ship_path) as Node2D
+        if player_ship_path.is_empty():
+                if has_node("PlayerShip"):
+                        player_ship_path = NodePath("PlayerShip")
+        if has_node(player_ship_path):
+                player_ship = get_node(player_ship_path) as Node2D
+        else:
+                player_ship = null
 
 	if Global.spawn_position != Vector2.ZERO:
 		if player_ship == null:
