@@ -103,15 +103,20 @@ func save_game_state() -> void:
 	save_data["crew"]       = crew
 
 	if current_scene_node is KelptownInnTutorial:
-													save_data["kelptown_tutorial"] = current_scene_node.get_tutorial_state()
+		save_data["kelptown_tutorial"] = current_scene_node.get_tutorial_state()
+		kelptown_tutorial_state = save_data["kelptown_tutorial"]
 	elif current_scene_node is IslandTutorial:
-													save_data["island_tutorial"] = current_scene_node.get_tutorial_state()
+		save_data["island_tutorial"] = current_scene_node.get_tutorial_state()
+		island_tutorial_state = save_data["island_tutorial"]
 	elif current_scene_node is OceanTutorial:
-													save_data["ocean_tutorial"] = current_scene_node.get_tutorial_state()
+		save_data["ocean_tutorial"] = current_scene_node.get_tutorial_state()
+		ocean_tutorial_state = save_data["ocean_tutorial"]
 	elif current_scene_node is BoardingBattleTutorial:
-													save_data["boarding_battle_tutorial"] = current_scene_node.get_tutorial_state()
+		save_data["boarding_battle_tutorial"] = current_scene_node.get_tutorial_state()
+		boarding_battle_tutorial_state = save_data["boarding_battle_tutorial"]
 	elif current_scene_node is BoardingBattle:
-													save_data["battle_state"] = current_scene_node.get_battle_state()
+		save_data["battle_state"] = current_scene_node.get_battle_state()
+		battle_state = save_data["battle_state"]
 
 	var w = FileAccess.open(save_file_path, FileAccess.WRITE)
 	w.store_string(JSON.stringify(save_data))
