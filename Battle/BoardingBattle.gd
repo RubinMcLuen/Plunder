@@ -75,71 +75,78 @@ func _finish_battle() -> void:
 		SceneSwitcher.switch_scene(scene, Global.spawn_position, "none", Vector2(), Vector2(), Vector2(16,16), true)
 
 func get_battle_state() -> Dictionary:
-	var crew_list = []
+	var crew_list := []
 	for c in $CrewContainer.get_children():
+		var name = c.npc_name if c.has_variable("npc_name") else c.name
+		var dragging = c.dragging if c.has_method("dragging") else false
+		var boarded = c.has_boarded if c.has_method("has_boarded") else false
 		crew_list.append({
-			"name": c.npc_name if "npc_name" in c else c.name,
+			"name": name,
 			"pos": c.global_position,
 			"health": c.health,
-			"dragging": c.dragging if c.has_method("dragging") else false,
-			"boarded": c.has_boarded if c.has_method("has_boarded") else false,
+			"dragging": dragging,
+			"boarded": boarded,
 		})
-	var enemy_list = []
+
+	var enemy_list := []
 	for e in $EnemyContainer.get_children():
+		var name = e.npc_name if e.has_variable("npc_name") else e.name
 		enemy_list.append({
-			"name": e.npc_name if "npc_name" in e else e.name,
+			"name": name,
 			"pos": e.global_position,
 			"health": e.health,
 		})
-        return {
-                "crew": crew_list,
-                "enemies": enemy_list,
-                "camera": {
-                        "pos": cam.global_position,
-                        "zoom": cam.zoom,
-                },
-        }
+
+	return {
+		"crew": crew_list,
+		"enemies": enemy_list,
+		"camera": {
+			"pos": cam.global_position,
+			"zoom": cam.zoom,
+		},
+	}
+
 
 func apply_battle_state(state: Dictionary) -> void:
-		var crew_info = state.get("crew", [])
-		var crews = $CrewContainer.get_children()
-		for i in range(min(crew_info.size(), crews.size())):
-				var data = crew_info[i]
-				var c = crews[i]
-				c.global_position = data.get("pos", c.global_position)
-				c.health = int(data.get("health", c.health))
-				if "dragging" in data:
-						c.dragging = bool(data["dragging"])
-				if "boarded" in data:
-						c.has_boarded = bool(data["boarded"])
-		var enemy_info = state.get("enemies", [])
-		var enemies = $EnemyContainer.get_children()
-                for i in range(min(enemy_info.size(), enemies.size())):
-                                var d = enemy_info[i]
-                                var e = enemies[i]
-                                e.global_position = d.get("pos", e.global_position)
-                                e.health = int(d.get("health", e.health))
+				var crew_info = state.get("crew", [])
+				var crews = $CrewContainer.get_children()
+				for i in range(min(crew_info.size(), crews.size())):
+						var data = crew_info[i]
+						var c = crews[i]
+						c.global_position = data.get("pos", c.global_position)
+						c.health = int(data.get("health", c.health))
+						if "dragging" in data:
+								c.dragging = bool(data["dragging"])
+						if "boarded" in data:
+								c.has_boarded = bool(data["boarded"])
+				var enemy_info = state.get("enemies", [])
+				var enemies = $EnemyContainer.get_children()
+				for i in range(min(enemy_info.size(), enemies.size())):
+								var d = enemy_info[i]
+								var e = enemies[i]
+								e.global_position = d.get("pos", e.global_position)
+								e.health = int(d.get("health", e.health))
 
-                var cam_info = state.get("camera", {})
-                var cpos = cam_info.get("pos", cam.global_position)
-                if typeof(cpos) == TYPE_DICTIONARY and cpos.has("x") and cpos.has("y"):
-                                cam.global_position = Vector2(cpos["x"], cpos["y"]) 
-                elif typeof(cpos) == TYPE_VECTOR2:
-                                cam.global_position = cpos
-                elif typeof(cpos) == TYPE_STRING:
-                                var tmp = str_to_var(cpos)
-                                if typeof(tmp) == TYPE_VECTOR2:
-                                                cam.global_position = tmp
+				var cam_info = state.get("camera", {})
+				var cpos = cam_info.get("pos", cam.global_position)
+				if typeof(cpos) == TYPE_DICTIONARY and cpos.has("x") and cpos.has("y"):
+								cam.global_position = Vector2(cpos["x"], cpos["y"]) 
+				elif typeof(cpos) == TYPE_VECTOR2:
+								cam.global_position = cpos
+				elif typeof(cpos) == TYPE_STRING:
+								var tmp = str_to_var(cpos)
+								if typeof(tmp) == TYPE_VECTOR2:
+												cam.global_position = tmp
 
-                var cz = cam_info.get("zoom", cam.zoom)
-                if typeof(cz) == TYPE_DICTIONARY and cz.has("x") and cz.has("y"):
-                                cam.zoom = Vector2(cz["x"], cz["y"])
-                elif typeof(cz) == TYPE_VECTOR2:
-                                cam.zoom = cz
-                elif typeof(cz) == TYPE_STRING:
-                                var tmp2 = str_to_var(cz)
-                                if typeof(tmp2) == TYPE_VECTOR2:
-                                                cam.zoom = tmp2
+				var cz = cam_info.get("zoom", cam.zoom)
+				if typeof(cz) == TYPE_DICTIONARY and cz.has("x") and cz.has("y"):
+								cam.zoom = Vector2(cz["x"], cz["y"])
+				elif typeof(cz) == TYPE_VECTOR2:
+								cam.zoom = cz
+				elif typeof(cz) == TYPE_STRING:
+								var tmp2 = str_to_var(cz)
+								if typeof(tmp2) == TYPE_VECTOR2:
+												cam.zoom = tmp2
 
 func _exit_tree() -> void:
 		Global.battle_state = get_battle_state()
