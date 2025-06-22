@@ -28,3 +28,6 @@ res://Ships/Trail.tscn
 res://TitleScreen/TitleScreen.tscn
 res://SaveMenu/Info/info.tscn
 res://addons/dialogue_manager/views/main_view.tscn
+res://Ships/EnemyShip.gd
+res://Ocean/Ocean.gd
+res://Ocean/OceanTutorial.gd
