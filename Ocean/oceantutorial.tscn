@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://bxq261mh1xtri"]
+[gd_scene load_steps=15 format=3 uid="uid://bxq261mh1xtri"]
 
 [ext_resource type="Script" path="res://Ocean/OceanTutorial.gd" id="1_kxoef"]
 [ext_resource type="Texture2D" uid="uid://fxlwkiykamae" path="res://Ocean/frame_0100-sheet.png" id="1_xs5hd"]
@@ -11,6 +11,7 @@
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="8_font"]
 [ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="9_arrow"]
 [ext_resource type="Script" path="res://KelptownInn/BobbingArrow.gd" id="10_arrowptr"]
+[ext_resource type="Texture2D" uid="uid://dmnom0r3enn68" path="res://UI/shipbutton.png" id="12_tlo0o"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8clfk"]
 texture = ExtResource("1_xs5hd")
@@ -346,3 +347,7 @@ visible = false
 z_index = 100
 texture = ExtResource("9_arrow")
 script = ExtResource("10_arrowptr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(215, -75)
+texture = ExtResource("12_tlo0o")
