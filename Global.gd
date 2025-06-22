@@ -75,16 +75,18 @@ func save_game_state() -> void:
 		var p = current_scene_node.get_node("Player")
 		pos_dict = {"x": p.position.x, "y": p.position.y}
 
-	elif current_scene_node.has_node("PlayerShip"):
-		var ship = current_scene_node.get_node("PlayerShip")
-		pos_dict = {"x": ship.global_position.x, "y": ship.global_position.y}
+       elif current_scene_node.has_node("PlayerShip"):
+               var ship = current_scene_node.get_node("PlayerShip")
+               pos_dict = {"x": ship.global_position.x, "y": ship.global_position.y}
 
-		# Extra data worth keeping
-		ship_state = {
-			"frame":   ship.current_frame,
-			"moving":  ship.moving_forward,
-			"health":  ship.health
-		}
+               # Only record extra ship data if this node uses the PlayerShip script.
+               var script = ship.get_script()
+               if script and script.resource_path.ends_with("Ships/PlayerShip.gd"):
+                       ship_state = {
+                               "frame":  ship.current_frame,
+                               "moving": ship.moving_forward,
+                               "health": ship.health,
+                       }
 
 	# ------------------------------------------------------------------
 	# 2)  Merge with any existing save-file contents
