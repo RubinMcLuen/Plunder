@@ -51,17 +51,20 @@ func get_tutorial_state() -> Dictionary:
    }
 
 func apply_tutorial_state(state: Dictionary) -> void:
-	step = int(state.get("step", step))
+        step = int(state.get("step", step))
 	left_done = bool(state.get("left_done", left_done))
 	right_done = bool(state.get("right_done", right_done))
 	shoot_left_done = bool(state.get("shoot_left_done", shoot_left_done))
 	shoot_right_done = bool(state.get("shoot_right_done", shoot_right_done))
 	enemy_hit = bool(state.get("enemy_hit", enemy_hit))
 
-	var es: Dictionary = state.get("enemy", {})
-	if es.get("exists", false):
-		if enemy_ship == null or not is_instance_valid(enemy_ship):
-			_spawn_normal_enemy(false)
+        var es: Dictionary = state.get("enemy", {})
+        if es.get("exists", false):
+                if enemy_ship == null or not is_instance_valid(enemy_ship):
+                        _spawn_normal_enemy(false)
+                if _enemy_layer == 0 and _enemy_mask == 0 and enemy_ship:
+                        _enemy_layer = enemy_ship.collision_layer
+                        _enemy_mask  = enemy_ship.collision_mask
 
 		var pos = es.get("position", enemy_ship.global_position)
 		if typeof(pos) == TYPE_DICTIONARY and pos.has("x") and pos.has("y"):
@@ -84,8 +87,9 @@ func apply_tutorial_state(state: Dictionary) -> void:
 		enemy_ship.queue_free()
 		enemy_ship = null
 
-	_show_step_text()
-	_apply_allowed_actions()
+        _show_step_text()
+        _apply_allowed_actions()
+       _apply_loaded_step()
 
 
 
@@ -387,6 +391,39 @@ func _advance_step(next_step: int) -> void:
 	_apply_allowed_actions()
 	_advancing = false
 
+func _apply_loaded_step() -> void:
+	match step:
+		4:
+			if enemy_ship and player_ship:
+				enemy_ship.collision_layer = _enemy_layer
+				enemy_ship.collision_mask = _enemy_mask
+				enemy_ship.set_process(true)
+				enemy_ship.set_physics_process(true)
+				enemy_ship.input_pickable = false
+				enemy_ship.visible = true
+				arrow.self_modulate = Color.RED
+				arrow.target = enemy_ship
+				arrow.global_position = enemy_ship.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+				arrow.visible = true
+		5:
+			if enemy_ship:
+				enemy_ship.collision_layer = _enemy_layer
+				enemy_ship.collision_mask = _enemy_mask
+				enemy_ship.set_process(true)
+				enemy_ship.set_physics_process(true)
+				enemy_ship.input_pickable = true
+				enemy_ship.visible = true
+				arrow.self_modulate = Color.WHITE
+				arrow.target = enemy_ship
+				arrow.global_position = enemy_ship.global_position + Vector2(arrow.x_offset, arrow.y_offset)
+				arrow.visible = true
+		6:
+			arrow.visible = false
+			arrow.target = null
+			arrow.self_modulate = Color.WHITE
+			if player_ship:
+				player_ship.max_speed = _orig_max_speed
+				player_ship.target_speed = _orig_target_speed
 
 # ─────────────────────────────
 #  UI callbacks
