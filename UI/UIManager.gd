@@ -55,11 +55,13 @@ func _rewire_to_scene(ocean: Node) -> void:
 			_current_ocean.disconnect("board_enemy_request", Callable(self, "_on_board_enemy_request"))
 
 	# ── disconnect old player signals ───────────────────────
-	if _current_player and is_instance_valid(_current_player):
-		if _current_player.is_connected("movement_started", Callable(self, "_on_player_started_moving")):
-			_current_player.disconnect("movement_started", Callable(self, "_on_player_started_moving"))
-		if _current_player.is_connected("player_docked", Callable(self, "_on_player_docked")):
-			_current_player.disconnect("player_docked", Callable(self, "_on_player_docked"))
+        if _current_player and is_instance_valid(_current_player):
+                if _current_player.is_connected("movement_started", Callable(self, "_on_player_started_moving")):
+                        _current_player.disconnect("movement_started", Callable(self, "_on_player_started_moving"))
+                if _current_player.is_connected("manual_rotation_started", Callable(self, "_on_player_started_moving")):
+                        _current_player.disconnect("manual_rotation_started", Callable(self, "_on_player_started_moving"))
+                if _current_player.is_connected("player_docked", Callable(self, "_on_player_docked")):
+                        _current_player.disconnect("player_docked", Callable(self, "_on_player_docked"))
 
 	# ── update refs ─────────────────────────────────────────
 	_current_ocean  = ocean
@@ -70,13 +72,15 @@ func _rewire_to_scene(ocean: Node) -> void:
 		ocean.connect("board_enemy_request", Callable(self, "_on_board_enemy_request"))
 
 	# ── wire up the new PlayerShip if present ──────────────────────
-		if ocean and ocean.has_node("PlayerShip"):
-				var player = ocean.get_node("PlayerShip") as Node2D
-				if player.has_signal("movement_started"):
-						player.connect("movement_started", Callable(self, "_on_player_started_moving"))
-				if player.has_signal("player_docked"):
-						player.connect("player_docked", Callable(self, "_on_player_docked"))
-				_current_player = player
+                if ocean and ocean.has_node("PlayerShip"):
+                                var player = ocean.get_node("PlayerShip") as Node2D
+                                if player.has_signal("movement_started"):
+                                                player.connect("movement_started", Callable(self, "_on_player_started_moving"))
+                                if player.has_signal("manual_rotation_started"):
+                                                player.connect("manual_rotation_started", Callable(self, "_on_player_started_moving"))
+                                if player.has_signal("player_docked"):
+                                                player.connect("player_docked", Callable(self, "_on_player_docked"))
+                                _current_player = player
 
 # ──────────────────────────
 # Boarding / docking logic
