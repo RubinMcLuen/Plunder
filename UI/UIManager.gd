@@ -66,52 +66,52 @@ func _rewire_to_scene(ocean: Node) -> void:
 		if _current_ocean.is_connected("board_enemy_request", Callable(self, "_on_board_enemy_request")):
 			_current_ocean.disconnect("board_enemy_request", Callable(self, "_on_board_enemy_request"))
 
-        # ── disconnect old player signals ───────────────────────
-                if _current_player and is_instance_valid(_current_player):
-                                if _current_player.is_connected("movement_started", Callable(self, "_on_player_started_moving")):
-                                                _current_player.disconnect("movement_started", Callable(self, "_on_player_started_moving"))
-                                if _current_player.is_connected("manual_rotation_started", Callable(self, "_on_player_started_moving")):
-                                                _current_player.disconnect("manual_rotation_started", Callable(self, "_on_player_started_moving"))
-                                if _current_player.is_connected("player_docked", Callable(self, "_on_player_docked")):
-                                                _current_player.disconnect("player_docked", Callable(self, "_on_player_docked"))
+	# ── disconnect old player signals ───────────────────────
+	if _current_player and is_instance_valid(_current_player):
+		if _current_player.is_connected("movement_started", Callable(self, "_on_player_started_moving")):
+			_current_player.disconnect("movement_started", Callable(self, "_on_player_started_moving"))
+		if _current_player.is_connected("manual_rotation_started", Callable(self, "_on_player_started_moving")):
+			_current_player.disconnect("manual_rotation_started", Callable(self, "_on_player_started_moving"))
+		if _current_player.is_connected("player_docked", Callable(self, "_on_player_docked")):
+			_current_player.disconnect("player_docked", Callable(self, "_on_player_docked"))
 
-        # ── disconnect old enemy signal ─────────────────────────
-                if _current_enemy and is_instance_valid(_current_enemy):
-                                if _current_enemy.is_connected("ready_for_boarding_changed", Callable(self, "_on_enemy_ready_for_boarding")):
-                                                _current_enemy.disconnect("ready_for_boarding_changed", Callable(self, "_on_enemy_ready_for_boarding"))
+	# ── disconnect old enemy signal ─────────────────────────
+	if _current_enemy and is_instance_valid(_current_enemy):
+		if _current_enemy.is_connected("ready_for_boarding_changed", Callable(self, "_on_enemy_ready_for_boarding")):
+			_current_enemy.disconnect("ready_for_boarding_changed", Callable(self, "_on_enemy_ready_for_boarding"))
 
 	# ── update refs ─────────────────────────────────────────
-		_current_ocean  = ocean
-		_current_player = null
+	_current_ocean  = ocean
+	_current_player = null
 
-		# Ensure the Begin Raid button is connected to our handler in case a
-		# previous scene disconnected it (e.g. the tutorial).
-		if not begin_raid_button.pressed.is_connected(Callable(self, "_on_begin_raid_button_pressed")):
-				begin_raid_button.pressed.connect(Callable(self, "_on_begin_raid_button_pressed"))
+	# Ensure the Begin Raid button is connected to our handler in case a
+	# previous scene disconnected it (e.g. the tutorial).
+	if not begin_raid_button.pressed.is_connected(Callable(self, "_on_begin_raid_button_pressed")):
+		begin_raid_button.pressed.connect(Callable(self, "_on_begin_raid_button_pressed"))
 
-        # ── now wire up the new ocean only if it really has that signal ──
-                if ocean and ocean.has_signal("board_enemy_request"):
-                                if not ocean.is_connected("board_enemy_request", Callable(self, "_on_board_enemy_request")):
-                                                ocean.connect("board_enemy_request", Callable(self, "_on_board_enemy_request"))
+	# ── now wire up the new ocean only if it really has that signal ──
+	if ocean and ocean.has_signal("board_enemy_request"):
+		if not ocean.is_connected("board_enemy_request", Callable(self, "_on_board_enemy_request")):
+			ocean.connect("board_enemy_request", Callable(self, "_on_board_enemy_request"))
 
-        # ── wire up the enemy ship if present ──────────────────────
-                _current_enemy = null
-                if ocean and ocean.has_node("EnemyShip"):
-                                var enemy = ocean.get_node("EnemyShip") as Node2D
-                                if enemy.has_signal("ready_for_boarding_changed") and not enemy.is_connected("ready_for_boarding_changed", Callable(self, "_on_enemy_ready_for_boarding")):
-                                                enemy.connect("ready_for_boarding_changed", Callable(self, "_on_enemy_ready_for_boarding"))
-                                _current_enemy = enemy
+	# ── wire up the enemy ship if present ──────────────────────
+	_current_enemy = null
+	if ocean and ocean.has_node("EnemyShip"):
+		var enemy = ocean.get_node("EnemyShip") as Node2D
+		if enemy.has_signal("ready_for_boarding_changed") and not enemy.is_connected("ready_for_boarding_changed", Callable(self, "_on_enemy_ready_for_boarding")):
+			enemy.connect("ready_for_boarding_changed", Callable(self, "_on_enemy_ready_for_boarding"))
+		_current_enemy = enemy
 
 	# ── wire up the new PlayerShip if present ──────────────────────
-		if ocean and ocean.has_node("PlayerShip"):
-										var player = ocean.get_node("PlayerShip") as Node2D
-										if player.has_signal("movement_started") and not player.is_connected("movement_started", Callable(self, "_on_player_started_moving")):
-																		player.connect("movement_started", Callable(self, "_on_player_started_moving"))
-										if player.has_signal("manual_rotation_started") and not player.is_connected("manual_rotation_started", Callable(self, "_on_player_started_moving")):
-																		player.connect("manual_rotation_started", Callable(self, "_on_player_started_moving"))
-										if player.has_signal("player_docked") and not player.is_connected("player_docked", Callable(self, "_on_player_docked")):
-																		player.connect("player_docked", Callable(self, "_on_player_docked"))
-										_current_player = player
+	if ocean and ocean.has_node("PlayerShip"):
+		var player = ocean.get_node("PlayerShip") as Node2D
+		if player.has_signal("movement_started") and not player.is_connected("movement_started", Callable(self, "_on_player_started_moving")):
+			player.connect("movement_started", Callable(self, "_on_player_started_moving"))
+		if player.has_signal("manual_rotation_started") and not player.is_connected("manual_rotation_started", Callable(self, "_on_player_started_moving")):
+			player.connect("manual_rotation_started", Callable(self, "_on_player_started_moving"))
+		if player.has_signal("player_docked") and not player.is_connected("player_docked", Callable(self, "_on_player_docked")):
+			player.connect("player_docked", Callable(self, "_on_player_docked"))
+		_current_player = player
 
 # ──────────────────────────
 # Boarding / docking logic
@@ -124,26 +124,26 @@ func _on_board_enemy_request(_enemy: Node2D) -> void:
 	hide_begin_raid_menu()
 
 func _on_player_docked() -> void:
-        _player_docked = true
-        var ocean = get_tree().current_scene
-        var enemy_ready := false
-        if ocean and ocean.has_node("EnemyShip"):
-                var enemy = ocean.get_node("EnemyShip")
-                if enemy.has_method("get"):
-                        enemy_ready = enemy.get("ready_for_boarding")
+		_player_docked = true
+		var ocean = get_tree().current_scene
+		var enemy_ready := false
+		if ocean and ocean.has_node("EnemyShip"):
+				var enemy = ocean.get_node("EnemyShip")
+				if enemy.has_method("get"):
+						enemy_ready = enemy.get("ready_for_boarding")
 
-        if _board_mode or enemy_ready:
-                show_begin_raid_menu()
-                _board_mode = true
-        else:
-                show_dock_ship_menu()
+		if _board_mode or enemy_ready:
+				show_begin_raid_menu()
+				_board_mode = true
+		else:
+				show_dock_ship_menu()
 
 func _on_player_started_moving() -> void:
-        var was_visible := begin_raid_menu.visible
-        hide_begin_raid_menu()
-        _player_docked = false
-        if was_visible:
-                _board_mode = false
+		var was_visible := begin_raid_menu.visible
+		hide_begin_raid_menu()
+		_player_docked = false
+		if was_visible:
+				_board_mode = false
 
 # ──────────────────────────
 # “Begin Raid” button
@@ -266,12 +266,12 @@ func show_begin_raid_menu() -> void:
 	begin_raid_menu.show()
 
 func hide_begin_raid_menu() -> void:
-        begin_raid_menu.hide()
+		begin_raid_menu.hide()
 
 func _on_enemy_ready_for_boarding(ready: bool) -> void:
-        if ready and _player_docked and not begin_raid_menu.visible:
-                show_begin_raid_menu()
-                _board_mode = true
+		if ready and _player_docked and not begin_raid_menu.visible:
+				show_begin_raid_menu()
+				_board_mode = true
 
 # ──────────────────────────
 # Editor-wired buttons (if any)
