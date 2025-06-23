@@ -2,11 +2,7 @@
 .import/
 .godot/
 *.import
-*.godot_export.cfg
 
-# Export configuration
-export.cfg
-export_presets.cfg
 
 # Backup and temp files
 *.tmp

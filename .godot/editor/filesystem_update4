@@ -10,3 +10,4 @@ res://UI/UIManager.gd
 res://Island/IslandTutorial.gd
 res://SaveMenu/SaveMenu.tscn
 res://SaveMenu/SaveMenu.gd
+res://SaveMenu/SaveSlot/SaveSlot.tscn
