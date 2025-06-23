@@ -127,9 +127,10 @@ func _ready() -> void:
 		
 		if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
 			enemy_ship.global_position = Global.enemy_spawn_position
-		Global.enemy_spawn_position = Vector2.ZERO
-		_fade_out_enemy_ship(1.0)
-		await get_tree().create_timer(1.0).timeout
+			enemy_ship.visible = true
+			Global.enemy_spawn_position = Vector2.ZERO
+			_fade_out_enemy_ship(1.0)
+			await get_tree().create_timer(1.0).timeout
 		
 		if Global.ocean_tutorial_complete:
 			step = 7
@@ -554,6 +555,7 @@ func _add_wall(parent: Node, pos: Vector2, extents: Vector2) -> void:
 func _show_post_menu() -> void:
 	post_menu_shown = true
 	var menu = POST_MENU_SCENE.instantiate()
+	menu.pause_mode = Node.PAUSE_MODE_PROCESS
 	add_child(menu)
 	get_tree().paused = true
 	if player_ship:
