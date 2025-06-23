@@ -186,7 +186,7 @@ func _on_finish() -> void:
 		_build_character_data()
 		_save_data()
 		SceneSwitcher.switch_scene(
-					"res://KelptownInn/KelptownInnTutorial.tscn",
+					preload("res://KelptownInn/KelptownInnTutorial.tscn"),
 					Vector2(381, 23),
 					"fade"
 			)

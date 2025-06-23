@@ -102,7 +102,7 @@ func _on_set_sail_pressed() -> void:
 				tw.connect("finished", Callable(self, "start_leave_island_transition").bind(1.0))
 				Global.restore_sails_next = true
 				SceneSwitcher.switch_scene(
-								"res://Ocean/oceantutorial.tscn",
+								OCEAN_SCENE,
 								Vector2(-2, 39),
 								"zoom",
 								Vector2(0.0625, 0.0625), Vector2(-32, 624),
@@ -123,7 +123,7 @@ func _on_exit_body_entered(body: Node) -> void:
 				if body == player:
 								Global.island_tutorial_state = get_tutorial_state()
 								SceneSwitcher.switch_scene(
-								"res://KelptownInn/KelptownInnTutorial.tscn",
+								preload("res://KelptownInn/KelptownInnTutorial.tscn"),
 																			   Vector2(269, 220),
 																			   "fade",
 																			   Vector2.ONE,

@@ -1,6 +1,6 @@
 extends Node
 
-@export var target_scene_path: String = "res://Ocean/oceantutorial.tscn"
+@export var target_scene: PackedScene = preload("res://Ocean/oceantutorial.tscn")
 @export var target_position: Vector2 = Vector2(-32, 109)
 @export var transition_type: String = "none"  # You can later add transitions if needed.
 @export var target_zoom: Vector2 = Vector2(0.0625, 0.0625)
@@ -15,19 +15,12 @@ func _ready() -> void:
 	debug_print("Current scene at _ready(): " + current_scene.name)
 
 func _on_button_pressed() -> void:
-	debug_print("Button pressed. Starting scene switch to: " + target_scene_path)
-	switch_scene(target_scene_path, target_position, transition_type, target_zoom)
+	debug_print("Button pressed. Starting scene switch.")
+	switch_scene(target_scene, target_position, transition_type, target_zoom)
 
-func switch_scene(scene_path: String, global_position: Vector2, transition_type: String = "none", zoom_level: Vector2 = Vector2(1, 1)) -> void:
-	debug_print("Attempting to load scene: " + scene_path)
-	
-	var loaded_scene: PackedScene = ResourceLoader.load(scene_path) as PackedScene
-	if not loaded_scene:
-		debug_print("Error: Could not load scene: " + scene_path)
-		return
-	
-	debug_print("Scene loaded successfully.")
-	_load_and_replace_scene(loaded_scene, global_position)
+func switch_scene(scene: PackedScene, global_position: Vector2, transition_type: String = "none", zoom_level: Vector2 = Vector2(1, 1)) -> void:
+	debug_print("Switching to scene")
+	_load_and_replace_scene(scene, global_position)
 
 func _load_and_replace_scene(loaded_scene: PackedScene, target_pos: Vector2) -> void:
 	if current_scene:
