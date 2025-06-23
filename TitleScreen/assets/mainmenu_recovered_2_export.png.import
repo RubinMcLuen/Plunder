@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://l0hqjka0qxu3"
-path="res://.godot/imported/mainmenu_recovered_2_export.png-68c12ae18fbb2f8d593c5e018681b628.ctex"
+path="res://.godot/imported/mainmenu_recovered_2_export.png-2c1572ebf901365543862088a92d2421.ctex"
 metadata={
 "vram_texture": false
 }
@@ -11,7 +11,7 @@ metadata={
 [deps]
 
 source_file="res://TitleScreen/assets/mainmenu_recovered_2_export.png"
-dest_files=["res://.godot/imported/mainmenu_recovered_2_export.png-68c12ae18fbb2f8d593c5e018681b628.ctex"]
+dest_files=["res://.godot/imported/mainmenu_recovered_2_export.png-2c1572ebf901365543862088a92d2421.ctex"]
 
 [params]
 

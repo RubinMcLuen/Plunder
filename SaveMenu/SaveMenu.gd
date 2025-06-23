@@ -18,7 +18,7 @@ signal hide_character_creator()
 #  CONSTANTS
 # ─────────────────────────────────────────────────────────────────────
 const SAVE_PATH_FORMAT	 := "user://saveslot%d.json"
-const SAVED_ICONS := [
+const SAVED_ICONS: Array[Texture2D] = [
 	preload("res://SaveMenu/SaveSlot/assets/saveslot1icon.png"),
 	preload("res://SaveMenu/SaveSlot/assets/saveslot2icon.png"),
 	preload("res://SaveMenu/SaveSlot/assets/saveslot3icon.png"),
@@ -28,6 +28,7 @@ const SAVED_ICONS := [
 	preload("res://SaveMenu/SaveSlot/assets/saveslot7icon.png"),
 	preload("res://SaveMenu/SaveSlot/assets/saveslot8icon.png"),
 ]
+
 
 const HEADER_MOVE_Y	 := 17.0
 const HEADER_TWEEN_TIME	 := 0.3

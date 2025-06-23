@@ -9,3 +9,4 @@ res://SceneSwitcher.gd
 res://UI/UIManager.gd
 res://Island/IslandTutorial.gd
 res://SaveMenu/SaveMenu.tscn
+res://SaveMenu/SaveMenu.gd
