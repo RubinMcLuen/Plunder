@@ -21,5 +21,6 @@ Spaces have been removed from asset file names.
 - `SwordFight2/moves/Heavy Strike.tres` -> `SwordFight2/moves/heavy_strike.tres`
 - `SwordFight2/moves/Reckless Attack.tres` -> `SwordFight2/moves/reckless_attack.tres`
 - `SwordFight2/moves/Sand Throw.tres` -> `SwordFight2/moves/sand_throw.tres`
+- `TitleScreen/assets/mainmenu-Recovered 2-export.png` -> `TitleScreen/assets/mainmenu_recovered_2_export.png`
 
 Update any local references if you maintain custom scenes.
