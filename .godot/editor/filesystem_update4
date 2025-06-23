@@ -1,4 +1,11 @@
-res://Ocean/oceantutorial.tscn
+res://Main.tscn
 res://Ships/Assets/Shaders/RippleShader.tres
 res://Character/assets/UVmap.tres
-res://Main.tscn
+res://TitleScreen/TitleScreen.tscn
+res://CrewManager.gd
+res://Battle/BattleManager.gd
+res://EnemyCrew.gd
+res://SceneSwitcher.gd
+res://UI/UIManager.gd
+res://Island/IslandTutorial.gd
+res://SaveMenu/SaveMenu.tscn

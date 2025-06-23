@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://ddnlrb63k22yr" path="res://SaveMenu/SaveSlot/SaveSlot.tscn" id="4_hus4y"]
 [ext_resource type="AudioStream" uid="uid://d0m8grhuo6nq1" path="res://SFX/addsaveslotnoise.mp3" id="5_u2m5s"]
 [ext_resource type="AudioStream" uid="uid://cc70302gibsel" path="res://SFX/saveslotclicknoise.mp3" id="6_rlwof"]
-[ext_resource type="AudioStream" path="res://SFX/headerslide.wav" id="7_header"]
+[ext_resource type="AudioStream" uid="uid://ce27gvo2x03e" path="res://SFX/headerslide.wav" id="7_header"]
 
 [node name="SaveMenu" type="Node2D"]
 script = ExtResource("1_pffo3")
