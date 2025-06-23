@@ -126,7 +126,7 @@ func _ready() -> void:
 				loaded_state = true
 		
 		if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
-		enemy_ship.global_position = Global.enemy_spawn_position
+			enemy_ship.global_position = Global.enemy_spawn_position
 		Global.enemy_spawn_position = Vector2.ZERO
 		_fade_out_enemy_ship(1.0)
 		await get_tree().create_timer(1.0).timeout
@@ -140,7 +140,7 @@ func _ready() -> void:
 				_fade_out_enemy_ship(1.0)
 				await get_tree().create_timer(1.0).timeout
 		if not post_menu_shown and not Global.post_board_menu_shown:
-		_show_post_menu()
+			_show_post_menu()
 		elif enemy_ship and not loaded_state:
 			_enemy_layer = enemy_ship.collision_layer
 			_enemy_mask  = enemy_ship.collision_mask
