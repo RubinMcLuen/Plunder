@@ -129,8 +129,9 @@ func _ready() -> void:
 			enemy_ship.global_position = Global.enemy_spawn_position
 			enemy_ship.visible = true
 			Global.enemy_spawn_position = Vector2.ZERO
-			_fade_out_enemy_ship(1.0)
-			await get_tree().create_timer(1.0).timeout
+			var tw := _fade_out_enemy_ship(1.0)
+			if tw:
+			await tw.finished
 		
 		if Global.ocean_tutorial_complete:
 			step = 7
@@ -138,8 +139,9 @@ func _ready() -> void:
 			hint_label.hide()
 			_apply_allowed_actions()
 			if enemy_ship:
-				_fade_out_enemy_ship(1.0)
-				await get_tree().create_timer(1.0).timeout
+			var tw2 := _fade_out_enemy_ship(1.0)
+			if tw2:
+			await tw2.finished
 			if not post_menu_shown and not Global.post_board_menu_shown:
 				_show_post_menu()
 		elif enemy_ship and not loaded_state:
@@ -442,18 +444,19 @@ func _on_begin_raid_pressed() -> void:
 # ─────────────────────────────
 
 func _clear_enemy_ship() -> void:
-		enemy_ship = null
+	enemy_ship = null
 
-func _fade_out_enemy_ship(duration: float = 1.0) -> void:
-		if enemy_ship == null:
-				return
+func _fade_out_enemy_ship(duration: float = 1.0) -> Tween:
+	if enemy_ship == null:
+	return null
 
-		enemy_ship.set_process(false)
-		enemy_ship.set_physics_process(false)
-		var tw := get_tree().create_tween()
-		tw.tween_property(enemy_ship, "modulate:a", 0.0, duration)
-		tw.tween_callback(Callable(enemy_ship, "queue_free"))
-		tw.tween_callback(Callable(self, "_clear_enemy_ship"))
+	enemy_ship.set_process(false)
+	enemy_ship.set_physics_process(false)
+	var tw := get_tree().create_tween()
+	tw.tween_property(enemy_ship, "modulate:a", 0.0, duration)
+	tw.tween_callback(Callable(enemy_ship, "queue_free"))
+	tw.tween_callback(Callable(self, "_clear_enemy_ship"))
+	return tw
 
 
 func _spawn_normal_enemy(record_spawned: bool = true) -> void:
