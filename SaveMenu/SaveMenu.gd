@@ -18,7 +18,16 @@ signal hide_character_creator()
 #  CONSTANTS
 # ─────────────────────────────────────────────────────────────────────
 const SAVE_PATH_FORMAT   := "user://saveslot%d.json"
-const ICON_PATH_FORMAT   := "res://SaveMenu/SaveSlot/assets/%s"
+const SAVED_ICONS := [
+	preload("res://SaveMenu/SaveSlot/assets/saveslot1icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot2icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot3icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot4icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot5icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot6icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot7icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot8icon.png")
+]
 const HEADER_MOVE_Y      := 17.0
 const HEADER_TWEEN_TIME  := 0.3
 
@@ -41,8 +50,10 @@ var active_slot:   int            = -1
 func _ready() -> void:
 	# load slot icons & hook input
 	for i in range(slots_container.get_child_count()):
-		var path = ICON_PATH_FORMAT % ("saveslot%dicon.png" % (i + 1))
-		saved_icons.append(load(path) as Texture2D)
+		if i < SAVED_ICONS.size():
+			saved_icons.append(SAVED_ICONS[i])
+		else:
+			saved_icons.append(null)
 		slots_container.get_child(i).connect("input_event", Callable(self, "_on_slot_input").bind(i))
 	_refresh_slots()
 
