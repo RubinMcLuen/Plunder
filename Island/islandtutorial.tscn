@@ -4,7 +4,7 @@
 [ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_vaviu"]
 [ext_resource type="Resource" uid="uid://cuv7qfb43qg7d" path="res://Dialogue/dialogues/FirstMate.dialogue" id="3_ju8cp"]
 [ext_resource type="Texture2D" uid="uid://c01pfxvgxpa2i" path="res://Island/shipsand.png" id="4_0rnn0"]
-[ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/playerisland.png" id="5_3hvgk"]
+[ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/PlayerIsland.png" id="5_3hvgk"]
 [ext_resource type="PackedScene" uid="uid://7iti6gihoxcn" path="res://Ships/PlayerShipClose.tscn" id="6_0jtng"]
 [ext_resource type="Texture2D" uid="uid://dv5286v4rgav7" path="res://Island/island.png" id="7_spt4l"]
 [ext_resource type="Texture2D" uid="uid://bw35wphcy4ysm" path="res://Island/shipship.png" id="8_335cy"]
