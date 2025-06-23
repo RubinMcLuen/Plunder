@@ -555,7 +555,6 @@ func _add_wall(parent: Node, pos: Vector2, extents: Vector2) -> void:
 func _show_post_menu() -> void:
 	post_menu_shown = true
 	var menu = POST_MENU_SCENE.instantiate()
-	menu.pause_mode = Node.PAUSE_MODE_PROCESS
 	add_child(menu)
 	get_tree().paused = true
 	if player_ship:
