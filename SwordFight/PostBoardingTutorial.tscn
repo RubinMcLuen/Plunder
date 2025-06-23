@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dmnom0r3enn68" path="res://UI/shipbutton.png" id="8_ship"]
 
 [node name="PostBoardingTutorial" type="CanvasLayer"]
-process_mode = 1
+process_mode = 2
 script = ExtResource("2_script")
 
 [node name="Node2D" type="Control" parent="."]
