@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b6h7a4rq0u4o6"]
+[gd_scene load_steps=9 format=3 uid="uid://cyqoet5hbfrjx"]
 
 [ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://CharacterCreator/assets/window.png" id="1_window"]
 [ext_resource type="Script" path="res://SwordFight/SwordFightPostTutorial.gd" id="2_script"]

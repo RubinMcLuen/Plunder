@@ -101,10 +101,10 @@ func save_game_state() -> void:
 				r.close()
 
 	save_data["scene"]	= {"name": current_scene, "position": pos_dict}
-save_data["ship_state"] = ship_state
-save_data["quests"]	= get_quest_manager().quests
-save_data["crew"]	= crew
-save_data["post_board_menu_shown"] = post_board_menu_shown
+	save_data["ship_state"] = ship_state
+	save_data["quests"]	= get_quest_manager().quests
+	save_data["crew"]	= crew
+	save_data["post_board_menu_shown"] = post_board_menu_shown
 
 	if current_scene_node is KelptownInnTutorial:
 		save_data["kelptown_tutorial"] = current_scene_node.get_tutorial_state()
@@ -186,12 +186,12 @@ func load_game_state() -> void:
 	if "quests" in data:
 		get_quest_manager().quests = data["quests"]
 	
-crew = []
-if "crew" in data:
-for c in data["crew"]:
-crew.append(str(c))
+	crew = []
+	if "crew" in data:
+		for c in data["crew"]:
+			crew.append(str(c))
 
-post_board_menu_shown = bool(data.get("post_board_menu_shown", post_board_menu_shown))
+	post_board_menu_shown = bool(data.get("post_board_menu_shown", post_board_menu_shown))
 	
 	kelptown_tutorial_state = data.get("kelptown_tutorial", {})
 	island_tutorial_state = data.get("island_tutorial", {})
