@@ -25,5 +25,5 @@ func _ready():
 
 func _change_scene():
 		# Start the updated tutorial in the inn
-		SceneSwitcher.switch_scene("res://KelptownInn/KelptownInnTutorial.tscn", Vector2(100, 100))
+		SceneSwitcher.switch_scene(preload("res://KelptownInn/KelptownInnTutorial.tscn"), Vector2(100, 100))
 
