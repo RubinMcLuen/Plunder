@@ -148,7 +148,7 @@ func apply_battle_state(state: Dictionary) -> void:
 								if typeof(tmp2) == TYPE_VECTOR2:
 												cam.zoom = tmp2
 
-	func _exit_tree() -> void:
+func _exit_tree() -> void:
 	if _battle_over:
 		Global.battle_state = {}
 	else:
