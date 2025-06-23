@@ -18,30 +18,29 @@ signal hide_character_creator()
 #  CONSTANTS
 # ─────────────────────────────────────────────────────────────────────
 const SAVE_PATH_FORMAT	 := "user://saveslot%d.json"
-const SAVED_ICON_PATHS := [
-"res://SaveMenu/SaveSlot/assets/saveslot1icon.png",
-"res://SaveMenu/SaveSlot/assets/saveslot2icon.png",
-"res://SaveMenu/SaveSlot/assets/saveslot3icon.png",
-"res://SaveMenu/SaveSlot/assets/saveslot4icon.png",
-"res://SaveMenu/SaveSlot/assets/saveslot5icon.png",
-"res://SaveMenu/SaveSlot/assets/saveslot6icon.png",
-"res://SaveMenu/SaveSlot/assets/saveslot7icon.png",
-"res://SaveMenu/SaveSlot/assets/saveslot8icon.png"
+const SAVED_ICONS := [
+	preload("res://SaveMenu/SaveSlot/assets/saveslot1icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot2icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot3icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot4icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot5icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot6icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot7icon.png"),
+	preload("res://SaveMenu/SaveSlot/assets/saveslot8icon.png"),
 ]
+
 const HEADER_MOVE_Y	 := 17.0
 const HEADER_TWEEN_TIME	 := 0.3
 
 enum SlotType { SAVED, ADD, EMPTY }
 
-const ADD_ICON_PATH := "res://SaveMenu/SaveSlot/assets/addsavesloticon.png"
-const EMPTY_ICON_PATH := "res://SaveMenu/SaveSlot/assets/emptysavesloticon.png"
+const ADD_ICON := preload("res://SaveMenu/SaveSlot/assets/addsavesloticon.png")
+const EMPTY_ICON := preload("res://SaveMenu/SaveSlot/assets/emptysavesloticon.png")
 
 # ─────────────────────────────────────────────────────────────────────
 #  STATE
 # ─────────────────────────────────────────────────────────────────────
 var saved_icons: Array[Texture2D] = []
-var ADD_ICON:	 Texture2D
-var EMPTY_ICON:	 Texture2D
 var info_popup:	   Node2D	  = null
 var InfoScene:	   PackedScene	  = preload("res://SaveMenu/Info/Info.tscn")
 var active_slot:   int		  = -1
@@ -51,10 +50,7 @@ var active_slot:   int		  = -1
 # ─────────────────────────────────────────────────────────────────────
 func _ready() -> void:
 	# load slot icons & hook input
-	for path in SAVED_ICON_PATHS:
-		saved_icons.append(load(path) as Texture2D)
-		ADD_ICON = load(ADD_ICON_PATH) as Texture2D
-		EMPTY_ICON = load(EMPTY_ICON_PATH) as Texture2D
+	saved_icons = SAVED_ICONS.duplicate()
 	for i in range(slots_container.get_child_count()):
 		slots_container.get_child(i).connect("input_event", Callable(self, "_on_slot_input").bind(i))
 	_refresh_slots()
