@@ -139,12 +139,12 @@ func _ready() -> void:
 			hint_label.hide()
 			_apply_allowed_actions()
 			if enemy_ship:
-			var tw2 := _fade_out_enemy_ship(1.0)
-			if tw2:
-			await tw2.finished
-			await get_tree().create_timer(1.0).timeout
+				var tw2 := _fade_out_enemy_ship(1.0)
+				if tw2:
+					await tw2.finished
+					await get_tree().create_timer(1.0).timeout
 			if not post_menu_shown and not Global.post_board_menu_shown:
-			_show_post_menu()
+				_show_post_menu()
 		elif enemy_ship and not loaded_state:
 			_enemy_layer = enemy_ship.collision_layer
 			_enemy_mask  = enemy_ship.collision_mask
