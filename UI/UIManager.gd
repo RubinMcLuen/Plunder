@@ -4,11 +4,11 @@ extends CanvasLayer
 # ──────────────────────────
 # Node references
 # ──────────────────────────
-@onready var location_notification : Control       = $UIManager/LocationNotification
-@onready var set_sail_menu         : Control       = $UIManager/SetSailMenu
-@onready var dock_ship_menu        : Control       = $UIManager/DockShipMenu
-@onready var begin_raid_menu       : Control       = $UIManager/BeginRaidMenu
-@onready var begin_raid_button     : TextureButton = $UIManager/BeginRaidMenu/BeginRaidButton
+@onready var location_notification : Control	   = $UIManager/LocationNotification
+@onready var set_sail_menu	   : Control	   = $UIManager/SetSailMenu
+@onready var dock_ship_menu	   : Control	   = $UIManager/DockShipMenu
+@onready var begin_raid_menu	   : Control	   = $UIManager/BeginRaidMenu
+@onready var begin_raid_button	   : TextureButton = $UIManager/BeginRaidMenu/BeginRaidButton
 @onready var enemy_toggle_button   : TextureButton = $UIManager/SpawnEnemyButton
 
 # ──────────────────────────
@@ -17,12 +17,12 @@ extends CanvasLayer
 const NOTIF_HOME_POS := Vector2(191, -32)
 const INFO_BUTTON_SFX := preload("res://SFX/infobuttons.wav")
 
-var _board_mode : bool                 = false
-var _current_ocean  : Node             = null
-var _current_player : Node2D           = null
-var _current_enemy  : Node2D           = null
-var _player_docked  : bool             = false
-var _island_dock_next : bool           = false
+var _board_mode : bool		       = false
+var _current_ocean  : Node	       = null
+var _current_player : Node2D	       = null
+var _current_enemy  : Node2D	       = null
+var _player_docked  : bool	       = false
+var _island_dock_next : bool	       = false
 var _location_notify_tween : Tween     = null
 
 # ──────────────────────────
@@ -82,7 +82,7 @@ func _rewire_to_scene(ocean: Node) -> void:
 			_current_enemy.disconnect("ready_for_boarding_changed", Callable(self, "_on_enemy_ready_for_boarding"))
 
 	# ── update refs ─────────────────────────────────────────
-	_current_ocean  = ocean
+	_current_ocean	= ocean
 	_current_player = null
 
 	   # Reset boarding state whenever we switch scenes so stray flags from
@@ -216,9 +216,10 @@ func _switch_to_boarding() -> void:
 		else:
 				Global.enemy_spawn_position = Vector2.ZERO
 
-		var scene_path = "res://Battle/BoardingBattle.tscn"
-		if ocean.scene_file_path.ends_with("oceantutorial.tscn") and not Global.ocean_tutorial_complete:
-						scene_path = "res://Battle/BoardingBattleTutorial.tscn"
+var scene_path = "res://Battle/BoardingBattle.tscn"
+var in_ocean_tutorial := ocean is Global.OceanTutorial or ocean.scene_file_path.ends_with("oceantutorial.tscn")
+if in_ocean_tutorial and not Global.ocean_tutorial_complete:
+scene_path = "res://Battle/BoardingBattleTutorial.tscn"
 
 		SceneSwitcher.switch_scene(
 				scene_path,
