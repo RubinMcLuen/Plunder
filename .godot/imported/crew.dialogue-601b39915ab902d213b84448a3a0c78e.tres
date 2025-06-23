@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="DialogueResource" load_steps=2 format=3]
 
-[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_ol4vb"]
+[ext_resource type="Script" path="res://addons/dialogue_manager/dialogue_resource.gd" id="1_tovit"]
 
 [resource]
-script = ExtResource("1_ol4vb")
+script = ExtResource("1_tovit")
 using_states = PackedStringArray()
 titles = {
 "introduction": "2"

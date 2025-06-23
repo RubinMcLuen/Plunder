@@ -1,6 +1,4 @@
-[gd_resource type="VisualShader" load_steps=35 format=3 uid="uid://3dkt385m8auv"]
-
-[ext_resource type="Texture2D" uid="uid://cbua0kq6b7f41" path="res://Ships/Assets/Shaders/WaterTrailGradientFaded.png" id="1_31kvp"]
+[gd_resource type="VisualShader" load_steps=34 format=3 uid="uid://3dkt385m8auv"]
 
 [sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_8lv5q"]
 output_port_for_preview = 0
@@ -39,7 +37,6 @@ default_input_values = [1, -1.0, 2, 1.0, 3, -0.1, 4, 0.1]
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_wp1wh"]
 source = 5
-texture = ExtResource("1_31kvp")
 texture_type = 1
 
 [sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_bvtwt"]

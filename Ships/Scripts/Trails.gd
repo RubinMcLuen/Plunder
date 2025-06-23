@@ -15,7 +15,7 @@ func _ready():
 	z_index = -1
 	offset = sub_viewport.size / 2
 
-func _process(delta):
+func _process(_delta):
 	length = 0.0
 	var pos = parent.global_position + offset
 	queue.append(pos)

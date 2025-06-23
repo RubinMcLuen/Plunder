@@ -209,7 +209,7 @@ func _behave_dead(delta : float) -> void:
 
 
 # ───────── CLICK-TO-BOARD ─────────
-func _input_event(viewport : Object, event : InputEvent, shape_idx : int) -> void:
+func _input_event(_viewport : Object, event : InputEvent, _shape_idx : int) -> void:
 	if ready_for_boarding \
 	and event is InputEventMouseButton \
 	and event.button_index == MOUSE_BUTTON_LEFT \
@@ -413,7 +413,7 @@ func _spawn_dock_arrow() -> void:
 
 
 # ───────── COLLISION CALLBACK ─────────
-func _on_area_entered(area : Area2D) -> void:
+func _on_area_entered(_area : Area2D) -> void:
 	# Implement your collision logic here
 	# Example: if area.is_in_group("player_projectiles"): take_damage(area.damage)
 	pass

@@ -58,7 +58,7 @@ func _on_barnaby_dialogue_requested(section: String, b: NPC) -> void:
 		Callable(self, "_on_dialogue_finished_barnaby").bind(b)
 	)
 
-func _on_dialogue_finished_barnaby(b: NPC) -> void:
+func _on_dialogue_finished_barnaby(_b: NPC) -> void:
 	player.disable_user_input = false   # no call to b.hire() here
 
 

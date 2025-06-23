@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cps1mea6rba1r"]
 
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="1_xl2kw"]
-[ext_resource type="Script" path="res://Character/NPC/npcs/Barnaby_Crew.gd" id="2_10ldj"]
+[ext_resource type="Script" path="res://Character/NPC/NPCs/Barnaby_Crew.gd" id="2_10ldj"]
 [ext_resource type="Shader" path="res://Character/Player/UVLookupShader.gdshader" id="3_nsjwm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1dc57"]

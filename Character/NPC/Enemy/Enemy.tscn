@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://btgkhbnjlabm"]
 
-[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/npc.tscn" id="1_8o7wt"]
+[ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="1_8o7wt"]
 [ext_resource type="Script" path="res://Character/NPC/Enemy/Enemy.gd" id="2_0ie86"]
 [ext_resource type="Shader" path="res://Character/Player/UVLookupShader.gdshader" id="3_bc7l2"]
 
@@ -15,6 +15,16 @@ radius = 30.0
 
 [node name="Enemy" instance=ExtResource("1_8o7wt")]
 script = ExtResource("2_0ie86")
+npc_name = ""
+fight_side_right = false
+stats = null
+customization_only = false
+fightable = false
+dialogue_resource = null
+npc_texture_index = 0
+health = 3
+speed = 100.0
+hirable = false
 
 [node name="Appearance" parent="." index="0"]
 material = SubResource("ShaderMaterial_e8l4e")

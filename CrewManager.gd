@@ -1,6 +1,6 @@
 extends Node
 
-const NPC_FOLDER := "res://Character/NPC/npcs"
+const NPC_FOLDER := "res://Character/NPC/NPCs"
 
 # Spawns or updates crew NPCs depending on hired status
 func populate_scene(root: Node) -> void:

@@ -1,15 +1,32 @@
-# Ignore Godot's import cache directory
+# Godot 4 cache and generated files
 .import/
+.godot/
+*.import
+*.godot_export.cfg
 
-# Ignore export configuration files (specific to your build settings)
+# Export configuration
 export.cfg
 export_presets.cfg
 
-# Ignore backup and temporary files created by Godot Editor
+# Backup and temp files
 *.tmp
 *.bak
 
-# Ignore OS-specific files
+# OS-specific files
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Editor/project settings
+.vscode/
+.idea/
+
+# macOS app builds (if exporting on Mac)
+*.dmg
+
+# Windows builds (if exporting on Windows)
+*.exe
+*.pdb
+
+# Linux builds
+*.x86_64
