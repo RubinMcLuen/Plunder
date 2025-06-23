@@ -126,8 +126,10 @@ func _ready() -> void:
 				loaded_state = true
 		
 		if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
-			enemy_ship.global_position = Global.enemy_spawn_position
-			Global.enemy_spawn_position = Vector2.ZERO
+		enemy_ship.global_position = Global.enemy_spawn_position
+		Global.enemy_spawn_position = Vector2.ZERO
+		_fade_out_enemy_ship(1.0)
+		await get_tree().create_timer(1.0).timeout
 		
 		if Global.ocean_tutorial_complete:
 			step = 7
@@ -137,8 +139,8 @@ func _ready() -> void:
 			if enemy_ship:
 				_fade_out_enemy_ship(1.0)
 				await get_tree().create_timer(1.0).timeout
-			if not post_menu_shown:
-				_show_post_menu()
+		if not post_menu_shown and not Global.post_board_menu_shown:
+		_show_post_menu()
 		elif enemy_ship and not loaded_state:
 			_enemy_layer = enemy_ship.collision_layer
 			_enemy_mask  = enemy_ship.collision_mask
@@ -553,11 +555,14 @@ func _show_post_menu() -> void:
 	post_menu_shown = true
 	var menu = POST_MENU_SCENE.instantiate()
 	add_child(menu)
+	get_tree().paused = true
 	if player_ship:
 		player_ship.set_allowed_actions([] as Array[String])
 	menu.tutorial_finished.connect(_on_post_menu_finished)
 
 func _on_post_menu_finished() -> void:
+	get_tree().paused = false
+	Global.post_board_menu_shown = true
 	_apply_allowed_actions()
 
 
