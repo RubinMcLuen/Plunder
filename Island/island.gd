@@ -73,7 +73,7 @@ func apply_scene_state() -> void:
 func _on_exit_body_entered(body: Node) -> void:
 	if body == player:
 				SceneSwitcher.switch_scene(
-						"res://KelptownInn/KelptownInnTutorial.tscn",
+						preload("res://KelptownInn/KelptownInnTutorial.tscn"),
 						Vector2(269, 220),
 						"fade",
 						Vector2.ONE,

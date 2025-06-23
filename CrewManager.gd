@@ -1,33 +1,20 @@
 extends Node
 
-const NPC_FOLDER := "res://Character/NPC/NPCs"
+const NPC_SCENE_PATHS := [
+"res://Character/NPC/npcs/Barnaby.tscn"
+]
 
 # Spawns or updates crew NPCs depending on hired status
 func populate_scene(root: Node) -> void:
 	var curr_scene: String = root.scene_file_path
 	print("[CrewManager] populate_scene for:", curr_scene)
-
-	var dir = DirAccess.open(NPC_FOLDER)
-	if dir == null:
-		push_error("[CrewManager] could not open folder %s" % NPC_FOLDER)
-		return
-
-	dir.list_dir_begin()
-	while true:
-		var fname = dir.get_next()
-		if fname == "":
-			break
-		if dir.current_is_dir() or fname.begins_with(".") or not fname.ends_with(".tscn"):
-			continue
-		if fname.ends_with("_Crew.tscn"):
-			continue
-		var scene_path = NPC_FOLDER + "/" + fname
-		print("  scanning file:", scene_path)
-
+	
+	for scene_path in NPC_SCENE_PATHS:
 		var packed = load(scene_path) as PackedScene
 		if packed == null:
-			print("    ✗ failed to load PackedScene")
-			continue
+		print("    ✗ failed to load PackedScene")
+		continue
+		print("  loaded file:", scene_path)
 
 		var inst = packed.instantiate()
 		if not inst is NPC:
@@ -57,5 +44,4 @@ func populate_scene(root: Node) -> void:
 				inst.queue_free()
 		else:
 			print("      ✗ wrong scene (skipping)")
-			inst.queue_free()
-	dir.list_dir_end()
+inst.queue_free()

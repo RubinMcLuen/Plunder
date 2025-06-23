@@ -111,7 +111,7 @@ func _on_dock_button_pressed():
 	var player_position = Vector2(-190, 648)  # Position in the new scene
 
 	SceneSwitcher.switch_scene(
-			"res://Island/islandtutorial.tscn",
+			preload("res://Island/islandtutorial.tscn"),
 			Vector2(-190, 648),      # Where Player spawns in new scene
 			"zoom",                  # Tells SceneSwitcher to tween the *old* camera from current -> old_camera_zoom
 					   Vector2(16,16),         # old_camera_zoom = 16×

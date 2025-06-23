@@ -16,6 +16,10 @@ extends CanvasLayer
 # ──────────────────────────
 const NOTIF_HOME_POS := Vector2(191, -32)
 const INFO_BUTTON_SFX := preload("res://SFX/infobuttons.wav")
+const BOARDING_BATTLE_SCENE := preload("res://Battle/BoardingBattle.tscn")
+const BOARDING_BATTLE_TUTORIAL_SCENE := preload("res://Battle/BoardingBattleTutorial.tscn")
+const OCEAN_SCENE := preload("res://Ocean/oceantutorial.tscn")
+const ISLAND_SCENE := preload("res://Island/islandtutorial.tscn")
 
 var _board_mode : bool		       = false
 var _current_ocean  : Node	       = null
@@ -216,17 +220,17 @@ func _switch_to_boarding() -> void:
 		else:
 				Global.enemy_spawn_position = Vector2.ZERO
 
-		var scene_path = "res://Battle/BoardingBattle.tscn"
+var scene := BOARDING_BATTLE_SCENE
 		var in_ocean_tutorial = ocean is Global.OceanTutorial or ocean.scene_file_path.ends_with("oceantutorial.tscn")
 		var special_shipwreck := false
 		if ocean.has_node("EnemyShip"):
 			var enemy = ocean.get_node("EnemyShip")
 			special_shipwreck = not enemy.spawn_dock_arrow_on_death
 		if (in_ocean_tutorial and not Global.ocean_tutorial_complete) or special_shipwreck:
-			scene_path = "res://Battle/BoardingBattleTutorial.tscn"
+scene = BOARDING_BATTLE_TUTORIAL_SCENE
 
-		SceneSwitcher.switch_scene(
-				scene_path,
+SceneSwitcher.switch_scene(
+scene,
 				pos, "none",
 				Vector2(), Vector2(), Vector2(), false
 		)
@@ -307,8 +311,8 @@ func _on_set_sail_button_pressed() -> void:
 
 				Global.restore_sails_next = true
 
-				SceneSwitcher.switch_scene(
-												"res://Ocean/oceantutorial.tscn",
+SceneSwitcher.switch_scene(
+OCEAN_SCENE,
 												Vector2(-2, 39), "zoom",
 												Vector2(0.0625, 0.0625), Vector2(-32, 624),
 				Vector2(1, 1), true
@@ -324,10 +328,10 @@ func _on_dock_ship_button_pressed() -> void:
 				tw.tween_interval(1.0)
 				tw.connect("finished", Callable(ocean, "start_dock_transition").bind(1.0))
 
-				var target_scene := "res://Island/islandtutorial.tscn"
+var target_scene := ISLAND_SCENE
 
-				SceneSwitcher.switch_scene(
-																	target_scene,
+SceneSwitcher.switch_scene(
+target_scene,
 																	Vector2(-190, 648), "zoom",
 																			   Vector2(16, 16), Vector2(-11.875, 40.5),
 																			   Vector2(1, 1), true
