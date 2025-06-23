@@ -2,7 +2,7 @@ extends Node
 
 const PLANK_LENGTH        = 66.0
 const CREW_SPAWN_OFFSET   = Vector2(0, PLANK_LENGTH * 0.5)
-const BOARD_TARGET_OFFSET = Vector2(0, -PLANK_LENGTH * 0.5)
+	const BOARD_TARGET_OFFSET = Vector2(0, -PLANK_LENGTH * 0.5)
 
 @onready var plank_container  = get_node("../PlankContainer")
 @onready var crew_container   = get_node("../CrewContainer")
@@ -18,8 +18,10 @@ func _ready() -> void:
 # ─────────────────────────────────────────────
 # Replace the old spawn_crews() with this one
 # ─────────────────────────────────────────────
-const NPC_FOLDER := "res://Character/NPC/NPCs"
-const GENERIC_CREW_SCENE := "res://Character/NPC/CrewMember/CrewMember.tscn"
+const CREW_SCENE_MAP := {
+	"Barnaby": preload("res://Character/NPC/npcs/Barnaby_Crew.tscn")
+}
+const GENERIC_CREW_SCENE: PackedScene = preload("res://Character/NPC/CrewMember/CrewMember.tscn")
 func spawn_crews() -> void:
 	var crew_names: Array[String]
 	if Global.crew_override.size() > 0:
@@ -58,12 +60,10 @@ func spawn_crews() -> void:
 # Helper: choose the right PackedScene for a given crew name
 # ─────────────────────────────────────────────
 func _get_crew_scene(npc_name: String) -> PackedScene:
-	if npc_name != "":
-		var path := "%s/%s_Crew.tscn" % [NPC_FOLDER, npc_name]
-		if ResourceLoader.exists(path):
-			return load(path)
-		print("[BattleManager] No crew scene for", npc_name, "→ using generic")
-	return load(GENERIC_CREW_SCENE)
+	if CREW_SCENE_MAP.has(npc_name):
+		return CREW_SCENE_MAP[npc_name]
+	print("[BattleManager] No crew scene for", npc_name, " -> using generic")
+	return GENERIC_CREW_SCENE
 
 
 
