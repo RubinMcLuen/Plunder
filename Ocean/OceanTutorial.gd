@@ -132,7 +132,7 @@ func _ready() -> void:
 		if enemy_ship:
 			_fade_out_enemy_ship(1.0)
 			await get_tree().create_timer(1.0).timeout
-		if not post_menu_shown:
+		if Global.ocean_tutorial_complete and not post_menu_shown:
 			_show_post_menu()
 
 		var loaded_state := false
@@ -550,7 +550,7 @@ func _show_post_menu() -> void:
 	var menu = POST_MENU_SCENE.instantiate()
 	add_child(menu)
 	if player_ship:
-		player_ship.set_allowed_actions([])
+		player_ship.set_allowed_actions([] as Array[String])
 	menu.tutorial_finished.connect(_on_post_menu_finished)
 
 func _on_post_menu_finished() -> void:
