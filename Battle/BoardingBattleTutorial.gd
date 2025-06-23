@@ -111,6 +111,7 @@ func _ready() -> void:
 								for c in crew_container.get_children():
 												if c is BarnabyCrew:
 																barnaby = c
+																barnaby.health = 10000
 																break
 												await get_tree().create_timer(2.0).timeout
 								if Global.boarding_battle_tutorial_state and Global.boarding_battle_tutorial_state.size() > 0:
