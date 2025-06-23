@@ -342,6 +342,12 @@ func _advance_step(next_step: int) -> void:
 
 	match step:
 		4:
+			if enemy_ship == null or not is_instance_valid(enemy_ship):
+				_spawn_normal_enemy(false)
+				if _enemy_layer == 0 and _enemy_mask == 0 and enemy_ship:
+					_enemy_layer = enemy_ship.collision_layer
+					_enemy_mask = enemy_ship.collision_mask
+					
 			if enemy_ship and player_ship:
 				enemy_ship.global_position = player_ship.global_position + Vector2(100, 0)
 				enemy_ship.visible          = true
@@ -459,7 +465,8 @@ func _spawn_normal_enemy(record_spawned: bool = true) -> void:
 
 	var scene := preload("res://Ships/EnemyShip.tscn")
 	enemy_ship = scene.instantiate()
-	enemy_ship.start_dead_for_testing = false
+	enemy_ship.start_dead_for_testing = not Global.ocean_tutorial_complete
+	enemy_ship.spawn_dock_arrow_on_death = Global.ocean_tutorial_complete
 	add_child(enemy_ship)
 
 	if player_ship:
