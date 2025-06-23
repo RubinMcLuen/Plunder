@@ -2,8 +2,8 @@
 extends Node
 
 const KelptownInnTutorial = preload("res://KelptownInn/KelptownInnTutorial.gd")
-const IslandTutorial    = preload("res://Island/IslandTutorial.gd")
-const OceanTutorial     = preload("res://Ocean/OceanTutorial.gd")
+const IslandTutorial	= preload("res://Island/IslandTutorial.gd")
+const OceanTutorial	= preload("res://Ocean/OceanTutorial.gd")
 const BoardingBattleTutorial = preload("res://Battle/BoardingBattleTutorial.gd")
 const BoardingBattle = preload("res://Battle/BoardingBattle.gd")
 
@@ -13,7 +13,7 @@ var enemy_spawn_position: Vector2 = Vector2.ZERO
 var crew: Array[String] = []
 var crew_override: Array[String] = []
 var enemy_count_override: int = -1
-var ship_state: Dictionary = {}   # holds extra data just for PlayerShip
+var ship_state: Dictionary = {}	  # holds extra data just for PlayerShip
 var kelptown_tutorial_state: Dictionary = {}
 var island_tutorial_state: Dictionary = {}
 var ocean_tutorial_state: Dictionary = {}
@@ -70,7 +70,7 @@ func save_game_state() -> void:
 	# 1)  Gather position + optional ship data
 	# ------------------------------------------------------------------
 	var pos_dict = {"x": 0, "y": 0}
-	ship_state   = {}                         # clear every save
+	ship_state   = {}			  # clear every save
 
 	if current_scene_node.has_node("Player"):
 		var p = current_scene_node.get_node("Player")
@@ -100,10 +100,11 @@ func save_game_state() -> void:
 						save_data = j.data
 				r.close()
 
-	save_data["scene"]      = {"name": current_scene, "position": pos_dict}
-	save_data["ship_state"] = ship_state
-	save_data["quests"]     = get_quest_manager().quests
-	save_data["crew"]       = crew
+	save_data["scene"]	= {"name": current_scene, "position": pos_dict}
+save_data["ship_state"] = ship_state
+save_data["quests"]	= get_quest_manager().quests
+save_data["crew"]	= crew
+save_data["post_board_menu_shown"] = post_board_menu_shown
 
 	if current_scene_node is KelptownInnTutorial:
 		save_data["kelptown_tutorial"] = current_scene_node.get_tutorial_state()
@@ -185,10 +186,12 @@ func load_game_state() -> void:
 	if "quests" in data:
 		get_quest_manager().quests = data["quests"]
 	
-	crew = []
-	if "crew" in data:
-		for c in data["crew"]:
-			crew.append(str(c))
+crew = []
+if "crew" in data:
+for c in data["crew"]:
+crew.append(str(c))
+
+post_board_menu_shown = bool(data.get("post_board_menu_shown", post_board_menu_shown))
 	
 	kelptown_tutorial_state = data.get("kelptown_tutorial", {})
 	island_tutorial_state = data.get("island_tutorial", {})
