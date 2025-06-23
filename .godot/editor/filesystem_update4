@@ -37,3 +37,4 @@ res://Island/island.gd
 res://Island/ShipControlArea.gd
 res://SwordFight/PostBoardingTutorial.tscn
 res://Global.gd
+res://Battle/BoardingBattleTutorial.gd

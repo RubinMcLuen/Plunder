@@ -11,6 +11,9 @@ var _advancing : bool = false
 var barnaby : CrewMemberNPC = null
 var enemy   : EnemyNPC = null
 
+func _enter_tree() -> void:
+	Global.crew_override = ["Barnaby"]
+	
 func get_tutorial_state() -> Dictionary:
 	var barnaby_state := {}
 	if barnaby:
