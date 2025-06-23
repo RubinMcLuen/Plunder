@@ -25,6 +25,7 @@ var skip_player_fade: bool = false
 var board_zoom_out_next: bool = false
 var island_intro_next: bool = false
 var post_tutorial_enemy_spawned: bool = false
+var post_board_menu_shown: bool = false
 var return_scene_path: String = ""
 
 func _ready() -> void:
