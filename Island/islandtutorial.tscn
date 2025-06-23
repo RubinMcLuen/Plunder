@@ -13,8 +13,8 @@
 [ext_resource type="Texture2D" uid="uid://docbhg71ou20u" path="res://Island/rail1.png" id="11_bqfu2"]
 [ext_resource type="Texture2D" uid="uid://d13iw7rwft51w" path="res://Island/rail2.png" id="12_nc36f"]
 [ext_resource type="PackedScene" uid="uid://ffn8w5p8euu4" path="res://Character/NPC/NPC.tscn" id="13_cts8x"]
-[ext_resource type="Script" path="res://Character/NPC/npcs/MonteCoral.gd" id="14_clwk4"]
-[ext_resource type="Script" path="res://Character/NPC/npcs/FirstMate.gd" id="15_75dku"]
+[ext_resource type="Script" path="res://Character/NPC/NPCs/MonteCoral.gd" id="14_clwk4"]
+[ext_resource type="Script" path="res://Character/NPC/NPCs/FirstMate.gd" id="15_75dku"]
 [ext_resource type="Texture2D" uid="uid://8krxpdlfbgax" path="res://KelptownInn/assets/arrow.png" id="16_arrow"]
 [ext_resource type="Script" path="res://KelptownInn/BobbingArrow.gd" id="17_arrowptr"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="18_font"]
@@ -188,8 +188,15 @@ visible = false
 position = Vector2(-345, 65)
 script = ExtResource("14_clwk4")
 npc_name = "MonteCoral"
+fight_side_right = false
+stats = null
+customization_only = false
+fightable = false
 dialogue_resource = ExtResource("2_vaviu")
 npc_texture_index = 3
+health = 3
+speed = 100.0
+hirable = false
 
 [node name="FirstMate" parent="." instance=ExtResource("13_cts8x")]
 visible = false
@@ -197,8 +204,15 @@ position = Vector2(297, 112)
 script = ExtResource("15_75dku")
 state = "default"
 npc_name = "FirstMate"
+fight_side_right = false
+stats = null
+customization_only = false
+fightable = false
 dialogue_resource = ExtResource("3_ju8cp")
 npc_texture_index = 4
+health = 3
+speed = 100.0
+hirable = false
 
 [node name="FirstMate2" parent="." instance=ExtResource("13_cts8x")]
 visible = false
@@ -206,8 +220,15 @@ position = Vector2(-66, 697)
 script = ExtResource("15_75dku")
 state = "default"
 npc_name = "FirstMate"
+fight_side_right = false
+stats = null
+customization_only = false
+fightable = false
 dialogue_resource = ExtResource("3_ju8cp")
 npc_texture_index = 4
+health = 3
+speed = 100.0
+hirable = false
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

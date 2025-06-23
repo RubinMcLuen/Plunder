@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://ffn8w5p8euu4"]
 
 [ext_resource type="PackedScene" uid="uid://cup2getx61mv4" path="res://Character/character.tscn" id="1_4fpb3"]
-[ext_resource type="Script" path="res://Character/NPC/npc.gd" id="2_y21gt"]
+[ext_resource type="Script" path="res://Character/NPC/NPC.gd" id="2_ai0l2"]
 [ext_resource type="Material" uid="uid://cuyioujxk4e8s" path="res://Character/Player/UVLookupMaterial.tres" id="3_rc5ww"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dtxe3"]
@@ -9,15 +9,7 @@ size = Vector2(17, 22)
 
 [node name="NPC" instance=ExtResource("1_4fpb3")]
 position = Vector2(67, 58)
-script = ExtResource("2_y21gt")
-npc_name = null
-fight_side_right = null
-customization_only = null
-fightable = null
-npc_texture_index = null
-health = null
-speed = null
-hirable = null
+script = ExtResource("2_ai0l2")
 
 [node name="Appearance" parent="." index="0"]
 material = ExtResource("3_rc5ww")

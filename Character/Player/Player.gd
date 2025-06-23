@@ -156,7 +156,7 @@ func set_facing_direction(is_left: bool) -> void:
 	appearance.flip_h = is_left
 	sword.flip_h = is_left
 
-func _unhandled_input(event: InputEvent) -> void:
+func _unhandled_input(_event: InputEvent) -> void:
 	if fighting or auto_move:
 			return
 

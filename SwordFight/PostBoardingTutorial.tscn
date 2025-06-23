@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://cyqoet5hbfrjx"]
 
-[ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://CharacterCreator/assets/window.png" id="1_window"]
+[ext_resource type="Texture2D" uid="uid://pebqa3f2by7w" path="res://SaveMenu/assets/saveslotmenubackground.png" id="1_window"]
 [ext_resource type="Script" path="res://SwordFight/SwordFightPostTutorial.gd" id="2_script"]
 [ext_resource type="Texture2D" uid="uid://2n4r0m1kwv86" path="res://SwordFight/header.png" id="3_header"]
 [ext_resource type="FontFile" uid="uid://bbvvk8cijnn3b" path="res://PlunderFont.ttf" id="4_font"]

@@ -18,7 +18,7 @@ func _ready() -> void:
 # ─────────────────────────────────────────────
 # Replace the old spawn_crews() with this one
 # ─────────────────────────────────────────────
-const NPC_FOLDER := "res://Character/NPC/npcs"
+const NPC_FOLDER := "res://Character/NPC/NPCs"
 const GENERIC_CREW_SCENE := "res://Character/NPC/CrewMember/CrewMember.tscn"
 func spawn_crews() -> void:
 	var crew_names: Array[String]

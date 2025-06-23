@@ -6,7 +6,7 @@ class_name NPC
 # Metadata & Exports
 # ─────────────────────────────────────────────
 @export var npc_name: String
-const NPC_DATA_PATH := "res://npcs.json"
+const NPC_DATA_PATH := "res://NPCs.json"
 
 @export var fight_side_right : bool = false
 @export var stats            : CharacterStats
@@ -212,7 +212,7 @@ func hire() -> void:
 # ─────────────────────────────────────────────
 # Physics
 # ─────────────────────────────────────────────
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	handle_npc_input()
 	move_and_slide()           # we don't capture the return; we maintain velocity ourselves
 	_update_base_anim(false)   # pick an animation AFTER we moved
