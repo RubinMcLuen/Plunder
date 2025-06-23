@@ -131,7 +131,7 @@ func _ready() -> void:
 			Global.enemy_spawn_position = Vector2.ZERO
 			var tw := _fade_out_enemy_ship(1.0)
 			if tw:
-			await tw.finished
+				await tw.finished
 		
 		if Global.ocean_tutorial_complete:
 			step = 7
@@ -139,9 +139,9 @@ func _ready() -> void:
 			hint_label.hide()
 			_apply_allowed_actions()
 			if enemy_ship:
-			var tw2 := _fade_out_enemy_ship(1.0)
-			if tw2:
-			await tw2.finished
+				var tw2 := _fade_out_enemy_ship(1.0)
+				if tw2:
+					await tw2.finished
 			if not post_menu_shown and not Global.post_board_menu_shown:
 				_show_post_menu()
 		elif enemy_ship and not loaded_state:
@@ -448,7 +448,7 @@ func _clear_enemy_ship() -> void:
 
 func _fade_out_enemy_ship(duration: float = 1.0) -> Tween:
 	if enemy_ship == null:
-	return null
+		return null
 
 	enemy_ship.set_process(false)
 	enemy_ship.set_physics_process(false)
