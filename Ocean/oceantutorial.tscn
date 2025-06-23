@@ -293,6 +293,7 @@ target_position = Vector2(-2, 39)
 z_index = 5
 position = Vector2(-2, 39)
 disable_mode = 2
+health = 10000
 
 [node name="NoSails" type="Sprite2D" parent="PlayerShip"]
 visible = false

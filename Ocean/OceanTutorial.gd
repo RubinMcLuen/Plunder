@@ -118,7 +118,8 @@ func _apply_allowed_actions() -> void:
 func _ready() -> void:
 		await super._ready()
 		_setup_environment()
-		
+		if player_ship:
+			player_ship.health = 10000
 		var loaded_state := false
 		if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
 				apply_tutorial_state(Global.ocean_tutorial_state)
