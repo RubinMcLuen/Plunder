@@ -139,8 +139,8 @@ func _ready() -> void:
 			if enemy_ship:
 				_fade_out_enemy_ship(1.0)
 				await get_tree().create_timer(1.0).timeout
-		if not post_menu_shown and not Global.post_board_menu_shown:
-			_show_post_menu()
+			if not post_menu_shown and not Global.post_board_menu_shown:
+				_show_post_menu()
 		elif enemy_ship and not loaded_state:
 			_enemy_layer = enemy_ship.collision_layer
 			_enemy_mask  = enemy_ship.collision_mask
