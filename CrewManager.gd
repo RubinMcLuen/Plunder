@@ -1,7 +1,7 @@
 extends Node
 
 const NPC_SCENE_PATHS := [
-"res://Character/NPC/npcs/Barnaby.tscn"
+"res://Character/NPC/NPCs/Barnaby.tscn"
 ]
 
 # Spawns or updates crew NPCs depending on hired status
@@ -12,7 +12,7 @@ func populate_scene(root: Node) -> void:
 	for scene_path in NPC_SCENE_PATHS:
 		var packed = load(scene_path) as PackedScene
 		if packed == null:
-		print("    ✗ failed to load PackedScene")
+			print("✗ failed to load PackedScene")
 		continue
 		print("  loaded file:", scene_path)
 
@@ -44,4 +44,4 @@ func populate_scene(root: Node) -> void:
 				inst.queue_free()
 		else:
 			print("      ✗ wrong scene (skipping)")
-inst.queue_free()
+		inst.queue_free()

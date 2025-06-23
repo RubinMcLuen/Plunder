@@ -92,17 +92,17 @@ func switch_scene(
 ) -> void:
 	if transition_in_progress:
 		print("SceneSwitcher: already in transition")
-			return
+		return
 	
 	transition_in_progress    = true
 	target_scene              = scene
 	target_position           = player_position
-		tween_target_zoom         = old_scene_zoom_level
-		load_camera_zoom          = new_scene_zoom_level
-		pending_transition_type   = transition_type
-		specific_position         = specific_position_override
-		pending_move_player       = move_player
-	
+	tween_target_zoom         = old_scene_zoom_level
+	load_camera_zoom          = new_scene_zoom_level
+	pending_transition_type   = transition_type
+	specific_position         = specific_position_override
+	pending_move_player       = move_player
+
 	if specific_position != Vector2.ZERO:
 		_translate_camera(specific_position, transition_type)
 	else:
@@ -207,28 +207,28 @@ func _remove_old_scene() -> void:
 var _next_scene: Node = null
 
 	
-	func _load_new_scene() -> bool:
+func _load_new_scene() -> bool:
 	var packed = target_scene
 	if packed == null:
-push_error("SceneSwitcher: no target scene")
-	return false
+		push_error("SceneSwitcher: no target scene")
+		return false
 		
-				_next_scene = packed.instantiate()
+	_next_scene = packed.instantiate()
 	
-			if pending_move_player:
-						if _next_scene.has_node("PlayerShip"):
-									_next_scene.get_node("PlayerShip").global_position = target_position
-						elif _next_scene.has_node("Player"):
-							_next_scene.get_node("Player").global_position = target_position
-	
-		var nc = _find_camera_for_scene(_next_scene)
-		if nc:
-				var target_zoom = load_camera_zoom
-				if target_zoom.x == 0 or target_zoom.y == 0:
-						target_zoom = Vector2.ONE
-				nc.zoom = target_zoom
+	if pending_move_player:
+				if _next_scene.has_node("PlayerShip"):
+							_next_scene.get_node("PlayerShip").global_position = target_position
+				elif _next_scene.has_node("Player"):
+					_next_scene.get_node("Player").global_position = target_position
 
-		return true
+	var nc = _find_camera_for_scene(_next_scene)
+	if nc:
+			var target_zoom = load_camera_zoom
+			if target_zoom.x == 0 or target_zoom.y == 0:
+					target_zoom = Vector2.ONE
+			nc.zoom = target_zoom
+
+	return true
 
 func _attach_loaded_scene() -> void:
 		if not _next_scene:

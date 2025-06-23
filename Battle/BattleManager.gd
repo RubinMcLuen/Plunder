@@ -2,7 +2,7 @@ extends Node
 
 const PLANK_LENGTH        = 66.0
 const CREW_SPAWN_OFFSET   = Vector2(0, PLANK_LENGTH * 0.5)
-	const BOARD_TARGET_OFFSET = Vector2(0, -PLANK_LENGTH * 0.5)
+const BOARD_TARGET_OFFSET = Vector2(0, -PLANK_LENGTH * 0.5)
 
 @onready var plank_container  = get_node("../PlankContainer")
 @onready var crew_container   = get_node("../CrewContainer")
@@ -19,7 +19,7 @@ func _ready() -> void:
 # Replace the old spawn_crews() with this one
 # ─────────────────────────────────────────────
 const CREW_SCENE_MAP := {
-	"Barnaby": preload("res://Character/NPC/npcs/Barnaby_Crew.tscn")
+	"Barnaby": preload("res://Character/NPC/NPCs/Barnaby_Crew.tscn")
 }
 const GENERIC_CREW_SCENE: PackedScene = preload("res://Character/NPC/CrewMember/CrewMember.tscn")
 func spawn_crews() -> void:

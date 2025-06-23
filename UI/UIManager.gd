@@ -220,20 +220,20 @@ func _switch_to_boarding() -> void:
 		else:
 				Global.enemy_spawn_position = Vector2.ZERO
 
-var scene := BOARDING_BATTLE_SCENE
+		var scene := BOARDING_BATTLE_SCENE
 		var in_ocean_tutorial = ocean is Global.OceanTutorial or ocean.scene_file_path.ends_with("oceantutorial.tscn")
 		var special_shipwreck := false
 		if ocean.has_node("EnemyShip"):
 			var enemy = ocean.get_node("EnemyShip")
 			special_shipwreck = not enemy.spawn_dock_arrow_on_death
 		if (in_ocean_tutorial and not Global.ocean_tutorial_complete) or special_shipwreck:
-scene = BOARDING_BATTLE_TUTORIAL_SCENE
+			scene = BOARDING_BATTLE_TUTORIAL_SCENE
 
-SceneSwitcher.switch_scene(
-scene,
-				pos, "none",
-				Vector2(), Vector2(), Vector2(), false
-		)
+		SceneSwitcher.switch_scene(
+		scene,
+						pos, "none",
+						Vector2(), Vector2(), Vector2(), false
+				)
 
 # ──────────────────────────
 # Location notification
@@ -311,12 +311,12 @@ func _on_set_sail_button_pressed() -> void:
 
 				Global.restore_sails_next = true
 
-SceneSwitcher.switch_scene(
-OCEAN_SCENE,
-												Vector2(-2, 39), "zoom",
-												Vector2(0.0625, 0.0625), Vector2(-32, 624),
-				Vector2(1, 1), true
-)
+				SceneSwitcher.switch_scene(
+				OCEAN_SCENE,
+																Vector2(-2, 39), "zoom",
+																Vector2(0.0625, 0.0625), Vector2(-32, 624),
+								Vector2(1, 1), true
+				)
 				hide_set_sail_menu()
 
 func _on_dock_ship_button_pressed() -> void:
@@ -328,14 +328,14 @@ func _on_dock_ship_button_pressed() -> void:
 				tw.tween_interval(1.0)
 				tw.connect("finished", Callable(ocean, "start_dock_transition").bind(1.0))
 
-var target_scene := ISLAND_SCENE
+		var target_scene := ISLAND_SCENE
 
-SceneSwitcher.switch_scene(
-target_scene,
-																	Vector2(-190, 648), "zoom",
-																			   Vector2(16, 16), Vector2(-11.875, 40.5),
-																			   Vector2(1, 1), true
-				   )
+		SceneSwitcher.switch_scene(
+		target_scene,
+																			Vector2(-190, 648), "zoom",
+																					   Vector2(16, 16), Vector2(-11.875, 40.5),
+																					   Vector2(1, 1), true
+						   )
 		hide_dock_ship_menu()
 
 # ──────────────────────────

@@ -102,7 +102,7 @@ func _on_set_sail_pressed() -> void:
 				tw.connect("finished", Callable(self, "start_leave_island_transition").bind(1.0))
 				Global.restore_sails_next = true
 				SceneSwitcher.switch_scene(
-								OCEAN_SCENE,
+								UIManager.OCEAN_SCENE,
 								Vector2(-2, 39),
 								"zoom",
 								Vector2(0.0625, 0.0625), Vector2(-32, 624),

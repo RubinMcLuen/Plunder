@@ -2,7 +2,7 @@
 extends Node2D
 
 # Preload the NPC scene
-var NPCScene: PackedScene = preload("res://Character/NPC/npc.tscn")
+var NPCScene: PackedScene = preload("res://Character/NPC/NPC.tscn")
 
 # Hard-coded positions for each NPC in a horizontal line.
 # Adjust these positions as needed.
