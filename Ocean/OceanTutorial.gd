@@ -59,9 +59,9 @@ func apply_tutorial_state(state: Dictionary) -> void:
 	shoot_left_done = bool(state.get("shoot_left_done", shoot_left_done))
 	shoot_right_done = bool(state.get("shoot_right_done", shoot_right_done))
 	enemy_hit = bool(state.get("enemy_hit", enemy_hit))
-
+	
 	var es: Dictionary = state.get("enemy", {})
-	if es.get("exists", false):
+	if not Global.ocean_tutorial_complete and es.get("exists", false):
 		if enemy_ship == null or not is_instance_valid(enemy_ship):
 			_spawn_normal_enemy(false)
 		if _enemy_layer == 0 and _enemy_mask == 0 and enemy_ship:
@@ -116,47 +116,58 @@ func _apply_allowed_actions() -> void:
 
 
 func _ready() -> void:
-		await super._ready()
-		_setup_environment()
-
-		if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
-			enemy_ship.global_position = Global.enemy_spawn_position
-			Global.enemy_spawn_position = Vector2.ZERO
-
-		if Global.ocean_tutorial_complete:
-			step = 7
-			arrow.visible = false
-			hint_label.hide()
-			_apply_allowed_actions()
-
-		if enemy_ship:
-			_fade_out_enemy_ship(1.0)
-			await get_tree().create_timer(1.0).timeout
-		if Global.ocean_tutorial_complete and not post_menu_shown:
-			_show_post_menu()
-
+				await super._ready()
+				_setup_environment()
+		
 		var loaded_state := false
 		if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
 				apply_tutorial_state(Global.ocean_tutorial_state)
 				Global.ocean_tutorial_state = {}
 				loaded_state = true
-
-		if player_ship:
-				_orig_max_speed    = player_ship.max_speed
-				_orig_target_speed = player_ship.target_speed
-
-				if Global.ocean_tutorial_complete:
-						# Restore normal speed after completing the boarding tutorial
-						player_ship.max_speed    = _orig_max_speed
-						player_ship.target_speed = _orig_target_speed
-				else:
-						# Slightly slower tutorial ship speed
-						player_ship.max_speed    *= 0.5
-						player_ship.target_speed *= 0.5
-
-		if player_ship and player_ship.has_signal("player_docked"):
-				player_ship.connect("player_docked", _on_player_docked)
-		if player_ship and player_ship.has_signal("cannons_fired_left"):
+		
+		if Global.enemy_spawn_position != Vector2.ZERO and enemy_ship:
+			enemy_ship.global_position = Global.enemy_spawn_position
+			Global.enemy_spawn_position = Vector2.ZERO
+		
+		if Global.ocean_tutorial_complete:
+			step = 7
+			arrow.visible = false
+			hint_label.hide()
+			_apply_allowed_actions()
+			if enemy_ship:
+				_fade_out_enemy_ship(1.0)
+				await get_tree().create_timer(1.0).timeout
+			if not post_menu_shown:
+			_show_post_menu()
+		elif enemy_ship and not loaded_state:
+			_enemy_layer = enemy_ship.collision_layer
+			_enemy_mask  = enemy_ship.collision_mask
+			enemy_ship.visible = false
+			enemy_ship.ready_for_boarding = false
+			enemy_ship.input_pickable = false
+			enemy_ship.collision_layer = 0
+			enemy_ship.collision_mask = 0
+			enemy_ship.set_process(false)
+			enemy_ship.set_physics_process(false)
+			if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
+		enemy_ship.connect("area_entered", _on_enemy_area_entered)
+		
+				if player_ship:
+						_orig_max_speed    = player_ship.max_speed
+						_orig_target_speed = player_ship.target_speed
+		
+						if Global.ocean_tutorial_complete:
+								# Restore normal speed after completing the boarding tutorial
+								player_ship.max_speed    = _orig_max_speed
+								player_ship.target_speed = _orig_target_speed
+						else:
+								# Slightly slower tutorial ship speed
+								player_ship.max_speed    *= 0.5
+								player_ship.target_speed *= 0.5
+		
+				if player_ship and player_ship.has_signal("player_docked"):
+						player_ship.connect("player_docked", _on_player_docked)
+				if player_ship and player_ship.has_signal("cannons_fired_left"):
 				player_ship.connect("cannons_fired_left", _on_cannons_fired_left)
 		if player_ship and player_ship.has_signal("cannons_fired_right"):
 				player_ship.connect("cannons_fired_right", _on_cannons_fired_right)
