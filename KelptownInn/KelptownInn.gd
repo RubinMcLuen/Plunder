@@ -74,7 +74,7 @@ func _on_exit_body_entered(body: Node) -> void:
 	if body == player:
 		#            path                               pos         type   old-zoom  pan  new-zoom
 		SceneSwitcher.switch_scene(
-			"res://Island/Island.tscn",
+			preload("res://Island/Island.tscn"),
 			Vector2( 64, -42),
 			"fade",                           # transition type
 			Vector2.ONE,                      # ← only used for "zoom" transitions

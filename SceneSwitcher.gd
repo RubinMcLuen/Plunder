@@ -16,7 +16,7 @@ var transition_in_progress: bool = false
 ##
 # We'll stash these transition parameters each time you call switch_scene.
 ##
-var target_scene_path: String = ""
+var target_scene: PackedScene = null
 var target_position: Vector2 = Vector2.ZERO
 
 # Zoom levels:
@@ -82,27 +82,27 @@ func _detect_current_scene() -> void:
 # )
 ##
 func switch_scene(
-		scene_path: String,
-		player_position: Vector2,
-		transition_type: String = "none",
-		old_scene_zoom_level: Vector2 = Vector2.ONE,
-		specific_position_override: Vector2 = Vector2.ZERO,
-		new_scene_zoom_level: Vector2 = Vector2.ONE,
-		move_player: bool = true
+	scene: PackedScene,
+			player_position: Vector2,
+			transition_type: String = "none",
+			old_scene_zoom_level: Vector2 = Vector2.ONE,
+			specific_position_override: Vector2 = Vector2.ZERO,
+			new_scene_zoom_level: Vector2 = Vector2.ONE,
+			move_player: bool = true
 ) -> void:
 	if transition_in_progress:
 		print("SceneSwitcher: already in transition")
-		return
-
+			return
+	
 	transition_in_progress    = true
-	target_scene_path         = scene_path
+	target_scene              = scene
 	target_position           = player_position
-	tween_target_zoom         = old_scene_zoom_level
-	load_camera_zoom          = new_scene_zoom_level
-	pending_transition_type   = transition_type
-	specific_position         = specific_position_override
-	pending_move_player       = move_player
-
+		tween_target_zoom         = old_scene_zoom_level
+		load_camera_zoom          = new_scene_zoom_level
+		pending_transition_type   = transition_type
+		specific_position         = specific_position_override
+		pending_move_player       = move_player
+	
 	if specific_position != Vector2.ZERO:
 		_translate_camera(specific_position, transition_type)
 	else:
@@ -206,20 +206,21 @@ func _remove_old_scene() -> void:
 
 var _next_scene: Node = null
 
-func _load_new_scene() -> bool:
-		var packed = ResourceLoader.load(target_scene_path) as PackedScene
-		if not packed:
-				push_error("SceneSwitcher: failed to load %s" % target_scene_path)
-				return false
-
-		_next_scene = packed.instantiate()
-
-		if pending_move_player:
-				if _next_scene.has_node("PlayerShip"):
-						_next_scene.get_node("PlayerShip").global_position = target_position
-				elif _next_scene.has_node("Player"):
-						_next_scene.get_node("Player").global_position = target_position
-
+	
+	func _load_new_scene() -> bool:
+	var packed = target_scene
+	if packed == null:
+push_error("SceneSwitcher: no target scene")
+	return false
+		
+				_next_scene = packed.instantiate()
+	
+			if pending_move_player:
+						if _next_scene.has_node("PlayerShip"):
+									_next_scene.get_node("PlayerShip").global_position = target_position
+						elif _next_scene.has_node("Player"):
+							_next_scene.get_node("Player").global_position = target_position
+	
 		var nc = _find_camera_for_scene(_next_scene)
 		if nc:
 				var target_zoom = load_camera_zoom
