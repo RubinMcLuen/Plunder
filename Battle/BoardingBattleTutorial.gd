@@ -246,6 +246,9 @@ func _finish_tutorial() -> void:
 		Global.return_scene_path = ""
 		SceneSwitcher.switch_scene(scene, Global.spawn_position, "none", Vector2(), Vector2(), Vector2(16,16), true)
 
-func _exit_tree() -> void:
+	func _exit_tree() -> void:
+	if _battle_over:
+		Global.boarding_battle_tutorial_state = {}
+	else:
 		Global.boarding_battle_tutorial_state = get_tutorial_state()
 
