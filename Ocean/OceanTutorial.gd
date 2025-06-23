@@ -116,8 +116,8 @@ func _apply_allowed_actions() -> void:
 
 
 func _ready() -> void:
-				await super._ready()
-				_setup_environment()
+		await super._ready()
+		_setup_environment()
 		
 		var loaded_state := false
 		if Global.ocean_tutorial_state and Global.ocean_tutorial_state.size() > 0:
@@ -138,7 +138,7 @@ func _ready() -> void:
 				_fade_out_enemy_ship(1.0)
 				await get_tree().create_timer(1.0).timeout
 			if not post_menu_shown:
-			_show_post_menu()
+				_show_post_menu()
 		elif enemy_ship and not loaded_state:
 			_enemy_layer = enemy_ship.collision_layer
 			_enemy_mask  = enemy_ship.collision_mask
@@ -150,7 +150,7 @@ func _ready() -> void:
 			enemy_ship.set_process(false)
 			enemy_ship.set_physics_process(false)
 			if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
-		enemy_ship.connect("area_entered", _on_enemy_area_entered)
+				enemy_ship.connect("area_entered", _on_enemy_area_entered)
 		
 				if player_ship:
 						_orig_max_speed    = player_ship.max_speed
@@ -168,7 +168,7 @@ func _ready() -> void:
 				if player_ship and player_ship.has_signal("player_docked"):
 						player_ship.connect("player_docked", _on_player_docked)
 				if player_ship and player_ship.has_signal("cannons_fired_left"):
-				player_ship.connect("cannons_fired_left", _on_cannons_fired_left)
+					player_ship.connect("cannons_fired_left", _on_cannons_fired_left)
 		if player_ship and player_ship.has_signal("cannons_fired_right"):
 				player_ship.connect("cannons_fired_right", _on_cannons_fired_right)
 
