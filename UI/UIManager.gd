@@ -216,14 +216,14 @@ func _switch_to_boarding() -> void:
 		else:
 				Global.enemy_spawn_position = Vector2.ZERO
 
-var scene_path = "res://Battle/BoardingBattle.tscn"
-		var in_ocean_tutorial := ocean is Global.OceanTutorial or ocean.scene_file_path.ends_with("oceantutorial.tscn")
+		var scene_path = "res://Battle/BoardingBattle.tscn"
+		var in_ocean_tutorial = ocean is Global.OceanTutorial or ocean.scene_file_path.ends_with("oceantutorial.tscn")
 		var special_shipwreck := false
 		if ocean.has_node("EnemyShip"):
-		var enemy = ocean.get_node("EnemyShip")
-		special_shipwreck = not enemy.spawn_dock_arrow_on_death
+			var enemy = ocean.get_node("EnemyShip")
+			special_shipwreck = not enemy.spawn_dock_arrow_on_death
 		if (in_ocean_tutorial and not Global.ocean_tutorial_complete) or special_shipwreck:
-		scene_path = "res://Battle/BoardingBattleTutorial.tscn"
+			scene_path = "res://Battle/BoardingBattleTutorial.tscn"
 
 		SceneSwitcher.switch_scene(
 				scene_path,
