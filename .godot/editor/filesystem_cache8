@@ -1,5 +1,5 @@
 e22c9c70a03ae172662e56cbc433647f
-::res://::1750712284
+::res://::1750712442
 clienticon.png::CompressedTexture2D::7882032090579473772::1749611328::1750659755::1::::<><>::
 CrewManager.gd::GDScript::-1::1750663920::0::1::::<>Node<>::
 EnemyCrew.gd::GDScript::-1::1750663920::0::1::::<>Node2D<>::
@@ -102,7 +102,7 @@ ZoomedOutNewShip.png::CompressedTexture2D::5058058313781300051::1749611328::1750
 ::res://Character/::1750659755
 character.tscn::PackedScene::6209234220558032503::1749611328::0::1::::<><>::uid://d1k2nd0wq0kx6::::res://Character/assets/UVmap.tres<>uid://crmgmytj22w67::::res://Character/deathanimation.png<>uid://bscap5crp7eug::::res://Character/assets/SwordAnimationSpritesheet.png
 deathanimation.png::CompressedTexture2D::5991211264122702462::1749611328::1750659755::1::::<><>::
-::res://Character/assets/::1750659774
+::res://Character/assets/::1750712434
 NPCSprites.png::CompressedTexture2D::604278842901453324::1749611328::1750659755::1::::<><>::
 old.png::CompressedTexture2D::3409697984055420825::1749611328::1750659755::1::::<><>::
 PlayerCustomizationSprites.png::CompressedTexture2D::2718111080338298552::1749611328::1750659755::1::::<><>::
@@ -110,7 +110,7 @@ PlayerCustomizationSpritesBlackOutline.png::CompressedTexture2D::376625779648393
 SwordAnimationSpritesheet.png::CompressedTexture2D::3653976991178200398::1749611328::1750659755::1::::<><>::
 UVMap2.png::CompressedTexture2D::7824075234742014886::1749611328::1750659755::1::::<><>::
 UVMap.png::CompressedTexture2D::3070606485364254344::1749611328::1750659755::1::::<><>::
-UVmap.tres::SpriteFrames::9006478534546317597::1750659774::0::1::::<><>::uid://bj0oo74lng70w::::res://Character/assets/UVMap.png
+UVmap.tres::SpriteFrames::9006478534546317597::1750712434::0::1::::<><>::uid://bj0oo74lng70w::::res://Character/assets/UVMap.png
 UVMapbackup2.png::CompressedTexture2D::8995070453034203294::1749611328::1750659755::1::::<><>::
 ::res://Character/Model/::1750659755
 Model.png::CompressedTexture2D::3767363368003270351::1749611328::1750659755::1::::<><>::
@@ -508,9 +508,9 @@ noiseTexture-3.png::CompressedTexture2D::5065184032133500761::1749611328::175065
 noiseTexture-4.png::CompressedTexture2D::3138312734191856080::1749611328::1750659755::1::::<><>::
 noiseTexture-5.png::CompressedTexture2D::3536791295705654750::1749611328::1750659755::1::::<><>::
 noiseTexture-6.png::CompressedTexture2D::2427637892650239058::1749611328::1750659755::1::::<><>::
-::res://Ships/Assets/Shaders/::1750659774
+::res://Ships/Assets/Shaders/::1750712434
 CircleBlur64x64.png::CompressedTexture2D::1919042667048790024::1749611328::1750659755::1::::<><>::
-RippleShader.tres::VisualShader::1972123378151689989::1750659774::0::1::::<><>::
+RippleShader.tres::VisualShader::1972123378151689989::1750712434::0::1::::<><>::
 VisualShaderNodePerlinNoise3D.gd::GDScript::-1::1749611328::0::1::::VisualShaderNodePerlinNoise3D<>VisualShaderNodeCustom<>::
 VisualShaderNodePixelize.gd::GDScript::-1::1749611328::0::1::::VisualShaderNodePixelize<>VisualShaderNodeCustom<>::
 VisualShaderNodePixelizeUV.gd::GDScript::-1::1749611328::0::1::::VisualShaderNodePixelizeUV<>VisualShaderNodeCustom<>::
