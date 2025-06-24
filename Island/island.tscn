@@ -1,6 +1,6 @@
 [gd_scene load_steps=29 format=3 uid="uid://cfibpjveqehsp"]
 
-[ext_resource type="Script" path="res://Island/island.gd" id="1_n8rp0"]
+[ext_resource type="Script" path="res://Island/Island.gd" id="1_n8rp0"]
 [ext_resource type="Resource" uid="uid://cqxjyogd27nmq" path="res://Dialogue/dialogues/MonteCoral.dialogue" id="2_vaviu"]
 [ext_resource type="Resource" uid="uid://cuv7qfb43qg7d" path="res://Dialogue/dialogues/FirstMate.dialogue" id="3_ju8cp"]
 [ext_resource type="Texture2D" uid="uid://c01pfxvgxpa2i" path="res://Island/shipsand.png" id="4_0rnn0"]

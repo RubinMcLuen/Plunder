@@ -1,4 +1,4 @@
-extends "res://Island/island.gd"
+extends "res://Island/Island.gd"
 
 @onready var hint_label: RichTextLabel = $CanvasLayer/HintLabel
 @onready var arrow      : Sprite2D      = $Arrow

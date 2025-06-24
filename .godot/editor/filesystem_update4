@@ -1,2 +1,13 @@
-res://Character/assets/UVmap.tres
-res://Ships/Assets/Shaders/RippleShader.tres
+res://Main.tscn
+res://KelptownInn/KelptownInn.tscn
+res://Island/IslandTutorial.gd
+res://Character/NPC/NPCs/Barnaby.gd
+res://KelptownInn/KelptownInnTutorial.gd
+res://KelptownIsland/KelptownIsland.gd
+res://KelptownIsland/KelptownIslandTutorial.gd
+res://SoundManager.gd
+res://UI/UIManager.gd
+res://Battle/BoardingBattleTutorial.tscn
+res://Battle/BoardingBattleTutorial.gd
+res://Battle/BoardingBattle.tscn
+res://Battle/BoardingBattle.gd

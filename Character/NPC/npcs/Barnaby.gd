@@ -7,7 +7,7 @@ signal dialogue_requested(dialogue_section: String, caller: NPC)
 
 @export var scene_pre_hire    : String  = "res://KelptownInn/KelptownInnTutorial.tscn"
 @export var position_pre_hire : Vector2 = Vector2(235,  133)
-@export var scene_post_hire   : String  = "res://Island/islandtutorial.tscn"
+@export var scene_post_hire   : String  = "res://Island/IslandTutorial.tscn"
 @export var position_post_hire: Vector2 = Vector2( 75, 700)
 
 @export var state: String = "Hirable"

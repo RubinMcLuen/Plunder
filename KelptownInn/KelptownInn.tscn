@@ -106,16 +106,7 @@ bartender_dialogue_resource = ExtResource("3_43j7b")
 position = Vector2(270, 68)
 collision_layer = 2
 script = ExtResource("3_yne2m")
-npc_name = ""
-fight_side_right = false
-stats = null
-customization_only = false
-fightable = false
 dialogue_resource = ExtResource("3_43j7b")
-npc_texture_index = 0
-health = 3
-speed = 100.0
-hirable = false
 
 [node name="Player" parent="." instance=ExtResource("3_v7aqn")]
 position = Vector2(268, 226)

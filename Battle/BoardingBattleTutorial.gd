@@ -6,6 +6,7 @@ class_name BoardingBattleTutorial
 @onready var manager    : BattleManagerTutorial = $BattleManager
 @onready var crew_container : Node2D = $CrewContainer
 
+
 var step : int = 0
 var _advancing : bool = false
 var barnaby : CrewMemberNPC = null
@@ -236,16 +237,25 @@ func _on_enemy_defeated() -> void:
 			_advance_step(4)
 
 func _finish_tutorial() -> void:
-		var tw := fade_out_all(2.0)
-		var cam_tw = create_tween()
-		cam_tw.tween_property(cam, "global_position:y", _orig_cam_y, 2.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-		await tw.finished
-		await cam_tw.finished
-		Global.board_zoom_out_next = true
-		Global.ocean_tutorial_complete = true
-		var scene = Global.return_scene_path if Global.return_scene_path != "" else "res://Ocean/oceantutorial.tscn"
-		Global.return_scene_path = ""
-		SceneSwitcher.switch_scene(scene, Global.spawn_position, "none", Vector2(), Vector2(), Vector2(16,16), true)
+	var tw := fade_out_all(2.0)
+	var cam_tw := create_tween()
+	cam_tw.tween_property(cam, "global_position:y", _orig_cam_y, 2.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	await tw.finished
+	await cam_tw.finished
+
+	Global.board_zoom_out_next = true
+	Global.ocean_tutorial_complete = true
+
+	# now switch to the preloaded tutorial scene
+	SceneSwitcher.switch_scene(
+		OCEAN_TUTORIAL_SCENE,
+		Global.spawn_position,
+		"none",
+		Vector2(),
+		Vector2(),
+		Vector2(16,16),
+		true
+	)
 
 func _exit_tree() -> void:
 	if _battle_over:

@@ -18,8 +18,8 @@ const NOTIF_HOME_POS := Vector2(191, -32)
 const INFO_BUTTON_SFX := preload("res://SFX/infobuttons.wav")
 const BOARDING_BATTLE_SCENE := preload("res://Battle/BoardingBattle.tscn")
 const BOARDING_BATTLE_TUTORIAL_SCENE := preload("res://Battle/BoardingBattleTutorial.tscn")
-const OCEAN_SCENE := preload("res://Ocean/oceantutorial.tscn")
-const ISLAND_SCENE := preload("res://Island/islandtutorial.tscn")
+const OCEAN_SCENE := preload("res://Ocean/OceanTutorial.tscn")
+const ISLAND_SCENE := preload("res://Island/IslandTutorial.tscn")
 
 var _board_mode : bool		       = false
 var _current_ocean  : Node	       = null
@@ -221,7 +221,7 @@ func _switch_to_boarding() -> void:
 				Global.enemy_spawn_position = Vector2.ZERO
 
 		var scene := BOARDING_BATTLE_SCENE
-		var in_ocean_tutorial = ocean is Global.OceanTutorial or ocean.scene_file_path.ends_with("oceantutorial.tscn")
+		var in_ocean_tutorial = ocean is Global.OceanTutorial or ocean.scene_file_path.ends_with("OceanTutorial.tscn")
 		var special_shipwreck := false
 		if ocean.has_node("EnemyShip"):
 			var enemy = ocean.get_node("EnemyShip")
@@ -343,7 +343,7 @@ func _on_dock_ship_button_pressed() -> void:
 # ──────────────────────────
 func _update_enemy_button_visibility() -> void:
 		var scene = get_tree().current_scene
-		if scene and scene.scene_file_path.ends_with("oceantutorial.tscn") and Global.ocean_tutorial_complete:
+		if scene and scene.scene_file_path.ends_with("OceanTutorial.tscn") and Global.ocean_tutorial_complete:
 				enemy_toggle_button.show()
 		else:
 				enemy_toggle_button.hide()

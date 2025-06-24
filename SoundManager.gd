@@ -28,8 +28,8 @@ func _on_scene_changed(scene: Node = null) -> void:
 				scene = get_tree().current_scene
 		var path := scene.scene_file_path if scene else ""
 		if path.ends_with("KelptownInnTutorial.tscn") \
-						or path.ends_with("islandtutorial.tscn") \
-						or path.ends_with("oceantutorial.tscn"):
+						or path.ends_with("IslandTutorial.tscn") \
+						or path.ends_with("OceanTutorial.tscn"):
 				_start_island_music()
 		elif path.ends_with("BoardingBattleTutorial.tscn"):
 				_start_boarding_music()

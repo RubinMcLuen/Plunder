@@ -377,7 +377,7 @@ func _on_exit_body_entered(body: Node) -> void:
 		Global.skip_player_fade = true
 		Global.island_intro_next = true
 		SceneSwitcher.switch_scene(
-				preload("res://Island/islandtutorial.tscn"),
+				preload("res://Island/IslandTutorial.tscn"),
 				Vector2(64, -42),
 	"fade",
 	Vector2.ONE,
