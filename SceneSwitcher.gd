@@ -82,7 +82,7 @@ func _detect_current_scene() -> void:
 # )
 ##
 func switch_scene(
-	scene: PackedScene,
+	scene_or_path: Variant,
 			player_position: Vector2,
 			transition_type: String = "none",
 			old_scene_zoom_level: Vector2 = Vector2.ONE,
@@ -93,9 +93,20 @@ func switch_scene(
 	if transition_in_progress:
 		print("SceneSwitcher: already in transition")
 		return
+	var packed: PackedScene = null
+	if scene_or_path is PackedScene:
+		packed = scene_or_path
+	elif typeof(scene_or_path) == TYPE_STRING:
+		packed = load(scene_or_path)
+		if not (packed is PackedScene):
+			push_error("SceneSwitcher: invalid scene path " + str(scene_or_path))
+			return
+	else:
+		push_error("SceneSwitcher: scene argument must be PackedScene or String")
+		return
 	
 	transition_in_progress    = true
-	target_scene              = scene
+	target_scene              = packed
 	target_position           = player_position
 	tween_target_zoom         = old_scene_zoom_level
 	load_camera_zoom          = new_scene_zoom_level
