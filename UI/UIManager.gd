@@ -18,8 +18,8 @@ const NOTIF_HOME_POS := Vector2(191, -32)
 const INFO_BUTTON_SFX := preload("res://SFX/infobuttons.wav")
 const BOARDING_BATTLE_SCENE := preload("res://Battle/BoardingBattle.tscn")
 const BOARDING_BATTLE_TUTORIAL_SCENE := preload("res://Battle/BoardingBattleTutorial.tscn")
-const OCEAN_SCENE := preload("res://Ocean/OceanTutorial.tscn")
-const ISLAND_SCENE := preload("res://Island/IslandTutorial.tscn")
+const OCEAN_SCENE := preload("res://Ocean/ocean.tscn")
+const ISLAND_SCENE := preload("res://Island/Island.tscn")
 
 var _board_mode : bool		       = false
 var _current_ocean  : Node	       = null
