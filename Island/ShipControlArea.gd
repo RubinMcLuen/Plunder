@@ -17,8 +17,8 @@ func _on_body_exited(body: Node) -> void:
 		allow_menu = true  # Now the player can reenter to trigger the menu
 
 func _on_button_pressed() -> void:
-		SceneSwitcher.switch_scene(
-								preload("res://Ocean/OceanTutorial.tscn"),
+SceneSwitcher.switch_scene(
+preload("res://Ocean/ocean.tscn"),
 								Vector2(-2, 39),
 								"zoom",
 								Vector2(0.0625, 0.0625),

@@ -1,8 +1,8 @@
 extends Node2D
 class_name BoardingBattle
 
-# Preload the ocean tutorial scene so it's always included in the export
-const OCEAN_TUTORIAL_SCENE: PackedScene = preload("res://Ocean/OceanTutorial.tscn")
+# Preload the ocean scene so it's always included in the export
+const OCEAN_TUTORIAL_SCENE: PackedScene = preload("res://Ocean/ocean.tscn")
 const FADE_DURATION := 2.0
 
 @onready var containers := [

@@ -5,6 +5,9 @@ signal board_enemy_request(enemy: Node2D)
 @export var player_ship_path: NodePath
 var player_ship     : Node2D = null
 var _enemy_to_board : Node2D = null
+var enemy_ship    : Area2D = null
+var _enemy_layer  : int    = 0
+var _enemy_mask   : int    = 0
 
 func _enter_tree() -> void:
 		if Global.restore_sails_next:
@@ -197,3 +200,36 @@ func _show_environment() -> void:
 				$Waves.modulate.a = 1.0
 		if has_node("KelptownIsland/Foam"):
 				$"KelptownIsland/Foam".modulate.a = 1.0
+
+func _spawn_normal_enemy() -> void:
+	var scene := preload("res://Ships/EnemyShip.tscn")
+	enemy_ship = scene.instantiate()
+	add_child(enemy_ship)
+	if player_ship:
+		var radius := 100.0
+		var angle := randf() * TAU
+		enemy_ship.global_position = player_ship.global_position + Vector2(cos(angle), sin(angle)) * radius
+		enemy_ship.player = player_ship
+	enemy_ship.full_speed = 40.0
+	enemy_ship.health = 10
+	enemy_ship.visible = true
+	enemy_ship.ready_for_boarding = false
+	enemy_ship.input_pickable = false
+	_enemy_layer = enemy_ship.collision_layer
+	_enemy_mask = enemy_ship.collision_mask
+	enemy_ship.set_process(true)
+	enemy_ship.set_physics_process(true)
+	if not enemy_ship.is_connected("area_entered", Callable(self, "_on_enemy_area_entered")):
+		enemy_ship.connect("area_entered", _on_enemy_area_entered)
+	Global.crew_override = ["Barnaby", "Barnaby", "Barnaby", "Barnaby", "Barnaby"]
+	Global.enemy_count_override = 3
+
+func toggle_enemy_ship() -> void:
+	if enemy_ship and is_instance_valid(enemy_ship) and enemy_ship.current_state != enemy_ship.EnemyState.DEAD:
+		if enemy_ship.has_method("_die"):
+			enemy_ship._die()
+		return
+	_spawn_normal_enemy()
+
+func _on_enemy_area_entered(_area: Area2D) -> void:
+	pass
