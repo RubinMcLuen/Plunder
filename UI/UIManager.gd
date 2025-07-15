@@ -343,10 +343,15 @@ func _on_dock_ship_button_pressed() -> void:
 # ──────────────────────────
 func _update_enemy_button_visibility() -> void:
 	var scene = get_tree().current_scene
-	if scene and Global.ocean_tutorial_complete and (scene.scene_file_path.ends_with("OceanTutorial.tscn") or scene.scene_file_path.ends_with("ocean.tscn")):
-		enemy_toggle_button.show()
-	else:
-		enemy_toggle_button.hide()
+	if scene:
+		var path := scene.scene_file_path
+		if path.ends_with("ocean.tscn"):
+			enemy_toggle_button.show()
+			return
+		if Global.ocean_tutorial_complete and path.ends_with("OceanTutorial.tscn"):
+			enemy_toggle_button.show()
+			return
+	enemy_toggle_button.hide()
 
 
 func _on_spawn_enemy_button_pressed() -> void:
