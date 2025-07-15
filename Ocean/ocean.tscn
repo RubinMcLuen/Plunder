@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://kbt3hu1lmvfj"]
+[gd_scene load_steps=8 format=3 uid="uid://kbt3hu1lmvfj"]
 
 [ext_resource type="Script" path="res://Ocean/Ocean.gd" id="1_kxoef"]
 [ext_resource type="Texture2D" uid="uid://fxlwkiykamae" path="res://Ocean/frame_0100-sheet.png" id="1_xs5hd"]
@@ -295,4 +295,3 @@ z_index = -1
 position = Vector2(-22, -8)
 texture = ExtResource("5_ry4ey")
 centered = false
-

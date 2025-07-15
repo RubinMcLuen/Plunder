@@ -3,7 +3,6 @@ extends "res://Ocean/Ocean.gd"
 @onready var hint_label : RichTextLabel = $CanvasLayer/HintLabel
 @onready var island      : Node2D        = $KelptownIsland
 @onready var arrow       : Sprite2D      = $Arrow
-@onready var enemy_ship  : Area2D        = $EnemyShip
 @onready var waves       : TileMap       = $Waves
 @onready var water       : ColorRect     = $Water
 
@@ -16,8 +15,6 @@ var enemy_hit          : bool  = false
 var _advancing         : bool  = false
 var _orig_max_speed    : float = 0.0
 var _orig_target_speed : float = 0.0
-var _enemy_layer       : int   = 0
-var _enemy_mask        : int   = 0
 var post_menu_shown    : bool  = false
 const POST_MENU_SCENE := preload("res://SwordFight/PostBoardingTutorial.tscn")
 
