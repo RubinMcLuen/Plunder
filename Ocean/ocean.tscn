@@ -4,10 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://fxlwkiykamae" path="res://Ocean/frame_0100-sheet.png" id="1_xs5hd"]
 [ext_resource type="PackedScene" uid="uid://bw8b2mbvoo5rw" path="res://KelptownIsland/KelptownIslandTutorial.tscn" id="2_4inh8"]
 [ext_resource type="PackedScene" uid="uid://0ab5frbt0cuk" path="res://Ships/PlayerShip.tscn" id="3_qc67i"]
-[ext_resource type="Texture2D" uid="uid://b7vbpojgnk67l" path="res://Island/PlayerIsland.png" id="5_3mcoo"]
 [ext_resource type="Texture2D" uid="uid://cecfqmsm2oaqt" path="res://Battle/ZoomedOutNewShip.png" id="5_ry4ey"]
-[ext_resource type="Texture2D" uid="uid://bbecueeouc3gh" path="res://Ships/detailedboat.png" id="6_fpc3e"]
-[ext_resource type="PackedScene" uid="uid://cnxn3imjbuqru" path="res://Ships/EnemyShip.tscn" id="7_6y6ch"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8clfk"]
 texture = ExtResource("1_xs5hd")
@@ -299,22 +296,3 @@ position = Vector2(-22, -8)
 texture = ExtResource("5_ry4ey")
 centered = false
 
-[node name="EnemyShip" parent="." node_paths=PackedStringArray("player") instance=ExtResource("7_6y6ch")]
-visible = false
-z_index = 2
-position = Vector2(71, 65)
-start_dead_for_testing = true
-player = NodePath("../PlayerShip")
-full_speed = 40.0
-health = 1
-
-[node name="MixSprite" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0)
-z_index = 4
-position = Vector2(16.15, -93)
-scale = Vector2(0.063, 0.063)
-texture = ExtResource("5_3mcoo")
-
-[node name="Sprite2D" type="Sprite2D" parent="MixSprite"]
-position = Vector2(-239.5, 2125)
-texture = ExtResource("6_fpc3e")
