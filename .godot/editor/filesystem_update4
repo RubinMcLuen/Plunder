@@ -8,3 +8,4 @@ res://Ocean/ocean.tscn
 res://Island/island.gd
 res://Island/ShipControlArea.gd
 res://Ocean/OceanTutorial.gd
+res://UI/UIManager.gd

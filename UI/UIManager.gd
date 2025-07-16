@@ -344,7 +344,7 @@ func _on_dock_ship_button_pressed() -> void:
 func _update_enemy_button_visibility() -> void:
 	var scene = get_tree().current_scene
 	if scene:
-		var path := scene.scene_file_path
+		var path = scene.scene_file_path
 		if path.ends_with("ocean.tscn"):
 			enemy_toggle_button.show()
 			return
