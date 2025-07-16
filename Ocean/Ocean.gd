@@ -87,6 +87,8 @@ func _ready() -> void:
 
 	# Listen for boarding requests
 	connect("board_enemy_request", Callable(self, "_on_board_enemy_request"))
+	if player_ship and player_ship.has_signal("player_docked"):
+		player_ship.connect("player_docked", _on_player_docked)
 
 
 func _on_board_enemy_request(enemy: Node2D) -> void:
@@ -95,6 +97,10 @@ func _on_board_enemy_request(enemy: Node2D) -> void:
 		if player_ship:
 				player_ship.dock_with_enemy(enemy.global_position)
 
+func _on_player_docked() -> void:
+	if _enemy_to_board and is_instance_valid(_enemy_to_board):
+		if _enemy_to_board.get("ready_for_boarding"):
+			UIManager.show_begin_raid_menu()
 
 func start_boarding_transition(fade_time: float = 1.5) -> void:
 	if player_ship == null or _enemy_to_board == null:
