@@ -132,11 +132,13 @@ func queue_island_dock() -> void:
 		_island_dock_next = true
 
 func _on_board_enemy_request(_enemy: Node2D) -> void:
-		_board_mode = true
-		hide_set_sail_menu()
-		hide_dock_ship_menu()
-		hide_location_notification()
-		hide_begin_raid_menu()
+	_board_mode = true
+	hide_set_sail_menu()
+	hide_dock_ship_menu()
+	hide_location_notification()
+	hide_begin_raid_menu()
+	if _player_docked:
+		show_begin_raid_menu()
 
 func _on_player_docked() -> void:
 				_player_docked = true
