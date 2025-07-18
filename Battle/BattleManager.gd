@@ -51,21 +51,24 @@ func spawn_crews() -> void:
 	# Only spawn as many as both crew and planks allow
 	var crew_to_spawn = min(crew_names.size(), planks.size())
 	
-	# Get player ship bounds for random spawning
-	var player_ship = get_node("../PlayerShip")
-	var spawn_area = Rect2(player_ship.position.x - 50, player_ship.position.y + 120, 100, 40)
+       # Mirror enemy spawn area across the planks for crew spawning
+       var cs: CollisionShape2D = enemy_spawn_area.get_node("CollisionShape2D")
+       var rect := cs.shape as RectangleShape2D
+       var enemy_center: Vector2 = cs.global_position
+       var ext: Vector2 = rect.extents
+       var plank_line_y := plank_container.get_child(0).global_position.y
+       var crew_center := Vector2(enemy_center.x, 2.0 * plank_line_y - enemy_center.y)
 	
 	for i in range(crew_to_spawn):
 		var name := crew_names[i]
 		var crew_scene: PackedScene = _get_crew_scene(name)
 		var c: CrewMemberNPC = crew_scene.instantiate()
-		
-		# Spawn in random position on player ship
-		var spawn_pos = Vector2(
-			randf_range(spawn_area.position.x, spawn_area.position.x + spawn_area.size.x),
-			randf_range(spawn_area.position.y, spawn_area.position.y + spawn_area.size.y)
+		# Spawn in mirrored area relative to enemy spawn
+		var spawn_off := Vector2(
+		randf_range(-ext.x, ext.x),
+		randf_range(-ext.y, ext.y)
 		)
-		c.global_position = spawn_pos
+		c.global_position = crew_center + spawn_off
 		
 		# Assign plank using smart assignment logic
 		var assigned_plank_index = assign_plank_to_crew(c, planks)

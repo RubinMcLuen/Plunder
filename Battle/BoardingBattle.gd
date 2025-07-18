@@ -16,6 +16,13 @@ const FADE_DURATION := 2.0
 var _orig_cam_y: float = 0.0
 var _battle_over: bool = false
 
+func _enter_tree() -> void:
+	if Global.return_scene_path == "":
+		if Global.crew_override.is_empty() and Global.crew.is_empty():
+		Global.crew_override = ["Barnaby", "Barnaby", "Barnaby", "Barnaby", "Barnaby"]
+		if Global.enemy_count_override <= 0:
+		Global.enemy_count_override = 5
+
 func _ready() -> void:
 	# 1) gather every CanvasItem (Sprite2D, Control, etc.) under those containers
 	var visuals: Array = []
