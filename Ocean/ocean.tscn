@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://kbt3hu1lmvfj"]
+[gd_scene load_steps=9 format=3 uid="uid://kbt3hu1lmvfj"]
 
 [ext_resource type="Script" path="res://Ocean/Ocean.gd" id="1_kxoef"]
 [ext_resource type="Texture2D" uid="uid://fxlwkiykamae" path="res://Ocean/frame_0100-sheet.png" id="1_xs5hd"]
 [ext_resource type="PackedScene" uid="uid://bw8b2mbvoo5rw" path="res://KelptownIsland/KelptownIslandTutorial.tscn" id="2_4inh8"]
 [ext_resource type="PackedScene" uid="uid://0ab5frbt0cuk" path="res://Ships/PlayerShip.tscn" id="3_qc67i"]
 [ext_resource type="Texture2D" uid="uid://cecfqmsm2oaqt" path="res://Battle/ZoomedOutNewShip.png" id="5_ry4ey"]
+[ext_resource type="PackedScene" uid="uid://cnxn3imjbuqru" path="res://Ships/EnemyShip.tscn" id="6_mgatn"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8clfk"]
 texture = ExtResource("1_xs5hd")
@@ -295,3 +296,7 @@ z_index = -1
 position = Vector2(-22, -8)
 texture = ExtResource("5_ry4ey")
 centered = false
+
+[node name="EnemyShip" parent="." instance=ExtResource("6_mgatn")]
+position = Vector2(68, 68)
+start_dead_for_testing = true

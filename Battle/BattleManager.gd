@@ -51,13 +51,13 @@ func spawn_crews() -> void:
 	# Only spawn as many as both crew and planks allow
 	var crew_to_spawn = min(crew_names.size(), planks.size())
 	
-       # Mirror enemy spawn area across the planks for crew spawning
-       var cs: CollisionShape2D = enemy_spawn_area.get_node("CollisionShape2D")
-       var rect := cs.shape as RectangleShape2D
-       var enemy_center: Vector2 = cs.global_position
-       var ext: Vector2 = rect.extents
-       var plank_line_y := plank_container.get_child(0).global_position.y
-       var crew_center := Vector2(enemy_center.x, 2.0 * plank_line_y - enemy_center.y)
+	   # Mirror enemy spawn area across the planks for crew spawning
+	var cs: CollisionShape2D = enemy_spawn_area.get_node("CollisionShape2D")
+	var rect := cs.shape as RectangleShape2D
+	var enemy_center: Vector2 = cs.global_position
+	var ext: Vector2 = rect.extents
+	var plank_line_y = plank_container.get_child(0).global_position.y
+	var crew_center = Vector2(enemy_center.x, 2.0 * plank_line_y - enemy_center.y)
 	
 	for i in range(crew_to_spawn):
 		var name := crew_names[i]

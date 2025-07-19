@@ -4,7 +4,6 @@ class_name BoardingBattleTutorial
 @onready var hint_label : RichTextLabel = $CanvasLayer/HintLabel
 @onready var arrow      : Sprite2D      = $Arrow
 @onready var manager    : BattleManagerTutorial = $BattleManager
-@onready var crew_container : Node2D = $CrewContainer
 
 
 var step : int = 0

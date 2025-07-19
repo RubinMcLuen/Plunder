@@ -19,10 +19,18 @@ func _ready() -> void:
 	var extents: Vector2      = shape.extents
 	_boundary_rect = Rect2(world_center - extents, extents * 2)
 
-	# Slide camera up to y = 121 over 1 second
-	var tween = create_tween()
-	tween.tween_property(self, "global_position:y", 121, 2.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-
+	# ONLY do camera transition if the parent scene allows it
+	var parent_scene = get_tree().current_scene
+	var should_transition = true
+	
+	if parent_scene and "progress_point" in parent_scene:
+		# Only transition at progress point 7+ (Add Camera Transition)
+		should_transition = parent_scene.progress_point >= 7
+	
+	if should_transition:
+		# Slide camera up to y = 121 over 1 second
+		var tween = create_tween()
+		tween.tween_property(self, "global_position:y", 121, 2.0).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
 
 # Camera cares only about RIGHT button & wheel → normal _input is fine
 func _input(event: InputEvent) -> void:

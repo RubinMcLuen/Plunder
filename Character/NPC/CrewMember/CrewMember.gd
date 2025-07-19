@@ -19,6 +19,10 @@ var auto_boarding: bool = false
 var plank_start_target: Vector2
 var walking_to_plank: bool = false
 
+# Demo control variables
+var can_attack: bool = true
+var attack_affects_enemy: bool = true
+
 @onready var melee_area    : Area2D           = $MeleeRange
 @onready var click_area    : Area2D           = $Area2D
 @onready var select_hitbox : CollisionShape2D = $Area2D/SelectHitbox
@@ -36,20 +40,76 @@ func _ready() -> void:
 
 	rng.randomize()
 
-	# Start without sword until boarding
-	if sword:
-		sword.visible = false
+	# Check what progress point we're at to determine initial animation
+	var battle_scene = get_tree().current_scene
+	var progress = 0
+	if battle_scene and "progress_point" in battle_scene:
+		progress = battle_scene.progress_point
+
+	# For camera transition step (7) and later, always start with sword idle
+	if progress >= 7:
+		idle_with_sword = true
+		if sword:
+			sword.visible = true
+			sword.play("IdleSword")
+		appearance.play("IdleSword")
+		print("Crew _ready: Starting with IdleSword for progress ", progress)
+	else:
+		# Start without sword until boarding or fighting
+		if sword:
+			sword.visible = false
+		print("Crew _ready: Starting without sword for progress ", progress)
 
 	click_area.input_event.connect(_on_click)
 	melee_area.body_entered.connect(_on_target_enter)
 	melee_area.body_exited.connect(_on_target_exit)
+	
+	# Configure based on battle progress point
+	_configure_for_progress_point()
+
+func _configure_for_progress_point() -> void:
+	var battle_scene = get_tree().current_scene
+	if not battle_scene:
+		return
+		
+	var progress = 0
+	if "progress_point" in battle_scene:
+		progress = battle_scene.progress_point
+	
+	match progress:
+		0, 1, 2, 3: # Early stages - no attacking (indices 0-3)
+			can_attack = false
+			attack_affects_enemy = false
+		4: # Add melee ranges - can attack but no effect (index 4)
+			can_attack = true
+			attack_affects_enemy = false
+		5: # Enemy takes damage - can attack and affects enemy (index 5)
+			can_attack = true
+			attack_affects_enemy = true
+		6, 7, 8, 9, 10: # Full functionality including camera transition (index 6+)
+			can_attack = true
+			attack_affects_enemy = true
 
 func _on_click(_vp, e: InputEvent, _i) -> void:
-	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and e.pressed and battle_manager:
-		# Auto-boarding crews don't respond to clicks
-		if not auto_boarding:
-			dragging = true
-			battle_manager.select_unit(self)
+	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and e.pressed:
+		print("Crew clicked!")
+		if battle_manager:
+			print("Battle manager exists, calling select_unit")
+			# Different behavior based on progress point
+			var battle_scene = get_tree().current_scene
+			var progress = 0
+			if battle_scene and "progress_point" in battle_scene:
+				progress = battle_scene.progress_point
+			
+			print("Progress point: ", progress)
+			# Auto-boarding crews (progress 10+) don't respond to clicks
+			if not auto_boarding:
+				print("Not auto_boarding, selecting unit")
+				battle_manager.select_unit(self)
+			else:
+				print("Auto_boarding is true, ignoring click")
+		else:
+			print("No battle_manager!")
 
 func _physics_process(delta: float) -> void:
 	cooldown      = max(cooldown - delta, 0.0)
@@ -59,9 +119,9 @@ func _physics_process(delta: float) -> void:
 		_handle_auto_boarding(delta)
 	elif is_boarding and not has_boarded:
 		_walk_plank(delta)
-	elif has_boarded and dragging:
+	elif dragging:  # Handle dragging regardless of has_boarded status
 		_drag(delta)
-	elif has_boarded:
+	elif (fighting or can_attack) and can_attack:  # Allow attacking if either fighting OR can_attack is true
 		_auto_attack()
 	else:
 		velocity = Vector2.ZERO
@@ -95,7 +155,6 @@ func start_auto_boarding(plank_start: Vector2, board_target: Vector2) -> void:
 	fighting = false
 	idle_with_sword = false
 
-# In CrewMemberNPC.gd:
 func update_animation() -> void:
 	# 1) Animation override (slash/lunge/block/hurt)
 	if anim_override:
@@ -155,8 +214,8 @@ func update_animation() -> void:
 		appearance.flip_h = (direction == Vector2.LEFT)
 		return
 
-	# 4) Idle-with-sword (combat stance)
-	if fighting and idle_with_sword:
+	# 4) Idle-with-sword (combat stance) - ALWAYS use this if idle_with_sword is true
+	if idle_with_sword:
 		if appearance.animation != "IdleSword":
 			appearance.play("IdleSword")
 		if sword:
@@ -186,6 +245,17 @@ func _walk_plank(_delta: float) -> void:
 		auto_boarding     = false
 		walking_to_plank  = false
 		is_boarding       = false
+		
+		# For manual deploy and auto systems, make sure they remain draggable after boarding
+		var battle_scene = get_tree().current_scene
+		var progress = 0
+		if battle_scene and "progress_point" in battle_scene:
+			progress = battle_scene.progress_point
+		
+		if progress >= 8:  # Manual deploy (8) and auto systems (9+)
+			# Keep battle_manager reference so they stay draggable
+			pass  # battle_manager should already be set
+		
 		appearance.play("IdleSword")
 		if sword:
 			sword.visible = true
@@ -205,8 +275,16 @@ func _drag(_delta: float) -> void:
 		set_facing_direction(dir.x < 0)
 
 func _auto_attack() -> void:
-	if targets.is_empty() or cooldown > 0.0:
+	if targets.is_empty() or cooldown > 0.0 or not can_attack:
 		return
+
+	# Debug output for all progress points
+	var battle_scene = get_tree().current_scene
+	var progress = 0
+	if battle_scene and "progress_point" in battle_scene:
+		progress = battle_scene.progress_point
+	
+	print("Progress ", progress, ": Crew attempting attack, can_attack=", can_attack, ", attack_affects_enemy=", attack_affects_enemy, ", fighting=", fighting)
 
 	var tgt = targets[0]
 	if not is_instance_valid(tgt):
@@ -226,13 +304,25 @@ func _auto_attack() -> void:
 	cooldown_lock = ATTACK_COOLDOWN
 	var delay = _hit_delay(anim, 5)
 	await get_tree().create_timer(delay).timeout
-	if is_instance_valid(tgt):
+	
+	if is_instance_valid(tgt) and attack_affects_enemy:
+		print("Actually damaging enemy at progress ", progress)
 		tgt.take_damage()
+	else:
+		print("Attack animation only, no damage at progress ", progress)
 
 func _on_target_enter(n: Node) -> void:
 	# We can still check "is EnemyNPC" even if not type‐hinted 
 	if n is EnemyNPC and not targets.has(n):
 		targets.append(n)
+		
+		# Debug for all progress points
+		var battle_scene = get_tree().current_scene
+		var progress = 0
+		if battle_scene and "progress_point" in battle_scene:
+			progress = battle_scene.progress_point
+		
+		print("Progress ", progress, ": Enemy entered range, targets now: ", targets.size(), ", can_attack: ", can_attack, ", fighting: ", fighting)
 
 func _on_target_exit(n: Node) -> void:
 	if n is EnemyNPC:
@@ -244,6 +334,7 @@ func start_board() -> void:
 
 func start_drag() -> void:
 	dragging = true
+	# Don't require has_boarded for dragging in demo mode
 
 func stop_drag() -> void:
 	dragging = false

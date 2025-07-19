@@ -15,16 +15,6 @@ radius = 30.0
 
 [node name="Enemy" instance=ExtResource("1_8o7wt")]
 script = ExtResource("2_0ie86")
-npc_name = ""
-fight_side_right = false
-stats = null
-customization_only = false
-fightable = false
-dialogue_resource = null
-npc_texture_index = 0
-health = 3
-speed = 100.0
-hirable = false
 
 [node name="Appearance" parent="." index="0"]
 material = SubResource("ShaderMaterial_e8l4e")
