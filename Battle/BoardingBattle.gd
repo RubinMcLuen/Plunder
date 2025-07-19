@@ -14,8 +14,9 @@ class_name BoardingBattle
 	"Add Camera Transition",
 	"Manual Deploy System",
 	"Random Spawn Positions",
-	"Smart Plank Assignment"
-) var progress_point: int = 10
+	"Smart Plank Assignment",
+	"Crew Pathfinding AI"
+) var progress_point: int = 11
 
 # Preload the ocean scene so it's always included in the export
 const OCEAN_TUTORIAL_SCENE: PackedScene = preload("res://Ocean/ocean.tscn")
@@ -41,6 +42,9 @@ var selected_crew: Node = null
 var planks_in_use: Array[bool] = []
 var crew_plank_assignments: Dictionary = {}
 
+# Pathfinding system
+var pathfinding_manager: PathfindingManager
+
 func _ready() -> void:
 	# Only run setup in game, not in editor
 	if not Engine.is_editor_hint():
@@ -52,7 +56,7 @@ func _ready() -> void:
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "progress_point":
 		property.hint = PROPERTY_HINT_ENUM
-		property.hint_string = "Scenery Only,Add One Crewmate,Add Boards,Add Idle Enemy,Add Melee Ranges,Enemy Takes Damage,Full Enemy AI,Add Camera Transition,Manual Deploy System,Random Spawn Positions,Smart Plank Assignment"
+		property.hint_string = "Scenery Only,Add One Crewmate,Add Boards,Add Idle Enemy,Add Melee Ranges,Enemy Takes Damage,Full Enemy AI,Add Camera Transition,Manual Deploy System,Random Spawn Positions,Smart Plank Assignment,Crew Pathfinding AI"
 
 func _setup_based_on_progress() -> void:
 	# Start with clean slate
@@ -94,12 +98,20 @@ func _setup_based_on_progress() -> void:
 		10: # Smart Plank Assignment
 			print("- Smart plank assignment")
 			_setup_smart_assignment()
+		11: # Crew Pathfinding AI
+			print("- Crew pathfinding AI")
+			_setup_pathfinding_ai()
 
 func _clear_all_entities() -> void:
 	for child in crew_container.get_children():
 		child.queue_free()
 	for child in enemy_container.get_children():
 		child.queue_free()
+	
+	# Clean up pathfinding manager if it exists
+	if pathfinding_manager and is_instance_valid(pathfinding_manager):
+		pathfinding_manager.queue_free()
+		pathfinding_manager = null
 	
 	# Hide all planks initially
 	for plank in plank_container.get_children():
@@ -171,6 +183,88 @@ func _setup_smart_assignment() -> void:
 	_show_all_planks()
 	_spawn_crew_with_smart_assignment()
 	_spawn_multiple_enemies()
+
+func _setup_pathfinding_ai() -> void:
+	_setup_no_transition()
+	_show_all_planks()
+	_setup_pathfinding_manager()
+	_spawn_crew_with_pathfinding()
+	_spawn_multiple_enemies_for_pathfinding()
+
+func _setup_pathfinding_manager() -> void:
+	# Create and configure the pathfinding manager
+	pathfinding_manager = PathfindingManager.new()
+	pathfinding_manager.name = "PathfindingManager"
+	pathfinding_manager.position = Vector2.ZERO
+	add_child(pathfinding_manager)
+	
+	# Configure pathfinding settings
+	pathfinding_manager.pathfinding_enabled = true
+	pathfinding_manager.max_crew_per_enemy = 2
+	pathfinding_manager.arrival_threshold = 25.0
+	
+	print("Pathfinding manager created and configured")
+
+func _spawn_crew_with_pathfinding() -> void:
+	var crew_scene = preload("res://Character/NPC/CrewMember/CrewMember.tscn")
+	# Use enemy spawn area as reference but mirror it to the other side
+	var cs = enemy_spawn_area.get_node("CollisionShape2D")
+	var rect = cs.shape as RectangleShape2D
+	var enemy_center = cs.global_position
+	var ext = rect.extents
+	
+	# Mirror the spawn area to the opposite side of the planks
+	var crew_center = Vector2(enemy_center.x, enemy_center.y + 200)  # Move down to player ship side
+	var planks = plank_container.get_children()
+	
+	# Initialize plank tracking
+	planks_in_use.resize(planks.size())
+	planks_in_use.fill(false)
+	
+	# Spawn only ONE crew member
+	var crew = crew_scene.instantiate()
+	var offset = Vector2(randf_range(-ext.x, ext.x), randf_range(-ext.y, ext.y))
+	crew.global_position = crew_center + offset
+	crew.npc_name = "Crew 1"
+	crew.fighting = false  # Will be enabled after pathfinding
+	crew.idle_with_sword = false  # Will be enabled when boarding
+	crew.battle_manager = self  # Enable dragging for testing
+	
+	# Assign plank using smart logic
+	var assigned_plank_index = _assign_plank_to_crew(crew, planks)
+	var plank = planks[assigned_plank_index]
+	
+	crew.board_target = plank.global_position + Vector2(0, -33)
+	crew_plank_assignments[crew] = {
+		"plank_index": assigned_plank_index,
+		"plank_start": plank.global_position + Vector2(0, 33),
+		"board_target": plank.global_position + Vector2(0, -33),
+		"walking_speed": randf_range(0.7, 1.0)
+	}
+	
+	crew_container.add_child(crew)
+	
+	# Start boarding after a short delay
+	await get_tree().process_frame
+	_start_staggered_boarding()
+
+func _spawn_multiple_enemies_for_pathfinding() -> void:
+	var enemy_scene = preload("res://Character/NPC/Enemy/Enemy.tscn")
+	var cs = enemy_spawn_area.get_node("CollisionShape2D")
+	var rect = cs.shape as RectangleShape2D
+	var center = cs.global_position
+	var ext = rect.extents
+	
+	# Spawn only ONE enemy
+	var enemy = enemy_scene.instantiate()
+	# Place enemy in center of spawn area for predictability
+	enemy.global_position = center
+	enemy.npc_name = "Enemy 1"
+	enemy_container.add_child(enemy)
+	
+	# Register enemy with pathfinding manager
+	if pathfinding_manager:
+		pathfinding_manager.register_enemy(enemy)
 
 # Helper functions for different setups
 func _setup_no_transition() -> void:
@@ -445,9 +539,16 @@ func select_unit(unit: Node) -> void:
 			# If not boarded, start boarding
 			if unit.has_method("start_board"):
 				unit.start_board()
-	elif progress_point >= 9:  # Auto systems - enable dragging for testing (9+)
+	elif progress_point >= 9 and progress_point <= 10:  # Auto systems - enable dragging for testing (9-10)
 		if unit.has_method("start_drag"):
 			unit.start_drag()
+	elif progress_point >= 11:  # Pathfinding mode - limited interaction (11+)
+		# In pathfinding mode, only allow dragging if not currently pathfinding
+		if unit.has_method("get") and "pathfinding_mode" in unit and not unit.pathfinding_mode:
+			if unit.has_method("start_drag"):
+				unit.start_drag()
+		else:
+			print("Crew is currently pathfinding, interaction disabled")
 
 func _input(event: InputEvent) -> void:
 	# Handle different input modes based on progress point
@@ -578,6 +679,10 @@ func apply_battle_state(state: Dictionary) -> void:
 	pass
 
 func _exit_tree() -> void:
+	# Clean up pathfinding manager
+	if pathfinding_manager and is_instance_valid(pathfinding_manager):
+		pathfinding_manager.queue_free()
+	
 	if _battle_over:
 		Global.battle_state = {}
 	else:

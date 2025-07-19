@@ -19,6 +19,15 @@ var auto_boarding: bool = false
 var plank_start_target: Vector2
 var walking_to_plank: bool = false
 
+# Pathfinding system variables
+var pathfinding_mode: bool = false
+var pathfinding_target: Node2D = null
+var pathfinding_velocity: Vector2 = Vector2.ZERO
+var pathfinding_manager: PathfindingManager = null
+var combat_target: Node2D = null
+var post_combat_waiting: bool = false
+var in_combat_range: bool = false
+
 # Demo control variables
 var can_attack: bool = true
 var attack_affects_enemy: bool = true
@@ -89,6 +98,10 @@ func _configure_for_progress_point() -> void:
 		6, 7, 8, 9, 10: # Full functionality including camera transition (index 6+)
 			can_attack = true
 			attack_affects_enemy = true
+		11: # Pathfinding mode (index 11)
+			can_attack = true
+			attack_affects_enemy = true
+			# Pathfinding will be enabled when crew boards
 
 func _on_click(_vp, e: InputEvent, _i) -> void:
 	if e is InputEventMouseButton and e.button_index == MOUSE_BUTTON_LEFT and e.pressed:
@@ -102,12 +115,12 @@ func _on_click(_vp, e: InputEvent, _i) -> void:
 				progress = battle_scene.progress_point
 			
 			print("Progress point: ", progress)
-			# Auto-boarding crews (progress 10+) don't respond to clicks
-			if not auto_boarding:
-				print("Not auto_boarding, selecting unit")
+			# Auto-boarding crews (progress 10+) don't respond to clicks if pathfinding
+			if not auto_boarding and not pathfinding_mode:
+				print("Not auto_boarding or pathfinding, selecting unit")
 				battle_manager.select_unit(self)
 			else:
-				print("Auto_boarding is true, ignoring click")
+				print("Auto_boarding or pathfinding is true, ignoring click")
 		else:
 			print("No battle_manager!")
 
@@ -121,12 +134,19 @@ func _physics_process(delta: float) -> void:
 		_walk_plank(delta)
 	elif dragging:  # Handle dragging regardless of has_boarded status
 		_drag(delta)
+	elif post_combat_waiting:  # Waiting after defeating an enemy
+		velocity = Vector2.ZERO
+		# Just idle, waiting for reassignment
+	elif pathfinding_mode:  # Handle pathfinding movement
+		_handle_pathfinding(delta)
+	elif combat_target and is_instance_valid(combat_target):  # Handle combat positioning and attacking
+		_handle_combat(delta)
 	elif (fighting or can_attack) and can_attack:  # Allow attacking if either fighting OR can_attack is true
 		_auto_attack()
 	else:
 		velocity = Vector2.ZERO
 
-	_update_base_anim(dragging or walking_to_plank)
+	_update_base_anim(dragging or walking_to_plank or (pathfinding_mode and velocity.length() > 0.1))
 	move_and_slide()
 
 func _handle_auto_boarding(delta: float) -> void:
@@ -154,6 +174,103 @@ func start_auto_boarding(plank_start: Vector2, board_target: Vector2) -> void:
 	self.board_target = board_target
 	fighting = false
 	idle_with_sword = false
+
+# Pathfinding system functions
+func set_pathfinding_mode(enabled: bool, target: Node2D = null) -> void:
+	pathfinding_mode = enabled
+	pathfinding_target = target
+	
+	if enabled:
+		fighting = false  # Disable combat while pathfinding
+		idle_with_sword = false  # Hide sword while pathfinding
+		combat_target = null
+		in_combat_range = false
+		print("Crew ", npc_name, " entering pathfinding mode")
+	else:
+		print("Crew ", npc_name, " exiting pathfinding mode")
+
+func set_combat_target(target: Node2D) -> void:
+	if not is_instance_valid(target):
+		print("Crew ", npc_name, " received invalid combat target")
+		return
+		
+	combat_target = target
+	pathfinding_mode = false
+	fighting = true
+	idle_with_sword = true
+	in_combat_range = true
+	print("Crew ", npc_name, " entering combat with ", target.npc_name if target else "unknown")
+
+func start_post_combat_wait(wait_time: float) -> void:
+	post_combat_waiting = true
+	combat_target = null
+	fighting = false
+	idle_with_sword = false
+	in_combat_range = false
+	print("Crew ", npc_name, " starting post-combat wait")
+	
+	# Create a timer to end the wait
+	var timer = Timer.new()
+	timer.wait_time = wait_time
+	timer.one_shot = true
+	add_child(timer)
+	timer.timeout.connect(_end_post_combat_wait.bind(timer))
+	timer.start()
+
+func _end_post_combat_wait(timer: Timer) -> void:
+	timer.queue_free()
+	post_combat_waiting = false
+	print("Crew ", npc_name, " ending post-combat wait")
+
+func set_pathfinding_velocity(new_velocity: Vector2) -> void:
+	pathfinding_velocity = new_velocity
+
+func _handle_pathfinding(delta: float) -> void:
+	if not pathfinding_mode:
+		return
+	
+	# Use the velocity computed by the navigation agent
+	velocity = pathfinding_velocity
+	
+	# Update facing direction
+	if velocity.length() > 0.1:
+		set_facing_direction(velocity.x < 0)
+	elif pathfinding_target and is_instance_valid(pathfinding_target):
+		var dir_to_target = pathfinding_target.global_position - global_position
+		set_facing_direction(dir_to_target.x < 0)
+
+func _handle_combat(delta: float) -> void:
+	if not combat_target or not is_instance_valid(combat_target):
+		# Target is gone, go back to pathfinding
+		combat_target = null
+		fighting = false
+		in_combat_range = false
+		if pathfinding_manager and is_instance_valid(pathfinding_manager):
+			pathfinding_manager.call_deferred("_safely_reassign_single_crew", self)
+		return
+	
+	# Face the combat target
+	var dir_to_target = combat_target.global_position - global_position
+	set_facing_direction(dir_to_target.x < 0)
+	
+	# Check if target is still in melee combat range
+	var distance_to_target = global_position.distance_to(combat_target.global_position)
+	var vertical_distance = abs(global_position.y - combat_target.global_position.y)
+	
+	# Use original melee range but maintain Y alignment
+	if distance_to_target > 50.0 or vertical_distance > 8.0:
+		# Target moved out of melee range, resume pathfinding
+		combat_target = null
+		fighting = false
+		idle_with_sword = false
+		in_combat_range = false
+		if pathfinding_manager and is_instance_valid(pathfinding_manager):
+			pathfinding_manager.call_deferred("_safely_reassign_single_crew", self)
+		return
+	
+	# Stay in combat position and attack
+	velocity = Vector2.ZERO
+	_auto_attack()
 
 func update_animation() -> void:
 	# 1) Animation override (slash/lunge/block/hurt)
@@ -204,8 +321,26 @@ func update_animation() -> void:
 			sword.visible = false
 		appearance.flip_h = (direction == Vector2.LEFT)
 		return
+	
+	# 3) Pathfinding movement - walk with NO sword visible
+	if pathfinding_mode and velocity.length() > 0.1:
+		if appearance.animation != "Walk":
+			appearance.play("Walk")
+		if sword:
+			sword.visible = false  # Hide sword while pathfinding
+		appearance.flip_h = (direction == Vector2.LEFT)
+		return
+	
+	# 4) Post-combat waiting - idle without sword
+	if post_combat_waiting:
+		if appearance.animation != "IdleStand":
+			appearance.play("IdleStand")
+		if sword:
+			sword.visible = false
+		appearance.flip_h = (direction == Vector2.LEFT)
+		return
 
-	# 3) Any other movement → Walk, sword hidden
+	# 5) Any other movement → Walk, sword hidden
 	if velocity.length() > 0.1:
 		if appearance.animation != "Walk":
 			appearance.play("Walk")
@@ -214,7 +349,7 @@ func update_animation() -> void:
 		appearance.flip_h = (direction == Vector2.LEFT)
 		return
 
-	# 4) Idle-with-sword (combat stance) - ALWAYS use this if idle_with_sword is true
+	# 6) Idle-with-sword (combat stance) - ALWAYS use this if idle_with_sword is true
 	if idle_with_sword:
 		if appearance.animation != "IdleSword":
 			appearance.play("IdleSword")
@@ -229,7 +364,7 @@ func update_animation() -> void:
 		appearance.flip_h = (direction == Vector2.LEFT)
 		return
 
-	# 5) Rest → IdleStand, sword hidden
+	# 7) Rest → IdleStand, sword hidden
 	if appearance.animation != "IdleStand":
 		appearance.play("IdleStand")
 	if sword:
@@ -246,12 +381,19 @@ func _walk_plank(_delta: float) -> void:
 		walking_to_plank  = false
 		is_boarding       = false
 		
-		# For manual deploy and auto systems, make sure they remain draggable after boarding
+		# Register with pathfinding manager for progress point 11+
 		var battle_scene = get_tree().current_scene
 		var progress = 0
 		if battle_scene and "progress_point" in battle_scene:
 			progress = battle_scene.progress_point
 		
+		if progress >= 11:
+			pathfinding_manager = battle_scene.get_node_or_null("PathfindingManager")
+			if pathfinding_manager:
+				pathfinding_manager.register_crew_member(self)
+				pathfinding_manager.assign_target_to_crew(self)
+		
+		# For manual deploy and auto systems, make sure they remain draggable after boarding
 		if progress >= 8:  # Manual deploy (8) and auto systems (9+)
 			# Keep battle_manager reference so they stay draggable
 			pass  # battle_manager should already be set
@@ -275,6 +417,16 @@ func _drag(_delta: float) -> void:
 		set_facing_direction(dir.x < 0)
 
 func _auto_attack() -> void:
+	# For combat target system, check if we have a specific combat target
+	if combat_target and is_instance_valid(combat_target):
+		if cooldown > 0.0 or not can_attack:
+			return
+		
+		# Attack the specific combat target
+		_attack_target(combat_target)
+		return
+	
+	# Original auto-attack logic for area-based targeting
 	if targets.is_empty() or cooldown > 0.0 or not can_attack:
 		return
 
@@ -291,6 +443,12 @@ func _auto_attack() -> void:
 		targets.pop_front()
 		return
 
+	_attack_target(tgt)
+
+func _attack_target(tgt: Node) -> void:
+	if not is_instance_valid(tgt):
+		return
+		
 	set_facing_direction(tgt.global_position.x < global_position.x)
 
 	var anim = CREW_ATTACK_ANIMS[rng.randi() % CREW_ATTACK_ANIMS.size()]
@@ -305,11 +463,39 @@ func _auto_attack() -> void:
 	var delay = _hit_delay(anim, 5)
 	await get_tree().create_timer(delay).timeout
 	
-	if is_instance_valid(tgt) and attack_affects_enemy:
+	# Check if target is still valid before damaging
+	if not is_instance_valid(tgt):
+		return
+		
+	if attack_affects_enemy:
+		var battle_scene = get_tree().current_scene
+		var progress = 0
+		if battle_scene and "progress_point" in battle_scene:
+			progress = battle_scene.progress_point
 		print("Actually damaging enemy at progress ", progress)
+		
+		# Check if this will defeat the enemy
+		var enemy_will_die = false
+		if tgt.has_method("get") and "health" in tgt:
+			enemy_will_die = tgt.health <= 1
+		
 		tgt.take_damage()
+		
+		# If enemy was defeated and we have a pathfinding manager, notify it
+		# Store the reference before the enemy gets freed
+		if enemy_will_die and pathfinding_manager and is_instance_valid(pathfinding_manager):
+			# Call this deferred to avoid the freed object issue
+			call_deferred("_notify_enemy_defeated", tgt, self)
 	else:
+		var battle_scene = get_tree().current_scene
+		var progress = 0
+		if battle_scene and "progress_point" in battle_scene:
+			progress = battle_scene.progress_point
 		print("Attack animation only, no damage at progress ", progress)
+
+func _notify_enemy_defeated(enemy: Node, crew: Node) -> void:
+	if pathfinding_manager and is_instance_valid(pathfinding_manager):
+		pathfinding_manager.on_enemy_defeated(enemy, crew)
 
 func _on_target_enter(n: Node) -> void:
 	# We can still check "is EnemyNPC" even if not type‐hinted 
