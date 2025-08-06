@@ -221,28 +221,29 @@ func _spawn_crew_with_pathfinding() -> void:
 	planks_in_use.resize(planks.size())
 	planks_in_use.fill(false)
 	
-	# Spawn only ONE crew member
-	var crew = crew_scene.instantiate()
-	var offset = Vector2(randf_range(-ext.x, ext.x), randf_range(-ext.y, ext.y))
-	crew.global_position = crew_center + offset
-	crew.npc_name = "Crew 1"
-	crew.fighting = false  # Will be enabled after pathfinding
-	crew.idle_with_sword = false  # Will be enabled when boarding
-	crew.battle_manager = self  # Enable dragging for testing
-	
-	# Assign plank using smart logic
-	var assigned_plank_index = _assign_plank_to_crew(crew, planks)
-	var plank = planks[assigned_plank_index]
-	
-	crew.board_target = plank.global_position + Vector2(0, -33)
-	crew_plank_assignments[crew] = {
-		"plank_index": assigned_plank_index,
-		"plank_start": plank.global_position + Vector2(0, 33),
-		"board_target": plank.global_position + Vector2(0, -33),
-		"walking_speed": randf_range(0.7, 1.0)
-	}
-	
-	crew_container.add_child(crew)
+	# Spawn 5 crew members instead of 1
+	for i in range(5):
+		var crew = crew_scene.instantiate()
+		var offset = Vector2(randf_range(-ext.x, ext.x), randf_range(-ext.y, ext.y))
+		crew.global_position = crew_center + offset
+		crew.npc_name = "Crew " + str(i + 1)
+		crew.fighting = false  # Will be enabled after pathfinding
+		crew.idle_with_sword = false  # Will be enabled when boarding
+		crew.battle_manager = self  # Enable dragging for testing
+		
+		# Assign plank using smart logic
+		var assigned_plank_index = _assign_plank_to_crew(crew, planks)
+		var plank = planks[assigned_plank_index]
+		
+		crew.board_target = plank.global_position + Vector2(0, -33)
+		crew_plank_assignments[crew] = {
+			"plank_index": assigned_plank_index,
+			"plank_start": plank.global_position + Vector2(0, 33),
+			"board_target": plank.global_position + Vector2(0, -33),
+			"walking_speed": randf_range(0.7, 1.0)
+		}
+		
+		crew_container.add_child(crew)
 	
 	# Start boarding after a short delay
 	await get_tree().process_frame
@@ -255,16 +256,18 @@ func _spawn_multiple_enemies_for_pathfinding() -> void:
 	var center = cs.global_position
 	var ext = rect.extents
 	
-	# Spawn only ONE enemy
-	var enemy = enemy_scene.instantiate()
-	# Place enemy in center of spawn area for predictability
-	enemy.global_position = center
-	enemy.npc_name = "Enemy 1"
-	enemy_container.add_child(enemy)
-	
-	# Register enemy with pathfinding manager
-	if pathfinding_manager:
-		pathfinding_manager.register_enemy(enemy)
+	# Spawn 5 enemies instead of 1
+	for i in range(5):
+		var enemy = enemy_scene.instantiate()
+		var offset = Vector2(randf_range(-ext.x, ext.x), randf_range(-ext.y, ext.y))
+		enemy.global_position = center + offset
+		enemy.npc_name = "Enemy " + str(i + 1)
+		enemy_container.add_child(enemy)
+		
+		# Register enemy with pathfinding manager
+		if pathfinding_manager:
+			pathfinding_manager.register_enemy(enemy)
+
 
 # Helper functions for different setups
 func _setup_no_transition() -> void:
@@ -687,3 +690,5 @@ func _exit_tree() -> void:
 		Global.battle_state = {}
 	else:
 		Global.battle_state = get_battle_state()
+
+

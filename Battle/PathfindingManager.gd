@@ -179,11 +179,11 @@ func _calculate_side_position(crew: Node, target: Node) -> Vector2:
 	var to_crew = crew_pos - target_pos
 	var is_left_side = to_crew.x < 0
 	
-	# Use original melee range distance (around 30-35 pixels like the original system)
-	var side_distance = 35.0  # Good melee combat distance
+	# Use melee combat distance - reduced from original to get crew closer
+	var side_distance = 35.0  # Reduced from the original 50.0 to get closer
 	var side_offset = Vector2(side_distance if not is_left_side else -side_distance, 0)
 	
-	# CRITICAL: Use exactly the same Y position as the target for perfect horizontal alignment
+	# Use the same Y position as the target for horizontal alignment
 	var target_position = Vector2(target_pos.x + side_offset.x, target_pos.y)
 	
 	return target_position
@@ -208,13 +208,13 @@ func _process(delta: float) -> void:
 				call_deferred("_safely_reassign_single_crew", crew)
 				continue
 			
-			# Check if crew is at proper melee range and horizontal with target
+			# Check if crew is at proper melee range and aligned with target
 			var distance_to_target = crew.global_position.distance_to(target.global_position)
 			var vertical_distance = abs(crew.global_position.y - target.global_position.y)
 			
-			# Use melee range distance but require perfect Y alignment
-			if distance_to_target <= 40.0 and vertical_distance <= 5.0:
-				# Crew is in good melee position with perfect Y alignment - switch to combat mode
+			# Use a slightly larger range to transition to combat mode earlier
+			if distance_to_target <= 45.0 and vertical_distance <= 8.0:
+				# Crew is in good melee position - switch to combat mode
 				if crew.has_method("set_pathfinding_mode"):
 					crew.set_pathfinding_mode(false, target)
 					if is_instance_valid(target):
@@ -277,7 +277,7 @@ func on_enemy_defeated(enemy: Node, crew: Node) -> void:
 func _safely_reassign_crew_after_wait(crew: Node) -> void:
 	# Wait for the post-combat time, then try to reassign
 	var timer = Timer.new()
-	timer.wait_time = post_combat_wait_time
+	timer.wait_time = post_combat_wait_time + 0.5  # Add extra delay
 	timer.one_shot = true
 	add_child(timer)
 	timer.timeout.connect(_reassign_crew_after_wait.bind(crew, timer))

@@ -15,7 +15,6 @@ size = Vector2(225, 112)
 
 [node name="BoardingBattle" type="Node2D"]
 script = ExtResource("1_offb7")
-progress_point = 0
 
 [node name="EnemyShip" type="Sprite2D" parent="."]
 position = Vector2(-128, -255)

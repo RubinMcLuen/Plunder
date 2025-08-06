@@ -257,8 +257,9 @@ func _handle_combat(delta: float) -> void:
 	var distance_to_target = global_position.distance_to(combat_target.global_position)
 	var vertical_distance = abs(global_position.y - combat_target.global_position.y)
 	
-	# Use original melee range but maintain Y alignment
-	if distance_to_target > 50.0 or vertical_distance > 8.0:
+	# Adjust combat distance - stop at about 75% of the original distance
+	# Original was 50.0, so now stop at ~37-40 pixels away
+	if distance_to_target > 75.0 or vertical_distance > 8.0:
 		# Target moved out of melee range, resume pathfinding
 		combat_target = null
 		fighting = false
@@ -268,8 +269,15 @@ func _handle_combat(delta: float) -> void:
 			pathfinding_manager.call_deferred("_safely_reassign_single_crew", self)
 		return
 	
-	# Stay in combat position and attack
-	velocity = Vector2.ZERO
+	# If we're too close, back up a bit to optimal combat distance (around 35-40 pixels)
+	var optimal_distance = 38.0
+	if distance_to_target < optimal_distance:
+		var move_away = dir_to_target.normalized() * -30.0  # Move away from target
+		velocity = move_away
+	else:
+		# Stay in position and attack
+		velocity = Vector2.ZERO
+	
 	_auto_attack()
 
 func update_animation() -> void:
