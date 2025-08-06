@@ -19,7 +19,7 @@ var enemy_side_assignments: Dictionary = {}
 
 # Pathfinding settings
 @export var pathfinding_enabled: bool = true
-@export var max_crew_per_enemy: int = 2  # Still 2 total, but now 1 per side
+@export var max_crew_per_enemy: int = 2  # Maximum crew assigned to a single enemy
 @export var arrival_threshold: float = 15.0  # How close to target position before switching to combat
 @export var side_distance: float = 20.0  # How far to the side of enemies to position
 @export var vertical_arrival_threshold: float = 4.0  # Vertical alignment tolerance
@@ -106,53 +106,30 @@ func find_best_enemy_and_side_for_crew(crew: Node) -> Dictionary:
 	var best_enemy: Node = null
 	var best_side: String = ""
 	var best_distance = INF
-	
+
 	# Clean up invalid enemies first
 	_cleanup_invalid_enemies()
-	
+
 	for enemy in available_enemies:
 		if not is_instance_valid(enemy):
 			continue
-		
-		# Check available sides for this enemy
-		var sides = enemy_side_assignments.get(enemy, {})
-		var available_sides = []
-		
-		# Check if left side is available
-		var left_crew = sides.get("left", null)
-		if not left_crew or not is_instance_valid(left_crew):
-			available_sides.append("left")
-		
-		# Check if right side is available  
-		var right_crew = sides.get("right", null)
-		if not right_crew or not is_instance_valid(right_crew):
-			available_sides.append("right")
-		
-		# If no sides available, skip this enemy
-		if available_sides.is_empty():
-			continue
-		
-		# Calculate distance to enemy - this is the primary factor
-		var distance = crew.global_position.distance_to(enemy.global_position)
-		
-		# Always choose closest enemy first, regardless of other factors
+
+		var enemy_pos = enemy.global_position
+		var left_pos = Vector2(enemy_pos.x - side_distance, enemy_pos.y)
+		var right_pos = Vector2(enemy_pos.x + side_distance, enemy_pos.y)
+		var dist_left = crew.global_position.distance_to(left_pos)
+		var dist_right = crew.global_position.distance_to(right_pos)
+		var distance = min(dist_left, dist_right)
+
 		if distance < best_distance:
 			best_distance = distance
 			best_enemy = enemy
-			
-			# Choose the best side based on crew's current position
-			var crew_pos = crew.global_position
-			var enemy_pos = enemy.global_position
-			var preferred_side = "left" if crew_pos.x < enemy_pos.x else "right"
-			
-			# Use preferred side if available, otherwise use any available side
-			best_side = preferred_side if available_sides.has(preferred_side) else available_sides[0]
-	
+			best_side = "left" if dist_left < dist_right else "right"
+
 	if best_enemy and best_side != "":
 		return {"enemy": best_enemy, "side": best_side}
 	else:
 		return {}
-
 func _cleanup_invalid_enemies() -> void:
 	# Remove invalid enemies from available list and clean up their side assignments
 	var valid_enemies = []
@@ -306,35 +283,43 @@ func _process(delta: float) -> void:
 		if current_status != "pathfinding":
 			continue
 		
-		# Simple pathfinding: move directly to exact side position
-		var side = crew_assigned_sides.get(crew, "right")
+		# Simple pathfinding: move to nearest exact side position
 		var target_pos = target.global_position
-		var exact_target_position = Vector2(
-			target_pos.x + (20.0 if side == "right" else -20.0),  # Exactly 20 pixels left/right
-			target_pos.y  # Exactly same Y coordinate
-		)
-		
-		# Update target position for this crew
+		var left_pos = Vector2(target_pos.x - side_distance, target_pos.y)
+		var right_pos = Vector2(target_pos.x + side_distance, target_pos.y)
+		var dist_left = crew.global_position.distance_to(left_pos)
+		var dist_right = crew.global_position.distance_to(right_pos)
+		var exact_target_position = left_pos if dist_left < dist_right else right_pos
+		var chosen_side = "left" if dist_left < dist_right else "right"
+
+		# Update side and target position
+		var sides = enemy_side_assignments.get(target, {})
+		var old_side = crew_assigned_sides.get(crew, "")
+		if old_side != "" and sides.get(old_side) == crew:
+			sides.erase(old_side)
+		sides[chosen_side] = crew
+		enemy_side_assignments[target] = sides
+		crew_assigned_sides[crew] = chosen_side
 		crew_target_positions[crew] = exact_target_position
-		
+
 		# Check if crew has reached their exact target position
 		var horizontal_diff = abs(crew.global_position.x - exact_target_position.x)
 		var vertical_diff = abs(crew.global_position.y - exact_target_position.y)
 
 		if horizontal_diff <= arrival_threshold and vertical_diff <= vertical_arrival_threshold:
 			# Reached exact position - switch to combat mode
-			print("Crew ", crew.npc_name, " reached exact ", side, " side position, switching to combat with ", target.npc_name)
+			print("Crew ", crew.npc_name, " reached exact ", chosen_side, " side position, switching to combat with ", target.npc_name)
 			mark_crew_as_engaged(crew)
 			if crew.has_method("set_pathfinding_mode"):
 				crew.set_pathfinding_mode(false, target)
 			if crew.has_method("set_combat_target"):
 				crew.set_combat_target(target)
 			continue
-		
+
 		# Move directly toward the exact target position
 		var direction = (exact_target_position - crew.global_position).normalized()
 		var desired_velocity = direction * crew.speed * 0.8  # Slightly slower for pathfinding
-		
+
 		if crew.has_method("set_pathfinding_velocity"):
 			crew.set_pathfinding_velocity(desired_velocity)
 
@@ -360,25 +345,13 @@ func _cleanup_invalid_crew() -> void:
 		unregister_crew_member(crew)
 
 func _check_waiting_crew_for_reassignment() -> void:
-	# Check if any waiting crew should be reassigned to available enemy sides
+	# Check if any waiting crew should be reassigned
 	for crew in crew_engagement_status.keys():
 		if crew_engagement_status[crew] == "waiting" and is_instance_valid(crew):
-			# Check if there are enemies with available sides
-			var has_available_side = false
-			for enemy in available_enemies:
-				if is_instance_valid(enemy):
-					var sides = enemy_side_assignments.get(enemy, {})
-					var left_available = not sides.has("left") or not is_instance_valid(sides.get("left"))
-					var right_available = not sides.has("right") or not is_instance_valid(sides.get("right"))
-					if left_available or right_available:
-						has_available_side = true
-						break
-			
-			if has_available_side:
-				print("Reassigning waiting crew ", crew.npc_name, " to available enemy side")
+			if available_enemies.size() > 0:
+				print("Reassigning waiting crew ", crew.npc_name, " to nearest enemy")
 				crew_engagement_status[crew] = "pathfinding"
 				assign_target_to_crew(crew)
-
 func on_enemy_defeated(enemy: Node, crew: Node) -> void:
 	"""Called when a crew member defeats an enemy"""
 	if not is_instance_valid(enemy) or not is_instance_valid(crew):
