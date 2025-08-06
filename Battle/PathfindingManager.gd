@@ -22,6 +22,7 @@ var enemy_side_assignments: Dictionary = {}
 @export var max_crew_per_enemy: int = 2  # Still 2 total, but now 1 per side
 @export var arrival_threshold: float = 15.0  # How close to target position before switching to combat
 @export var side_distance: float = 20.0  # How far to the side of enemies to position
+@export var vertical_arrival_threshold: float = 4.0  # Vertical alignment tolerance
 @export var post_combat_wait_time: float = 2.0
 
 func _ready() -> void:
@@ -317,9 +318,10 @@ func _process(delta: float) -> void:
 		crew_target_positions[crew] = exact_target_position
 		
 		# Check if crew has reached their exact target position
-		var distance_to_position = crew.global_position.distance_to(exact_target_position)
-		
-		if distance_to_position <= arrival_threshold:
+		var horizontal_diff = abs(crew.global_position.x - exact_target_position.x)
+		var vertical_diff = abs(crew.global_position.y - exact_target_position.y)
+
+		if horizontal_diff <= arrival_threshold and vertical_diff <= vertical_arrival_threshold:
 			# Reached exact position - switch to combat mode
 			print("Crew ", crew.npc_name, " reached exact ", side, " side position, switching to combat with ", target.npc_name)
 			mark_crew_as_engaged(crew)
