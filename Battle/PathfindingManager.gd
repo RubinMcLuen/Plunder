@@ -20,7 +20,7 @@ var enemy_side_assignments: Dictionary = {}
 	# Pathfinding settings
 @export var pathfinding_enabled: bool = true
 @export var max_crew_per_enemy: int = 2  # Still 2 total, but now 1 per side
-@export var side_distance: float = 8.0  # Exact distance from enemy
+@export var side_distance: float = 20.0  # Exact distance from enemy
 @export var post_combat_wait_time: float = 2.0
 
 func _ready() -> void:
@@ -101,55 +101,60 @@ func assign_target_to_crew(crew: Node) -> void:
 		set_crew_target_and_side(crew, best_enemy_and_side["enemy"], best_enemy_and_side["side"])
 
 func find_best_enemy_and_side_for_crew(crew: Node) -> Dictionary:
-	var best_enemy: Node = null
-	var best_side: String = ""
-	var best_distance = INF
-	
-	# Clean up invalid enemies first
-	_cleanup_invalid_enemies()
-	
+	# Returns { "enemy": <Node2D>, "side": "left" | "right" } or {} if none found
+	var best_choice   : Dictionary = {}
+	var best_distance : float      = INF
+
+	_cleanup_invalid_enemies()               # <-- keep whatever this already does
+
 	for enemy in available_enemies:
 		if not is_instance_valid(enemy):
 			continue
-		
-		# Check available sides for this enemy
+
+		# ------------------------------------------------------------------
+		# 1) Determine which side-slots are already occupied
+		# ------------------------------------------------------------------
 		var sides = enemy_side_assignments.get(enemy, {})
-		var available_sides = []
-		
-		# Check if left side is available
-		var left_crew = sides.get("left", null)
-		if not left_crew or not is_instance_valid(left_crew):
-			available_sides.append("left")
-		
-		# Check if right side is available  
-		var right_crew = sides.get("right", null)
-		if not right_crew or not is_instance_valid(right_crew):
-			available_sides.append("right")
-		
-		# If no sides available, skip this enemy
-		if available_sides.is_empty():
+		var left_taken  = sides.has("left")  and is_instance_valid(sides["left"])
+		var right_taken = sides.has("right") and is_instance_valid(sides["right"])
+
+		# Skip if both sides are filled
+		if left_taken and right_taken:
 			continue
-		
-		# Calculate distance to enemy - this is the primary factor
-		var distance = crew.global_position.distance_to(enemy.global_position)
-		
-		# Always choose closest enemy first, regardless of other factors
-		if distance < best_distance:
-			best_distance = distance
-			best_enemy = enemy
-			
-			# Choose the best side based on crew's current position
-			var crew_pos = crew.global_position
-			var enemy_pos = enemy.global_position
-			var preferred_side = "left" if crew_pos.x < enemy_pos.x else "right"
-			
-			# Use preferred side if available, otherwise use any available side
-			best_side = preferred_side if available_sides.has(preferred_side) else available_sides[0]
-	
-	if best_enemy and best_side != "":
-		return {"enemy": best_enemy, "side": best_side}
-	else:
-		return {}
+
+		# ------------------------------------------------------------------
+		# 2) Compute the two slot positions
+		# ------------------------------------------------------------------
+		var enemy_pos   : Vector2 = enemy.global_position
+		var left_slot   : Vector2 = Vector2(enemy_pos.x - side_distance, enemy_pos.y)
+		var right_slot  : Vector2 = Vector2(enemy_pos.x + side_distance, enemy_pos.y)
+
+		# ------------------------------------------------------------------
+		# 3) Work out which free side is *closer* for this crew member
+		# ------------------------------------------------------------------
+		var dist_left   = crew.global_position.distance_to(left_slot)
+		var dist_right  = crew.global_position.distance_to(right_slot)
+
+		var candidate_side      : String = ""
+		var candidate_distance  : float  = 0.0
+
+		if not left_taken and (right_taken or dist_left <= dist_right):
+			candidate_side     = "left"
+			candidate_distance = dist_left
+		elif not right_taken:
+			candidate_side     = "right"
+			candidate_distance = dist_right
+
+		# ------------------------------------------------------------------
+		# 4) Keep the globally-closest free slot we’ve seen so far
+		# ------------------------------------------------------------------
+		if candidate_side != "" and candidate_distance < best_distance:
+			best_distance = candidate_distance
+			best_choice   = { "enemy": enemy, "side": candidate_side }
+
+	return best_choice          # {} means “no free slot found”
+
+
 
 func _cleanup_invalid_enemies() -> void:
 	# Remove invalid enemies from available list and clean up their side assignments
@@ -226,15 +231,11 @@ func set_crew_target_and_side(crew: Node, target: Node, side: String) -> void:
 	print("Assigned target ", target.npc_name, " (", side, " side) to crew ", crew.npc_name, " at position: ", target_position)
 
 func _calculate_side_position(crew: Node, target: Node, side: String) -> Vector2:
-	var target_pos = target.global_position
-	
-	# Position crew directly adjacent to the enemy - side by side
-	var side_offset_x = 8.0 if side == "right" else -8.0  # Just 8 pixels away - right next to enemy
-	
-	# Use the EXACT same Y position as the target for perfect horizontal alignment
-	var target_position = Vector2(target_pos.x + side_offset_x, target_pos.y)
-	
-	return target_position
+	# World-space point exactly ±side_distance horizontal from the target
+	var tpos   : Vector2 = target.global_position
+	var offset : float   = side_distance if side == "right" else -side_distance
+	return Vector2(tpos.x + offset, tpos.y)
+
 
 func mark_crew_as_engaged(crew: Node) -> void:
 	"""Call this when crew starts actively fighting an enemy"""
@@ -308,7 +309,7 @@ func _process(delta: float) -> void:
 		var side = crew_assigned_sides.get(crew, "right")
 		var target_pos = target.global_position
 		var exact_target_position = Vector2(
-			target_pos.x + (8.0 if side == "right" else -8.0),  # Exactly 8 pixels left/right
+			target_pos.x + (20.0 if side == "right" else -20.0),  # Exactly 8 pixels left/right
 			target_pos.y  # Exactly same Y coordinate
 		)
 		

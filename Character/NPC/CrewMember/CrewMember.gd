@@ -250,51 +250,49 @@ func _handle_pathfinding(delta: float) -> void:
 		set_facing_direction(dir_to_target.x < 0)
 
 func _handle_combat(delta: float) -> void:
-	if not combat_target or not is_instance_valid(combat_target):
-		# Target is gone, notify pathfinding manager and exit combat mode
+	# ------------------------------------------------------------------
+	# 1)  Abort combat if the target vanished
+	# ------------------------------------------------------------------
+	if combat_target == null or not is_instance_valid(combat_target):
 		print("Crew ", npc_name, " combat target invalid, exiting combat")
-		combat_target = null
-		fighting = false
+		fighting        = false
 		in_combat_range = false
-		
-		# Notify pathfinding manager to clean up and potentially reassign
+		combat_target   = null
 		if pathfinding_manager and is_instance_valid(pathfinding_manager):
 			pathfinding_manager.mark_crew_as_waiting(self)
 		return
-	
-	# Face the combat target
-	var dir_to_target = combat_target.global_position - global_position
+
+	# ------------------------------------------------------------------
+	# 2)  Face the opponent
+	# ------------------------------------------------------------------
+	var dir_to_target := combat_target.global_position - global_position
 	set_facing_direction(dir_to_target.x < 0)
-	
-	# Always try to maintain exact position relative to enemy
-	var target_pos = combat_target.global_position
-	var current_pos = global_position
-	
-	# Calculate where we should be (8 pixels to left or right, same Y)
-	var should_be_on_left = current_pos.x < target_pos.x
+
+	# ------------------------------------------------------------------
+	# 3)  Hold the exact ±side_distance slot while fighting
+	# ------------------------------------------------------------------
+	var side_dist : float = 20.0                # default in case manager is null
+	if pathfinding_manager and is_instance_valid(pathfinding_manager):
+		side_dist = pathfinding_manager.side_distance
+
+	var target_pos        : Vector2 = combat_target.global_position
+	var current_pos       : Vector2 = global_position
+	var should_be_on_left : bool    = current_pos.x < target_pos.x
+
 	var ideal_position = Vector2(
-		target_pos.x + (8.0 if not should_be_on_left else -8.0),
+		target_pos.x + ( side_dist  if not should_be_on_left else -side_dist ),
 		target_pos.y
 	)
-	
-	# Always move to maintain exact position
-	var distance_to_ideal = current_pos.distance_to(ideal_position)
-	
-	# Debug combat positioning
-	if randf() < 0.1:  # Print occasionally
-		print("COMBAT DEBUG - Crew ", npc_name, " at: ", current_pos, " should be at: ", ideal_position, " distance: ", distance_to_ideal)
-	
-	if distance_to_ideal > 1.0:  # Only if more than 1 pixel away
-		var direction = (ideal_position - current_pos).normalized()
-		velocity = direction * 30.0  # Slow movement for precision
-		if randf() < 0.1:
-			print("COMBAT - Crew ", npc_name, " adjusting position")
-	else:
-		# At exact position - stop and attack
+
+	var distance_to_ideal := current_pos.distance_to(ideal_position)
+
+	if distance_to_ideal > 1.0:              # More than 1 px off → shuffle into place
+		var direction := (ideal_position - current_pos).normalized()
+		velocity      = direction * 30.0     # slow, precise nudge
+	else:                                     # In the slot → stop & attack
 		velocity = Vector2.ZERO
-		if randf() < 0.1:
-			print("COMBAT - Crew ", npc_name, " calling _auto_attack()")
-		_auto_attack()
+		_auto_attack()                       # uses your existing cooldown logic
+
 
 # Override the _exit_tree to clean up pathfinding manager references
 func _exit_tree() -> void:
