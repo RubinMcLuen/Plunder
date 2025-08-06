@@ -201,7 +201,7 @@ func _setup_pathfinding_manager() -> void:
 	# Configure pathfinding settings
 	pathfinding_manager.pathfinding_enabled = true
 	pathfinding_manager.max_crew_per_enemy = 2
-	pathfinding_manager.arrival_threshold = 25.0
+	# Removed arrival_threshold since it no longer exists
 	
 	print("Pathfinding manager created and configured")
 

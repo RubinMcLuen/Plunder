@@ -266,26 +266,35 @@ func _handle_combat(delta: float) -> void:
 	var dir_to_target = combat_target.global_position - global_position
 	set_facing_direction(dir_to_target.x < 0)
 	
-	# Check distance to target
-	var distance_to_target = global_position.distance_to(combat_target.global_position)
+	# Always try to maintain exact position relative to enemy
+	var target_pos = combat_target.global_position
+	var current_pos = global_position
 	
-	# Safety check - if target is way too far away, something went wrong
-	if distance_to_target > 60.0:
-		print("Crew ", npc_name, " target too far away (", distance_to_target, "), exiting combat and going to waiting")
-		combat_target = null
-		fighting = false
-		idle_with_sword = false
-		in_combat_range = false
-		
-		# Mark as waiting so pathfinding manager can reassign
-		if pathfinding_manager and is_instance_valid(pathfinding_manager):
-			pathfinding_manager.mark_crew_as_waiting(self)
-		return
+	# Calculate where we should be (8 pixels to left or right, same Y)
+	var should_be_on_left = current_pos.x < target_pos.x
+	var ideal_position = Vector2(
+		target_pos.x + (8.0 if not should_be_on_left else -8.0),
+		target_pos.y
+	)
 	
-	# Simple combat: just stay in position and attack
-	# No movement adjustments - crew should already be positioned correctly by pathfinding
-	velocity = Vector2.ZERO
-	_auto_attack()
+	# Always move to maintain exact position
+	var distance_to_ideal = current_pos.distance_to(ideal_position)
+	
+	# Debug combat positioning
+	if randf() < 0.1:  # Print occasionally
+		print("COMBAT DEBUG - Crew ", npc_name, " at: ", current_pos, " should be at: ", ideal_position, " distance: ", distance_to_ideal)
+	
+	if distance_to_ideal > 1.0:  # Only if more than 1 pixel away
+		var direction = (ideal_position - current_pos).normalized()
+		velocity = direction * 30.0  # Slow movement for precision
+		if randf() < 0.1:
+			print("COMBAT - Crew ", npc_name, " adjusting position")
+	else:
+		# At exact position - stop and attack
+		velocity = Vector2.ZERO
+		if randf() < 0.1:
+			print("COMBAT - Crew ", npc_name, " calling _auto_attack()")
+		_auto_attack()
 
 # Override the _exit_tree to clean up pathfinding manager references
 func _exit_tree() -> void:
@@ -437,17 +446,29 @@ func _drag(_delta: float) -> void:
 		set_facing_direction(dir.x < 0)
 
 func _auto_attack() -> void:
+	# Debug: Always print when _auto_attack is called
+	if randf() < 0.1:
+		print("AUTO_ATTACK DEBUG - Crew ", npc_name, " _auto_attack() called")
+	
 	# For combat target system, check if we have a specific combat target
 	if combat_target and is_instance_valid(combat_target):
+		if randf() < 0.1:
+			print("AUTO_ATTACK - Crew ", npc_name, " has combat target: ", combat_target.npc_name, " cooldown: ", cooldown, " can_attack: ", can_attack)
+		
 		if cooldown > 0.0 or not can_attack:
+			if randf() < 0.1:
+				print("AUTO_ATTACK - Crew ", npc_name, " blocked: cooldown=", cooldown, " can_attack=", can_attack)
 			return
 		
+		print("AUTO_ATTACK - Crew ", npc_name, " attacking combat target ", combat_target.npc_name)
 		# Attack the specific combat target
 		_attack_target(combat_target)
 		return
 	
 	# Original auto-attack logic for area-based targeting
 	if targets.is_empty() or cooldown > 0.0 or not can_attack:
+		if randf() < 0.1:
+			print("AUTO_ATTACK - Crew ", npc_name, " no targets or blocked: targets=", targets.size(), " cooldown=", cooldown, " can_attack=", can_attack)
 		return
 
 	# Debug output for all progress points
