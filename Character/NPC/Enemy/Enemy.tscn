@@ -14,8 +14,7 @@ shader_parameter/hurt_color = Color(0.678, 0.196, 0.196, 0.6)
 radius = 30.0
 
 [node name="Enemy" instance=ExtResource("1_8o7wt")]
-collision_layer = 2
-collision_mask = 0
+position = Vector2(2.08165e-12, 2.08165e-12)
 script = ExtResource("2_0ie86")
 
 [node name="Appearance" parent="." index="0"]
@@ -30,7 +29,6 @@ position = Vector2(0.5, -1.5)
 
 [node name="MeleeRange" type="Area2D" parent="." index="4"]
 position = Vector2(0.5, -10)
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="MeleeRange" index="0"]
 shape = SubResource("CircleShape2D_t3tbr")

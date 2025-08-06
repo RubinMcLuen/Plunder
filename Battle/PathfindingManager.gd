@@ -2,98 +2,68 @@
 extends Node2D
 class_name PathfindingManager
 
-# Scalable pathfinding system for crew members
-# Uses Godot's NavigationAgent2D for future obstacle avoidance
-
+# Simplified pathfinding system for crew members with side positioning
 signal path_completed(crew_member: Node)
 signal target_reached(crew_member: Node, target: Node2D)
 
-var navigation_region: NavigationRegion2D
-var crew_agents: Dictionary = {}  # Node -> NavigationAgent2D
 var crew_targets: Dictionary = {}  # Node -> target Node2D
+var crew_target_positions: Dictionary = {}  # Node -> Vector2 (specific target position)
+var crew_assigned_sides: Dictionary = {}  # Node -> "left" or "right"
+var crew_engagement_status: Dictionary = {}  # Node -> "pathfinding", "combat", "waiting"
 var available_enemies: Array = []
-var assigned_enemies: Dictionary = {}  # Node -> Array[Node]
+var assigned_enemies: Dictionary = {}  # Node -> Array[Node] (all assigned crew)
+var engaged_enemies: Dictionary = {}  # Node -> Array[Node] (only actively fighting crew)
+
+# Side tracking for enemies: enemy -> {"left": crew_node, "right": crew_node}
+var enemy_side_assignments: Dictionary = {}
 
 # Pathfinding settings
 @export var pathfinding_enabled: bool = true
-@export var max_crew_per_enemy: int = 2
-@export var target_reassignment_distance: float = 50.0
-@export var arrival_threshold: float = 20.0
-@export var horizontal_combat_range: float = 35.0  # How close horizontally before combat starts
-@export var vertical_combat_tolerance: float = 25.0  # How much vertical difference is allowed
-@export var post_combat_wait_time: float = 2.0  # Wait time after defeating an enemy
+@export var max_crew_per_enemy: int = 2  # Still 2 total, but now 1 per side
+@export var arrival_threshold: float = 15.0  # How close to target position before switching to combat
+@export var side_distance: float = 20.0  # How far to the side of enemies to position
+@export var post_combat_wait_time: float = 2.0
 
 func _ready() -> void:
-	# Create navigation region for the battlefield
-	setup_navigation_region()
 	set_process(true)
-
-func setup_navigation_region() -> void:
-	# Create a navigation region that covers the battlefield
-	navigation_region = NavigationRegion2D.new()
-	navigation_region.name = "BattlefieldNavigation"
-	add_child(navigation_region)
-	
-	# Create a simple rectangular navigation mesh for now
-	# This will be expanded later for obstacles
-	var nav_mesh = NavigationPolygon.new()
-	
-	# Define the battlefield area (adjust these coordinates based on your scene)
-	var battlefield_rect = Rect2(-400, -200, 800, 400)
-	var points = PackedVector2Array([
-		Vector2(battlefield_rect.position.x, battlefield_rect.position.y),
-		Vector2(battlefield_rect.position.x + battlefield_rect.size.x, battlefield_rect.position.y),
-		Vector2(battlefield_rect.position.x + battlefield_rect.size.x, battlefield_rect.position.y + battlefield_rect.size.y),
-		Vector2(battlefield_rect.position.x, battlefield_rect.position.y + battlefield_rect.size.y)
-	])
-	
-	nav_mesh.add_outline(points)
-	nav_mesh.make_polygons_from_outlines()
-	navigation_region.navigation_polygon = nav_mesh
+	print("PathfindingManager ready - side positioning enabled, 1 crew per side")
 
 func register_crew_member(crew: Node) -> void:
 	if not pathfinding_enabled:
 		return
-		
-	# Create a NavigationAgent2D for this crew member
-	var agent = NavigationAgent2D.new()
-	agent.name = "NavAgent_" + crew.npc_name
-	
-	# Configure the agent - disable avoidance since we don't care about collisions
-	agent.path_desired_distance = 10.0
-	agent.target_desired_distance = arrival_threshold
-	agent.path_max_distance = 500.0
-	agent.avoidance_enabled = false  # Disable collision avoidance
-	agent.radius = 15.0
-	agent.max_speed = crew.speed
-	
-	# Add agent to crew member and store reference
-	crew.add_child(agent)
-	crew_agents[crew] = agent
-	
-	# Connect agent signals
-	agent.velocity_computed.connect(_on_agent_velocity_computed.bind(crew))
-	agent.target_reached.connect(_on_agent_target_reached.bind(crew))
-	
+	crew_engagement_status[crew] = "pathfinding"
 	print("Registered crew member for pathfinding: ", crew.npc_name)
 
 func unregister_crew_member(crew: Node) -> void:
-	if crew in crew_agents:
-		var agent = crew_agents[crew]
-		if is_instance_valid(agent):
-			agent.queue_free()
-		crew_agents.erase(crew)
-		crew_targets.erase(crew)
-		
-		# Remove from enemy assignments
-		for enemy in assigned_enemies:
-			assigned_enemies[enemy].erase(crew)
+	# Clean up all references to this crew member
+	crew_targets.erase(crew)
+	crew_target_positions.erase(crew)
+	crew_assigned_sides.erase(crew)
+	crew_engagement_status.erase(crew)
+	
+	# Clean up assignments - this is crucial for side management
+	for enemy in assigned_enemies.keys():
+		assigned_enemies[enemy].erase(crew)
+	for enemy in engaged_enemies.keys():
+		engaged_enemies[enemy].erase(crew)
+	
+	# Clean up side assignments
+	for enemy in enemy_side_assignments.keys():
+		var sides = enemy_side_assignments[enemy]
+		if sides.get("left") == crew:
+			sides.erase("left")
+		if sides.get("right") == crew:
+			sides.erase("right")
+	
+	print("Unregistered crew member: ", crew.npc_name if crew else "unknown")
 
 func register_enemy(enemy: Node) -> void:
 	if not enemy in available_enemies:
 		available_enemies.append(enemy)
 		assigned_enemies[enemy] = []
-		print("Registered enemy for pathfinding: ", enemy.npc_name)
+		engaged_enemies[enemy] = []
+		enemy_side_assignments[enemy] = {}  # Initialize empty side assignments
+		print("Registered enemy for pathfinding: ", enemy.npc_name, " at position: ", enemy.global_position)
 
 func unregister_enemy(enemy: Node) -> void:
 	available_enemies.erase(enemy)
@@ -101,10 +71,13 @@ func unregister_enemy(enemy: Node) -> void:
 		# Get affected crew but don't reassign immediately - defer it
 		var affected_crew = assigned_enemies[enemy].duplicate()
 		assigned_enemies.erase(enemy)
+		engaged_enemies.erase(enemy)
+		enemy_side_assignments.erase(enemy)
 		
 		# Use call_deferred to safely reassign after everything settles
 		for crew in affected_crew:
 			if is_instance_valid(crew):
+				crew_engagement_status[crew] = "pathfinding"
 				call_deferred("_safely_reassign_single_crew", crew)
 
 func _safely_reassign_single_crew(crew: Node) -> void:
@@ -115,147 +88,294 @@ func _safely_reassign_single_crew(crew: Node) -> void:
 		print("No enemies available for reassignment of crew ", crew.npc_name)
 
 func assign_target_to_crew(crew: Node) -> void:
-	if not pathfinding_enabled or not crew in crew_agents:
+	if not pathfinding_enabled:
 		return
 	
-	var best_enemy = find_best_enemy_for_crew(crew)
-	if best_enemy:
-		set_crew_target(crew, best_enemy)
+	# Don't reassign if crew is already engaged in combat (actively fighting)
+	var current_status = crew_engagement_status.get(crew, "pathfinding")
+	if current_status == "combat":
+		print("Crew ", crew.npc_name, " is already in combat, not reassigning")
+		return
+	
+	var best_enemy_and_side = find_best_enemy_and_side_for_crew(crew)
+	if best_enemy_and_side.has("enemy") and best_enemy_and_side.has("side"):
+		set_crew_target_and_side(crew, best_enemy_and_side["enemy"], best_enemy_and_side["side"])
 
-func find_best_enemy_for_crew(crew: Node) -> Node:
+func find_best_enemy_and_side_for_crew(crew: Node) -> Dictionary:
 	var best_enemy: Node = null
-	var best_score = INF
+	var best_side: String = ""
+	var best_distance = INF
+	
+	# Clean up invalid enemies first
+	_cleanup_invalid_enemies()
 	
 	for enemy in available_enemies:
 		if not is_instance_valid(enemy):
 			continue
-			
-		# Skip if enemy has too many crew assigned
-		var assigned_count = assigned_enemies.get(enemy, []).size()
-		if assigned_count >= max_crew_per_enemy:
+		
+		# Check available sides for this enemy
+		var sides = enemy_side_assignments.get(enemy, {})
+		var available_sides = []
+		
+		# Check if left side is available
+		var left_crew = sides.get("left", null)
+		if not left_crew or not is_instance_valid(left_crew):
+			available_sides.append("left")
+		
+		# Check if right side is available  
+		var right_crew = sides.get("right", null)
+		if not right_crew or not is_instance_valid(right_crew):
+			available_sides.append("right")
+		
+		# If no sides available, skip this enemy
+		if available_sides.is_empty():
 			continue
 		
-		# Calculate score based on distance and current assignments
+		# Calculate distance to enemy - this is the primary factor
 		var distance = crew.global_position.distance_to(enemy.global_position)
-		var score = distance + (assigned_count * 100)  # Penalty for crowded enemies
 		
-		if score < best_score:
-			best_score = score
+		# Always choose closest enemy first, regardless of other factors
+		if distance < best_distance:
+			best_distance = distance
 			best_enemy = enemy
+			
+			# Choose the best side based on crew's current position
+			var crew_pos = crew.global_position
+			var enemy_pos = enemy.global_position
+			var preferred_side = "left" if crew_pos.x < enemy_pos.x else "right"
+			
+			# Use preferred side if available, otherwise use any available side
+			best_side = preferred_side if available_sides.has(preferred_side) else available_sides[0]
 	
-	return best_enemy
+	if best_enemy and best_side != "":
+		return {"enemy": best_enemy, "side": best_side}
+	else:
+		return {}
 
-func set_crew_target(crew: Node, target: Node) -> void:
-	if not crew in crew_agents or not is_instance_valid(target):
+func _cleanup_invalid_enemies() -> void:
+	# Remove invalid enemies from available list and clean up their side assignments
+	var valid_enemies = []
+	for enemy in available_enemies:
+		if is_instance_valid(enemy):
+			valid_enemies.append(enemy)
+			# Clean up invalid crew from this enemy's side assignments
+			_cleanup_enemy_side_assignments(enemy)
+		else:
+			# Clean up dictionaries for invalid enemies
+			assigned_enemies.erase(enemy)
+			engaged_enemies.erase(enemy)
+			enemy_side_assignments.erase(enemy)
+	available_enemies = valid_enemies
+
+func _cleanup_enemy_side_assignments(enemy: Node) -> void:
+	if not enemy_side_assignments.has(enemy):
+		return
+		
+	var sides = enemy_side_assignments[enemy]
+	
+	# Check left side
+	var left_crew = sides.get("left", null)
+	if left_crew and not is_instance_valid(left_crew):
+		sides.erase("left")
+		print("Cleaned up invalid left crew from enemy ", enemy.npc_name)
+	
+	# Check right side
+	var right_crew = sides.get("right", null)
+	if right_crew and not is_instance_valid(right_crew):
+		sides.erase("right")
+		print("Cleaned up invalid right crew from enemy ", enemy.npc_name)
+
+func set_crew_target_and_side(crew: Node, target: Node, side: String) -> void:
+	if not is_instance_valid(target):
 		return
 	
 	# Remove from previous enemy assignment
 	if crew in crew_targets:
 		var old_target = crew_targets[crew]
+		var old_side = crew_assigned_sides.get(crew, "")
+		
 		if old_target in assigned_enemies:
 			assigned_enemies[old_target].erase(crew)
+		if old_target in engaged_enemies:
+			engaged_enemies[old_target].erase(crew)
+		
+		# Remove from old side assignment
+		if old_target in enemy_side_assignments and old_side != "":
+			var old_sides = enemy_side_assignments[old_target]
+			if old_sides.get(old_side) == crew:
+				old_sides.erase(old_side)
 	
-	# Set new target
+	# Set new target and side
 	crew_targets[crew] = target
+	crew_assigned_sides[crew] = side
 	assigned_enemies[target].append(crew)
+	crew_engagement_status[crew] = "pathfinding"
 	
-	# Calculate a side position near the enemy
-	var side_position = _calculate_side_position(crew, target)
+	# Assign the side to this crew
+	if not enemy_side_assignments.has(target):
+		enemy_side_assignments[target] = {}
+	enemy_side_assignments[target][side] = crew
 	
-	var agent = crew_agents[crew]
-	agent.target_position = side_position
+	# Calculate side position for this crew member
+	var target_position = _calculate_side_position(crew, target, side)
+	crew_target_positions[crew] = target_position
 	
 	# Enable pathfinding mode on the crew member
 	if crew.has_method("set_pathfinding_mode"):
 		crew.set_pathfinding_mode(true, target)
 	
-	print("Assigned target ", target.npc_name, " to crew ", crew.npc_name, " at side position ", side_position)
+	print("Assigned target ", target.npc_name, " (", side, " side) to crew ", crew.npc_name, " at position: ", target_position)
 
-func _calculate_side_position(crew: Node, target: Node) -> Vector2:
-	var crew_pos = crew.global_position
+func _calculate_side_position(crew: Node, target: Node, side: String) -> Vector2:
 	var target_pos = target.global_position
 	
-	# Determine which side to approach from based on crew's current position
-	var to_crew = crew_pos - target_pos
-	var is_left_side = to_crew.x < 0
+	# Position crew to the specified side of the enemy
+	var side_offset_x = side_distance if side == "right" else -side_distance
 	
-	# Use melee combat distance - reduced from original to get crew closer
-	var side_distance = 35.0  # Reduced from the original 50.0 to get closer
-	var side_offset = Vector2(side_distance if not is_left_side else -side_distance, 0)
-	
-	# Use the same Y position as the target for horizontal alignment
-	var target_position = Vector2(target_pos.x + side_offset.x, target_pos.y)
+	# Use the EXACT same Y position as the target for perfect horizontal alignment
+	var target_position = Vector2(target_pos.x + side_offset_x, target_pos.y)
 	
 	return target_position
+
+func mark_crew_as_engaged(crew: Node) -> void:
+	"""Call this when crew starts actively fighting an enemy"""
+	if not crew in crew_targets:
+		return
+		
+	var target = crew_targets[crew]
+	if not is_instance_valid(target):
+		return
+		
+	crew_engagement_status[crew] = "combat"
+	if not engaged_enemies.has(target):
+		engaged_enemies[target] = []
+	if not engaged_enemies[target].has(crew):
+		engaged_enemies[target].append(crew)
+		
+		var side = crew_assigned_sides.get(crew, "unknown")
+		print("Crew ", crew.npc_name, " now engaged in combat with ", target.npc_name, " on ", side, " side")
+
+func mark_crew_as_waiting(crew: Node) -> void:
+	"""Call this when crew is waiting after combat"""
+	crew_engagement_status[crew] = "waiting"
+	
+	# Remove from engaged list
+	if crew in crew_targets:
+		var target = crew_targets[crew]
+		if target in engaged_enemies:
+			engaged_enemies[target].erase(crew)
+		
+		# Keep side assignment until reassigned - don't remove from enemy_side_assignments yet
+		# This prevents immediate reassignment to the same side
+		
+		print("Crew ", crew.npc_name, " removed from engaged list for ", target.npc_name if target else "unknown")
 
 func _process(delta: float) -> void:
 	if not pathfinding_enabled:
 		return
 	
-	# Update navigation for all crew members
-	for crew in crew_agents:
+	# Clean up invalid crew and enemies periodically
+	_cleanup_invalid_crew()
+	_cleanup_invalid_enemies()
+	
+	# Check if any waiting crew should be reassigned
+	_check_waiting_crew_for_reassignment()
+	
+	# Debug: Print current side assignments
+	if randf() < 0.01:  # Print occasionally, not every frame
+		_debug_print_side_assignments()
+	
+	# Update pathfinding for all crew members
+	for crew in crew_targets.keys():
 		if not is_instance_valid(crew):
+			crew_targets.erase(crew)
+			crew_target_positions.erase(crew)
+			crew_assigned_sides.erase(crew)
+			crew_engagement_status.erase(crew)
 			continue
 			
-		var agent = crew_agents[crew]
-		if not is_instance_valid(agent):
+		var target = crew_targets[crew]
+		if not is_instance_valid(target):
+			call_deferred("_safely_reassign_single_crew", crew)
 			continue
 		
-		# Check if we need to reassign targets
-		if crew in crew_targets:
-			var target = crew_targets[crew]
-			if not is_instance_valid(target):
-				call_deferred("_safely_reassign_single_crew", crew)
-				continue
-			
-			# Check if crew is at proper melee range and aligned with target
-			var distance_to_target = crew.global_position.distance_to(target.global_position)
-			var vertical_distance = abs(crew.global_position.y - target.global_position.y)
-			
-			# Use a slightly larger range to transition to combat mode earlier
-			if distance_to_target <= 45.0 and vertical_distance <= 8.0:
-				# Crew is in good melee position - switch to combat mode
-				if crew.has_method("set_pathfinding_mode"):
-					crew.set_pathfinding_mode(false, target)
-					if is_instance_valid(target):
-						crew.set_combat_target(target)
-				continue
+		var current_status = crew_engagement_status.get(crew, "pathfinding")
 		
-		# Update agent movement only if not in combat
-		if agent.is_navigation_finished():
+		# Only process pathfinding if crew is actually pathfinding
+		if current_status != "pathfinding":
 			continue
-			
-		var next_position = agent.get_next_path_position()
-		var direction = (next_position - crew.global_position).normalized()
-		var desired_velocity = direction * agent.max_speed
 		
-		# Since avoidance is disabled, we can directly set the velocity
+		# Simple pathfinding: move directly to exact side position
+		var side = crew_assigned_sides.get(crew, "right")
+		var target_pos = target.global_position
+		var exact_target_position = Vector2(
+			target_pos.x + (20.0 if side == "right" else -20.0),  # Exactly 20 pixels left/right
+			target_pos.y  # Exactly same Y coordinate
+		)
+		
+		# Update target position for this crew
+		crew_target_positions[crew] = exact_target_position
+		
+		# Check if crew has reached their exact target position
+		var distance_to_position = crew.global_position.distance_to(exact_target_position)
+		
+		if distance_to_position <= arrival_threshold:
+			# Reached exact position - switch to combat mode
+			print("Crew ", crew.npc_name, " reached exact ", side, " side position, switching to combat with ", target.npc_name)
+			mark_crew_as_engaged(crew)
+			if crew.has_method("set_pathfinding_mode"):
+				crew.set_pathfinding_mode(false, target)
+			if crew.has_method("set_combat_target"):
+				crew.set_combat_target(target)
+			continue
+		
+		# Move directly toward the exact target position
+		var direction = (exact_target_position - crew.global_position).normalized()
+		var desired_velocity = direction * crew.speed * 0.8  # Slightly slower for pathfinding
+		
 		if crew.has_method("set_pathfinding_velocity"):
 			crew.set_pathfinding_velocity(desired_velocity)
 
-func _on_agent_velocity_computed(safe_velocity: Vector2, crew: Node) -> void:
-	if not is_instance_valid(crew) or not crew in crew_agents:
-		return
-	
-	# Apply the computed safe velocity to the crew member
-	if crew.has_method("set_pathfinding_velocity"):
-		crew.set_pathfinding_velocity(safe_velocity)
+func _debug_print_side_assignments() -> void:
+	print("=== SIDE ASSIGNMENTS DEBUG ===")
+	for enemy in enemy_side_assignments.keys():
+		if is_instance_valid(enemy):
+			var sides = enemy_side_assignments[enemy]
+			var left_crew = sides.get("left", null)
+			var right_crew = sides.get("right", null)
+			var left_name = left_crew.npc_name if left_crew and is_instance_valid(left_crew) else "empty"
+			var right_name = right_crew.npc_name if right_crew and is_instance_valid(right_crew) else "empty"
+			print("Enemy ", enemy.npc_name, " - Left: ", left_name, ", Right: ", right_name)
 
-func _on_agent_target_reached(crew: Node) -> void:
-	if not is_instance_valid(crew):
-		return
+func _cleanup_invalid_crew() -> void:
+	# Clean up crew references that are no longer valid
+	var keys_to_remove = []
+	for crew in crew_targets.keys():
+		if not is_instance_valid(crew):
+			keys_to_remove.append(crew)
 	
-	print("Crew ", crew.npc_name, " reached target area")
-	
-	# The crew will handle combat positioning, we just wait for them to engage
-	if crew in crew_targets:
-		var target = crew_targets[crew]
-		if is_instance_valid(target) and crew.has_method("set_combat_target"):
-			crew.set_combat_target(target)
-		elif not is_instance_valid(target):
-			# Target was freed, remove it and try to reassign
-			crew_targets.erase(crew)
-			call_deferred("_safely_reassign_single_crew", crew)
+	for crew in keys_to_remove:
+		unregister_crew_member(crew)
+
+func _check_waiting_crew_for_reassignment() -> void:
+	# Check if any waiting crew should be reassigned to available enemy sides
+	for crew in crew_engagement_status.keys():
+		if crew_engagement_status[crew] == "waiting" and is_instance_valid(crew):
+			# Check if there are enemies with available sides
+			var has_available_side = false
+			for enemy in available_enemies:
+				if is_instance_valid(enemy):
+					var sides = enemy_side_assignments.get(enemy, {})
+					var left_available = not sides.has("left") or not is_instance_valid(sides.get("left"))
+					var right_available = not sides.has("right") or not is_instance_valid(sides.get("right"))
+					if left_available or right_available:
+						has_available_side = true
+						break
+			
+			if has_available_side:
+				print("Reassigning waiting crew ", crew.npc_name, " to available enemy side")
+				crew_engagement_status[crew] = "pathfinding"
+				assign_target_to_crew(crew)
 
 func on_enemy_defeated(enemy: Node, crew: Node) -> void:
 	"""Called when a crew member defeats an enemy"""
@@ -267,7 +387,10 @@ func on_enemy_defeated(enemy: Node, crew: Node) -> void:
 	# Remove the defeated enemy from our system
 	unregister_enemy(enemy)
 	
-	# Start wait timer for the crew member - but don't try to reassign immediately
+	# Mark crew as waiting
+	mark_crew_as_waiting(crew)
+	
+	# Start wait timer for the crew member
 	if crew.has_method("start_post_combat_wait"):
 		crew.start_post_combat_wait(post_combat_wait_time)
 	
@@ -286,46 +409,18 @@ func _safely_reassign_crew_after_wait(crew: Node) -> void:
 func _reassign_crew_after_wait(crew: Node, timer: Timer) -> void:
 	timer.queue_free()
 	
-	# Only reassign if the crew is still valid and there are enemies available
+	# Only reassign if the crew is still valid and there are enemies with available sides
 	if is_instance_valid(crew) and available_enemies.size() > 0:
 		print("Reassigning crew ", crew.npc_name, " after combat wait")
+		crew_engagement_status[crew] = "pathfinding"
 		assign_target_to_crew(crew)
 	elif is_instance_valid(crew):
-		print("No more enemies available for crew ", crew.npc_name)
-
-func get_navigation_region() -> NavigationRegion2D:
-	return navigation_region
+		print("No more enemies with available sides for crew ", crew.npc_name)
 
 func is_crew_pathfinding(crew: Node) -> bool:
-	return crew in crew_agents and crew in crew_targets
+	return crew in crew_targets and crew_engagement_status.get(crew, "pathfinding") == "pathfinding"
 
 func force_reassign_all_targets() -> void:
-	for crew in crew_agents:
-		if is_instance_valid(crew):
+	for crew in crew_targets.keys():
+		if is_instance_valid(crew) and crew_engagement_status.get(crew, "pathfinding") == "pathfinding":
 			assign_target_to_crew(crew)
-
-# Debug visualization
-func _draw() -> void:
-	if not pathfinding_enabled:
-		return
-	
-	# Draw paths for debugging
-	for crew in crew_agents:
-		if not is_instance_valid(crew):
-			continue
-			
-		var agent = crew_agents[crew]
-		if not is_instance_valid(agent) or agent.is_navigation_finished():
-			continue
-		
-		# Draw path
-		var path = agent.get_current_navigation_path()
-		if path.size() > 1:
-			for i in range(path.size() - 1):
-				draw_line(path[i] - global_position, path[i + 1] - global_position, Color.YELLOW, 2.0)
-		
-		# Draw target
-		if crew in crew_targets:
-			var target = crew_targets[crew]
-			if is_instance_valid(target):
-				draw_line(crew.global_position - global_position, target.global_position - global_position, Color.RED, 1.0)

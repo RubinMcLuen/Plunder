@@ -12,3 +12,4 @@ res://Battle/BoardingBattle.gd
 res://Character/NPC/CrewMember/CrewMember.gd
 res://Character/NPC/Enemy/Enemy.gd
 res://Battle/PathfindingManager.gd
+res://Character/NPC/CrewMember/CrewMember.tscn

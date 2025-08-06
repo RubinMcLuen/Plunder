@@ -185,7 +185,7 @@ func set_pathfinding_mode(enabled: bool, target: Node2D = null) -> void:
 		idle_with_sword = false  # Hide sword while pathfinding
 		combat_target = null
 		in_combat_range = false
-		print("Crew ", npc_name, " entering pathfinding mode")
+		print("Crew ", npc_name, " entering pathfinding mode to ", target.npc_name if target else "unknown")
 	else:
 		print("Crew ", npc_name, " exiting pathfinding mode")
 
@@ -199,7 +199,12 @@ func set_combat_target(target: Node2D) -> void:
 	fighting = true
 	idle_with_sword = true
 	in_combat_range = true
-	print("Crew ", npc_name, " entering combat with ", target.npc_name if target else "unknown")
+	
+	# Notify pathfinding manager that we're now engaged in combat
+	if pathfinding_manager and is_instance_valid(pathfinding_manager):
+		pathfinding_manager.mark_crew_as_engaged(self)
+	
+	print("Crew ", npc_name, " entering combat with ", target.npc_name if target else "unknown", " at distance: ", global_position.distance_to(target.global_position))
 
 func start_post_combat_wait(wait_time: float) -> void:
 	post_combat_waiting = true
@@ -207,6 +212,11 @@ func start_post_combat_wait(wait_time: float) -> void:
 	fighting = false
 	idle_with_sword = false
 	in_combat_range = false
+	
+	# Notify pathfinding manager that we're now waiting
+	if pathfinding_manager and is_instance_valid(pathfinding_manager):
+		pathfinding_manager.mark_crew_as_waiting(self)
+	
 	print("Crew ", npc_name, " starting post-combat wait")
 	
 	# Create a timer to end the wait
@@ -229,7 +239,7 @@ func _handle_pathfinding(delta: float) -> void:
 	if not pathfinding_mode:
 		return
 	
-	# Use the velocity computed by the navigation agent
+	# Use the velocity computed by the pathfinding manager
 	velocity = pathfinding_velocity
 	
 	# Update facing direction
@@ -241,44 +251,46 @@ func _handle_pathfinding(delta: float) -> void:
 
 func _handle_combat(delta: float) -> void:
 	if not combat_target or not is_instance_valid(combat_target):
-		# Target is gone, go back to pathfinding
+		# Target is gone, notify pathfinding manager and exit combat mode
+		print("Crew ", npc_name, " combat target invalid, exiting combat")
 		combat_target = null
 		fighting = false
 		in_combat_range = false
+		
+		# Notify pathfinding manager to clean up and potentially reassign
 		if pathfinding_manager and is_instance_valid(pathfinding_manager):
-			pathfinding_manager.call_deferred("_safely_reassign_single_crew", self)
+			pathfinding_manager.mark_crew_as_waiting(self)
 		return
 	
 	# Face the combat target
 	var dir_to_target = combat_target.global_position - global_position
 	set_facing_direction(dir_to_target.x < 0)
 	
-	# Check if target is still in melee combat range
+	# Check distance to target
 	var distance_to_target = global_position.distance_to(combat_target.global_position)
-	var vertical_distance = abs(global_position.y - combat_target.global_position.y)
 	
-	# Adjust combat distance - stop at about 75% of the original distance
-	# Original was 50.0, so now stop at ~37-40 pixels away
-	if distance_to_target > 75.0 or vertical_distance > 8.0:
-		# Target moved out of melee range, resume pathfinding
+	# Safety check - if target is way too far away, something went wrong
+	if distance_to_target > 60.0:
+		print("Crew ", npc_name, " target too far away (", distance_to_target, "), exiting combat and going to waiting")
 		combat_target = null
 		fighting = false
 		idle_with_sword = false
 		in_combat_range = false
+		
+		# Mark as waiting so pathfinding manager can reassign
 		if pathfinding_manager and is_instance_valid(pathfinding_manager):
-			pathfinding_manager.call_deferred("_safely_reassign_single_crew", self)
+			pathfinding_manager.mark_crew_as_waiting(self)
 		return
 	
-	# If we're too close, back up a bit to optimal combat distance (around 35-40 pixels)
-	var optimal_distance = 38.0
-	if distance_to_target < optimal_distance:
-		var move_away = dir_to_target.normalized() * -30.0  # Move away from target
-		velocity = move_away
-	else:
-		# Stay in position and attack
-		velocity = Vector2.ZERO
-	
+	# Simple combat: just stay in position and attack
+	# No movement adjustments - crew should already be positioned correctly by pathfinding
+	velocity = Vector2.ZERO
 	_auto_attack()
+
+# Override the _exit_tree to clean up pathfinding manager references
+func _exit_tree() -> void:
+	if pathfinding_manager and is_instance_valid(pathfinding_manager):
+		pathfinding_manager.unregister_crew_member(self)
 
 func update_animation() -> void:
 	# 1) Animation override (slash/lunge/block/hurt)
