@@ -52,7 +52,7 @@ func _physics_process(delta: float) -> void:
 	if battle_scene and "progress_point" in battle_scene:
 		progress = battle_scene.progress_point
 	
-	# AI enabled at progress point 6+ ("Full Enemy AI") AND progress point 11+ ("Crew Pathfinding AI")
+# AI enabled at progress point 6+ ("Full Enemy AI") AND progress point 12+ ("Crew Pathfinding AI")
 	var should_use_ai = (progress >= 6)
 
 	# Only process AI if enabled and should use AI
@@ -163,7 +163,7 @@ func _on_enter(n: Node) -> void:
 	if battle_scene and "progress_point" in battle_scene:
 		progress = battle_scene.progress_point
 	
-	# Add targets at progress point 6+ ("Full Enemy AI") AND progress point 11+ ("Crew Pathfinding AI")
+# Add targets at progress point 6+ ("Full Enemy AI") AND progress point 12+ ("Crew Pathfinding AI")
 	if progress >= 6 and ai_enabled and n is CrewMemberNPC and not targets.has(n):
 		targets.append(n)
 		print("Enemy ", npc_name, " detected crew member ", n.npc_name, " - adding to targets")

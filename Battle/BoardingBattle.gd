@@ -14,9 +14,10 @@ class_name BoardingBattle
 	"Add Camera Transition",
 	"Manual Deploy System",
 	"Random Spawn Positions",
+	"Nearest Plank Assignment",
 	"Smart Plank Assignment",
 	"Crew Pathfinding AI"
-) var progress_point: int = 11
+) var progress_point: int = 12
 
 # Preload the ocean scene so it's always included in the export
 const OCEAN_TUTORIAL_SCENE: PackedScene = preload("res://Ocean/ocean.tscn")
@@ -55,8 +56,8 @@ func _ready() -> void:
 # Called when properties change in editor
 func _validate_property(property: Dictionary) -> void:
 	if property.name == "progress_point":
-		property.hint = PROPERTY_HINT_ENUM
-		property.hint_string = "Scenery Only,Add One Crewmate,Add Boards,Add Idle Enemy,Add Melee Ranges,Enemy Takes Damage,Full Enemy AI,Add Camera Transition,Manual Deploy System,Random Spawn Positions,Smart Plank Assignment,Crew Pathfinding AI"
+	       property.hint = PROPERTY_HINT_ENUM
+	       property.hint_string = "Scenery Only,Add One Crewmate,Add Boards,Add Idle Enemy,Add Melee Ranges,Enemy Takes Damage,Full Enemy AI,Add Camera Transition,Manual Deploy System,Random Spawn Positions,Nearest Plank Assignment,Smart Plank Assignment,Crew Pathfinding AI"
 
 func _setup_based_on_progress() -> void:
 	# Start with clean slate
@@ -92,15 +93,18 @@ func _setup_based_on_progress() -> void:
 		8: # Manual Deploy System
 			print("- Manual deploy system")
 			_setup_manual_deploy()
-		9: # Random Spawn Positions
-			print("- Random spawn positions")
-			_setup_random_spawn()
-		10: # Smart Plank Assignment
-			print("- Smart plank assignment")
-			_setup_smart_assignment()
-		11: # Crew Pathfinding AI
-			print("- Crew pathfinding AI")
-			_setup_pathfinding_ai()
+	       9: # Random Spawn Positions
+		       print("- Random spawn positions")
+		       _setup_random_spawn()
+	       10: # Nearest Plank Assignment
+		       print("- Nearest plank assignment")
+		       _setup_nearest_assignment()
+	       11: # Smart Plank Assignment
+		       print("- Smart plank assignment")
+		       _setup_smart_assignment()
+	       12: # Crew Pathfinding AI
+		       print("- Crew pathfinding AI")
+		       _setup_pathfinding_ai()
 
 func _clear_all_entities() -> void:
 	for child in crew_container.get_children():
@@ -176,6 +180,12 @@ func _setup_random_spawn() -> void:
 	_setup_no_transition()  # Remove camera transition
 	_show_all_planks()
 	_spawn_multiple_crew_random()
+	_spawn_multiple_enemies()
+
+func _setup_nearest_assignment() -> void:
+	_setup_no_transition()
+	_show_all_planks()
+	_spawn_crew_with_nearest_assignment()
 	_spawn_multiple_enemies()
 
 func _setup_smart_assignment() -> void:
@@ -388,19 +398,58 @@ func _spawn_multiple_crew_random() -> void:
 	var rect = cs.shape as RectangleShape2D
 	var enemy_center = cs.global_position
 	var ext = rect.extents
-	
+
 	# Mirror the spawn area to the opposite side of the planks
 	var crew_center = Vector2(enemy_center.x, enemy_center.y + 200)  # Move down to player ship side
-	
+
 	for i in range(5):
-		var crew = crew_scene.instantiate()
-		var offset = Vector2(randf_range(-ext.x, ext.x), randf_range(-ext.y, ext.y))
-		crew.global_position = crew_center + offset
-		crew.npc_name = "Crew " + str(i + 1)
-		crew.fighting = true  # They should be fighting
-		crew.idle_with_sword = true
-		crew.battle_manager = self
-		crew_container.add_child(crew)
+	       var crew = crew_scene.instantiate()
+	       var offset = Vector2(randf_range(-ext.x, ext.x), randf_range(-ext.y, ext.y))
+	       crew.global_position = crew_center + offset
+	       crew.npc_name = "Crew " + str(i + 1)
+	       crew.fighting = true  # They should be fighting
+	       crew.idle_with_sword = true
+	       crew.battle_manager = self
+	       crew_container.add_child(crew)
+
+func _spawn_crew_with_nearest_assignment() -> void:
+	var crew_scene = preload("res://Character/NPC/CrewMember/CrewMember.tscn")
+	# Use enemy spawn area as reference but mirror it to the other side
+	var cs = enemy_spawn_area.get_node("CollisionShape2D")
+	var rect = cs.shape as RectangleShape2D
+	var enemy_center = cs.global_position
+	var ext = rect.extents
+
+	# Mirror the spawn area to the opposite side of the planks
+	var crew_center = Vector2(enemy_center.x, enemy_center.y + 200)  # Move down to player ship side
+	var planks = plank_container.get_children()
+
+	for i in range(5):
+	       var crew = crew_scene.instantiate()
+	       var offset = Vector2(randf_range(-ext.x, ext.x), randf_range(-ext.y, ext.y))
+	       crew.global_position = crew_center + offset
+	       crew.npc_name = "Crew " + str(i + 1)
+	       crew.fighting = true  # They should be fighting after boarding
+	       crew.idle_with_sword = true
+	       crew.battle_manager = self  # Enable dragging for testing
+
+	       # Assign nearest plank
+	       var assigned_plank_index = _assign_nearest_plank(crew, planks)
+	       var plank = planks[assigned_plank_index]
+
+	       crew.board_target = plank.global_position + Vector2(0, -33)
+	       crew_plank_assignments[crew] = {
+		       "plank_index": assigned_plank_index,
+		       "plank_start": plank.global_position + Vector2(0, 33),
+		       "board_target": plank.global_position + Vector2(0, -33),
+		       "walking_speed": 1.0
+	       }
+
+	       crew_container.add_child(crew)
+
+	# Start staggered boarding after a short delay
+	await get_tree().process_frame
+	_start_staggered_boarding()
 
 func _spawn_crew_with_smart_assignment() -> void:
 	var crew_scene = preload("res://Character/NPC/CrewMember/CrewMember.tscn")
@@ -457,9 +506,20 @@ func _spawn_multiple_enemies() -> void:
 		var offset = Vector2(randf_range(-ext.x, ext.x), randf_range(-ext.y, ext.y))
 		enemy.global_position = center + offset
 		enemy.npc_name = "Enemy " + str(i + 1)
-		enemy_container.add_child(enemy)
+			enemy_container.add_child(enemy)
 
 # Smart plank assignment logic
+func _assign_nearest_plank(crew: Node, planks: Array) -> int:
+	var best_plank_index = 0
+	var shortest_distance = INF
+	for i in range(planks.size()):
+		var plank = planks[i]
+		var distance = crew.global_position.distance_to(plank.global_position)
+		if distance < shortest_distance:
+			shortest_distance = distance
+			best_plank_index = i
+	return best_plank_index
+
 func _assign_plank_to_crew(crew: Node, planks: Array) -> int:
 	var best_plank_index = -1
 	var shortest_distance = INF
@@ -542,10 +602,10 @@ func select_unit(unit: Node) -> void:
 			# If not boarded, start boarding
 			if unit.has_method("start_board"):
 				unit.start_board()
-	elif progress_point >= 9 and progress_point <= 10:  # Auto systems - enable dragging for testing (9-10)
+	elif progress_point >= 9 and progress_point <= 11:  # Auto systems - enable dragging for testing (9-11)
 		if unit.has_method("start_drag"):
 			unit.start_drag()
-	elif progress_point >= 11:  # Pathfinding mode - limited interaction (11+)
+	elif progress_point >= 12:  # Pathfinding mode - limited interaction (12+)
 		# In pathfinding mode, only allow dragging if not currently pathfinding
 		if unit.has_method("get") and "pathfinding_mode" in unit and not unit.pathfinding_mode:
 			if unit.has_method("start_drag"):

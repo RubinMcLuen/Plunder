@@ -95,10 +95,10 @@ func _configure_for_progress_point() -> void:
 		5: # Enemy takes damage - can attack and affects enemy (index 5)
 			can_attack = true
 			attack_affects_enemy = true
-		6, 7, 8, 9, 10: # Full functionality including camera transition (index 6+)
+		6, 7, 8, 9, 10, 11: # Full functionality including camera transition (index 6+)
 			can_attack = true
 			attack_affects_enemy = true
-		11: # Pathfinding mode (index 11)
+		12: # Pathfinding mode (index 12)
 			can_attack = true
 			attack_affects_enemy = true
 			# Pathfinding will be enabled when crew boards
@@ -408,13 +408,13 @@ func _walk_plank(_delta: float) -> void:
 		walking_to_plank  = false
 		is_boarding       = false
 		
-		# Register with pathfinding manager for progress point 11+
+		# Register with pathfinding manager for progress point 12+
 		var battle_scene = get_tree().current_scene
 		var progress = 0
 		if battle_scene and "progress_point" in battle_scene:
 			progress = battle_scene.progress_point
 		
-		if progress >= 11:
+		if progress >= 12:
 			pathfinding_manager = battle_scene.get_node_or_null("PathfindingManager")
 			if pathfinding_manager:
 				pathfinding_manager.register_crew_member(self)
