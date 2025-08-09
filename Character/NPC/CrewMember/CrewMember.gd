@@ -1,7 +1,7 @@
 extends NPC
 class_name CrewMemberNPC
 
-const BOARD_SPEED       : float = 120.0
+const BOARD_SPEED       : float = 50.0
 const DRAG_SPEED        : float = 200.0
 const ATTACK_COOLDOWN   : float = 0.8
 const CREW_ATTACK_ANIMS : Array[String] = ["AttackSlash", "AttackLunge"]

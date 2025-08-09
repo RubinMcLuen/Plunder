@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://gyqf4ti7nmw5"]
+[gd_scene load_steps=10 format=3 uid="uid://gyqf4ti7nmw5"]
 
 [ext_resource type="Texture2D" uid="uid://cc1klfhtqilyc" path="res://Battle/ZoomedInNewShip.png" id="1_fy6vb"]
 [ext_resource type="Script" path="res://Battle/BoardingBattle.gd" id="1_offb7"]
@@ -12,6 +12,9 @@ size = Vector2(624, 544)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h0xrr"]
 size = Vector2(225, 112)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_kqq47"]
+size = Vector2(224, 160)
 
 [node name="BoardingBattle" type="Node2D"]
 script = ExtResource("1_offb7")
@@ -90,3 +93,7 @@ z_index = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EnemySpawnArea"]
 position = Vector2(240.5, 88)
 shape = SubResource("RectangleShape2D_h0xrr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(240, 320)
+shape = SubResource("RectangleShape2D_kqq47")

@@ -1,15 +1,6 @@
 res://Battle/BoardingBattle.tscn
 res://Character/assets/UVmap.tres
 res://Ships/Assets/Shaders/RippleShader.tres
-res://Main.tscn
-res://KelptownInn/KelptownInn.tscn
-res://Battle/BoardingBattleTutorial.tscn
 res://Ocean/ocean.tscn
-res://Ships/EnemyShip.tscn
-res://KelptownInn/KelptownInnTutorial.tscn
 res://Character/NPC/Enemy/Enemy.tscn
-res://Battle/BoardingBattle.gd
-res://Character/NPC/CrewMember/CrewMember.gd
-res://Character/NPC/Enemy/Enemy.gd
-res://Battle/PathfindingManager.gd
 res://Character/NPC/CrewMember/CrewMember.tscn
