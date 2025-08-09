@@ -4,3 +4,6 @@ res://Ships/Assets/Shaders/RippleShader.tres
 res://Ocean/ocean.tscn
 res://Character/NPC/Enemy/Enemy.tscn
 res://Character/NPC/CrewMember/CrewMember.tscn
+res://Battle/BoardingBattle.gd
+res://Character/NPC/CrewMember/CrewMember.gd
+res://Character/NPC/NPC.gd
